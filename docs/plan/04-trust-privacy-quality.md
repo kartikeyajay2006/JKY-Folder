@@ -8,7 +8,7 @@ Volume exit gate: Measured reliability, permission boundaries and approved handl
 
 ## How to use this volume
 
-Every workstream contains six concrete deliverables and six acceptance situations for each deliverable.
+Every workstream contains six concrete deliverables and four acceptance situations for each deliverable.
 The cases are specifications for later implementation or business validation; they are not executed results.
 Use the stable IDs in issues, design reviews, release evidence and subsequent plan revisions.
 Business validation uses research and operating records; engineering validation uses controlled fixtures and system evidence.
@@ -71,11 +71,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-01-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-01-D1-A6 — Incident recovery
+##### JF-04-01-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “asset sensitivity register” against “originals, ocr, reports and credentials are included”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-01-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-01-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -116,11 +116,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-01-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-01-D2-A6 — Incident recovery
+##### JF-04-01-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “threat boundary diagram brief” against “browser, api, storage, workers and suppliers are distinct”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-01-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-01-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -161,11 +161,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-01-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-01-D3-A6 — Incident recovery
+##### JF-04-01-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “abuse-case catalogue” against “cross-tenant, parser and privileged-access attacks are covered”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-01-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-01-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -206,11 +206,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-01-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-01-D4-A6 — Incident recovery
+##### JF-04-01-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “threat prioritization record” against “impact and exploitability are justified”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-01-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-01-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -251,11 +251,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-01-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-01-D5-A6 — Incident recovery
+##### JF-04-01-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “mitigation register” against “every high-risk threat has an accountable role”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-01-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-01-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -296,11 +296,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-01-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-01-D6-A6 — Incident recovery
+##### JF-04-01-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “security decision record” against “remaining risk has an explicit launch consequence”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-01-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-01-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -371,11 +371,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-02-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-02-D1-A6 — Incident recovery
+##### JF-04-02-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “filename adversarial fixtures” against “double extensions and malformed names do not bypass policy”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-02-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-02-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -416,11 +416,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-02-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-02-D2-A6 — Incident recovery
+##### JF-04-02-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “type spoofing fixtures” against “declared media type cannot override safe inspection”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-02-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-02-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -461,11 +461,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-02-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-02-D3-A6 — Incident recovery
+##### JF-04-02-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “resource exhaustion fixtures” against “oversized and decompression-heavy content stays bounded”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-02-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-02-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -506,11 +506,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-02-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-02-D4-A6 — Incident recovery
+##### JF-04-02-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “active-content review” against “scripts and embedded unsafe content cannot execute in previews”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-02-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-02-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -551,11 +551,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-02-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-02-D5-A6 — Incident recovery
+##### JF-04-02-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “quarantine access tests” against “pending inspection objects remain inaccessible to normal preview”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-02-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-02-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -596,11 +596,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-02-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-02-D6-A6 — Incident recovery
+##### JF-04-02-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “upload permission tests” against “unauthenticated and wrong-packet writes are denied”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-02-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-02-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -671,11 +671,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-03-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-03-D1-A6 — Incident recovery
+##### JF-04-03-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “authorization test inventory” against “all protected operations include allowed and denied roles”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-03-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-03-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -716,11 +716,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-03-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-03-D2-A6 — Incident recovery
+##### JF-04-03-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “reference tampering fixtures” against “guessed ids do not reveal another tenant's objects”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-03-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-03-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -761,11 +761,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-03-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-03-D3-A6 — Incident recovery
+##### JF-04-03-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “grant lifetime tests” against “expired preview and download grants stop working as specified”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-03-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-03-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -806,11 +806,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-03-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-03-D4-A6 — Incident recovery
+##### JF-04-03-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “revocation tests” against “removed grants cannot authorize new operations”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-03-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-03-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -851,11 +851,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-03-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-03-D5-A6 — Incident recovery
+##### JF-04-03-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “admin access review” against “elevated access requires approved authentication and purpose”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-03-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-03-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -896,11 +896,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-03-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-03-D6-A6 — Incident recovery
+##### JF-04-03-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “recovery abuse tests” against “recovery does not expose packet ownership or bypass verification”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-03-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-03-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -971,11 +971,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-04-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-04-D1-A6 — Incident recovery
+##### JF-04-04-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “field-level data map” against “original, inferred and derived data are all included”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-04-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-04-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1016,11 +1016,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-04-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-04-D2-A6 — Incident recovery
+##### JF-04-04-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “purpose register” against “processing activities have specific user-facing purposes”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-04-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-04-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1061,11 +1061,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-04-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-04-D3-A6 — Incident recovery
+##### JF-04-04-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “transfer map” against “region and supplier access are explicit”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-04-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-04-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1106,11 +1106,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-04-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-04-D4-A6 — Incident recovery
+##### JF-04-04-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “minimization decisions” against “unneeded fields are excluded from collection and logs”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-04-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-04-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1151,11 +1151,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-04-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-04-D5-A6 — Incident recovery
+##### JF-04-04-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “retention schedule” against “operational and legally justified exceptions are differentiated”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-04-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-04-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1196,11 +1196,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-04-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-04-D6-A6 — Incident recovery
+##### JF-04-04-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “privacy change assessment” against “new purposes trigger review before activation”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-04-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-04-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1271,11 +1271,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-05-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-05-D1-A6 — Incident recovery
+##### JF-04-05-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “plain-language notice” against “purposes, data classes and supplier scope are understandable”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-05-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-05-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1316,11 +1316,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-05-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-05-D2-A6 — Incident recovery
+##### JF-04-05-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “consent-purpose matrix” against “marketing and model improvement are not bundled with review”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-05-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-05-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1361,11 +1361,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-05-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-05-D3-A6 — Incident recovery
+##### JF-04-05-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “consent ledger contract” against “text version, scope and event time are retained”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-05-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-05-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1406,11 +1406,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-05-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-05-D4-A6 — Incident recovery
+##### JF-04-05-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “withdrawal behavior” against “affected processing stops without misleading status”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-05-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-05-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1451,11 +1451,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-05-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-05-D5-A6 — Incident recovery
+##### JF-04-05-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “rights request procedure” against “ownership verification is proportionate and privacy-preserving”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-05-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-05-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1496,11 +1496,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-05-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-05-D6-A6 — Incident recovery
+##### JF-04-05-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “grievance workflow” against “contact, response ownership and escalation are clear”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-05-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-05-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1571,11 +1571,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-06-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-06-D1-A6 — Incident recovery
+##### JF-04-06-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “pilot eligibility policy” against “the adults-only limit is visible before upload”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-06-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-06-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1616,11 +1616,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-06-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-06-D2-A6 — Incident recovery
+##### JF-04-06-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “age assurance proposal” against “collection avoids unnecessary identity-document exposure”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-06-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-06-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1661,11 +1661,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-06-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-06-D3-A6 — Incident recovery
+##### JF-04-06-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “guardian-flow specification” against “relationship and consent evidence have approved requirements”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-06-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-06-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1706,11 +1706,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-06-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-06-D4-A6 — Incident recovery
+##### JF-04-06-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “child-data processing policy” against “tracking and marketing restrictions receive legal review”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-06-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-06-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1751,11 +1751,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-06-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-06-D5-A6 — Incident recovery
+##### JF-04-06-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “guardian withdrawal behavior” against “dependent processing and access stop according to policy”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-06-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-06-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1796,11 +1796,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-06-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-06-D6-A6 — Incident recovery
+##### JF-04-06-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “minor-flow evaluation” against “underage and uncertain-age cases follow the approved gate”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-06-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-06-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1871,11 +1871,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-07-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-07-D1-A6 — Incident recovery
+##### JF-04-07-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “deletion dependency inventory” against “originals, derivatives, text, caches and exports are included”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-07-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-07-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1916,11 +1916,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-07-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-07-D2-A6 — Incident recovery
+##### JF-04-07-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “deletion state machine” against “requested, blocked, active-store removed and backup expiry differ”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-07-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-07-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1961,11 +1961,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-07-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-07-D3-A6 — Incident recovery
+##### JF-04-07-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “deletion race tests” against “late jobs cannot restore erased content”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-07-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-07-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2006,11 +2006,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-07-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-07-D4-A6 — Incident recovery
+##### JF-04-07-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “processor deletion agreement” against “supplier acknowledgements match the permitted scope”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-07-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-07-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2051,11 +2051,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-07-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-07-D5-A6 — Incident recovery
+##### JF-04-07-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “backup erasure evidence” against “user communication reflects actual backup lifecycle”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-07-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-07-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2096,11 +2096,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-07-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-07-D6-A6 — Incident recovery
+##### JF-04-07-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “exception decision register” against “exceptions state data class, purpose and authorized duration”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-07-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-07-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2171,11 +2171,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-08-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-08-D1-A6 — Incident recovery
+##### JF-04-08-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “processor register” against “ocr, hosting, payments and communications are listed”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-08-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-08-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2216,11 +2216,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-08-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-08-D2-A6 — Incident recovery
+##### JF-04-08-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “contract review record” against “purpose, access and deletion commitments are explicit”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-08-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-08-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2261,11 +2261,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-08-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-08-D3-A6 — Incident recovery
+##### JF-04-08-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “region decision” against “cross-border implications are assessed for the actual service”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-08-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-08-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2306,11 +2306,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-08-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-08-D4-A6 — Incident recovery
+##### JF-04-08-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “supplier assurance file” against “claims are checked against scope and evidence”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-08-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-08-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2351,11 +2351,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-08-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-08-D5-A6 — Incident recovery
+##### JF-04-08-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “supplier fallback plan” against “fallback does not silently broaden data access”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-08-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-08-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2396,11 +2396,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-08-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-08-D6-A6 — Incident recovery
+##### JF-04-08-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “supplier-change procedure” against “material terms or regions trigger renewed approval”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-08-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-08-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2471,11 +2471,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-09-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-09-D1-A6 — Incident recovery
+##### JF-04-09-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “model trust-boundary design” against “document content remains untrusted data”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-09-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-09-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2516,11 +2516,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-09-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-09-D2-A6 — Incident recovery
+##### JF-04-09-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “structured output contract” against “only permitted draft fields can be returned”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-09-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-09-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2561,11 +2561,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-09-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-09-D3-A6 — Incident recovery
+##### JF-04-09-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “model capability policy” against “no unrestricted network, storage or publication actions exist”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-09-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-09-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2606,11 +2606,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-09-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-09-D4-A6 — Incident recovery
+##### JF-04-09-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “injection fixture set” against “embedded instructions do not alter system policy”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-09-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-09-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2651,11 +2651,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-09-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-09-D5-A6 — Incident recovery
+##### JF-04-09-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “draft completeness benchmark” against “missing obligations are scored independently of syntax validity”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-09-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-09-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2696,11 +2696,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-09-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-09-D6-A6 — Incident recovery
+##### JF-04-09-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “model-output approval” against “reviewed source evidence is required before rule publication”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-09-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-09-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2771,11 +2771,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-10-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-10-D1-A6 — Incident recovery
+##### JF-04-10-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “fixture design matrix” against “condition, format, legibility and conflict strata are explicit”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-10-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-10-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2816,11 +2816,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-10-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-10-D2-A6 — Incident recovery
+##### JF-04-10-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “synthetic packet catalogue” against “fixtures contain no real applicant identities”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-10-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-10-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2861,11 +2861,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-10-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-10-D3-A6 — Incident recovery
+##### JF-04-10-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “dataset split manifest” against “templates and near-duplicates do not leak across splits”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-10-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-10-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2906,11 +2906,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-10-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-10-D4-A6 — Incident recovery
+##### JF-04-10-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “adjudication records” against “expected states and evidence anchors have rationale”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-10-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-10-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2951,11 +2951,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-10-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-10-D5-A6 — Incident recovery
+##### JF-04-10-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “label arbitration” against “ambiguous cases remain review states rather than forced certainty”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-10-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-10-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2996,11 +2996,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-10-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-10-D6-A6 — Incident recovery
+##### JF-04-10-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “benchmark revision record” against “results identify immutable fixture and label versions”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-10-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-10-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3071,11 +3071,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-11-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-11-D1-A6 — Incident recovery
+##### JF-04-11-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “error severity taxonomy” against “errors are tied to applicant consequence”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-11-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-11-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3116,11 +3116,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-11-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-11-D2-A6 — Incident recovery
+##### JF-04-11-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “false-pass measurement” against “denominators are applicable negative check cases”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-11-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-11-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3161,11 +3161,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-11-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-11-D3-A6 — Incident recovery
+##### JF-04-11-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “false-fail measurement” against “denominators distinguish eligible positive examples”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-11-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-11-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3206,11 +3206,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-11-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-11-D4-A6 — Incident recovery
+##### JF-04-11-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “coverage report” against “unknown and unsupported checks are visible”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-11-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-11-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3251,11 +3251,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-11-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-11-D5-A6 — Incident recovery
+##### JF-04-11-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “statistical review note” against “sample size and dependence limits are disclosed”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-11-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-11-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3296,11 +3296,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-11-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-11-D6-A6 — Incident recovery
+##### JF-04-11-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “correctness release decision” against “failed critical thresholds block exposed assurance claims”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-11-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-11-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3371,11 +3371,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-12-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-12-D1-A6 — Incident recovery
+##### JF-04-12-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “independent obligation checklist” against “a reviewer reads the actual source separately from generated rules”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-12-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-12-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3416,11 +3416,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-12-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-12-D2-A6 — Incident recovery
+##### JF-04-12-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “coverage mapping” against “every obligation maps to implemented, review-only or unsupported”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-12-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-12-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3461,11 +3461,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-12-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-12-D3-A6 — Incident recovery
+##### JF-04-12-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “conditional coverage review” against “hidden qualifiers and exceptions are accounted for”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-12-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-12-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3506,11 +3506,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-12-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-12-D4-A6 — Incident recovery
+##### JF-04-12-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “anchor validation” against “links resolve to the intended source and document locations”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-12-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-12-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3551,11 +3551,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-12-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-12-D5-A6 — Incident recovery
+##### JF-04-12-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “report completeness review” against “unsupported obligations appear in the user-visible scope”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-12-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-12-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3596,11 +3596,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-12-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-12-D6-A6 — Incident recovery
+##### JF-04-12-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “pack assurance certificate draft” against “the record states scoped review rather than institutional endorsement”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-12-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-12-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3671,11 +3671,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-13-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-13-D1-A6 — Incident recovery
+##### JF-04-13-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “accessibility journey matrix” against “upload, correction, review and export are included”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-13-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-13-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3716,11 +3716,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-13-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-13-D2-A6 — Incident recovery
+##### JF-04-13-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “keyboard evaluation records” against “focus and dialogs support full task completion”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-13-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-13-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3761,11 +3761,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-13-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-13-D3-A6 — Incident recovery
+##### JF-04-13-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “screen-reader evaluation records” against “findings and status updates are understandable”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-13-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-13-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3806,11 +3806,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-13-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-13-D4-A6 — Incident recovery
+##### JF-04-13-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “visual-access evaluation” against “zoom, reflow and contrast remain usable”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-13-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-13-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3851,11 +3851,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-13-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-13-D5-A6 — Incident recovery
+##### JF-04-13-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “participant research evidence” against “actual barriers are recorded without relying only on automation”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-13-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-13-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3896,11 +3896,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-13-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-13-D6-A6 — Incident recovery
+##### JF-04-13-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “accessibility release register” against “blocking defects prevent affected workflow release”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-13-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-13-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3971,11 +3971,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-14-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-14-D1-A6 — Incident recovery
+##### JF-04-14-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “outage fixture plan” against “storage, database, ocr and queues have explicit failure behavior”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-14-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-14-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4016,11 +4016,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-14-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-14-D2-A6 — Incident recovery
+##### JF-04-14-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “delivery disorder fixtures” against “repeated delivery does not change business outcomes”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-14-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-14-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4061,11 +4061,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-14-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-14-D3-A6 — Incident recovery
+##### JF-04-14-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “concurrency test plan” against “stale writes and runs cannot overwrite current evidence”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-14-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-14-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4106,11 +4106,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-14-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-14-D4-A6 — Incident recovery
+##### JF-04-14-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “race evaluation records” against “deleted objects stay deleted after recovery”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-14-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-14-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4151,11 +4151,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-14-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-14-D5-A6 — Incident recovery
+##### JF-04-14-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “restore reconciliation results” against “reports reopen only with consistent references”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-14-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-14-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4196,11 +4196,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-14-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-14-D6-A6 — Incident recovery
+##### JF-04-14-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “capacity assurance results” against “overload is bounded and user status remains truthful”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-14-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-14-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4271,11 +4271,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-15-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-15-D1-A6 — Incident recovery
+##### JF-04-15-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “incident classification” against “exposure and harmful false-pass incidents receive urgent routing”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-15-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-15-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4316,11 +4316,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-15-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-15-D2-A6 — Incident recovery
+##### JF-04-15-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “response roster” against “primary and backup contacts are assigned”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-15-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-15-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4361,11 +4361,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-15-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-15-D3-A6 — Incident recovery
+##### JF-04-15-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “containment runbooks” against “affected access or evaluation paths can be suspended”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-15-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-15-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4406,11 +4406,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-15-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-15-D4-A6 — Incident recovery
+##### JF-04-15-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “impact analysis procedure” against “affected tenants, runs and sources can be identified”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-15-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-15-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4451,11 +4451,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-15-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-15-D5-A6 — Incident recovery
+##### JF-04-15-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “notification decision process” against “counsel and operational owners review applicable obligations”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-15-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-15-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4496,11 +4496,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-15-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-15-D6-A6 — Incident recovery
+##### JF-04-15-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “exercise evidence” against “corrective communications and recovery are rehearsed”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-15-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-15-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4571,11 +4571,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-16-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-16-D1-A6 — Incident recovery
+##### JF-04-16-D1-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “launch gate register” against “correctness, privacy, access, recovery and support gates are explicit”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-16-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-16-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4616,11 +4616,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-16-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-16-D2-A6 — Incident recovery
+##### JF-04-16-D2-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “evidence validity policy” against “material changes invalidate outdated review evidence”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-16-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-16-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4661,11 +4661,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-16-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-16-D3-A6 — Incident recovery
+##### JF-04-16-D3-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “review scope agreements” against “qualified security and legal review match the actual product”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-16-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-16-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4706,11 +4706,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-16-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-16-D4-A6 — Incident recovery
+##### JF-04-16-D4-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “exception approval procedure” against “critical exposure risk cannot be waived casually”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-16-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-16-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4751,11 +4751,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-16-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-16-D5-A6 — Incident recovery
+##### JF-04-16-D5-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “release decision record” against “owner, evidence and residual limitations are recorded”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-16-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-16-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4796,11 +4796,11 @@ Given the relevant consent, permission or processing purpose is withdrawn, evalu
 Then: Stop further affected processing and follow the approved retention or deletion policy.
 Review evidence: link the input revision, outcome and reviewer to JF-04-16-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-04-16-D6-A6 — Incident recovery
+##### JF-04-16-D6-A4 — Incident recovery
 
 Given the control fails during an incident and is subsequently restored, evaluate “assurance monitoring plan” against “regressions trigger claim withdrawal or rollback”.
 Then: Assess impact, repair affected outputs and validate the control before reopening.
-Review evidence: link the input revision, outcome and reviewer to JF-04-16-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-04-16-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 

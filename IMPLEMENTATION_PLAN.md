@@ -341,3 +341,100 @@ The [logo brief](docs/brand/LOGO_BRIEF.md) records the original concept, generat
 The concept uses a folder, layered evidence rails and a teal review tick with an intentional open gap.
 Its exact wordmark is JKY-Folder.
 Trademark clearance and a production vector redraw remain proposed startup work.
+
+## 17. Detailed engineering contracts for the first milestone
+
+### 17.1 Minimum persisted fields
+
+| Record | Required field groups | Constraint |
+| --- | --- | --- |
+| ApplicationPack | pack ID, family, cycle, stage, source revisions, publication state, approver | Published revisions are immutable |
+| Requirement | requirement ID, pack revision, source anchor, predicate, evidence roles, technical limits, severity | No supported requirement lacks an official-source disposition |
+| ProfileFact | fact ID, packet ID, value or unknown, provenance, confirmation, revision | Sensitive facts are never inferred into confirmed profile values |
+| DocumentVersion | document ID, version ID, tenant ID, object reference, hash, type, bytes, inspection state | Original bytes are immutable and private |
+| Extraction | extraction ID, document version, processor version, page text, coordinates, confidence | Every field references its source page |
+| EvidenceLink | link ID, requirement revision, document version, page/field anchor, confirmation actor | Links cannot authorize access or establish satisfaction by themselves |
+| EvaluationRun | run ID, packet revision, profile revision, pack revision, evaluator revision, state, timestamps | All inputs are pinned before publication |
+| CheckResult | result ID, run ID, requirement ID, check type, state, reason, source/evidence anchors | Unknown and stale cannot aggregate into an affirmative conclusion |
+| Report | report ID, run ID, template revision, generation time, coverage, limitations, object reference | Export remains a dated snapshot |
+| AccessGrant | actor, tenant, packet/object scope, permitted actions, purpose, expiry, revocation | A payer or referral alone does not receive evidence access |
+| DeletionJob | tenant/object scope, request time, phase, store acknowledgements, exceptions, backup expiry | Completion reflects actual deletion scope |
+| AuditEvent | actor reference, action, scoped object reference, time, decision and correlation ID | No unnecessary document text or raw sensitive values |
+
+### 17.2 Condition truth contract
+
+| Operation | Inputs | Outcome |
+| --- | --- | --- |
+| AND | true and true | true |
+| AND | false and any supported value | false |
+| AND | true and unknown | unknown |
+| OR | true and any supported value | true |
+| OR | false and false | false |
+| OR | false and unknown | unknown |
+| NOT | true | false |
+| NOT | false | true |
+| NOT | unknown | unknown |
+| Comparison | missing, ambiguous or unconfirmed required fact | unknown |
+
+Only confirmed false applicability may create not_applicable.
+True applicability creates a requirement to evaluate; it is not itself a pass.
+Unknown applicability prevents a complete affirmative packet conclusion even if some technical checks pass.
+Predicates must be total over their declared types or reject publication with a clear unsupported condition.
+
+### 17.3 Packet summary contract
+
+Use draft while profile or upload work is unfinished.
+Use processing while accepted required processing is pending.
+Use action_required when an applicable blocking check fails or required evidence is missing.
+Use review_required when applicability, extraction, source meaning or evidence conflicts remain unresolved.
+Use stale when the displayed run no longer matches current packet inputs.
+Use ready_for_supported_checks only when all applicable blocking supported checks pass, all applicability questions are resolved, all source revisions are current and no required work is pending.
+Always show unsupported obligations beside that scoped ready summary; do not turn partial technical coverage into a universal readiness claim.
+Do not count not_applicable as an affirmative passed check when presenting percentages or summaries.
+Distinguish errors in processing from evidence that a user supplied an invalid document.
+
+### 17.4 Service operation inventory
+
+| Operation | Input contract | Durable result | Critical failure handling |
+| --- | --- | --- | --- |
+| Create packet | authorized account and exact application selection | packet with initial profile revision | Reject unsupported cycle before collecting documents |
+| Start upload | packet scope, declared size and permitted media class | expiring upload intent | Deny excess limits without creating unrestricted grants |
+| Finalize upload | upload intent and object integrity | immutable quarantined document version | Missing bytes or wrong hash cannot create accepted evidence |
+| Inspect document | approved scoped worker job | safe/rejected inspection record | Unsafe inspection remains unavailable for preview |
+| Extract pages | safe document version and extraction profile | versioned extraction | Timeout becomes error or supported manual-review path |
+| Assign evidence | requirement revision and document/page reference | evidence link with provenance | Reject mismatched tenant or unavailable version |
+| Confirm fact | field, value, revision and actor | new confirmed fact revision | Stale write requires explicit conflict handling |
+| Evaluate packet | immutable profile, evidence and rule references | run and check results | Retry cannot duplicate results or charges |
+| Generate report | completed run and authorized recipient | dated private artifact | Recheck permission before issuing access |
+| Delete packet | authorized request and verified scope | tombstone and deletion job | Late workers cannot republish erased evidence |
+
+### 17.5 First-release gate checklist
+
+A supported pack has an independently reviewed source-obligation inventory and branch fixture set.
+Every exposed check has an expected outcome for missing, conflicting and boundary evidence.
+The held-out correctness review meets the proposed critical false-pass gate with its sample limitations stated.
+The evidence viewer resolves correct pages and remains usable by keyboard and screen reader.
+All document read and write paths pass cross-tenant denial review.
+Deletion removes active derivatives and replays tombstones in the measured restore drill.
+The pilot age boundary is enforced before document collection.
+Current legal and processor review approves the actual operating configuration.
+Paid-service disclosures match launched support, limits and refund handling.
+Support and incident owners can identify and correct affected reports.
+Launch claims and limitations pass applicant comprehension review.
+A release owner approves current evidence and a tested rollback plan.
+
+## 18. Concrete first six weeks of authorized future work
+
+The sequence below starts after the founder approves beginning implementation or discovery; this documentation task itself does not start those activities.
+
+| Week | Primary work | Review artifact | Stop or revise condition |
+| --- | --- | --- | --- |
+| 1 | Recruitment, problem interviews, official-source discovery and competitor task comparison | First ten incident-based interviews and candidate-pack dossier | No demonstrated whole-packet problem |
+| 2 | Further interviews, consented concierge reviews and report-language prototypes | First ten concierge mappings and comprehension findings | Users interpret reports as acceptance guarantees |
+| 3 | Finish discovery, test paid-pilot offer and choose application scope | Discovery gate decision with real commitments | Demand mainly values commodity conversion |
+| 4 | Source-obligation model, predicate semantics, data map and threat model | Independent architecture and rules review | Unresolved high-risk data boundary or source ambiguity |
+| 5 | Prototype packet states, safe intake contracts and benchmark design | Reviewed end-to-end design and fixture taxonomy | Unknowns or deletion races cannot be represented safely |
+| 6 | Begin the approved core implementation milestone with bounded engineering tickets | Working internal synthetic-data flow and milestone review | No current authorization, staffed capacity or approved predecessor |
+
+The staffed core MVP range in the roadmap begins with approved foundations and extends beyond these six weeks.
+Do not treat this sample sequence as a guarantee that public launch occurs by week six.

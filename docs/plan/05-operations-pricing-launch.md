@@ -8,7 +8,7 @@ Volume exit gate: A supportable paid pilot with honest messaging and measured co
 
 ## How to use this volume
 
-Every workstream contains six concrete deliverables and six acceptance situations for each deliverable.
+Every workstream contains six concrete deliverables and four acceptance situations for each deliverable.
 The cases are specifications for later implementation or business validation; they are not executed results.
 Use the stable IDs in issues, design reviews, release evidence and subsequent plan revisions.
 Business validation uses research and operating records; engineering validation uses controlled fixtures and system evidence.
@@ -71,11 +71,11 @@ Given the customer challenges the outcome or billing basis, evaluate “pilot re
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-01-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-01-D1-A6 — Misleading claim
+##### JF-05-01-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “pilot recruitment protocol” against “participants fit the approved cohort”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-01-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-01-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -116,11 +116,11 @@ Given the customer challenges the outcome or billing basis, evaluate “pilot pa
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-01-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-01-D2-A6 — Misleading claim
+##### JF-05-01-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “pilot participation agreement” against “human review and data use are disclosed”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-01-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-01-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -161,11 +161,11 @@ Given the customer challenges the outcome or billing basis, evaluate “pilot ca
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-01-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-01-D3-A6 — Misleading claim
+##### JF-05-01-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “pilot capacity plan” against “staffed review limits are explicit”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-01-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-01-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -206,11 +206,11 @@ Given the customer challenges the outcome or billing basis, evaluate “pilot su
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-01-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-01-D4-A6 — Misleading claim
+##### JF-05-01-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “pilot support guide” against “participants can report correctness concerns quickly”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-01-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-01-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -251,11 +251,11 @@ Given the customer challenges the outcome or billing basis, evaluate “outcome 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-01-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-01-D5-A6 — Misleading claim
+##### JF-05-01-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “outcome interview records” against “corrections and unresolved items are measured”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-01-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-01-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -296,11 +296,11 @@ Given the customer challenges the outcome or billing basis, evaluate “pilot de
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-01-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-01-D6-A6 — Misleading claim
+##### JF-05-01-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “pilot decision memo” against “public expansion requires the declared gates”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-01-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-01-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -371,11 +371,11 @@ Given the customer challenges the outcome or billing basis, evaluate “offer co
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-02-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-02-D1-A6 — Misleading claim
+##### JF-05-02-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “offer comparison” against “application support, volume and report scope are explicit”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-02-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-02-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -416,11 +416,11 @@ Given the customer challenges the outcome or billing basis, evaluate “price ex
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-02-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-02-D2-A6 — Misleading claim
+##### JF-05-02-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “price experiment protocol” against “actual purchases are separated from survey responses”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-02-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-02-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -461,11 +461,11 @@ Given the customer challenges the outcome or billing basis, evaluate “usage li
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-02-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-02-D3-A6 — Misleading claim
+##### JF-05-02-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “usage limit policy” against “page, file and rerun limits are visible before payment”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-02-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-02-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -506,11 +506,11 @@ Given the customer challenges the outcome or billing basis, evaluate “review a
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-02-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-02-D4-A6 — Misleading claim
+##### JF-05-02-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “review add-on proposal” against “staff labor and turnaround support the price”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-02-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-02-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -551,11 +551,11 @@ Given the customer challenges the outcome or billing basis, evaluate “refund p
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-02-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-02-D5-A6 — Misleading claim
+##### JF-05-02-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “refund policy” against “failed service and misunderstanding have fair resolution paths”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-02-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-02-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -596,11 +596,11 @@ Given the customer challenges the outcome or billing basis, evaluate “offer de
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-02-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-02-D6-A6 — Misleading claim
+##### JF-05-02-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “offer decision record” against “changes use paid-cohort and cost evidence”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-02-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-02-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -671,11 +671,11 @@ Given the customer challenges the outcome or billing basis, evaluate “checkout
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-03-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-03-D1-A6 — Misleading claim
+##### JF-05-03-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “checkout specification” against “price, tax handling and scope are clear”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-03-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-03-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -716,11 +716,11 @@ Given the customer challenges the outcome or billing basis, evaluate “payment 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-03-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-03-D2-A6 — Misleading claim
+##### JF-05-03-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “payment lifecycle” against “pending, paid, failed, refunded and disputed differ”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-03-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-03-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -761,11 +761,11 @@ Given the customer challenges the outcome or billing basis, evaluate “payment 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-03-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-03-D3-A6 — Misleading claim
+##### JF-05-03-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “payment event contract” against “events are authenticated and processed idempotently”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-03-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-03-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -806,11 +806,11 @@ Given the customer challenges the outcome or billing basis, evaluate “activati
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-03-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-03-D4-A6 — Misleading claim
+##### JF-05-03-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “activation transaction” against “payment and package access remain consistent”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-03-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-03-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -851,11 +851,11 @@ Given the customer challenges the outcome or billing basis, evaluate “refund r
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-03-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-03-D5-A6 — Misleading claim
+##### JF-05-03-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “refund record” against “customer-visible status matches processor settlement”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-03-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-03-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -896,11 +896,11 @@ Given the customer challenges the outcome or billing basis, evaluate “payment 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-03-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-03-D6-A6 — Misleading claim
+##### JF-05-03-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “payment recovery process” against “uncertain payment does not cause repeated charges”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-03-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-03-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -971,11 +971,11 @@ Given the customer challenges the outcome or billing basis, evaluate “support 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-04-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-04-D1-A6 — Misleading claim
+##### JF-05-04-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “support taxonomy” against “technical, rules, privacy and billing issues route differently”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-04-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-04-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1016,11 +1016,11 @@ Given the customer challenges the outcome or billing basis, evaluate “ticket f
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-04-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-04-D2-A6 — Misleading claim
+##### JF-05-04-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “ticket field specification” against “packet references replace default document attachments”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-04-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-04-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1061,11 +1061,11 @@ Given the customer challenges the outcome or billing basis, evaluate “support 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-04-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-04-D3-A6 — Misleading claim
+##### JF-05-04-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “support priority policy” against “material incorrect conclusions outrank cosmetic questions”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-04-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-04-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1106,11 +1106,11 @@ Given the customer challenges the outcome or billing basis, evaluate “support-
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-04-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-04-D4-A6 — Misleading claim
+##### JF-05-04-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “support-access flow” against “applicants authorize specific temporary access”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-04-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-04-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1151,11 +1151,11 @@ Given the customer challenges the outcome or billing basis, evaluate “escalati
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-04-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-04-D5-A6 — Misleading claim
+##### JF-05-04-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “escalation directory” against “rules, security and payment owners are identifiable”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-04-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-04-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1196,11 +1196,11 @@ Given the customer challenges the outcome or billing basis, evaluate “support 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-04-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-04-D6-A6 — Misleading claim
+##### JF-05-04-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “support review rubric” against “responses are accurate and avoid admission guarantees”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-04-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-04-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1271,11 +1271,11 @@ Given the customer challenges the outcome or billing basis, evaluate “curator 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-05-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-05-D1-A6 — Misleading claim
+##### JF-05-05-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “curator role brief” against “source reading and obligation coverage are explicit”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-05-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-05-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1316,11 +1316,11 @@ Given the customer challenges the outcome or billing basis, evaluate “curation
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-05-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-05-D2-A6 — Misleading claim
+##### JF-05-05-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “curation work instructions” against “drafts cannot self-publish”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-05-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-05-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1361,11 +1361,11 @@ Given the customer challenges the outcome or billing basis, evaluate “curation
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-05-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-05-D3-A6 — Misleading claim
+##### JF-05-05-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “curation queue policy” against “deadline and harm determine priority”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-05-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-05-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1406,11 +1406,11 @@ Given the customer challenges the outcome or billing basis, evaluate “publicat
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-05-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-05-D4-A6 — Misleading claim
+##### JF-05-05-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “publication checklist” against “coverage, branches and limitations are reviewed”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-05-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-05-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1451,11 +1451,11 @@ Given the customer challenges the outcome or billing basis, evaluate “training
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-05-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-05-D5-A6 — Misleading claim
+##### JF-05-05-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “training packet” against “ambiguity and unknown semantics are practiced”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-05-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-05-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1496,11 +1496,11 @@ Given the customer challenges the outcome or billing basis, evaluate “curation
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-05-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-05-D6-A6 — Misleading claim
+##### JF-05-05-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “curation time ledger” against “pack maintenance appears in unit economics”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-05-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-05-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1571,11 +1571,11 @@ Given the customer challenges the outcome or billing basis, evaluate “incident
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-06-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-06-D1-A6 — Misleading claim
+##### JF-05-06-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “incident intake form” against “incorrect passes and source changes can be reported”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-06-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-06-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1616,11 +1616,11 @@ Given the customer challenges the outcome or billing basis, evaluate “suspensi
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-06-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-06-D2-A6 — Misleading claim
+##### JF-05-06-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “suspension procedure” against “affected conclusions become visibly stale or unavailable”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-06-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-06-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1661,11 +1661,11 @@ Given the customer challenges the outcome or billing basis, evaluate “status m
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-06-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-06-D3-A6 — Misleading claim
+##### JF-05-06-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “status message templates” against “messages state impact and next update time”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-06-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-06-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1706,11 +1706,11 @@ Given the customer challenges the outcome or billing basis, evaluate “correcti
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-06-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-06-D4-A6 — Misleading claim
+##### JF-05-06-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “correction outreach procedure” against “affected users receive specific review actions”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-06-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-06-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1751,11 +1751,11 @@ Given the customer challenges the outcome or billing basis, evaluate “incident
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-06-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-06-D5-A6 — Misleading claim
+##### JF-05-06-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “incident cost record” against “refunds, support and reprocessing are measured”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-06-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-06-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1796,11 +1796,11 @@ Given the customer challenges the outcome or billing basis, evaluate “review t
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-06-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-06-D6-A6 — Misleading claim
+##### JF-05-06-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “review template” against “root causes lead to owned corrective tasks”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-06-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-06-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1871,11 +1871,11 @@ Given the customer challenges the outcome or billing basis, evaluate “launch c
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-07-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-07-D1-A6 — Misleading claim
+##### JF-05-07-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “launch checklist” against “each mandatory gate has current evidence”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-07-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-07-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1916,11 +1916,11 @@ Given the customer challenges the outcome or billing basis, evaluate “launch c
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-07-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-07-D2-A6 — Misleading claim
+##### JF-05-07-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “launch copy brief” against “supported applications and limitations appear clearly”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-07-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-07-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1961,11 +1961,11 @@ Given the customer challenges the outcome or billing basis, evaluate “demo sce
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-07-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-07-D3-A6 — Misleading claim
+##### JF-05-07-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “demo scenario” against “no real applicant documents or exaggerated checks are shown”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-07-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-07-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2006,11 +2006,11 @@ Given the customer challenges the outcome or billing basis, evaluate “public p
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-07-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-07-D4-A6 — Misleading claim
+##### JF-05-07-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “public pricing copy” against “caps, refunds and optional review costs are visible”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-07-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-07-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2051,11 +2051,11 @@ Given the customer challenges the outcome or billing basis, evaluate “launch a
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-07-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-07-D5-A6 — Misleading claim
+##### JF-05-07-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “launch admission plan” against “expected traffic fits funded processing and support”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-07-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-07-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2096,11 +2096,11 @@ Given the customer challenges the outcome or billing basis, evaluate “launch f
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-07-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-07-D6-A6 — Misleading claim
+##### JF-05-07-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “launch fallback runbook” against “enrollment or paid acquisition can be paused quickly”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-07-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-07-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2171,11 +2171,11 @@ Given the customer challenges the outcome or billing basis, evaluate “channel 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-08-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-08-D1-A6 — Misleading claim
+##### JF-05-08-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “channel experiment map” against “each channel targets a documented applicant trigger”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-08-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-08-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2216,11 +2216,11 @@ Given the customer challenges the outcome or billing basis, evaluate “referral
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-08-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-08-D2-A6 — Misleading claim
+##### JF-05-08-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “referral outreach policy” against “counselors and communities receive appropriate permission-based outreach”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-08-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-08-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2261,11 +2261,11 @@ Given the customer challenges the outcome or billing basis, evaluate “attribut
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-08-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-08-D3-A6 — Misleading claim
+##### JF-05-08-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “attribution model” against “paid and organic cohorts remain distinguishable”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-08-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-08-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2306,11 +2306,11 @@ Given the customer challenges the outcome or billing basis, evaluate “acquisit
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-08-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-08-D4-A6 — Misleading claim
+##### JF-05-08-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “acquisition budget caps” against “spend stops at predefined evidence thresholds”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-08-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-08-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2351,11 +2351,11 @@ Given the customer challenges the outcome or billing basis, evaluate “channel 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-08-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-08-D5-A6 — Misleading claim
+##### JF-05-08-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “channel funnel report” against “registrations are not counted as paid customers”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-08-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-08-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2396,11 +2396,11 @@ Given the customer challenges the outcome or billing basis, evaluate “channel 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-08-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-08-D6-A6 — Misleading claim
+##### JF-05-08-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “channel investment decision” against “contribution and support capacity justify increases”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-08-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-08-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2471,11 +2471,11 @@ Given the customer challenges the outcome or billing basis, evaluate “content 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-09-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-09-D1-A6 — Misleading claim
+##### JF-05-09-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “content roadmap” against “topics match observed confusion”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-09-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-09-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2516,11 +2516,11 @@ Given the customer challenges the outcome or billing basis, evaluate “editoria
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-09-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-09-D2-A6 — Misleading claim
+##### JF-05-09-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “editorial source protocol” against “official instruction links and cycle context are retained”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-09-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-09-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2561,11 +2561,11 @@ Given the customer challenges the outcome or billing basis, evaluate “editoria
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-09-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-09-D3-A6 — Misleading claim
+##### JF-05-09-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “editorial language rules” against “general guidance differs from supported pack conclusions”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-09-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-09-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2606,11 +2606,11 @@ Given the customer challenges the outcome or billing basis, evaluate “content 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-09-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-09-D4-A6 — Misleading claim
+##### JF-05-09-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “content maintenance register” against “every time-sensitive page has an owner”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-09-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-09-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2651,11 +2651,11 @@ Given the customer challenges the outcome or billing basis, evaluate “content 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-09-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-09-D5-A6 — Misleading claim
+##### JF-05-09-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “content outcome report” against “useful engagement connects to qualified demand”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-09-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-09-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2696,11 +2696,11 @@ Given the customer challenges the outcome or billing basis, evaluate “editoria
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-09-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-09-D6-A6 — Misleading claim
+##### JF-05-09-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “editorial retirement policy” against “old-cycle pages are archived or clearly dated”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-09-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-09-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2771,11 +2771,11 @@ Given the customer challenges the outcome or billing basis, evaluate “partner 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-10-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-10-D1-A6 — Misleading claim
+##### JF-05-10-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “partner qualification rubric” against “the partner reaches the validated cohort”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-10-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-10-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2816,11 +2816,11 @@ Given the customer challenges the outcome or billing basis, evaluate “partner 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-10-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-10-D2-A6 — Misleading claim
+##### JF-05-10-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “partner pilot agreement” against “claims, incentives and data boundaries are explicit”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-10-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-10-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2861,11 +2861,11 @@ Given the customer challenges the outcome or billing basis, evaluate “partner 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-10-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-10-D3-A6 — Misleading claim
+##### JF-05-10-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “partner attribution record” against “demand quality and support burden are visible”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-10-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-10-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2906,11 +2906,11 @@ Given the customer challenges the outcome or billing basis, evaluate “partner 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-10-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-10-D4-A6 — Misleading claim
+##### JF-05-10-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “partner messaging guide” against “official affiliation and guaranteed outcomes are prohibited”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-10-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-10-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2951,11 +2951,11 @@ Given the customer challenges the outcome or billing basis, evaluate “partner 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-10-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-10-D5-A6 — Misleading claim
+##### JF-05-10-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “partner access policy” against “referral does not create packet permission”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-10-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-10-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2996,11 +2996,11 @@ Given the customer challenges the outcome or billing basis, evaluate “partners
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-10-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-10-D6-A6 — Misleading claim
+##### JF-05-10-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “partnership review” against “economics and trust precede broader administration”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-10-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-10-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3071,11 +3071,11 @@ Given the customer challenges the outcome or billing basis, evaluate “customer
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-11-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-11-D1-A6 — Misleading claim
+##### JF-05-11-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “customer success map” against “a resolved packet issue is a meaningful milestone”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-11-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-11-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3116,11 +3116,11 @@ Given the customer challenges the outcome or billing basis, evaluate “follow-u
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-11-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-11-D2-A6 — Misleading claim
+##### JF-05-11-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “follow-up plan” against “timing respects application stage and consent”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-11-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-11-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3161,11 +3161,11 @@ Given the customer challenges the outcome or billing basis, evaluate “outcome 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-11-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-11-D3-A6 — Misleading claim
+##### JF-05-11-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “outcome collection protocol” against “self-report and observed correction differ”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-11-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-11-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3206,11 +3206,11 @@ Given the customer challenges the outcome or billing basis, evaluate “repeat-u
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-11-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-11-D4-A6 — Misleading claim
+##### JF-05-11-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “repeat-use metric” against “reuse is measured by distinct applications or cycles”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-11-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-11-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3251,11 +3251,11 @@ Given the customer challenges the outcome or billing basis, evaluate “cancella
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-11-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-11-D5-A6 — Misleading claim
+##### JF-05-11-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “cancellation review” against “privacy, price and quality reasons remain distinguishable”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-11-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-11-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3296,11 +3296,11 @@ Given the customer challenges the outcome or billing basis, evaluate “retentio
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-11-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-11-D6-A6 — Misleading claim
+##### JF-05-11-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “retention experiment scope” against “reminders do not pressure users into unsupported usage”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-11-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-11-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3371,11 +3371,11 @@ Given the customer challenges the outcome or billing basis, evaluate “budget w
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-12-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-12-D1-A6 — Misleading claim
+##### JF-05-12-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “budget worksheet” against “engineering, reviews, curation and support are included”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-12-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-12-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3416,11 +3416,11 @@ Given the customer challenges the outcome or billing basis, evaluate “founder 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-12-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-12-D2-A6 — Misleading claim
+##### JF-05-12-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “founder cost record” against “cash and opportunity costs are distinguished”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-12-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-12-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3461,11 +3461,11 @@ Given the customer challenges the outcome or billing basis, evaluate “continge
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-12-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-12-D3-A6 — Misleading claim
+##### JF-05-12-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “contingency policy” against “risk reserve is not counted as guaranteed spend”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-12-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-12-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3506,11 +3506,11 @@ Given the customer challenges the outcome or billing basis, evaluate “runway m
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-12-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-12-D4-A6 — Misleading claim
+##### JF-05-12-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “runway model” against “low, base and high demand use explicit assumptions”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-12-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-12-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3551,11 +3551,11 @@ Given the customer challenges the outcome or billing basis, evaluate “procurem
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-12-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-12-D5-A6 — Misleading claim
+##### JF-05-12-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “procurement decision rules” against “commitments fit the funded milestone”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-12-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-12-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3596,11 +3596,11 @@ Given the customer challenges the outcome or billing basis, evaluate “variance
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-12-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-12-D6-A6 — Misleading claim
+##### JF-05-12-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “variance report” against “actual spend changes roadmap decisions”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-12-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-12-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3671,11 +3671,11 @@ Given the customer challenges the outcome or billing basis, evaluate “revenue 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-13-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-13-D1-A6 — Misleading claim
+##### JF-05-13-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “revenue measurement brief” against “delivered service and settlement timing are distinguished”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-13-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-13-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3716,11 +3716,11 @@ Given the customer challenges the outcome or billing basis, evaluate “cost tax
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-13-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-13-D2-A6 — Misleading claim
+##### JF-05-13-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “cost taxonomy” against “ocr, storage, reruns and labor are included”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-13-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-13-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3761,11 +3761,11 @@ Given the customer challenges the outcome or billing basis, evaluate “support 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-13-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-13-D3-A6 — Misleading claim
+##### JF-05-13-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “support time model” against “founder time is not treated as free”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-13-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-13-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3806,11 +3806,11 @@ Given the customer challenges the outcome or billing basis, evaluate “refund c
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-13-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-13-D4-A6 — Misleading claim
+##### JF-05-13-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “refund cohort report” against “actual losses enter contribution calculations”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-13-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-13-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3851,11 +3851,11 @@ Given the customer challenges the outcome or billing basis, evaluate “payback 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-13-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-13-D5-A6 — Misleading claim
+##### JF-05-13-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “payback calculation” against “tax and fees use a consistent net-revenue basis”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-13-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-13-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3896,11 +3896,11 @@ Given the customer challenges the outcome or billing basis, evaluate “scaling 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-13-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-13-D6-A6 — Misleading claim
+##### JF-05-13-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “scaling economics policy” against “weak margins trigger scope or price review”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-13-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-13-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3971,11 +3971,11 @@ Given the customer challenges the outcome or billing basis, evaluate “entity d
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-14-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-14-D1-A6 — Misleading claim
+##### JF-05-14-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “entity decision brief” against “founder obtains qualified setup and tax advice”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-14-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-14-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4016,11 +4016,11 @@ Given the customer challenges the outcome or billing basis, evaluate “customer
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-14-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-14-D2-A6 — Misleading claim
+##### JF-05-14-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “customer terms draft” against “readiness scope, limits and remedies are accurate”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-14-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-14-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4061,11 +4061,11 @@ Given the customer challenges the outcome or billing basis, evaluate “privacy 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-14-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-14-D3-A6 — Misleading claim
+##### JF-05-14-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “privacy policy draft” against “notice matches actual data processing”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-14-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-14-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4106,11 +4106,11 @@ Given the customer challenges the outcome or billing basis, evaluate “contract
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-14-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-14-D4-A6 — Misleading claim
+##### JF-05-14-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “contractor agreement review” against “confidentiality and work ownership are documented”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-14-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-14-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4151,11 +4151,11 @@ Given the customer challenges the outcome or billing basis, evaluate “tax oper
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-14-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-14-D5-A6 — Misleading claim
+##### JF-05-14-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “tax operations brief” against “current applicable invoicing and tax obligations are reviewed”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-14-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-14-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4196,11 +4196,11 @@ Given the customer challenges the outcome or billing basis, evaluate “legal re
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-14-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-14-D6-A6 — Misleading claim
+##### JF-05-14-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “legal review schedule” against “material operating changes trigger renewed advice”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-14-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-14-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4271,11 +4271,11 @@ Given the customer challenges the outcome or billing basis, evaluate “operatio
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-15-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-15-D1-A6 — Misleading claim
+##### JF-05-15-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “operations glossary” against “status and evidence terms have consistent meanings”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-15-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-15-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4316,11 +4316,11 @@ Given the customer challenges the outcome or billing basis, evaluate “support 
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-15-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-15-D2-A6 — Misleading claim
+##### JF-05-15-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “support response guide” against “common questions include accurate boundaries”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-15-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-15-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4361,11 +4361,11 @@ Given the customer challenges the outcome or billing basis, evaluate “curation
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-15-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-15-D3-A6 — Misleading claim
+##### JF-05-15-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “curation procedure handbook” against “source changes and ambiguity are covered”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-15-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-15-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4406,11 +4406,11 @@ Given the customer challenges the outcome or billing basis, evaluate “incident
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-15-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-15-D4-A6 — Misleading claim
+##### JF-05-15-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “incident training materials” against “document exposure and false-pass scenarios are practiced”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-15-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-15-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4451,11 +4451,11 @@ Given the customer challenges the outcome or billing basis, evaluate “staff tr
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-15-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-15-D5-A6 — Misleading claim
+##### JF-05-15-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “staff training exercises” against “new staff demonstrate permission and privacy understanding”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-15-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-15-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4496,11 +4496,11 @@ Given the customer challenges the outcome or billing basis, evaluate “knowledg
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-15-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-15-D6-A6 — Misleading claim
+##### JF-05-15-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “knowledge ownership register” against “procedure changes update training references”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-15-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-15-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4571,11 +4571,11 @@ Given the customer challenges the outcome or billing basis, evaluate “operatin
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-16-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-16-D1-A6 — Misleading claim
+##### JF-05-16-D1-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “operating scorecard” against “correctness, unknowns and support accompany demand”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-16-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-16-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4616,11 +4616,11 @@ Given the customer challenges the outcome or billing basis, evaluate “cohort r
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-16-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-16-D2-A6 — Misleading claim
+##### JF-05-16-D2-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “cohort reporting brief” against “application cycle and channel differences remain visible”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-16-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-16-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4661,11 +4661,11 @@ Given the customer challenges the outcome or billing basis, evaluate “alert qu
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-16-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-16-D3-A6 — Misleading claim
+##### JF-05-16-D3-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “alert quality review” against “noisy alerts receive owned improvements”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-16-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-16-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4706,11 +4706,11 @@ Given the customer challenges the outcome or billing basis, evaluate “strategy
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-16-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-16-D4-A6 — Misleading claim
+##### JF-05-16-D4-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “strategy review agenda” against “evidence can revise scope or stop expansion”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-16-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-16-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4751,11 +4751,11 @@ Given the customer challenges the outcome or billing basis, evaluate “harm rev
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-16-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-16-D5-A6 — Misleading claim
+##### JF-05-16-D5-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “harm review log” against “material incorrect findings are investigated separately”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-16-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-16-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4796,11 +4796,11 @@ Given the customer challenges the outcome or billing basis, evaluate “operatin
 Then: Review the recorded evidence, correct mistakes and follow the published resolution policy.
 Review evidence: link the input revision, outcome and reviewer to JF-05-16-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-05-16-D6-A6 — Misleading claim
+##### JF-05-16-D6-A4 — Misleading claim
 
 Given marketing or a partner promises an outcome outside supported capability, evaluate “operating action register” against “every decision has owner and due milestone”.
 Then: Withdraw or correct the claim and notify affected customers when material.
-Review evidence: link the input revision, outcome and reviewer to JF-05-16-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-05-16-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 

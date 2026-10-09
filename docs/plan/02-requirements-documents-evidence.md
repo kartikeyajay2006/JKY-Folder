@@ -8,7 +8,7 @@ Volume exit gate: A complete trace from every supported requirement to its condi
 
 ## How to use this volume
 
-Every workstream contains six concrete deliverables and six acceptance situations for each deliverable.
+Every workstream contains six concrete deliverables and four acceptance situations for each deliverable.
 The cases are specifications for later implementation or business validation; they are not executed results.
 Use the stable IDs in issues, design reviews, release evidence and subsequent plan revisions.
 Business validation uses research and operating records; engineering validation uses controlled fixtures and system evidence.
@@ -71,11 +71,11 @@ Given two source statements or document values disagree, evaluate “source regi
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-01-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-01-D1-A6 — Repeat operation
+##### JF-02-01-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “source registry” against “institution, cycle and stage are explicit”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-01-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-01-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -116,11 +116,11 @@ Given two source statements or document values disagree, evaluate “versioned s
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-01-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-01-D2-A6 — Repeat operation
+##### JF-02-01-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “versioned source records” against “retrieved content has time and integrity hash”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-01-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-01-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -161,11 +161,11 @@ Given two source statements or document values disagree, evaluate “source outl
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-01-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-01-D3-A6 — Repeat operation
+##### JF-02-01-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “source outline” against “headings, tables and appendices preserve ordering”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-01-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-01-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -206,11 +206,11 @@ Given two source statements or document values disagree, evaluate “authority c
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-01-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-01-D4-A6 — Repeat operation
+##### JF-02-01-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “authority classification” against “official and user-supplied content are distinguishable”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-01-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-01-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -251,11 +251,11 @@ Given two source statements or document values disagree, evaluate “source exce
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-01-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-01-D5-A6 — Repeat operation
+##### JF-02-01-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “source exception workflow” against “unavailable instructions remain visibly unsupported”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-01-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-01-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -296,11 +296,11 @@ Given two source statements or document values disagree, evaluate “source-use 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-01-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-01-D6-A6 — Repeat operation
+##### JF-02-01-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “source-use decision” against “storage and displayed excerpts have approved scope”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-01-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-01-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -371,11 +371,11 @@ Given two source statements or document values disagree, evaluate “pack identi
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-02-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-02-D1-A6 — Repeat operation
+##### JF-02-02-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “pack identity contract” against “family, cycle and stage form a stable key”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-02-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-02-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -416,11 +416,11 @@ Given two source statements or document values disagree, evaluate “publication
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-02-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-02-D2-A6 — Repeat operation
+##### JF-02-02-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “publication state model” against “draft, reviewed, published and retired are distinct”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-02-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-02-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -461,11 +461,11 @@ Given two source statements or document values disagree, evaluate “pack-source
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-02-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-02-D3-A6 — Repeat operation
+##### JF-02-02-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “pack-source map” against “all source revisions are enumerable”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-02-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-02-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -506,11 +506,11 @@ Given two source statements or document values disagree, evaluate “coverage ma
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-02-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-02-D4-A6 — Repeat operation
+##### JF-02-02-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “coverage manifest” against “unsupported judgments are listed explicitly”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-02-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-02-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -551,11 +551,11 @@ Given two source statements or document values disagree, evaluate “compatibili
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-02-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-02-D5-A6 — Repeat operation
+##### JF-02-02-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “compatibility rules” against “packets cannot switch packs silently”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-02-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-02-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -596,11 +596,11 @@ Given two source statements or document values disagree, evaluate “retirement 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-02-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-02-D6-A6 — Repeat operation
+##### JF-02-02-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “retirement procedure” against “historical reports retain their original context”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-02-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-02-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -671,11 +671,11 @@ Given two source statements or document values disagree, evaluate “atomic requ
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-03-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-03-D1-A6 — Repeat operation
+##### JF-02-03-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “atomic requirement inventory” against “each independently checkable obligation has an id”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-03-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-03-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -716,11 +716,11 @@ Given two source statements or document values disagree, evaluate “requirement
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-03-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-03-D2-A6 — Repeat operation
+##### JF-02-03-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “requirement-source anchors” against “paraphrases retain a traceable official location”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-03-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-03-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -761,11 +761,11 @@ Given two source statements or document values disagree, evaluate “evidence ex
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-03-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-03-D3-A6 — Repeat operation
+##### JF-02-03-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “evidence expectations” against “alternatives and document combinations are explicit”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-03-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-03-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -806,11 +806,11 @@ Given two source statements or document values disagree, evaluate “severity ca
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-03-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-03-D4-A6 — Repeat operation
+##### JF-02-03-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “severity catalogue” against “blocking, advisory and unsupported judgments differ”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-03-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-03-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -851,11 +851,11 @@ Given two source statements or document values disagree, evaluate “limitations
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-03-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-03-D5-A6 — Repeat operation
+##### JF-02-03-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “limitations register” against “ambiguous instructions remain unresolved”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-03-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-03-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -896,11 +896,11 @@ Given two source statements or document values disagree, evaluate “review deci
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-03-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-03-D6-A6 — Repeat operation
+##### JF-02-03-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “review decision record” against “disputes have rationale and independent approval”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-03-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-03-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -971,11 +971,11 @@ Given two source statements or document values disagree, evaluate “predicate l
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-04-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-04-D1-A6 — Repeat operation
+##### JF-02-04-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “predicate language specification” against “equality, membership and conjunction have precise semantics”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-04-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-04-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1016,11 +1016,11 @@ Given two source statements or document values disagree, evaluate “truth-table
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-04-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-04-D2-A6 — Repeat operation
+##### JF-02-04-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “truth-table specification” against “unknown does not default to false”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-04-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-04-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1061,11 +1061,11 @@ Given two source statements or document values disagree, evaluate “profile fac
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-04-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-04-D3-A6 — Repeat operation
+##### JF-02-04-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “profile fact contract” against “self-report and extracted evidence remain distinguishable”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-04-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-04-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1106,11 +1106,11 @@ Given two source statements or document values disagree, evaluate “explanation
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-04-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-04-D4-A6 — Repeat operation
+##### JF-02-04-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “explanation template” against “users can inspect why applicability changed”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-04-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-04-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1151,11 +1151,11 @@ Given two source statements or document values disagree, evaluate “dependency 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-04-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-04-D5-A6 — Repeat operation
+##### JF-02-04-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “dependency validation rules” against “circular or undefined facts prevent pack publication”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-04-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-04-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1196,11 +1196,11 @@ Given two source statements or document values disagree, evaluate “branch fixt
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-04-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-04-D6-A6 — Repeat operation
+##### JF-02-04-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “branch fixture catalogue” against “every supported branch has an adjudicated outcome”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-04-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-04-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1271,11 +1271,11 @@ Given two source statements or document values disagree, evaluate “type inspec
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-05-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-05-D1-A6 — Repeat operation
+##### JF-02-05-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “type inspection contract” against “extension, signature and parser results are compared”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-05-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-05-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1316,11 +1316,11 @@ Given two source statements or document values disagree, evaluate “size-check 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-05-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-05-D2-A6 — Repeat operation
+##### JF-02-05-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “size-check specification” against “units and inclusive limits are unambiguous”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-05-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-05-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1361,11 +1361,11 @@ Given two source statements or document values disagree, evaluate “dimension-c
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-05-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-05-D3-A6 — Repeat operation
+##### JF-02-05-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “dimension-check specification” against “width, height and orientation semantics are defined”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-05-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-05-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1406,11 +1406,11 @@ Given two source statements or document values disagree, evaluate “page-count 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-05-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-05-D4-A6 — Repeat operation
+##### JF-02-05-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “page-count contract” against “encrypted and malformed files have explicit states”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-05-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-05-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1451,11 +1451,11 @@ Given two source statements or document values disagree, evaluate “upload grou
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-05-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-05-D5-A6 — Repeat operation
+##### JF-02-05-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “upload grouping rules” against “single-file and multi-file expectations differ”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-05-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-05-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1496,11 +1496,11 @@ Given two source statements or document values disagree, evaluate “technical f
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-05-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-05-D6-A6 — Repeat operation
+##### JF-02-05-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “technical fixture set” against “below, equal and above limits are covered”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-05-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-05-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1571,11 +1571,11 @@ Given two source statements or document values disagree, evaluate “supported f
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-06-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-06-D1-A6 — Repeat operation
+##### JF-02-06-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “supported format list” against “formats are selected by product need and safe processing”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-06-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-06-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1616,11 +1616,11 @@ Given two source statements or document values disagree, evaluate “session sta
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-06-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-06-D2-A6 — Repeat operation
+##### JF-02-06-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “session state contract” against “tenant, packet and size scope are enforced”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-06-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-06-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1661,11 +1661,11 @@ Given two source statements or document values disagree, evaluate “immutable-o
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-06-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-06-D3-A6 — Repeat operation
+##### JF-02-06-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “immutable-original policy” against “original bytes and integrity hash are retained”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-06-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-06-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1706,11 +1706,11 @@ Given two source statements or document values disagree, evaluate “quarantine 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-06-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-06-D4-A6 — Repeat operation
+##### JF-02-06-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “quarantine lifecycle” against “only approved objects enter extraction”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-06-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-06-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1751,11 +1751,11 @@ Given two source statements or document values disagree, evaluate “duplicate-h
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-06-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-06-D5-A6 — Repeat operation
+##### JF-02-06-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “duplicate-handling rules” against “duplicate files do not erase version history”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-06-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-06-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1796,11 +1796,11 @@ Given two source statements or document values disagree, evaluate “rejection m
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-06-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-06-D6-A6 — Repeat operation
+##### JF-02-06-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “rejection message catalogue” against “users get a safe actionable correction path”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-06-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-06-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1871,11 +1871,11 @@ Given two source statements or document values disagree, evaluate “rendering a
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-07-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-07-D1-A6 — Repeat operation
+##### JF-02-07-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “rendering artifact contract” against “page order and rotation are recorded”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-07-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-07-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1916,11 +1916,11 @@ Given two source statements or document values disagree, evaluate “ocr routing
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-07-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-07-D2-A6 — Repeat operation
+##### JF-02-07-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “ocr routing decision” against “native text and image-only pages use defined paths”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-07-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-07-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1961,11 +1961,11 @@ Given two source statements or document values disagree, evaluate “coordinate 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-07-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-07-D3-A6 — Repeat operation
+##### JF-02-07-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “coordinate specification” against “bounding boxes map to the correct page geometry”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-07-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-07-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2006,11 +2006,11 @@ Given two source statements or document values disagree, evaluate “confidence 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-07-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-07-D4-A6 — Repeat operation
+##### JF-02-07-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “confidence record” against “confidence is separate from rule satisfaction”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-07-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-07-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2051,11 +2051,11 @@ Given two source statements or document values disagree, evaluate “unreadable-
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-07-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-07-D5-A6 — Repeat operation
+##### JF-02-07-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “unreadable-page workflow” against “low-quality evidence remains unknown”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-07-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-07-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2096,11 +2096,11 @@ Given two source statements or document values disagree, evaluate “language fi
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-07-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-07-D6-A6 — Repeat operation
+##### JF-02-07-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “language fixture results” against “unsupported scripts are disclosed rather than fabricated”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-07-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-07-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2171,11 +2171,11 @@ Given two source statements or document values disagree, evaluate “document ro
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-08-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-08-D1-A6 — Repeat operation
+##### JF-02-08-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “document role catalogue” against “roles match evidence expectations”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-08-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-08-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2216,11 +2216,11 @@ Given two source statements or document values disagree, evaluate “classifier 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-08-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-08-D2-A6 — Repeat operation
+##### JF-02-08-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “classifier input contract” against “only permitted content is processed”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-08-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-08-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2261,11 +2261,11 @@ Given two source statements or document values disagree, evaluate “suggestion 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-08-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-08-D3-A6 — Repeat operation
+##### JF-02-08-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “suggestion threshold policy” against “low certainty has an abstain path”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-08-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-08-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2306,11 +2306,11 @@ Given two source statements or document values disagree, evaluate “multi-role 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-08-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-08-D4-A6 — Repeat operation
+##### JF-02-08-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “multi-role assignment contract” against “one file may support distinct requirements”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-08-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-08-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2351,11 +2351,11 @@ Given two source statements or document values disagree, evaluate “role correc
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-08-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-08-D5-A6 — Repeat operation
+##### JF-02-08-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “role correction workflow” against “corrections preserve classifier history”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-08-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-08-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2396,11 +2396,11 @@ Given two source statements or document values disagree, evaluate “role confus
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-08-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-08-D6-A6 — Repeat operation
+##### JF-02-08-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “role confusion matrix” against “wrong-role and abstention rates are reported separately”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-08-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-08-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2471,11 +2471,11 @@ Given two source statements or document values disagree, evaluate “evidence-li
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-09-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-09-D1-A6 — Repeat operation
+##### JF-02-09-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “evidence-link schema” against “requirement and document revisions are explicit”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-09-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-09-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2516,11 +2516,11 @@ Given two source statements or document values disagree, evaluate “anchor pers
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-09-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-09-D2-A6 — Repeat operation
+##### JF-02-09-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “anchor persistence rules” against “original coordinates and page indices are stable”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-09-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-09-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2561,11 +2561,11 @@ Given two source statements or document values disagree, evaluate “evidence-se
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-09-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-09-D3-A6 — Repeat operation
+##### JF-02-09-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “evidence-set contract” against “any-of and all-of semantics are distinct”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-09-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-09-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2606,11 +2606,11 @@ Given two source statements or document values disagree, evaluate “mapping con
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-09-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-09-D4-A6 — Repeat operation
+##### JF-02-09-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “mapping confirmation flow” against “manual assignment records actor and time”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-09-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-09-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2651,11 +2651,11 @@ Given two source statements or document values disagree, evaluate “invalidatio
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-09-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-09-D5-A6 — Repeat operation
+##### JF-02-09-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “invalidation procedure” against “deleted or replaced evidence cannot remain current”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-09-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-09-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2696,11 +2696,11 @@ Given two source statements or document values disagree, evaluate “completenes
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-09-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-09-D6-A6 — Repeat operation
+##### JF-02-09-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “completeness audit” against “missing obligations are visible even with many files”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-09-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-09-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2771,11 +2771,11 @@ Given two source statements or document values disagree, evaluate “comparison 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-10-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-10-D1-A6 — Repeat operation
+##### JF-02-10-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “comparison field catalogue” against “name and birth-date comparisons have explicit purposes”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-10-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-10-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2816,11 +2816,11 @@ Given two source statements or document values disagree, evaluate “identity ex
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-10-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-10-D2-A6 — Repeat operation
+##### JF-02-10-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “identity extraction contract” against “normalization never replaces original evidence”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-10-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-10-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2861,11 +2861,11 @@ Given two source statements or document values disagree, evaluate “normalizati
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-10-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-10-D3-A6 — Repeat operation
+##### JF-02-10-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “normalization policy” against “whitespace and punctuation treatment are documented”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-10-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-10-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2906,11 +2906,11 @@ Given two source statements or document values disagree, evaluate “ambiguity h
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-10-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-10-D4-A6 — Repeat operation
+##### JF-02-10-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “ambiguity handling” against “similarity alone does not establish equivalence”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-10-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-10-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2951,11 +2951,11 @@ Given two source statements or document values disagree, evaluate “supporting-
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-10-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-10-D5-A6 — Repeat operation
+##### JF-02-10-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “supporting-evidence workflow” against “required evidence follows the selected instruction”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-10-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-10-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2996,11 +2996,11 @@ Given two source statements or document values disagree, evaluate “identity is
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-10-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-10-D6-A6 — Repeat operation
+##### JF-02-10-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “identity issue copy” against “the report avoids unsupported fraud accusations”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-10-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-10-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3071,11 +3071,11 @@ Given two source statements or document values disagree, evaluate “date interp
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-11-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-11-D1-A6 — Repeat operation
+##### JF-02-11-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “date interpretation policy” against “ambiguous formats require confirmation”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-11-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-11-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3116,11 +3116,11 @@ Given two source statements or document values disagree, evaluate “validity ru
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-11-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-11-D2-A6 — Repeat operation
+##### JF-02-11-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “validity rule contract” against “issue date, expiry and reference date differ”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-11-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-11-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3161,11 +3161,11 @@ Given two source statements or document values disagree, evaluate “reference-d
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-11-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-11-D3-A6 — Repeat operation
+##### JF-02-11-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “reference-date inventory” against “each comparison identifies the governing date”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-11-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-11-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3206,11 +3206,11 @@ Given two source statements or document values disagree, evaluate “missing-dat
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-11-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-11-D4-A6 — Repeat operation
+##### JF-02-11-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “missing-date behavior” against “absence becomes unknown when a date is required”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-11-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-11-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3251,11 +3251,11 @@ Given two source statements or document values disagree, evaluate “temporal fi
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-11-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-11-D5-A6 — Repeat operation
+##### JF-02-11-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “temporal fixture set” against “inclusive limits and leap dates are tested”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-11-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-11-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3296,11 +3296,11 @@ Given two source statements or document values disagree, evaluate “date issue 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-11-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-11-D6-A6 — Repeat operation
+##### JF-02-11-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “date issue explanation” against “original date and applied rule are visible”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-11-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-11-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3371,11 +3371,11 @@ Given two source statements or document values disagree, evaluate “prerequisit
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-12-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-12-D1-A6 — Repeat operation
+##### JF-02-12-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “prerequisite graph” against “checks wait for required facts and evidence”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-12-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-12-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3416,11 +3416,11 @@ Given two source statements or document values disagree, evaluate “evaluation-
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-12-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-12-D2-A6 — Repeat operation
+##### JF-02-12-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “evaluation-run contract” against “pack, profile and document revisions are pinned”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-12-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-12-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3461,11 +3461,11 @@ Given two source statements or document values disagree, evaluate “ordering po
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-12-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-12-D3-A6 — Repeat operation
+##### JF-02-12-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “ordering policy” against “blocking issues are consistently prioritized”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-12-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-12-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3506,11 +3506,11 @@ Given two source statements or document values disagree, evaluate “evaluator r
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-12-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-12-D4-A6 — Repeat operation
+##### JF-02-12-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “evaluator registry” against “results identify the exact behavior revision”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-12-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-12-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3551,11 +3551,11 @@ Given two source statements or document values disagree, evaluate “recomputati
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-12-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-12-D5-A6 — Repeat operation
+##### JF-02-12-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “recomputation map” against “changes invalidate all relevant dependent checks”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-12-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-12-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3596,11 +3596,11 @@ Given two source statements or document values disagree, evaluate “aggregation
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-12-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-12-D6-A6 — Repeat operation
+##### JF-02-12-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “aggregation specification” against “unknown, error and stale results prevent complete readiness”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-12-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-12-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3671,11 +3671,11 @@ Given two source statements or document values disagree, evaluate “correction 
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-13-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-13-D1-A6 — Repeat operation
+##### JF-02-13-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “correction record” against “original and corrected values remain inspectable”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-13-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-13-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3716,11 +3716,11 @@ Given two source statements or document values disagree, evaluate “review queu
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-13-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-13-D2-A6 — Repeat operation
+##### JF-02-13-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “review queue policy” against “severity and urgency determine routing”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-13-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-13-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3761,11 +3761,11 @@ Given two source statements or document values disagree, evaluate “override au
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-13-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-13-D3-A6 — Repeat operation
+##### JF-02-13-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “override authorization” against “only approved roles can override scoped findings”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-13-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-13-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3806,11 +3806,11 @@ Given two source statements or document values disagree, evaluate “manual-revi
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-13-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-13-D4-A6 — Repeat operation
+##### JF-02-13-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “manual-review labels” against “users see which outcomes depend on judgment”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-13-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-13-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3851,11 +3851,11 @@ Given two source statements or document values disagree, evaluate “dispute rec
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-13-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-13-D5-A6 — Repeat operation
+##### JF-02-13-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “dispute record” against “applicant disagreement remains traceable”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-13-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-13-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3896,11 +3896,11 @@ Given two source statements or document values disagree, evaluate “rerun behav
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-13-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-13-D6-A6 — Repeat operation
+##### JF-02-13-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “rerun behavior” against “dependent results change only through a new run”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-13-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-13-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3971,11 +3971,11 @@ Given two source statements or document values disagree, evaluate “report spec
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-14-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-14-D1-A6 — Repeat operation
+##### JF-02-14-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “report specification” against “summary, sources, evidence and limitations are present”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-14-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-14-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4016,11 +4016,11 @@ Given two source statements or document values disagree, evaluate “export acce
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-14-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-14-D2-A6 — Repeat operation
+##### JF-02-14-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “export access contract” against “permission is checked when generation and download occur”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-14-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-14-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4061,11 +4061,11 @@ Given two source statements or document values disagree, evaluate “report cita
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-14-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-14-D3-A6 — Repeat operation
+##### JF-02-14-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “report citation rules” against “requirements retain official source links”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-14-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-14-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4106,11 +4106,11 @@ Given two source statements or document values disagree, evaluate “evidence re
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-14-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-14-D4-A6 — Repeat operation
+##### JF-02-14-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “evidence reference rules” against “file and page references identify exact versions”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-14-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-14-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4151,11 +4151,11 @@ Given two source statements or document values disagree, evaluate “stale repor
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-14-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-14-D5-A6 — Repeat operation
+##### JF-02-14-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “stale report behavior” against “old reports are visibly historical”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-14-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-14-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4196,11 +4196,11 @@ Given two source statements or document values disagree, evaluate “export reda
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-14-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-14-D6-A6 — Repeat operation
+##### JF-02-14-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “export redaction policy” against “unnecessary sensitive fields are excluded”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-14-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-14-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4271,11 +4271,11 @@ Given two source statements or document values disagree, evaluate “refresh sch
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-15-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-15-D1-A6 — Repeat operation
+##### JF-02-15-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “refresh schedule” against “cadence reflects the active application period”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-15-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-15-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4316,11 +4316,11 @@ Given two source statements or document values disagree, evaluate “source diff
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-15-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-15-D2-A6 — Repeat operation
+##### JF-02-15-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “source diff records” against “cosmetic and rule changes are distinguished”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-15-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-15-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4361,11 +4361,11 @@ Given two source statements or document values disagree, evaluate “change adju
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-15-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-15-D3-A6 — Repeat operation
+##### JF-02-15-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “change adjudication” against “new conditions receive branch fixtures”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-15-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-15-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4406,11 +4406,11 @@ Given two source statements or document values disagree, evaluate “publication
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-15-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-15-D4-A6 — Repeat operation
+##### JF-02-15-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “publication approval record” against “independent approval precedes activation”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-15-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-15-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4451,11 +4451,11 @@ Given two source statements or document values disagree, evaluate “impact quer
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-15-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-15-D5-A6 — Repeat operation
+##### JF-02-15-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “impact query specification” against “impacted runs and unresolved requirements are enumerable”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-15-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-15-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4496,11 +4496,11 @@ Given two source statements or document values disagree, evaluate “change comm
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-15-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-15-D6-A6 — Repeat operation
+##### JF-02-15-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “change communication template” against “users see what changed and what to review”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-15-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-15-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4571,11 +4571,11 @@ Given two source statements or document values disagree, evaluate “custom-sour
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-16-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-16-D1-A6 — Repeat operation
+##### JF-02-16-D1-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “custom-source classification” against “user instructions remain visibly unverified”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-16-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-16-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4616,11 +4616,11 @@ Given two source statements or document values disagree, evaluate “draft confi
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-16-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-16-D2-A6 — Repeat operation
+##### JF-02-16-D2-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “draft confirmation flow” against “users can inspect and amend every proposed requirement”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-16-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-16-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4661,11 +4661,11 @@ Given two source statements or document values disagree, evaluate “model-use p
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-16-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-16-D3-A6 — Repeat operation
+##### JF-02-16-D3-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “model-use proposal” against “purpose and permitted data scope are disclosed”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-16-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-16-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4706,11 +4706,11 @@ Given two source statements or document values disagree, evaluate “draft extra
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-16-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-16-D4-A6 — Repeat operation
+##### JF-02-16-D4-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “draft extraction contract” against “unsupported predicates remain plain-language review tasks”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-16-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-16-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4751,11 +4751,11 @@ Given two source statements or document values disagree, evaluate “adversarial
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-16-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-16-D5-A6 — Repeat operation
+##### JF-02-16-D5-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “adversarial source review” against “source text cannot authorize tool use or change policy”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-16-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-16-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4796,11 +4796,11 @@ Given two source statements or document values disagree, evaluate “promotion e
 Then: Return needs_review and preserve both competing evidence locations.
 Review evidence: link the input revision, outcome and reviewer to JF-02-16-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-02-16-D6-A6 — Repeat operation
+##### JF-02-16-D6-A4 — Repeat operation
 
 Given the same accepted input is processed again, evaluate “promotion evaluation” against “independent omission and false-pass metrics justify any automation”.
 Then: Preserve deterministic check outcomes and avoid duplicate evidence or user charges.
-Review evidence: link the input revision, outcome and reviewer to JF-02-16-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-02-16-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 

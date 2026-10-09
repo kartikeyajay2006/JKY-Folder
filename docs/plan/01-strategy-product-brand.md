@@ -8,7 +8,7 @@ Volume exit gate: Evidence that applicants understand the product and have a rec
 
 ## How to use this volume
 
-Every workstream contains six concrete deliverables and six acceptance situations for each deliverable.
+Every workstream contains six concrete deliverables and four acceptance situations for each deliverable.
 The cases are specifications for later implementation or business validation; they are not executed results.
 Use the stable IDs in issues, design reviews, release evidence and subsequent plan revisions.
 Business validation uses research and operating records; engineering validation uses controlled fixtures and system evidence.
@@ -71,11 +71,11 @@ Given a second applicant segment contradicts the first segment, evaluate “prob
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-01-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-01-D1-A6 — Budget pressure
+##### JF-01-01-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “problem statement with concrete failure stories” against “each story identifies an instruction, document and costly uncertainty”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-01-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-01-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -116,11 +116,11 @@ Given a second applicant segment contradicts the first segment, evaluate “one-
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-01-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-01-D2-A6 — Budget pressure
+##### JF-01-01-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “one-sentence product promise” against “applicants understand readiness review without interpreting it as acceptance”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-01-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-01-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -161,11 +161,11 @@ Given a second applicant segment contradicts the first segment, evaluate “mark
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-01-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-01-D3-A6 — Budget pressure
+##### JF-01-01-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “marketing claim register” against “no guarantee of eligibility, authenticity or admission appears”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-01-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-01-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -206,11 +206,11 @@ Given a second applicant segment contradicts the first segment, evaluate “appl
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-01-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-01-D4-A6 — Budget pressure
+##### JF-01-01-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “applicant and payer map” against “parent, applicant and institution interests are distinguished”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-01-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-01-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -251,11 +251,11 @@ Given a second applicant segment contradicts the first segment, evaluate “appl
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-01-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-01-D5-A6 — Budget pressure
+##### JF-01-01-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “application-cycle opportunity map” against “repeat demand is observed rather than presumed”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-01-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-01-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -296,11 +296,11 @@ Given a second applicant segment contradicts the first segment, evaluate “date
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-01-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-01-D6-A6 — Budget pressure
+##### JF-01-01-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “dated thesis record” against “evidence supports continue, revise or stop”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-01-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-01-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -371,11 +371,11 @@ Given a second applicant segment contradicts the first segment, evaluate “segm
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-02-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-02-D1-A6 — Budget pressure
+##### JF-01-02-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “segment screening form” against “participants recently prepared a real application”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-02-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-02-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -416,11 +416,11 @@ Given a second applicant segment contradicts the first segment, evaluate “recr
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-02-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-02-D2-A6 — Budget pressure
+##### JF-01-02-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “recruitment quota sheet” against “low-bandwidth and shared-device users are represented”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-02-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-02-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -461,11 +461,11 @@ Given a second applicant segment contradicts the first segment, evaluate “inte
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-02-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-02-D3-A6 — Budget pressure
+##### JF-01-02-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “interview guide” against “questions seek past behavior rather than hypothetical praise”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-02-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-02-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -506,11 +506,11 @@ Given a second applicant segment contradicts the first segment, evaluate “cons
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-02-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-02-D4-A6 — Budget pressure
+##### JF-01-02-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “consented observation notes” against “researchers see actual organization work without collecting unnecessary documents”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-02-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-02-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -551,11 +551,11 @@ Given a second applicant segment contradicts the first segment, evaluate “rese
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-02-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-02-D5-A6 — Budget pressure
+##### JF-01-02-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “research synthesis” against “each theme links to at least two observations”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-02-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-02-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -596,11 +596,11 @@ Given a second applicant segment contradicts the first segment, evaluate “prio
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-02-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-02-D6-A6 — Budget pressure
+##### JF-01-02-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “prioritized problem register” against “frequency and consequence are scored separately”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-02-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-02-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -671,11 +671,11 @@ Given a second applicant segment contradicts the first segment, evaluate “idea
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-03-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-03-D1-A6 — Budget pressure
+##### JF-01-03-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “ideal customer profile” against “age, context, device and application stage are explicit”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-03-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-03-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -716,11 +716,11 @@ Given a second applicant segment contradicts the first segment, evaluate “trig
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-03-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-03-D2-A6 — Budget pressure
+##### JF-01-03-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “trigger timeline” against “discovery channels coincide with actual preparation moments”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-03-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-03-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -761,11 +761,11 @@ Given a second applicant segment contradicts the first segment, evaluate “obje
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-03-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-03-D3-A6 — Budget pressure
+##### JF-01-03-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “objection catalogue” against “privacy, cost and trust objections have evidence”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-03-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-03-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -806,11 +806,11 @@ Given a second applicant segment contradicts the first segment, evaluate “curr
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-03-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-03-D4-A6 — Budget pressure
+##### JF-01-03-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “current workaround map” against “manual checklists and advisor review are included”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-03-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-03-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -851,11 +851,11 @@ Given a second applicant segment contradicts the first segment, evaluate “bott
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-03-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-03-D5-A6 — Budget pressure
+##### JF-01-03-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “bottom-up demand worksheet” against “assumptions and denominators are stated”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-03-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-03-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -896,11 +896,11 @@ Given a second applicant segment contradicts the first segment, evaluate “segm
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-03-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-03-D6-A6 — Budget pressure
+##### JF-01-03-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “segment decision memo” against “rejected segments have evidence-based reasons”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-03-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-03-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -971,11 +971,11 @@ Given a second applicant segment contradicts the first segment, evaluate “date
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-04-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-04-D1-A6 — Budget pressure
+##### JF-01-04-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “dated competitor note” against “observed upload tooling is distinguished from unverified features”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-04-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-04-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1016,11 +1016,11 @@ Given a second applicant segment contradicts the first segment, evaluate “manu
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-04-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-04-D2-A6 — Budget pressure
+##### JF-01-04-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “manual workflow comparison” against “human review advantages are acknowledged”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-04-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-04-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1061,11 +1061,11 @@ Given a second applicant segment contradicts the first segment, evaluate “stor
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-04-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-04-D3-A6 — Budget pressure
+##### JF-01-04-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “storage comparison” against “organization and readiness checks are assessed separately”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-04-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-04-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1106,11 +1106,11 @@ Given a second applicant segment contradicts the first segment, evaluate “serv
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-04-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-04-D4-A6 — Budget pressure
+##### JF-01-04-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “service comparison” against “turnaround, trust and costs are recorded as observations”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-04-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-04-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1151,11 +1151,11 @@ Given a second applicant segment contradicts the first segment, evaluate “posi
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-04-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-04-D5-A6 — Budget pressure
+##### JF-01-04-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “positioning statement” against “the statement names evidence-linked whole-packet review”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-04-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-04-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1196,11 +1196,11 @@ Given a second applicant segment contradicts the first segment, evaluate “comp
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-04-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-04-D6-A6 — Budget pressure
+##### JF-01-04-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “comparison protocol” against “the same consented packet scenario is used fairly”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-04-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-04-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1271,11 +1271,11 @@ Given a second applicant segment contradicts the first segment, evaluate “pilo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-05-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-05-D1-A6 — Budget pressure
+##### JF-01-05-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “pilot scope agreement” against “participants know a human conducts the review”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-05-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-05-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1316,11 +1316,11 @@ Given a second applicant segment contradicts the first segment, evaluate “befo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-05-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-05-D2-A6 — Budget pressure
+##### JF-01-05-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “before-review worksheet” against “time and unresolved items are captured consistently”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-05-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-05-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1361,11 +1361,11 @@ Given a second applicant segment contradicts the first segment, evaluate “conc
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-05-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-05-D3-A6 — Budget pressure
+##### JF-01-05-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “concierge readiness reports” against “each issue links an instruction and supporting document”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-05-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-05-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1406,11 +1406,11 @@ Given a second applicant segment contradicts the first segment, evaluate “foll
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-05-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-05-D4-A6 — Budget pressure
+##### JF-01-05-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “follow-up correction log” against “reported fixes distinguish actual changes from intent”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-05-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-05-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1451,11 +1451,11 @@ Given a second applicant segment contradicts the first segment, evaluate “pric
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-05-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-05-D5-A6 — Budget pressure
+##### JF-01-05-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “pricing interview evidence” against “purchase behavior is separated from stated interest”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-05-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-05-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1496,11 +1496,11 @@ Given a second applicant segment contradicts the first segment, evaluate “pilo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-05-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-05-D6-A6 — Budget pressure
+##### JF-01-05-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “pilot conclusion memo” against “only repeated costly tasks enter the mvp”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-05-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-05-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1571,11 +1571,11 @@ Given a second applicant segment contradicts the first segment, evaluate “scop
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-06-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-06-D1-A6 — Budget pressure
+##### JF-01-06-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “scope manifest” against “application family and cycle are named”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-06-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-06-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1616,11 +1616,11 @@ Given a second applicant segment contradicts the first segment, evaluate “mvp 
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-06-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-06-D2-A6 — Budget pressure
+##### JF-01-06-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “mvp journey specification” against “instructions, conditions, files and report are connected”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-06-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-06-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1661,11 +1661,11 @@ Given a second applicant segment contradicts the first segment, evaluate “unsu
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-06-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-06-D3-A6 — Budget pressure
+##### JF-01-06-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “unsupported-capability list” against “users see unsupported checks before paying”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-06-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-06-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1706,11 +1706,11 @@ Given a second applicant segment contradicts the first segment, evaluate “fall
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-06-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-06-D4-A6 — Budget pressure
+##### JF-01-06-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “fallback review design” against “unknowns can be corrected without changing original evidence”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-06-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-06-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1751,11 +1751,11 @@ Given a second applicant segment contradicts the first segment, evaluate “mvp 
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-06-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-06-D5-A6 — Budget pressure
+##### JF-01-06-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “mvp cut-line register” against “every candidate feature has include or defer rationale”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-06-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-06-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1796,11 +1796,11 @@ Given a second applicant segment contradicts the first segment, evaluate “scop
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-06-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-06-D6-A6 — Budget pressure
+##### JF-01-06-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “scope baseline” against “changes require a revised cost and correctness review”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-06-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-06-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1871,11 +1871,11 @@ Given a second applicant segment contradicts the first segment, evaluate “sele
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-07-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-07-D1-A6 — Budget pressure
+##### JF-01-07-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “selection flow” against “year and application stage are unmistakable”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-07-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-07-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1916,11 +1916,11 @@ Given a second applicant segment contradicts the first segment, evaluate “prof
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-07-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-07-D2-A6 — Budget pressure
+##### JF-01-07-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “profile questionnaire” against “every question links a supported rule predicate”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-07-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-07-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1961,11 +1961,11 @@ Given a second applicant segment contradicts the first segment, evaluate “ques
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-07-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-07-D3-A6 — Budget pressure
+##### JF-01-07-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “question rationale copy” against “purpose and optionality are stated plainly”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-07-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-07-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2006,11 +2006,11 @@ Given a second applicant segment contradicts the first segment, evaluate “unkn
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-07-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-07-D4-A6 — Budget pressure
+##### JF-01-07-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “unknown-answer behavior” against “unknown remains unresolved rather than defaulting to no”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-07-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-07-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2051,11 +2051,11 @@ Given a second applicant segment contradicts the first segment, evaluate “conf
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-07-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-07-D5-A6 — Budget pressure
+##### JF-01-07-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “confirmation screen specification” against “users can correct values before checks run”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-07-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-07-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2096,11 +2096,11 @@ Given a second applicant segment contradicts the first segment, evaluate “resu
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-07-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-07-D6-A6 — Budget pressure
+##### JF-01-07-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “resume behavior” against “interrupted users resume without duplicate packets”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-07-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-07-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2171,11 +2171,11 @@ Given a second applicant segment contradicts the first segment, evaluate “dash
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-08-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-08-D1-A6 — Budget pressure
+##### JF-01-08-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “dashboard information architecture” against “requirement status outranks file count”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-08-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-08-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2216,11 +2216,11 @@ Given a second applicant segment contradicts the first segment, evaluate “requ
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-08-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-08-D2-A6 — Budget pressure
+##### JF-01-08-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “requirement detail specification” against “source, condition and evidence are visible together”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-08-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-08-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2261,11 +2261,11 @@ Given a second applicant segment contradicts the first segment, evaluate “docu
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-08-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-08-D3-A6 — Budget pressure
+##### JF-01-08-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “document list interaction” against “original and derived versions are distinguishable”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-08-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-08-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2306,11 +2306,11 @@ Given a second applicant segment contradicts the first segment, evaluate “issu
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-08-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-08-D4-A6 — Budget pressure
+##### JF-01-08-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “issue prioritization rules” against “blocking uncertainties precede cosmetic suggestions”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-08-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-08-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2351,11 +2351,11 @@ Given a second applicant segment contradicts the first segment, evaluate “prog
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-08-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-08-D5-A6 — Budget pressure
+##### JF-01-08-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “progress copy” against “completion counts exclude unknown and stale results”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-08-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-08-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2396,11 +2396,11 @@ Given a second applicant segment contradicts the first segment, evaluate “empt
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-08-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-08-D6-A6 — Budget pressure
+##### JF-01-08-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “empty-state catalogue” against “each state explains the next meaningful action”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-08-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-08-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2471,11 +2471,11 @@ Given a second applicant segment contradicts the first segment, evaluate “evid
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-09-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-09-D1-A6 — Budget pressure
+##### JF-01-09-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “evidence viewer specification” against “source and document locations remain identifiable”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-09-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-09-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2516,11 +2516,11 @@ Given a second applicant segment contradicts the first segment, evaluate “anch
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-09-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-09-D2-A6 — Budget pressure
+##### JF-01-09-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “anchor interaction contract” against “page indices distinguish display numbering from stored indices”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-09-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-09-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2561,11 +2561,11 @@ Given a second applicant segment contradicts the first segment, evaluate “high
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-09-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-09-D3-A6 — Budget pressure
+##### JF-01-09-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “highlight conventions” against “normalized values do not overwrite visible original text”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-09-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-09-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2606,11 +2606,11 @@ Given a second applicant segment contradicts the first segment, evaluate “disp
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-09-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-09-D4-A6 — Budget pressure
+##### JF-01-09-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “dispute interaction” against “users can challenge an extraction and retain history”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-09-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-09-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2651,11 +2651,11 @@ Given a second applicant segment contradicts the first segment, evaluate “evid
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-09-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-09-D5-A6 — Budget pressure
+##### JF-01-09-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “evidence assignment flow” against “assignments do not automatically imply rule satisfaction”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-09-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-09-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2696,11 +2696,11 @@ Given a second applicant segment contradicts the first segment, evaluate “evid
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-09-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-09-D6-A6 — Budget pressure
+##### JF-01-09-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “evidence text summary” against “the finding remains understandable without visual highlights”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-09-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-09-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2771,11 +2771,11 @@ Given a second applicant segment contradicts the first segment, evaluate “stat
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-10-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-10-D1-A6 — Budget pressure
+##### JF-01-10-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “status dictionary” against “pass, fail, unknown, not applicable and review are distinct”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-10-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-10-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2816,11 +2816,11 @@ Given a second applicant segment contradicts the first segment, evaluate “repo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-10-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-10-D2-A6 — Budget pressure
+##### JF-01-10-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “report summary template” against “the summary lists applicable unresolved checks”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-10-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-10-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2861,11 +2861,11 @@ Given a second applicant segment contradicts the first segment, evaluate “limi
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-10-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-10-D3-A6 — Budget pressure
+##### JF-01-10-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “limitation display rules” against “limitations appear beside material conclusions”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-10-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-10-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2906,11 +2906,11 @@ Given a second applicant segment contradicts the first segment, evaluate “acti
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-10-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-10-D4-A6 — Budget pressure
+##### JF-01-10-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “action copy library” against “advice cites a requirement and avoids guaranteed outcomes”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-10-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-10-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2951,11 +2951,11 @@ Given a second applicant segment contradicts the first segment, evaluate “repo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-10-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-10-D5-A6 — Budget pressure
+##### JF-01-10-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “report metadata contract” against “cycle, source revision and evaluation time are visible”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-10-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-10-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2996,11 +2996,11 @@ Given a second applicant segment contradicts the first segment, evaluate “comp
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-10-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-10-D6-A6 — Budget pressure
+##### JF-01-10-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “comprehension study” against “participants identify what still requires judgment”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-10-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-10-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3071,11 +3071,11 @@ Given a second applicant segment contradicts the first segment, evaluate “devi
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-11-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-11-D1-A6 — Budget pressure
+##### JF-01-11-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “device capability matrix” against “actual pilot devices determine initial support”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-11-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-11-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3116,11 +3116,11 @@ Given a second applicant segment contradicts the first segment, evaluate “uplo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-11-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-11-D2-A6 — Budget pressure
+##### JF-01-11-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “upload feedback behavior” against “progress, retry and cancel have distinct meanings”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-11-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-11-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3161,11 +3161,11 @@ Given a second applicant segment contradicts the first segment, evaluate “capt
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-11-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-11-D3-A6 — Budget pressure
+##### JF-01-11-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “capture guidance specification” against “tips improve legibility without altering evidence content”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-11-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-11-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3206,11 +3206,11 @@ Given a second applicant segment contradicts the first segment, evaluate “shar
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-11-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-11-D4-A6 — Budget pressure
+##### JF-01-11-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “shared-device flow” against “logout and private previews remove accidental exposure”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-11-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-11-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3251,11 +3251,11 @@ Given a second applicant segment contradicts the first segment, evaluate “offl
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-11-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-11-D5-A6 — Budget pressure
+##### JF-01-11-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “offline-state behavior” against “users see which actions need a connection”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-11-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-11-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3296,11 +3296,11 @@ Given a second applicant segment contradicts the first segment, evaluate “mobi
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-11-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-11-D6-A6 — Budget pressure
+##### JF-01-11-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “mobile usability evidence” against “important controls remain usable without precision gestures”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-11-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-11-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3371,11 +3371,11 @@ Given a second applicant segment contradicts the first segment, evaluate “navi
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-12-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-12-D1-A6 — Budget pressure
+##### JF-01-12-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “navigation specification” against “headings and landmarks express the page structure”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-12-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-12-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3416,11 +3416,11 @@ Given a second applicant segment contradicts the first segment, evaluate “keyb
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-12-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-12-D2-A6 — Budget pressure
+##### JF-01-12-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “keyboard interaction map” against “focus order and dialogs are predictable”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-12-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-12-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3461,11 +3461,11 @@ Given a second applicant segment contradicts the first segment, evaluate “stat
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-12-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-12-D3-A6 — Budget pressure
+##### JF-01-12-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “status presentation rules” against “each state has text and an appropriate icon”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-12-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-12-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3506,11 +3506,11 @@ Given a second applicant segment contradicts the first segment, evaluate “erro
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-12-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-12-D4-A6 — Budget pressure
+##### JF-01-12-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “error guidance” against “the error identifies the field and correction path”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-12-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-12-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3551,11 +3551,11 @@ Given a second applicant segment contradicts the first segment, evaluate “plai
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-12-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-12-D5-A6 — Budget pressure
+##### JF-01-12-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “plain-language glossary” against “terms are understandable to first-time applicants”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-12-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-12-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3596,11 +3596,11 @@ Given a second applicant segment contradicts the first segment, evaluate “manu
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-12-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-12-D6-A6 — Budget pressure
+##### JF-01-12-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “manual accessibility findings” against “upload, review and report flows are tested end to end”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-12-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-12-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3671,11 +3671,11 @@ Given a second applicant segment contradicts the first segment, evaluate “bran
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-13-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-13-D1-A6 — Budget pressure
+##### JF-01-13-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “brand name usage guide” against “jky-folder spelling and casing remain consistent”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-13-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-13-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3716,11 +3716,11 @@ Given a second applicant segment contradicts the first segment, evaluate “logo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-13-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-13-D2-A6 — Budget pressure
+##### JF-01-13-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “logo rationale” against “folder, evidence rails and review gap match the product promise”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-13-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-13-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3761,11 +3761,11 @@ Given a second applicant segment contradicts the first segment, evaluate “bran
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-13-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-13-D3-A6 — Budget pressure
+##### JF-01-13-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “brand palette proposal” against “navy and teal combinations undergo contrast assessment”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-13-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-13-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3806,11 +3806,11 @@ Given a second applicant segment contradicts the first segment, evaluate “logo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-13-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-13-D4-A6 — Budget pressure
+##### JF-01-13-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “logo variant brief” against “light, dark, monochrome and icon-only versions are planned”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-13-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-13-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3851,11 +3851,11 @@ Given a second applicant segment contradicts the first segment, evaluate “clea
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-13-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-13-D5-A6 — Budget pressure
+##### JF-01-13-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “clearance work order” against “name, phonetic and image searches cover launch markets”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-13-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-13-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3896,11 +3896,11 @@ Given a second applicant segment contradicts the first segment, evaluate “vect
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-13-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-13-D6-A6 — Budget pressure
+##### JF-01-13-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “vector refinement brief” against “a designer verifies geometry and small-size legibility”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-13-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-13-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3971,11 +3971,11 @@ Given a second applicant segment contradicts the first segment, evaluate “layo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-14-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-14-D1-A6 — Budget pressure
+##### JF-01-14-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “layout token specification” against “spacing and responsive behavior are explicit”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-14-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-14-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4016,11 +4016,11 @@ Given a second applicant segment contradicts the first segment, evaluate “typo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-14-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-14-D2-A6 — Budget pressure
+##### JF-01-14-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “typography specification” against “small-screen readability is tested”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-14-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-14-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4061,11 +4061,11 @@ Given a second applicant segment contradicts the first segment, evaluate “form
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-14-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-14-D3-A6 — Budget pressure
+##### JF-01-14-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “form behavior catalogue” against “labels, validation and help behave consistently”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-14-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-14-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4106,11 +4106,11 @@ Given a second applicant segment contradicts the first segment, evaluate “stat
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-14-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-14-D4-A6 — Budget pressure
+##### JF-01-14-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “status component contracts” against “unknown cannot inherit pass styling”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-14-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-14-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4151,11 +4151,11 @@ Given a second applicant segment contradicts the first segment, evaluate “feed
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-14-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-14-D5-A6 — Budget pressure
+##### JF-01-14-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “feedback interaction rules” against “loading, empty, failed and stale states differ”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-14-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-14-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4196,11 +4196,11 @@ Given a second applicant segment contradicts the first segment, evaluate “desi
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-14-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-14-D6-A6 — Budget pressure
+##### JF-01-14-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “design review checklist” against “new components include accessibility and state coverage”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-14-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-14-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4271,11 +4271,11 @@ Given a second applicant segment contradicts the first segment, evaluate “acti
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-15-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-15-D1-A6 — Budget pressure
+##### JF-01-15-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “activation metric specification” against “activation means evidence-linked review, not registration”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-15-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-15-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4316,11 +4316,11 @@ Given a second applicant segment contradicts the first segment, evaluate “reso
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-15-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-15-D2-A6 — Budget pressure
+##### JF-01-15-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “resolution metric” against “clock boundaries and paused periods are defined”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-15-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-15-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4361,11 +4361,11 @@ Given a second applicant segment contradicts the first segment, evaluate “unce
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-15-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-15-D3-A6 — Budget pressure
+##### JF-01-15-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “uncertainty metric” against “unsupported and extraction unknowns are separated”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-15-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-15-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4406,11 +4406,11 @@ Given a second applicant segment contradicts the first segment, evaluate “anal
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-15-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-15-D4-A6 — Budget pressure
+##### JF-01-15-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “analytics schema” against “sensitive identifiers and document text are excluded”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-15-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-15-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4451,11 +4451,11 @@ Given a second applicant segment contradicts the first segment, evaluate “coho
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-15-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-15-D5-A6 — Budget pressure
+##### JF-01-15-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “cohort dashboard brief” against “seasonality and application cycle are retained”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-15-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-15-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4496,11 +4496,11 @@ Given a second applicant segment contradicts the first segment, evaluate “expe
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-15-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-15-D6-A6 — Budget pressure
+##### JF-01-15-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “experiment decision template” against “small samples cannot justify misleading certainty”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-15-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-15-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4571,11 +4571,11 @@ Given a second applicant segment contradicts the first segment, evaluate “deci
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-16-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-16-D1-A6 — Budget pressure
+##### JF-01-16-D1-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “decision register” against “decision, rationale and revision date are recorded”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-16-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-16-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4616,11 +4616,11 @@ Given a second applicant segment contradicts the first segment, evaluate “hypo
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-16-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-16-D2-A6 — Budget pressure
+##### JF-01-16-D2-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “hypothesis register” against “every hypothesis has a falsifiable experiment”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-16-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-16-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4661,11 +4661,11 @@ Given a second applicant segment contradicts the first segment, evaluate “prio
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-16-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-16-D3-A6 — Budget pressure
+##### JF-01-16-D3-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “prioritization model” against “user harm and dependency weight outrank novelty”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-16-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-16-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4706,11 +4706,11 @@ Given a second applicant segment contradicts the first segment, evaluate “feed
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-16-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-16-D4-A6 — Budget pressure
+##### JF-01-16-D4-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “feedback routing rules” against “correctness concerns reach the rules owner immediately”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-16-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-16-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4751,11 +4751,11 @@ Given a second applicant segment contradicts the first segment, evaluate “chan
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-16-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-16-D5-A6 — Budget pressure
+##### JF-01-16-D5-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “change request template” against “cost, trust and dependency effects are explicit”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-16-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-16-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4796,11 +4796,11 @@ Given a second applicant segment contradicts the first segment, evaluate “stop
 Then: Separate cohort findings; do not average away a materially different need.
 Review evidence: link the input revision, outcome and reviewer to JF-01-16-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-01-16-D6-A6 — Budget pressure
+##### JF-01-16-D6-A4 — Budget pressure
 
 Given the proposed decision exceeds the funded discovery allocation, evaluate “stop or pivot criteria” against “weak demand and poor correctness can halt expansion”.
 Then: Reduce the experiment scope and preserve its falsifiable success criterion.
-Review evidence: link the input revision, outcome and reviewer to JF-01-16-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-01-16-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 

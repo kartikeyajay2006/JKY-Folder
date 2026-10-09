@@ -8,7 +8,7 @@ Volume exit gate: A secure, recoverable modular system with reproducible evaluat
 
 ## How to use this volume
 
-Every workstream contains six concrete deliverables and six acceptance situations for each deliverable.
+Every workstream contains six concrete deliverables and four acceptance situations for each deliverable.
 The cases are specifications for later implementation or business validation; they are not executed results.
 Use the stable IDs in issues, design reviews, release evidence and subsequent plan revisions.
 Business validation uses research and operating records; engineering validation uses controlled fixtures and system evidence.
@@ -71,11 +71,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-01-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-01-D1-A6 — Recovery after failure
+##### JF-03-01-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “module map” against “account, packet, rules, evidence and reporting boundaries are named”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-01-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-01-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -116,11 +116,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-01-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-01-D2-A6 — Recovery after failure
+##### JF-03-01-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “request-path specification” against “long document operations leave the request path”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-01-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-01-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -161,11 +161,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-01-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-01-D3-A6 — Recovery after failure
+##### JF-03-01-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “worker responsibility map” against “workers cannot bypass api authorization contracts”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-01-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-01-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -206,11 +206,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-01-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-01-D4-A6 — Recovery after failure
+##### JF-03-01-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “module interface register” against “inputs, outputs and errors are versioned”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-01-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-01-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -251,11 +251,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-01-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-01-D5-A6 — Recovery after failure
+##### JF-03-01-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “deployment architecture record” against “public, private and worker zones are explicit”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-01-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-01-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -296,11 +296,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-01-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-01-D6-A6 — Recovery after failure
+##### JF-03-01-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “architecture decision record” against “complexity is justified by an observed requirement”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-01-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-01-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -371,11 +371,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-02-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-02-D1-A6 — Recovery after failure
+##### JF-03-02-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “authentication decision” against “login methods fit the pilot users and support capacity”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-02-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-02-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -416,11 +416,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-02-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-02-D2-A6 — Recovery after failure
+##### JF-03-02-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “session contract” against “expiry, rotation and logout are explicit”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-02-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-02-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -461,11 +461,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-02-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-02-D3-A6 — Recovery after failure
+##### JF-03-02-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “account recovery design” against “recovery cannot bypass ownership verification”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-02-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-02-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -506,11 +506,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-02-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-02-D4-A6 — Recovery after failure
+##### JF-03-02-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “account-change workflow” against “old sessions and notices follow the approved policy”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-02-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-02-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -551,11 +551,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-02-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-02-D5-A6 — Recovery after failure
+##### JF-03-02-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “admin authentication policy” against “privileged roles have stronger reviewed controls”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-02-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-02-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -596,11 +596,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-02-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-02-D6-A6 — Recovery after failure
+##### JF-03-02-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “termination contract” against “document deletion and billing state remain consistent”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-02-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-02-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -671,11 +671,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-03-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-03-D1-A6 — Recovery after failure
+##### JF-03-03-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “workspace identity schema” against “all scoped entities identify their workspace”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-03-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-03-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -716,11 +716,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-03-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-03-D2-A6 — Recovery after failure
+##### JF-03-03-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “role permission matrix” against “read, edit, review and export permissions differ”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-03-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-03-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -761,11 +761,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-03-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-03-D3-A6 — Recovery after failure
+##### JF-03-03-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “authorization contract” against “permission is verified on every protected operation”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-03-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-03-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -806,11 +806,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-03-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-03-D4-A6 — Recovery after failure
+##### JF-03-03-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “worker authorization envelope” against “jobs carry bounded tenant and object scope”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-03-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-03-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -851,11 +851,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-03-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-03-D5-A6 — Recovery after failure
+##### JF-03-03-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “cache-key contract” against “tenant and revision scope prevent cross-user reuse”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-03-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-03-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -896,11 +896,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-03-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-03-D6-A6 — Recovery after failure
+##### JF-03-03-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “revocation sequence” against “revoked access does not survive previews or exports”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-03-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-03-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -971,11 +971,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-04-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-04-D1-A6 — Recovery after failure
+##### JF-03-04-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “relational schema specification” against “required relationships and uniqueness are explicit”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-04-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-04-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1016,11 +1016,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-04-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-04-D2-A6 — Recovery after failure
+##### JF-03-04-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “revision persistence contract” against “immutable evidence versions cannot be edited in place”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-04-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-04-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1061,11 +1061,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-04-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-04-D3-A6 — Recovery after failure
+##### JF-03-04-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “transaction inventory” against “run publication and state updates are atomic”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-04-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-04-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1106,11 +1106,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-04-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-04-D4-A6 — Recovery after failure
+##### JF-03-04-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “migration procedure” against “backfill and rollback risks are documented”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-04-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-04-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1151,11 +1151,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-04-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-04-D5-A6 — Recovery after failure
+##### JF-03-04-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “query review rules” against “ownership constraints apply to joins and aggregates”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-04-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-04-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1196,11 +1196,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-04-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-04-D6-A6 — Recovery after failure
+##### JF-03-04-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “data lifecycle map” against “purpose and deletion classes govern persistence”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-04-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-04-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1271,11 +1271,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-05-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-05-D1-A6 — Recovery after failure
+##### JF-03-05-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “object identity contract” against “keys use non-sensitive opaque identifiers”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-05-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-05-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1316,11 +1316,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-05-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-05-D2-A6 — Recovery after failure
+##### JF-03-05-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “upload grant specification” against “size, object and operation scope are bounded”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-05-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-05-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1361,11 +1361,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-05-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-05-D3-A6 — Recovery after failure
+##### JF-03-05-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “download grant specification” against “access is short-lived and rechecked at grant creation”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-05-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-05-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1406,11 +1406,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-05-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-05-D4-A6 — Recovery after failure
+##### JF-03-05-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “encryption configuration brief” against “key ownership and rotation are documented”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-05-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-05-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1451,11 +1451,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-05-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-05-D5-A6 — Recovery after failure
+##### JF-03-05-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “storage lifecycle policy” against “originals and derivatives follow purpose-specific retention”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-05-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-05-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1496,11 +1496,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-05-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-05-D6-A6 — Recovery after failure
+##### JF-03-05-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “object consistency procedure” against “missing objects and orphaned metadata are detected”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-05-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-05-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1571,11 +1571,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-06-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-06-D1-A6 — Recovery after failure
+##### JF-03-06-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “job schema” against “tenant, input revisions and operation id are present”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-06-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-06-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1616,11 +1616,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-06-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-06-D2-A6 — Recovery after failure
+##### JF-03-06-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “outbox transaction contract” against “committed work cannot disappear between database and queue”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-06-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-06-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1661,11 +1661,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-06-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-06-D3-A6 — Recovery after failure
+##### JF-03-06-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “idempotency policy” against “keys identify operations rather than arbitrary request timestamps”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-06-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-06-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1706,11 +1706,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-06-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-06-D4-A6 — Recovery after failure
+##### JF-03-06-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “retry policy” against “transient and permanent errors have different paths”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-06-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-06-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1751,11 +1751,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-06-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-06-D5-A6 — Recovery after failure
+##### JF-03-06-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “dead-letter workflow” against “operators can inspect redacted failure context”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-06-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-06-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1796,11 +1796,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-06-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-06-D6-A6 — Recovery after failure
+##### JF-03-06-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “cancellation behavior” against “workers honor deletion and cancelled packet states”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-06-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-06-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1871,11 +1871,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-07-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-07-D1-A6 — Recovery after failure
+##### JF-03-07-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “isolation decision” against “parser execution is separated from privileged api processes”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-07-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-07-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1916,11 +1916,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-07-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-07-D2-A6 — Recovery after failure
+##### JF-03-07-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “worker limit specification” against “memory, cpu, time and page limits are explicit”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-07-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-07-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -1961,11 +1961,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-07-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-07-D3-A6 — Recovery after failure
+##### JF-03-07-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “worker egress policy” against “only necessary approved endpoints are reachable”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-07-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-07-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2006,11 +2006,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-07-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-07-D4-A6 — Recovery after failure
+##### JF-03-07-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “temporary-file lifecycle” against “files are scoped and removed after work”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-07-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-07-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2051,11 +2051,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-07-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-07-D5-A6 — Recovery after failure
+##### JF-03-07-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “parser update process” against “security updates undergo fixture regression”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-07-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-07-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2096,11 +2096,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-07-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-07-D6-A6 — Recovery after failure
+##### JF-03-07-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “worker failure procedure” against “a crash yields a visible recoverable job state”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-07-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-07-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2171,11 +2171,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-08-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-08-D1-A6 — Recovery after failure
+##### JF-03-08-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “api operation catalogue” against “create, upload, evaluate, correct and export are included”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-08-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-08-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2216,11 +2216,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-08-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-08-D2-A6 — Recovery after failure
+##### JF-03-08-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “validation contract” against “bounds and nested fields are validated server-side”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-08-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-08-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2261,11 +2261,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-08-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-08-D3-A6 — Recovery after failure
+##### JF-03-08-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “error schema” against “unauthorized, invalid, stale and unavailable differ”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-08-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-08-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2306,11 +2306,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-08-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-08-D4-A6 — Recovery after failure
+##### JF-03-08-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “pagination contract” against “stable ordering avoids missing or duplicated records”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-08-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-08-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2351,11 +2351,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-08-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-08-D5-A6 — Recovery after failure
+##### JF-03-08-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “revision conflict contract” against “stale writes cannot silently overwrite corrections”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-08-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-08-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2396,11 +2396,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-08-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-08-D6-A6 — Recovery after failure
+##### JF-03-08-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “mutation retry contract” against “lost acknowledgements do not duplicate effects”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-08-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-08-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2471,11 +2471,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-09-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-09-D1-A6 — Recovery after failure
+##### JF-03-09-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “client cache specification” against “entities key by tenant and revision”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-09-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-09-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2516,11 +2516,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-09-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-09-D2-A6 — Recovery after failure
+##### JF-03-09-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “optimistic interaction policy” against “only reversible metadata actions update optimistically”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-09-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-09-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2561,11 +2561,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-09-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-09-D3-A6 — Recovery after failure
+##### JF-03-09-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “progress-state specification” against “transport completion differs from processing completion”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-09-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-09-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2606,11 +2606,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-09-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-09-D4-A6 — Recovery after failure
+##### JF-03-09-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “polling contract” against “pending, error and cancelled states terminate predictably”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-09-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-09-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2651,11 +2651,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-09-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-09-D5-A6 — Recovery after failure
+##### JF-03-09-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “stale ui rules” against “replaced evidence clears current ready presentation”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-09-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-09-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2696,11 +2696,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-09-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-09-D6-A6 — Recovery after failure
+##### JF-03-09-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “navigation privacy rules” against “protected details do not enter public urls or titles”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-09-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-09-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2771,11 +2771,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-10-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-10-D1-A6 — Recovery after failure
+##### JF-03-10-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “search field allowlist” against “only necessary metadata and approved extracted fields are indexed”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-10-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-10-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2816,11 +2816,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-10-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-10-D2-A6 — Recovery after failure
+##### JF-03-10-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “index revision procedure” against “updates match the active document revision”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-10-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-10-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2861,11 +2861,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-10-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-10-D3-A6 — Recovery after failure
+##### JF-03-10-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “search permission contract” against “every result remains tenant-filtered”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-10-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-10-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2906,11 +2906,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-10-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-10-D4-A6 — Recovery after failure
+##### JF-03-10-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “snippet display rules” against “sensitive fields appear only in authorized contexts”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-10-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-10-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2951,11 +2951,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-10-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-10-D5-A6 — Recovery after failure
+##### JF-03-10-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “anchor resolution service contract” against “results resolve to the intended immutable page”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-10-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-10-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -2996,11 +2996,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-10-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-10-D6-A6 — Recovery after failure
+##### JF-03-10-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “search erasure procedure” against “deleted content disappears from all search surfaces”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-10-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-10-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3071,11 +3071,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-11-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-11-D1-A6 — Recovery after failure
+##### JF-03-11-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “report job contract” against “run id and authorized requester are required”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-11-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-11-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3116,11 +3116,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-11-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-11-D2-A6 — Recovery after failure
+##### JF-03-11-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “template revision contract” against “content and limitations are versioned”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-11-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-11-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3161,11 +3161,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-11-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-11-D3-A6 — Recovery after failure
+##### JF-03-11-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “export worker contract” against “untrusted text cannot execute active content”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-11-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-11-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3206,11 +3206,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-11-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-11-D4-A6 — Recovery after failure
+##### JF-03-11-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “export storage policy” against “access and retention are bounded”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-11-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-11-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3251,11 +3251,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-11-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-11-D5-A6 — Recovery after failure
+##### JF-03-11-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “snapshot consistency check” against “every evidence reference belongs to the selected run”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-11-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-11-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3296,11 +3296,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-11-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-11-D6-A6 — Recovery after failure
+##### JF-03-11-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “export retry behavior” against “failure does not charge for a completed artifact”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-11-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-11-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3371,11 +3371,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-12-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-12-D1-A6 — Recovery after failure
+##### JF-03-12-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “trigger catalogue” against “ready, failed, changed and incident notices differ”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-12-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-12-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3416,11 +3416,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-12-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-12-D2-A6 — Recovery after failure
+##### JF-03-12-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “payload allowlist” against “messages link to authorized review rather than exposing evidence”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-12-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-12-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3461,11 +3461,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-12-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-12-D3-A6 — Recovery after failure
+##### JF-03-12-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “notification retry contract” against “duplicate delivery is bounded and traceable”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-12-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-12-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3506,11 +3506,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-12-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-12-D4-A6 — Recovery after failure
+##### JF-03-12-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “preference model” against “optional communications and essential notices are distinguished”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-12-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-12-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3551,11 +3551,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-12-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-12-D5-A6 — Recovery after failure
+##### JF-03-12-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “timezone presentation contract” against “application deadline zones are preserved”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-12-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-12-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3596,11 +3596,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-12-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-12-D6-A6 — Recovery after failure
+##### JF-03-12-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “delivery-status workflow” against “undelivered important notices remain visible in the app”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-12-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-12-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3671,11 +3671,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-13-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-13-D1-A6 — Recovery after failure
+##### JF-03-13-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “correlation contract” against “request, job and run references join without raw identity data”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-13-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-13-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3716,11 +3716,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-13-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-13-D2-A6 — Recovery after failure
+##### JF-03-13-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “log schema” against “document text and secrets are excluded”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-13-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-13-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3761,11 +3761,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-13-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-13-D3-A6 — Recovery after failure
+##### JF-03-13-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “metric inventory” against “latency, queue age, retries and unknown reasons are visible”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-13-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-13-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3806,11 +3806,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-13-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-13-D4-A6 — Recovery after failure
+##### JF-03-13-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “alert rule brief” against “thresholds identify customer impact rather than noise”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-13-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-13-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3851,11 +3851,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-13-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-13-D5-A6 — Recovery after failure
+##### JF-03-13-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “trace lifecycle policy” against “purpose and retention are explicit”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-13-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-13-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3896,11 +3896,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-13-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-13-D6-A6 — Recovery after failure
+##### JF-03-13-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “operational access matrix” against “debug access is role-scoped and audited”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-13-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-13-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -3971,11 +3971,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-14-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-14-D1-A6 — Recovery after failure
+##### JF-03-14-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “environment isolation plan” against “synthetic data is the default outside production”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-14-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-14-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4016,11 +4016,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-14-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-14-D2-A6 — Recovery after failure
+##### JF-03-14-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “secret management contract” against “secrets never enter repository or build logs”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-14-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-14-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4061,11 +4061,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-14-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-14-D3-A6 — Recovery after failure
+##### JF-03-14-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “build artifact record” against “source revision and dependencies are recorded”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-14-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-14-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4106,11 +4106,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-14-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-14-D4-A6 — Recovery after failure
+##### JF-03-14-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “delivery pipeline specification” against “required assurance gates block promotion”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-14-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-14-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4151,11 +4151,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-14-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-14-D5-A6 — Recovery after failure
+##### JF-03-14-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “configuration schema” against “unsafe defaults fail before launch”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-14-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-14-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4196,11 +4196,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-14-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-14-D6-A6 — Recovery after failure
+##### JF-03-14-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “rollback runbook” against “application and data compatibility are assessed”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-14-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-14-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4271,11 +4271,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-15-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-15-D1-A6 — Recovery after failure
+##### JF-03-15-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “disaster scenario register” against “database, object and key loss are considered”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-15-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-15-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4316,11 +4316,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-15-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-15-D2-A6 — Recovery after failure
+##### JF-03-15-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “backup policy” against “coverage matches the proposed recovery point target”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-15-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-15-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4361,11 +4361,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-15-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-15-D3-A6 — Recovery after failure
+##### JF-03-15-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “key recovery procedure” against “recovery does not depend on one employee”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-15-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-15-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4406,11 +4406,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-15-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-15-D4-A6 — Recovery after failure
+##### JF-03-15-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “restore sequence” against “metadata and objects reconcile before reports reopen”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-15-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-15-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4451,11 +4451,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-15-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-15-D5-A6 — Recovery after failure
+##### JF-03-15-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “tombstone replay contract” against “erased content stays unavailable after restore”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-15-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-15-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4496,11 +4496,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-15-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-15-D6-A6 — Recovery after failure
+##### JF-03-15-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “restore drill evidence” against “actual time and data gaps are measured”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-15-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-15-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4571,11 +4571,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-16-D1-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-16-D1-A6 — Recovery after failure
+##### JF-03-16-D1-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “load model” against “pages, formats, concurrent packets and ocr share are stated”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-16-D1-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-16-D1-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4616,11 +4616,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-16-D2-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-16-D2-A6 — Recovery after failure
+##### JF-03-16-D2-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “capacity policy” against “limits provide clear retry or queue feedback”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-16-D2-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-16-D2-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4661,11 +4661,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-16-D3-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-16-D3-A6 — Recovery after failure
+##### JF-03-16-D3-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “scaling policy” against “maximum spend and minimum recovery capacity are explicit”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-16-D3-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-16-D3-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4706,11 +4706,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-16-D4-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-16-D4-A6 — Recovery after failure
+##### JF-03-16-D4-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “cost ledger” against “retries and supplier calls attach to operation ids”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-16-D4-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-16-D4-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4751,11 +4751,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-16-D5-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-16-D5-A6 — Recovery after failure
+##### JF-03-16-D5-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “load evaluation protocol” against “targets use reproducible realistic fixtures”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-16-D5-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-16-D5-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 
@@ -4796,11 +4796,11 @@ Given the same operation is delivered twice after an acknowledgement is lost, ev
 Then: Apply the effect once and return the existing operation result.
 Review evidence: link the input revision, outcome and reviewer to JF-03-16-D6-A3; unresolved failure keeps this exposure scope open.
 
-##### JF-03-16-D6-A6 — Recovery after failure
+##### JF-03-16-D6-A4 — Recovery after failure
 
 Given a failed operation is resumed after dependencies recover, evaluate “capacity decision rules” against “observed saturation justifies infrastructure changes”.
 Then: Resume from the recorded checkpoint and preserve original correlation and cost records.
-Review evidence: link the input revision, outcome and reviewer to JF-03-16-D6-A6; unresolved failure keeps this exposure scope open.
+Review evidence: link the input revision, outcome and reviewer to JF-03-16-D6-A4; unresolved failure keeps this exposure scope open.
 
 #### Handoff
 

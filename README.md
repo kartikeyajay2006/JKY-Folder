@@ -6,6 +6,8 @@
 
 This repository contains a startup implementation plan and an original logo concept. All capabilities, checks, staffing, budgets and milestones described here are proposed work. There is no application implementation in this repository.
 
+The implementation plan contains **29,354 lines** across its master document and six volumes, including **20,519 non-empty lines**, **96 workstreams**, **576 deliverables**, and **2,304 acceptance situations**.
+
 Start with the [master implementation plan](IMPLEMENTATION_PLAN.md). It sets scope, architecture decisions, launch gates, costs and sequencing. The six volumes expand the work into deliverables and acceptance situations.
 
 | Volume | Subject |

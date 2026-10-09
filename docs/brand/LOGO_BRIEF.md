@@ -4,7 +4,7 @@ Status: concept asset for the startup plan, generated on 9 October 2026.
 Saved asset: [jky-folder-logo-concept.png](jky-folder-logo-concept.png).
 Generation method: built-in image generation tool, using the imagegen skill.
 Visual inspection: the wordmark reads JKY-Folder and the concept combines a navy folder with layered document rails and a teal tick.
-Transparency inspection and image dimensions are recorded in the publication validation document after file verification.
+File verification: 1254 × 1254 pixels, RGBA PNG, with an alpha range from 0 to 255 confirming transparent regions.
 
 ## Meaning
 
