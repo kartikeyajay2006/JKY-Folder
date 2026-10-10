@@ -261,13 +261,13 @@ export function createMailService(
   }
   function publicRoutes(
     app: Express,
-    limit: RequestHandler,
+    limit: { auth: RequestHandler; mail: RequestHandler },
     fail: (s: number, m: string) => Error,
   ) {
     app.get('/api/auth/recovery-status', (_req, res) =>
       res.json({ enabled: !!transport, delivery: transport?.label || null }),
     );
-    app.post('/api/auth/forgot-password', limit, (req, res) => {
+    app.post('/api/auth/forgot-password', limit.mail, (req, res) => {
       const { email } = z
         .object({
           email: z
@@ -293,7 +293,7 @@ export function createMailService(
             : 'If that account exists, a password reset link will arrive shortly. Check your inbox and spam folder.',
       });
     });
-    app.post('/api/auth/reset-password', limit, async (req, res) => {
+    app.post('/api/auth/reset-password', limit.auth, async (req, res) => {
       const { token, password } = z
           .object({
             token: tokenSchema,
@@ -333,7 +333,7 @@ export function createMailService(
       res.clearCookie('jky_session', { path: '/' });
       res.json({ ok: true, message: 'Password changed. Sign in with your new password.' });
     });
-    app.post('/api/auth/verify-email', limit, (req, res) => {
+    app.post('/api/auth/verify-email', limit.auth, (req, res) => {
       const { token } = z.object({ token: tokenSchema }).strict().parse(req.body);
       store.db.transaction(() => {
         const row = store.db

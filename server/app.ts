@@ -196,14 +196,38 @@ export function createApp(options: {
       return res.status(403).json({ error: 'This request origin is not allowed.' });
     next();
   });
+  // Students often share one network address (a hostel, a college lab), so limits are shaped by
+  // risk rather than by raw request counts per address:
+  // - guessing: only failed sign-ins, resets and link attempts count;
   const authLimit = rateLimit({
     windowMs: 15 * 60000,
     limit: 30,
+    skipSuccessfulRequests: true,
     standardHeaders: 'draft-8',
     legacyHeaders: false,
     message: { error: 'Too many sign-in attempts. Please try later.' },
   });
-  mailService.publicRoutes(app, authLimit, (status, message) => new HttpError(status, message));
+  // - email flooding: every request that can send an email counts;
+  const mailLimit = rateLimit({
+    windowMs: 15 * 60000,
+    limit: 20,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    message: { error: 'Too many email requests from this network. Please try later.' },
+  });
+  // - mass account creation: new accounts per network per hour.
+  const signupLimit = rateLimit({
+    windowMs: 60 * 60000,
+    limit: 100,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+    message: { error: 'Too many new accounts from this network. Please try again in an hour.' },
+  });
+  mailService.publicRoutes(
+    app,
+    { auth: authLimit, mail: mailLimit },
+    (status, message) => new HttpError(status, message),
+  );
   guardian.publicRoutes(app, authLimit, (status, message) => new HttpError(status, message));
   function setSession(res: Response, userId: string) {
     const token = randomBytes(32).toString('hex'),
@@ -231,7 +255,7 @@ export function createApp(options: {
     };
   }
   app.get('/api/health', (_req, res) => res.json({ status: 'ok', version: '0.1.0' }));
-  app.post('/api/auth/register', authLimit, async (req, res) => {
+  app.post('/api/auth/register', signupLimit, authLimit, async (req, res) => {
     const input = authSchema
       .extend({
         name: z.string().trim().min(2).max(80),
@@ -308,7 +332,7 @@ export function createApp(options: {
     const csrf = setSession(res, row.id);
     res.json({ user: readUser(row), csrf });
   });
-  app.post('/api/auth/demo', authLimit, async (req, res) => {
+  app.post('/api/auth/demo', signupLimit, authLimit, async (req, res) => {
     if (!req.is('application/json')) throw new HttpError(415, 'Send an application/json request.');
     const id = randomUUID();
     store.db
@@ -406,12 +430,13 @@ export function createApp(options: {
   guardian.privateRoutes(
     app,
     (req) => user(req).id,
+    mailLimit,
     (status, message) => new HttpError(status, message),
   );
   mailService.privateRoutes(
     app,
     (req) => user(req).id,
-    authLimit,
+    mailLimit,
     (status, message) => new HttpError(status, message),
   );
   registerSupport(store).routes(

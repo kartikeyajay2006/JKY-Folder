@@ -463,3 +463,42 @@ describe('under-18 applicants and guardian approval', () => {
     expect(events).toContain('guardian.ended.adult');
   });
 });
+
+describe('limits for students sharing one network', () => {
+  it('lets a classroom sign up while still stopping password guessing and email floods', async () => {
+    const runtime = server({ jobs: false });
+    const client = request(runtime.app);
+    for (let i = 0; i < 35; i++) {
+      const r = await client.post('/api/auth/register').send({
+        name: `Student ${i}`,
+        email: `student-${i}@example.test`,
+        password: 'a-strong-test-password',
+        adult: true,
+        consent: true,
+      });
+      expect(r.status, `student ${i}`).toBe(201);
+    }
+    const guesses: number[] = [];
+    for (let i = 0; i < 31; i++)
+      guesses.push(
+        (
+          await client
+            .post('/api/auth/login')
+            .send({ email: 'student-0@example.test', password: `wrong-password-${i}` })
+        ).status,
+      );
+    expect(guesses.slice(0, 30).every((s) => s === 401)).toBe(true);
+    expect(guesses[30]).toBe(429);
+    const resets: number[] = [];
+    for (let i = 0; i < 21; i++)
+      resets.push(
+        (
+          await client
+            .post('/api/auth/forgot-password')
+            .send({ email: `student-${i}@example.test` })
+        ).status,
+      );
+    expect(resets.slice(0, 20).every((s) => s !== 429)).toBe(true);
+    expect(resets[20]).toBe(429);
+  });
+});

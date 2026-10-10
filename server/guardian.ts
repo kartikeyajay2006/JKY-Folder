@@ -313,6 +313,7 @@ export function createGuardianService(
   function privateRoutes(
     app: Express,
     owner: (req: Request) => string,
+    mailLimit: RequestHandler,
     fail: (s: number, m: string) => Error,
   ) {
     app.get('/api/guardian', (req, res) => res.json(describe(owner(req)) || null));
@@ -325,7 +326,7 @@ export function createGuardianService(
         throw error;
       }
     };
-    app.post('/api/guardian/resend', (req, res) => {
+    app.post('/api/guardian/resend', mailLimit, (req, res) => {
       const userId = owner(req);
       const record = describe(userId) && load(userId);
       if (!record || record.status !== 'pending')
@@ -333,7 +334,7 @@ export function createGuardianService(
       send(userId, record, true);
       res.json({ ...describe(userId), message: `Request sent again to ${record.guardianEmail}.` });
     });
-    app.put('/api/guardian/email', (req, res) => {
+    app.put('/api/guardian/email', mailLimit, (req, res) => {
       const userId = owner(req);
       const { guardianEmail } = z
         .object({
