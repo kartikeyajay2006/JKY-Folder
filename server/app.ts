@@ -11,7 +11,7 @@ import {
   timingSafeEqual,
 } from 'node:crypto';
 import { promisify } from 'node:util';
-import { existsSync, writeFileSync, unlinkSync } from 'node:fs';
+import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createStore } from './store';
 import { startJobs } from './jobs';
@@ -25,6 +25,15 @@ import {
   type EvaluationRun,
 } from '../shared/model';
 import { evaluate } from '../shared/evaluate';
+import { makeCustomPack, packetPack, starterRequirements, templates } from '../shared/templates';
+import {
+  requirementSchema,
+  requirementsSchema,
+  sourceUrlSchema,
+  deadlineSchema,
+  applicationMetaSchema,
+} from './application-schema';
+import { zipSync, strToU8 } from 'fflate';
 const scrypt = promisify(rawScrypt);
 const hash = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const profileSchema = z
@@ -98,7 +107,7 @@ export function createApp(options: {
       message: { error: 'Too many requests. Please wait a minute.' },
     }),
   );
-  app.use(express.json({ limit: '64kb' }));
+  app.use(express.json({ limit: '128kb' }));
   app.use('/api', (req, res, next) => {
     if (
       !['GET', 'HEAD', 'OPTIONS'].includes(req.method) &&
@@ -175,6 +184,10 @@ export function createApp(options: {
     const key = (await scrypt(input.password, salt, 64)) as Buffer;
     if (!row || !timingSafeEqual(key, Buffer.from(stored, 'hex')))
       throw new HttpError(401, 'The email or password is incorrect.');
+    const current = store.db.prepare('SELECT password FROM users WHERE id=?').get(row.id) as
+      { password: string } | undefined;
+    if (!current || current.password !== row.password)
+      throw new HttpError(401, 'Your account credentials changed. Please sign in again.');
     const csrf = setSession(res, row.id);
     res.json({ user: readUser(row), csrf });
   });
@@ -252,6 +265,65 @@ export function createApp(options: {
     res.json({ ok: true });
   });
   app.get('/api/packs', (_req, res) => res.json(packs));
+  app.get('/api/templates', (_req, res) => res.json(templates));
+  app.get('/api/activity', (req, res) => {
+    res.json(
+      store.db
+        .prepare(
+          'SELECT id,action,objectId,createdAt FROM audit WHERE userId=? ORDER BY rowid DESC LIMIT 80',
+        )
+        .all(user(req).id),
+    );
+  });
+  app.patch('/api/account', (req, res) => {
+    const input = z
+      .object({ name: z.string().trim().min(2).max(80) })
+      .strict()
+      .parse(req.body);
+    store.db.prepare('UPDATE users SET name=? WHERE id=?').run(input.name, user(req).id);
+    store.audit(user(req).id, 'account.updated', user(req).id);
+    res.json({ ...user(req), name: input.name });
+  });
+  app.post('/api/account/password', authLimit, async (req, res) => {
+    if (user(req).demo)
+      throw new HttpError(400, 'Create a personal account to use password settings.');
+    const input = z
+      .object({
+        currentPassword: z.string().min(1).max(128),
+        password: z.string().min(12).max(128),
+      })
+      .strict()
+      .parse(req.body);
+    const row = store.db.prepare('SELECT password FROM users WHERE id=?').get(user(req).id) as {
+      password: string;
+    };
+    const [salt, stored] = row.password.split(':');
+    const current = (await scrypt(input.currentPassword, salt, 64)) as Buffer;
+    if (!timingSafeEqual(current, Buffer.from(stored, 'hex')))
+      throw new HttpError(400, 'Your current password is incorrect.');
+    const newSalt = randomBytes(16).toString('hex');
+    const key = (await scrypt(input.password, newSalt, 64)) as Buffer;
+    const latest = store.db.prepare('SELECT password FROM users WHERE id=?').get(user(req).id) as
+      { password: string } | undefined;
+    if (!latest || latest.password !== row.password)
+      throw new HttpError(409, 'Your credentials changed. Refresh and try again.');
+    store.db.transaction(() => {
+      store.db
+        .prepare('UPDATE users SET password=? WHERE id=?')
+        .run(newSalt + ':' + key.toString('hex'), user(req).id);
+      store.db.prepare('DELETE FROM sessions WHERE userId=?').run(user(req).id);
+      store.audit(user(req).id, 'account.password.changed', user(req).id);
+    })();
+    const csrf = setSession(res, user(req).id);
+    res.json({ csrf });
+  });
+  app.post('/api/account/signout-others', (req, res) => {
+    store.db
+      .prepare('DELETE FROM sessions WHERE userId=? AND csrf<>?')
+      .run(user(req).id, (req as AuthRequest).csrf);
+    store.audit(user(req).id, 'account.sessions.revoked', user(req).id);
+    res.json({ ok: true });
+  });
   app.get('/api/packets', (req, res) => {
     const rows = store.db
       .prepare('SELECT payload FROM packets WHERE userId=? ORDER BY rowid DESC')
@@ -263,15 +335,32 @@ export function createApp(options: {
           packet: p,
           documentCount: store.documents(p.id).length,
           latestRun: store.runs(p.id)[0] || null,
+          currentCounts: evaluate(p, store.documents(p.id), packetPack(p), 'summary').counts,
+          requirementCount: packetPack(p).requirements.length,
         };
       }),
     );
   });
   app.post('/api/packets', (req, res) => {
     const input = z
-      .object({ title: z.string().trim().min(2).max(100), packId: z.string() })
+      .object({
+        title: z.string().trim().min(2).max(100),
+        packId: z.string().optional(),
+        templateId: z.enum(['college', 'scholarship', 'job', 'custom']).optional(),
+        requirements: requirementsSchema.optional(),
+        sourceUrl: sourceUrlSchema.optional(),
+        instructionText: z.string().max(20000).optional(),
+        destination: z.string().trim().max(160).optional(),
+        deadline: deadlineSchema.optional(),
+      })
       .parse(req.body);
-    if (!findPack(input.packId)) throw new HttpError(400, 'Unsupported application pack.');
+    if (!input.templateId && (!input.packId || !findPack(input.packId)))
+      throw new HttpError(400, 'Choose a supported checklist or starter.');
+    const customRequirements = input.templateId
+      ? input.requirements || starterRequirements(input.templateId)
+      : undefined;
+    if (customRequirements && !customRequirements.length)
+      throw new HttpError(400, 'Add at least one requirement to your custom application.');
     if (
       (
         store.db.prepare('SELECT COUNT(*) AS n FROM packets WHERE userId=?').get(user(req).id) as {
@@ -284,13 +373,27 @@ export function createApp(options: {
     const p: Packet = {
       id: randomUUID(),
       title: input.title,
-      packId: input.packId,
+      packId: input.packId || 'custom',
       revision: 1,
       profile: { ...emptyProfile },
       links: {},
       createdAt: now,
       updatedAt: now,
+      kind: input.templateId || 'college',
+      destination: input.destination || '',
+      deadline: input.deadline || '',
+      notes: input.instructionText || '',
+      archived: false,
     };
+    if (customRequirements) {
+      p.customPack = makeCustomPack({
+        id: 'custom-' + p.id,
+        title: input.title,
+        sourceUrl: input.sourceUrl,
+        requirements: customRequirements,
+      });
+      p.packId = p.customPack.id;
+    }
     store.db
       .prepare('INSERT INTO packets VALUES(?,?,?)')
       .run(p.id, user(req).id, JSON.stringify(p));
@@ -300,6 +403,104 @@ export function createApp(options: {
   app.get('/api/packets/:packetId', (req, res) => {
     const p = owned(req);
     res.json({ packet: p, documents: store.documents(p.id), runs: store.runs(p.id) });
+  });
+  app.patch('/api/packets/:packetId', (req, res) => {
+    const input = z
+      .object({ expectedRevision: revision, details: applicationMetaSchema })
+      .strict()
+      .parse(req.body);
+    const p = owned(req);
+    checkRevision(p, input.expectedRevision);
+    if (p.customPack && input.details.notes !== undefined && input.details.notes !== p.notes) {
+      for (const link of Object.values(p.links)) link.review = 'unreviewed';
+      p.customPack.version = `custom.${p.revision + 1}`;
+    }
+    Object.assign(p, input.details);
+    if (p.customPack) p.customPack.title = p.title;
+    touch(p);
+    store.audit(user(req).id, 'packet.updated', p.id);
+    res.json(p);
+  });
+  app.put('/api/packets/:packetId/checklist', (req, res) => {
+    const input = z
+      .object({
+        expectedRevision: revision,
+        requirements: requirementsSchema,
+        sourceUrl: sourceUrlSchema,
+        notes: z.string().max(20000).optional(),
+      })
+      .strict()
+      .parse(req.body);
+    const p = owned(req);
+    checkRevision(p, input.expectedRevision);
+    if (!p.customPack)
+      throw new HttpError(
+        400,
+        'Reference checklists are versioned. Create a custom application to edit the requirements.',
+      );
+    const oldRequirements = new Map(
+      p.customPack.requirements.map((r) => [r.id, JSON.stringify(r)]),
+    );
+    const sourceChanged =
+      p.customPack.sourceUrl !== input.sourceUrl ||
+      (input.notes !== undefined && p.notes !== input.notes);
+    p.customPack = {
+      ...p.customPack,
+      requirements: input.requirements,
+      sourceUrl: input.sourceUrl,
+      checkedAt: new Date().toISOString(),
+      version: `custom.${p.revision + 1}`,
+    };
+    if (input.notes !== undefined) p.notes = input.notes;
+    const ids = new Set(input.requirements.map((r) => r.id));
+    for (const id of Object.keys(p.links)) if (!ids.has(id)) delete p.links[id];
+    for (const requirement of input.requirements)
+      if (
+        p.links[requirement.id] &&
+        (sourceChanged || oldRequirements.get(requirement.id) !== JSON.stringify(requirement))
+      )
+        p.links[requirement.id].review = 'unreviewed';
+    touch(p);
+    store.audit(user(req).id, 'checklist.updated', p.id);
+    res.json(p);
+  });
+  app.get('/api/packets/:packetId/download', (req, res) => {
+    const p = owned(req),
+      pack = packetPack(p),
+      documents = store.documents(p.id);
+    const files: Record<string, Uint8Array> = {};
+    for (const d of documents.filter((d) => d.status === 'ready')) {
+      const row = store.db
+        .prepare('SELECT objectKey FROM documents WHERE id=? AND packetId=?')
+        .get(d.id, p.id) as { objectKey: string };
+      const safeName = d.name.replace(/[^a-zA-Z0-9._ -]/g, '_').replace(/^\.+/, '');
+      files[`documents/${d.id.slice(0, 8)}-${safeName || 'evidence'}`] = new Uint8Array(
+        readFileSync(join(store.objects, row.objectKey)),
+      );
+    }
+    const report = evaluate(p, documents, pack, 'export-' + randomUUID());
+    files['checklist-and-review.json'] = strToU8(
+      JSON.stringify(
+        {
+          application: p.title,
+          deadline: p.deadline,
+          destination: p.destination,
+          instructions: p.notes,
+          profile: p.profile,
+          checklist: pack,
+          review: report,
+        },
+        null,
+        2,
+      ),
+    );
+    files['READ-ME.txt'] = strToU8(
+      'JKY-Folder private application export\nThis archive contains inspected originals and a current review. Processing and failed files are excluded. Personal content confirmations do not guarantee institutional acceptance.\n',
+    );
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', 'attachment; filename="jky-folder-application.zip"');
+    store.audit(user(req).id, 'packet.exported', p.id);
+    res.send(Buffer.from(zipSync(files, { level: 0 })));
   });
   app.patch('/api/packets/:packetId/profile', (req, res) => {
     const input = z.object({ expectedRevision: revision, profile: profileSchema }).parse(req.body);
@@ -386,7 +587,7 @@ export function createApp(options: {
       .parse(req.body);
     const p = owned(req);
     checkRevision(p, input.expectedRevision);
-    const pack = findPack(p.packId)!;
+    const pack = packetPack(p);
     if (!pack.requirements.some((r) => r.id === req.params.requirementId))
       throw new HttpError(404, 'Requirement not found.');
     const doc = store.documents(p.id).find((d) => d.id === input.documentId);
@@ -477,11 +678,9 @@ export function createApp(options: {
     checkRevision(p, input.expectedRevision);
     const prior = store
       .runs(p.id)
-      .find(
-        (r) => r.packetRevision === p.revision && r.packVersion === findPack(p.packId)!.version,
-      );
+      .find((r) => r.packetRevision === p.revision && r.packVersion === packetPack(p).version);
     if (prior) return res.json(prior);
-    const run = evaluate(p, store.documents(p.id), findPack(p.packId)!, randomUUID());
+    const run = evaluate(p, store.documents(p.id), packetPack(p), randomUUID());
     store.db
       .prepare('INSERT INTO runs VALUES(?,?,?,?)')
       .run(run.id, p.id, run.createdAt, JSON.stringify(run));
@@ -495,12 +694,12 @@ export function createApp(options: {
       .get(String(req.params.runId), p.id) as { payload: string } | undefined;
     if (!row) throw new HttpError(404, 'Report not found.');
     const run: EvaluationRun = JSON.parse(row.payload);
-    const pack = findPack(p.packId)!;
+    const pack = packetPack(p);
     const report = {
       product: 'JKY-Folder',
       packetTitle: p.title,
-      application: pack.title,
-      sourceUrl: pack.sourceUrl,
+      application: run.checklist?.title || pack.title,
+      sourceUrl: run.checklist?.sourceUrl ?? pack.sourceUrl,
       stale: run.packetRevision !== p.revision,
       run,
     };

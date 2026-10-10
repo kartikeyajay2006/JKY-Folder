@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { applicability, evaluate } from '../shared/evaluate';
 import { uceedPack } from '../shared/packs';
 import { emptyProfile, type Packet, type DocumentRecord } from '../shared/model';
+import { makeCustomPack, starterRequirements } from '../shared/templates';
 const packet = (): Packet => ({
   id: 'p',
   title: 'Test',
@@ -18,6 +19,67 @@ const packet = (): Packet => ({
   links: {},
   createdAt: '2026-10-10',
   updatedAt: '2026-10-10',
+});
+describe('custom checklist checks', () => {
+  function fixture() {
+    const p = packet();
+    const requirements = starterRequirements('job');
+    const pack = makeCustomPack({ id: 'custom-test', title: 'Custom test', requirements });
+    p.customPack = pack;
+    p.packId = pack.id;
+    p.links['requirement-1'] = {
+      documentId: 'd',
+      pageFrom: 1,
+      pageTo: 1,
+      review: 'confirmed',
+      note: 'Inspected the original selected page.',
+    };
+    return { p, pack };
+  }
+  it('does not demand absent optional evidence', () => {
+    const { p, pack } = fixture();
+    expect(evaluate(p, [pdf], pack, 'r').counts.not_applicable).toBe(3);
+  });
+  it('checks user-defined file size constraints before accepting confirmation', () => {
+    const { p, pack } = fixture();
+    pack.requirements[0].maxBytes = 100;
+    const check = evaluate(p, [pdf], pack, 'r').checks[0];
+    expect(check.state).toBe('fail');
+    expect(check.reason).toContain('limit recorded in your checklist');
+  });
+  it('finds normalized phrases only inside the linked page range', () => {
+    const { p, pack } = fixture();
+    pack.requirements[0].expectedText = 'Fresh Applicant';
+    const docs = [
+      {
+        ...pdf,
+        pages: [
+          { number: 1, text: 'FRESH  APPLICANT resume' },
+          { number: 2, text: 'Another page' },
+        ],
+      },
+    ];
+    expect(evaluate(p, docs, pack, 'r').checks[0].state).toBe('pass');
+    p.links['requirement-1'].pageFrom = 2;
+    p.links['requirement-1'].pageTo = 2;
+    expect(evaluate(p, docs, pack, 'r').checks[0].state).toBe('needs_review');
+  });
+  it('does not treat missing extraction as a proven content failure', () => {
+    const { p, pack } = fixture();
+    pack.requirements[0].expectedText = 'Fresh Applicant';
+    const c = evaluate(p, [pdf], pack, 'r').checks[0];
+    expect(c.state).toBe('needs_review');
+    expect(c.contentState).toBe('unknown');
+  });
+  it('accepts either supported format when the owner chooses PDF or JPEG', () => {
+    const { p, pack } = fixture();
+    pack.requirements[0].mime = 'any';
+    pack.requirements[0].extension = 'any';
+    expect(
+      evaluate(p, [{ ...pdf, mime: 'image/jpeg', name: 'resume.jpeg', pageCount: 1 }], pack, 'r')
+        .checks[0].state,
+    ).toBe('pass');
+  });
 });
 const pdf: DocumentRecord = {
   id: 'd',

@@ -59,6 +59,14 @@ export function evaluate(
     if (applies === null) return base;
     const link = packet.links[r.id];
     const doc = link && documents.find((d) => d.id === link.documentId && d.packetId === packet.id);
+    if (r.optional && !doc)
+      return {
+        ...base,
+        state: 'not_applicable',
+        fileState: 'not_applicable',
+        contentState: 'not_applicable',
+        reason: 'Optional evidence has not been supplied.',
+      };
     if (!link || !doc)
       return {
         ...base,
@@ -89,12 +97,24 @@ export function evaluate(
         reason: doc.error || 'The file could not be safely inspected.',
         evidence,
       };
-    if (doc.mime !== r.mime || !doc.name.toLowerCase().endsWith(r.extension))
+    if (
+      (r.mime !== 'any' && doc.mime !== r.mime) ||
+      (r.extension !== 'any' && !doc.name.toLowerCase().endsWith(r.extension))
+    )
       return {
         ...base,
         state: 'fail',
         fileState: 'fail',
         reason: `This requirement expects ${r.extension.toUpperCase()} evidence. The linked file does not match its format and extension.`,
+        evidence,
+        verification: 'technical',
+      };
+    if (r.maxBytes && doc.size > r.maxBytes)
+      return {
+        ...base,
+        state: 'fail',
+        fileState: 'fail',
+        reason: `The file exceeds the ${Math.round(r.maxBytes / 1024)} KB limit recorded in your checklist.`,
         evidence,
         verification: 'technical',
       };
@@ -125,6 +145,25 @@ export function evaluate(
         reviewNote: link.note,
         verification: 'user',
       };
+    if (r.expectedText) {
+      const normalize = (text: string) =>
+        text.normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim();
+      const selectedText = doc.pages
+        .filter((p) => p.number >= link.pageFrom && p.number <= link.pageTo)
+        .map((p) => p.text)
+        .join(' ');
+      if (!normalize(selectedText).includes(normalize(r.expectedText)))
+        return {
+          ...base,
+          state: 'needs_review',
+          fileState: 'pass',
+          contentState: 'unknown',
+          reason: `The phrase “${r.expectedText}” was not found in the extracted text of the selected pages. Inspect the original; extraction can miss visible text.`,
+          evidence,
+          verification: 'technical',
+          reviewNote: link.note,
+        };
+    }
     if (link.review !== 'confirmed' || link.note.trim().length < 10)
       return {
         ...base,
@@ -177,5 +216,11 @@ export function evaluate(
     checks,
     limitations: pack.limitations,
     counts,
+    checklist: {
+      id: pack.id,
+      title: pack.title,
+      sourceUrl: pack.sourceUrl,
+      assurance: pack.assurance,
+    },
   };
 }

@@ -27,8 +27,11 @@ export interface Requirement {
   description: string;
   group: 'Identity' | 'Education' | 'Supporting evidence';
   condition: Predicate;
-  mime: 'application/pdf' | 'image/jpeg';
-  extension: '.pdf' | '.jpg';
+  mime: 'application/pdf' | 'image/jpeg' | 'any';
+  extension: '.pdf' | '.jpg' | 'any';
+  optional?: boolean;
+  maxBytes?: number;
+  expectedText?: string;
   sourceSection: string;
   reviewHint: string;
 }
@@ -39,7 +42,7 @@ export interface RulePack {
   cycle: string;
   sourceUrl: string;
   checkedAt: string;
-  assurance: 'reference';
+  assurance: 'reference' | 'user_defined';
   requirements: Requirement[];
   limitations: string[];
 }
@@ -74,7 +77,14 @@ export interface Packet {
   links: Record<string, EvidenceLink>;
   createdAt: string;
   updatedAt: string;
+  customPack?: RulePack;
+  kind?: ApplicationKind;
+  destination?: string;
+  deadline?: string;
+  notes?: string;
+  archived?: boolean;
 }
+export type ApplicationKind = 'college' | 'scholarship' | 'job' | 'custom';
 export type CheckState =
   'pass' | 'fail' | 'unknown' | 'needs_review' | 'not_applicable' | 'pending' | 'error';
 export interface CheckResult {
@@ -102,6 +112,7 @@ export interface EvaluationRun {
   checks: CheckResult[];
   limitations: string[];
   counts: Record<CheckState, number>;
+  checklist?: { id: string; title: string; sourceUrl: string; assurance: RulePack['assurance'] };
 }
 export interface PacketDetail {
   packet: Packet;
