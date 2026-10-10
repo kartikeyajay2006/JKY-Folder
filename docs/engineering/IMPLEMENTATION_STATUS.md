@@ -33,4 +33,6 @@ The six-stage implementation now includes a working account and packet API, a ve
 
 Verification: 24 domain/API/actual-worker tests and eight desktop/mobile browser tests passed. Browser coverage includes automated accessibility scans of the welcome page, overview, checklist, profile dialog, evidence dialog, document list and report. This is scoped internal evidence, not a complete accessibility or security certification. Build and TypeScript checks passed. The dependency audit reported zero known vulnerabilities at review time.
 
+Final validation caught a hidden-storage-path defect in original downloads. The API fixtures now use a `.data` directory, verify every demo original's MIME and byte length, and deny anonymous and cross-account reads. The browser journey also verifies that the signature preview decodes and rejects server errors. Originals are served by a database-owned object key under an explicit private root; no private directory is mounted as a public asset.
+
 The complete startup remains subject to the [open release gates](RELEASE_GATES.md). Implemented references in that document explicitly mean partial workstream fulfillment. The historical plan is preserved without retroactively marking its business research or public launch stages complete.

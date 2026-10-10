@@ -17,7 +17,11 @@ async function demo(page: import('@playwright/test').Page) {
 }
 test('demo → evidence review → dated report → stale report → deletion', async ({ page }) => {
   const errors: string[] = [];
+  const serverFailures: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
+  page.on('response', (response) => {
+    if (response.status() >= 500) serverFailures.push(response.url());
+  });
   await demo(page);
   await navigate(page, 'Requirements');
   await page
@@ -26,6 +30,13 @@ test('demo → evidence review → dated report → stale report → deletion', 
     .getByRole('button', { name: 'Review evidence' })
     .click();
   await expect(page.getByRole('dialog')).toBeVisible();
+  await expect
+    .poll(() =>
+      page
+        .getByRole('img', { name: 'Uploaded evidence: signature.jpg' })
+        .evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+    )
+    .toBe(true);
   await page.getByLabel('I reviewed the content').check();
   await page
     .getByLabel('Review note')
@@ -61,6 +72,7 @@ test('demo → evidence review → dated report → stale report → deletion', 
   await navigate(page, 'Readiness report');
   await expect(page.getByRole('heading', { name: 'Your first review is waiting.' })).toBeVisible();
   expect(errors).toEqual([]);
+  expect(serverFailures).toEqual([]);
 });
 test('create a packet, inspect a real PDF and connect a page', async ({ page }) => {
   await demo(page);
@@ -79,13 +91,11 @@ test('create a packet, inspect a real PDF and connect a page', async ({ page }) 
     .addPage()
     .drawText('Synthetic browser test - age evidence', { x: 50, y: 700, font, size: 16 });
   const bytes = await pdf.save();
-  await page
-    .getByLabel('Choose documents to upload')
-    .setInputFiles({
-      name: 'browser-age.pdf',
-      mimeType: 'application/pdf',
-      buffer: Buffer.from(bytes),
-    });
+  await page.getByLabel('Choose documents to upload').setInputFiles({
+    name: 'browser-age.pdf',
+    mimeType: 'application/pdf',
+    buffer: Buffer.from(bytes),
+  });
   await expect(page.getByText('Inspected', { exact: true })).toBeVisible({ timeout: 25000 });
   await navigate(page, 'Requirements');
   await page

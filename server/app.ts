@@ -187,13 +187,11 @@ export function createApp(options: {
     try {
       const packetId = await seedDemo(store, id);
       const csrf = setSession(res, id);
-      res
-        .status(201)
-        .json({
-          user: { id, name: 'Aanya Mehra', email: 'Synthetic demo', demo: true },
-          csrf,
-          packetId,
-        });
+      res.status(201).json({
+        user: { id, name: 'Aanya Mehra', email: 'Synthetic demo', demo: true },
+        csrf,
+        packetId,
+      });
     } catch (error) {
       store.db.prepare('DELETE FROM users WHERE id=?').run(id);
       throw error;
@@ -469,7 +467,9 @@ export function createApp(options: {
       `${doc.mime === 'image/jpeg' ? 'inline' : 'attachment'}; filename*=UTF-8''${encodeURIComponent(doc.name)}`,
     );
     res.setHeader('Content-Security-Policy', "default-src 'none'; sandbox");
-    res.sendFile(join(store.objects, row.objectKey));
+    // Resolve only the database-owned object key beneath the private root. This
+    // supports the default hidden .data directory without exposing a static mount.
+    res.sendFile(row.objectKey, { root: store.objects });
   });
   app.post('/api/packets/:packetId/evaluate', (req, res) => {
     const input = z.object({ expectedRevision: revision }).parse(req.body);
@@ -552,14 +552,12 @@ export function createApp(options: {
         .status(400)
         .json({ error: error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ') });
     if (error instanceof multer.MulterError)
-      return res
-        .status(400)
-        .json({
-          error:
-            error.code === 'LIMIT_FILE_SIZE'
-              ? 'This release supports files up to 10 MB.'
-              : 'Upload exactly one file at a time.',
-        });
+      return res.status(400).json({
+        error:
+          error.code === 'LIMIT_FILE_SIZE'
+            ? 'This release supports files up to 10 MB.'
+            : 'Upload exactly one file at a time.',
+      });
     if (error instanceof HttpError) return res.status(error.status).json({ error: error.message });
     if (error instanceof SyntaxError)
       return res.status(400).json({ error: 'The request body is not valid JSON.' });

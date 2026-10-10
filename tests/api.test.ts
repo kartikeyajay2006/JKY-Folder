@@ -8,7 +8,8 @@ import { emptyProfile } from '../shared/model';
 let runtime: ReturnType<typeof createApp>, directory: string;
 beforeEach(() => {
   directory = mkdtempSync(join(tmpdir(), 'jky-test-'));
-  runtime = createApp({ dataDir: directory, jobs: false });
+  // Mirror the default hidden .data path so private-original serving is exercised.
+  runtime = createApp({ dataDir: join(directory, '.data'), jobs: false });
 });
 afterEach(() => {
   runtime.close();
@@ -16,15 +17,13 @@ afterEach(() => {
 });
 async function account(email = 'one@example.test') {
   const agent = request.agent(runtime.app);
-  const response = await agent
-    .post('/api/auth/register')
-    .send({
-      name: 'Test Applicant',
-      email,
-      password: 'a-strong-test-password',
-      adult: true,
-      consent: true,
-    });
+  const response = await agent.post('/api/auth/register').send({
+    name: 'Test Applicant',
+    email,
+    password: 'a-strong-test-password',
+    adult: true,
+    consent: true,
+  });
   expect(response.status).toBe(201);
   return { agent, csrf: response.body.csrf };
 }
@@ -51,15 +50,13 @@ describe('private API boundary', () => {
   it('requires adult and processing consent during registration', async () => {
     expect(
       (
-        await request(runtime.app)
-          .post('/api/auth/register')
-          .send({
-            name: 'Applicant',
-            email: 'x@example.test',
-            password: 'a-strong-test-password',
-            adult: false,
-            consent: true,
-          })
+        await request(runtime.app).post('/api/auth/register').send({
+          name: 'Applicant',
+          email: 'x@example.test',
+          password: 'a-strong-test-password',
+          adult: false,
+          consent: true,
+        })
       ).status,
     ).toBe(400);
   });
@@ -184,11 +181,17 @@ describe('private API boundary', () => {
     const detail = await agent.get(`/api/packets/${result.body.packetId}`);
     expect(detail.body.documents).toHaveLength(4);
     expect(detail.body.runs[0].counts.fail).toBe(2);
-    const first = detail.body.documents[0];
-    expect(
-      (await agent.get(`/api/packets/${result.body.packetId}/documents/${first.id}/content`))
-        .status,
-    ).toBe(200);
+    const other = await account('other@example.test');
+    for (const document of detail.body.documents) {
+      const url = `/api/packets/${result.body.packetId}/documents/${document.id}/content`;
+      const original = await agent.get(url);
+      expect(original.status).toBe(200);
+      expect(original.headers['content-type']).toContain(document.mime);
+      expect(original.headers['cache-control']).toBe('no-store');
+      expect(original.body.length).toBe(document.size);
+      expect((await other.agent.get(url)).status).toBe(404);
+      expect((await request(runtime.app).get(url)).status).toBe(401);
+    }
   });
   it('erases an account and invalidates the active session', async () => {
     const a = await account();
