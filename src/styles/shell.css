@@ -3,6 +3,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Stray horizontal overflow would make mobile browsers rescale the whole layout. */
+  overflow-x: clip;
 }
 .workspace-header {
   position: sticky;

@@ -131,7 +131,9 @@ test('dialog traps keyboard focus and narrow screens avoid horizontal overflow',
   await expect(dialog.getByRole('button', { name: 'Close dialog' })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(dialog).not.toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
-    true,
-  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
+    ),
+  ).toBe(true);
 });

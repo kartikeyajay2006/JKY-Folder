@@ -55,9 +55,11 @@ test('top navigation and account menu work with keyboard, search and reduced mot
     expect(await header.evaluate((element) => (element as HTMLElement).inert)).toBe(true);
     await page.keyboard.press('Escape');
     expect(await header.evaluate((element) => (element as HTMLElement).inert)).toBe(false);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
+      ),
+    ).toBe(true);
     expect(
       await page.evaluate(
         () =>

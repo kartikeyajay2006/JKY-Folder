@@ -675,7 +675,7 @@ html[data-motion='on'] .hf-stamp {
   .hero,
   .honesty,
   .account-section {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .hero-folder {
     justify-self: center;
@@ -695,7 +695,7 @@ html[data-motion='on'] .hf-stamp {
     margin-left: auto;
   }
   .how-steps {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px;
   }
   .how-steps li,
@@ -704,7 +704,7 @@ html[data-motion='on'] .hf-stamp {
     border-left: 0;
   }
   .state-legend > div {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 6px;
   }
   .state-legend {

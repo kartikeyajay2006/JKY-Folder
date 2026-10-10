@@ -74,7 +74,11 @@ test('workflow preview supports keyboard selection and motion can be paused pers
   ).toBeDisabled();
   await accessible(page);
   await page.setViewportSize({ width: 320, height: 800 });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
+    ),
+  ).toBe(true);
 });
 
 test('quick actions run real reviews, readiness opens reports and file drops inspect originals', async ({
@@ -148,9 +152,11 @@ test('quick actions run real reviews, readiness opens reports and file drops ins
       page.getByRole('dialog').getByRole('heading', { name: 'Create an application', exact: true }),
     ).toBeVisible();
     await page.keyboard.press('Escape');
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
+      ),
+    ).toBe(true);
   } finally {
     await cleanup(page).catch(() => {});
   }

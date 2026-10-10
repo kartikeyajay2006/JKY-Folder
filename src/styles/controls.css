@@ -83,6 +83,17 @@
 .full {
   width: 100%;
 }
+@media (max-width: 640px) {
+  .primary,
+  .outline,
+  .danger,
+  .danger-outline,
+  .quiet {
+    white-space: normal;
+    text-align: center;
+    max-width: 100%;
+  }
+}
 .small-button {
   min-height: 34px;
   padding: 0 12px;

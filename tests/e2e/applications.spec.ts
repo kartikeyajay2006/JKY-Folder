@@ -77,9 +77,11 @@ test('fresh account has useful distinct sections and accessible setup', async ({
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     await checkAccessibility(page);
     await page.keyboard.press('Escape');
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
+      ),
+    ).toBe(true);
   } finally {
     await cleanup(page).catch(() => {});
   }
@@ -187,9 +189,11 @@ test('documents-first onboarding inspects and renders real PDF pages', async ({ 
     await expect(
       page.getByRole('heading', { name: 'Your supported checks are reviewed.' }),
     ).toBeVisible();
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
+      ),
+    ).toBe(true);
   } finally {
     await cleanup(page).catch(() => {});
   }

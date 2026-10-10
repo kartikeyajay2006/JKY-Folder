@@ -121,7 +121,7 @@
 }
 .reference-choice {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 14px;
   padding: 14px 16px;
@@ -470,7 +470,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .evidence-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .evidence-preview {
     border-radius: 0;
@@ -497,7 +497,7 @@
   .template-grid,
   .form-columns,
   .two-fields {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .wizard-body {
     padding: 16px;
