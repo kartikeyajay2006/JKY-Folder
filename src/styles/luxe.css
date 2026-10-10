@@ -1,5 +1,6 @@
 /*
-  Finish layer: display type, metal details and the motion system.
+  Finish layer: display type,
+metal details and the motion system.
   Everything that moves is gated on html[data-motion='on'].
 */
 
@@ -11,7 +12,6 @@
 .section-head h2,
 .honesty h2,
 .account-copy h2,
-.first-folder h2,
 .report-empty h2,
 .section-empty h2,
 .upload-copy h2,
@@ -46,7 +46,6 @@
   letter-spacing: -0.02em;
 }
 .how-steps li::before,
-.first-steps li::before,
 .help-steps li::before,
 .stored-list dd,
 .deadline-stamp strong {
@@ -837,4 +836,10 @@ html.theme-switching .folder-tab.is-current {
 html[data-motion='on'] .hero-folder.is-settled:hover .hf-stage,
 html[data-motion='on'] .hero-folder.is-settled:focus-within .hf-stage {
   animation-play-state: paused;
+}
+
+/* Before the folder is first on screen it rests in its final state; nothing is half-drawn. */
+.hero-folder.is-waiting,
+.hero-folder.is-waiting * {
+  animation: none !important;
 }

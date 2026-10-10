@@ -52,36 +52,11 @@ export function WorkspaceHome({
         ? (a.packet.deadline || '9999').localeCompare(b.packet.deadline || '9999')
         : b.packet.updatedAt.localeCompare(a.packet.updatedAt),
     );
+  if (!packets.length)
+    return <EmptySection view="home" onCreate={onCreate} onUpload={() => onCreate()} />;
   return (
     <div className="portfolio">
-      {!packets.length ? (
-        <section className="first-folder" aria-labelledby="first-title">
-          <div>
-            <h2 id="first-title">Start with one application.</h2>
-            <p>
-              Pick a starting checklist, add the originals you plan to submit, and link each
-              requirement to the page that supports it.
-            </p>
-            <button className="gold-button" onClick={() => onCreate()}>
-              Create your first application
-            </button>
-          </div>
-          <ol className="first-steps">
-            <li>
-              <strong>Choose a checklist</strong>
-              <span>A starter, a reference checklist, or your own instructions.</span>
-            </li>
-            <li>
-              <strong>Add your originals</strong>
-              <span>PDF and JPEG files stay private and unchanged.</span>
-            </li>
-            <li>
-              <strong>Save a dated review</strong>
-              <span>See exactly what is missing before you submit.</span>
-            </li>
-          </ol>
-        </section>
-      ) : (
+      {
         <>
           <p className="portfolio-summary">
             {plural(active.length, 'active application')}, {plural(docs, 'document')} in folders
@@ -226,7 +201,7 @@ export function WorkspaceHome({
             </div>
           )}
         </>
-      )}
+      }
       <section className="starter-section" aria-labelledby="starter-title">
         <div className="section-head">
           <h2 id="starter-title">Start from a checklist</h2>
@@ -270,70 +245,104 @@ export function WorkspaceHome({
   );
 }
 
+type EmptyView = 'home' | 'requirements' | 'documents' | 'report';
+
+// The four steps every new user follows. Each section marks where it sits on this path.
+const journey: { view: EmptyView; title: string; text: string }[] = [
+  {
+    view: 'home',
+    title: 'Create an application',
+    text: 'Pick a starter, a reference checklist, or paste the instructions you received.',
+  },
+  {
+    view: 'documents',
+    title: 'Add your original documents',
+    text: 'Upload the PDF and JPEG files you plan to submit. They stay private and unchanged.',
+  },
+  {
+    view: 'requirements',
+    title: 'Connect each requirement to its page',
+    text: 'Open a checklist item, choose the file and page that supports it, and note what you checked.',
+  },
+  {
+    view: 'report',
+    title: 'Save a dated review',
+    text: 'See what is reviewed, missing or still unresolved, and keep a report you can print.',
+  },
+];
+
+/** What a person without any application sees: an explanation and the path, nothing pre-filled. */
 export function EmptySection({
   view,
   onCreate,
   onUpload,
 }: {
-  view: 'requirements' | 'documents' | 'report';
+  view: EmptyView;
   onCreate: (template?: string) => void;
   onUpload: () => void;
 }) {
   const content = {
-    requirements: {
-      title: 'A checklist that matches your application.',
+    home: {
+      title: 'You have no applications yet.',
       description:
-        'Start from your actual instructions. Add the files you need, choose formats and mark optional items before you review.',
-      button: 'Build my checklist',
-      points: [
-        'One item per required document',
-        'Formats taken from your instructions',
-        'Each item linked to an exact page',
-      ],
+        'JKY-Folder keeps one folder per application: its checklist, its original documents and its saved reviews. Follow these four steps to prepare your first one.',
+    },
+    requirements: {
+      title: 'Your checklist will appear here.',
+      description:
+        'Every application gets its own checklist, with one item for each document you need to submit. Create your first application to start one.',
     },
     documents: {
-      title: 'Your documents deserve a proper home.',
+      title: 'Your documents will appear here.',
       description:
-        'Choose your files and we’ll create an application folder for them. PDF pages are previewed and their text extracted so you can link the right evidence.',
-      button: 'Choose documents and create an application',
-      points: ['Originals stay unchanged', 'Duplicates are detected', 'Private to your account'],
+        'Each application keeps a private folder of your original files. Create an application, then upload the PDFs and JPEGs you plan to submit.',
     },
     report: {
-      title: 'Know what is ready before you submit.',
+      title: 'Your readiness report will appear here.',
       description:
-        'A readiness report lists linked evidence, file checks, your review notes and anything unresolved. Start an application to save your first one.',
-      button: 'Start an application',
-      points: [
-        'Missing evidence, item by item',
-        'Your own review notes',
-        'Dated, with the checklist version used',
-      ],
+        'Once your documents are connected to the checklist, save a review to get a dated report of what is ready and what still needs you.',
     },
   }[view];
   return (
     <section className={`sheet section-empty empty-${view}`} aria-labelledby="empty-title">
-      <div>
+      <div className="empty-intro">
         <h2 id="empty-title">{content.title}</h2>
         <p>{content.description}</p>
-        <button
-          className="primary"
-          onClick={() =>
-            view === 'documents'
-              ? onUpload()
-              : onCreate(view === 'requirements' ? 'custom' : undefined)
-          }
-        >
-          {content.button}
-        </button>
+        <div className="button-row">
+          <button
+            className="gold-button"
+            onClick={() => onCreate(view === 'requirements' ? 'custom' : undefined)}
+          >
+            Create your first application
+          </button>
+          {view === 'documents' && (
+            <button className="text-link" onClick={onUpload}>
+              Or choose your documents first
+            </button>
+          )}
+        </div>
       </div>
-      <ul className="empty-points">
-        {content.points.map((point) => (
-          <li key={point}>
-            <StateMark state="pass" size={20} />
-            {point}
-          </li>
-        ))}
-      </ul>
+      <ol className="journey" aria-label="How to prepare an application">
+        {journey.map((step, i) => {
+          const next = i === 0;
+          const here = step.view === view && view !== 'home';
+          return (
+            <li key={step.view} className={next ? 'is-next' : here ? 'is-here' : ''}>
+              <span className="journey-number" aria-hidden="true">
+                {i + 1}
+              </span>
+              <div>
+                <strong>
+                  {step.title}
+                  {next && <span className="journey-tag">Start here</span>}
+                  {here && <span className="journey-tag is-muted">This page</span>}
+                </strong>
+                <p>{step.text}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
     </section>
   );
 }

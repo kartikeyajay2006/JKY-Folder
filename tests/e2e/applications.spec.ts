@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+import { expectAccessible } from './support';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
-import AxeBuilder from '@axe-core/playwright';
 async function nav(page: Page, label: string) {
   await page.locator('#workspace-navigation').waitFor({ state: 'attached' });
   await page
@@ -30,54 +30,41 @@ async function cleanup(page: Page) {
     });
   }
 }
-async function checkAccessibility(page: Page) {
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    await Promise.all(
-      document
-        .getAnimations()
-        .filter(
-          (a) => a.playState === 'running' && a.effect?.getComputedTiming().iterations !== Infinity,
-        )
-        .map((a) => a.finished.catch(() => {})),
-    );
-  });
-  const result = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
-    .analyze();
-  expect(
-    result.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })),
-  ).toEqual([]);
-}
 test('fresh account has useful distinct sections and accessible setup', async ({ page }) => {
   await signup(page);
   try {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
-    await expect(page.getByRole('heading', { name: 'Start with one application.' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Start from a checklist' })).toBeVisible();
-    await checkAccessibility(page);
+    await expect(
+      page.getByRole('heading', { name: 'You have no applications yet.' }),
+    ).toBeVisible();
+    // A new account sees only the explanation and the path: nothing pre-filled or ticked.
+    await expect(page.getByRole('list', { name: 'How to prepare an application' })).toContainText(
+      'Start here',
+    );
+    await expect(page.locator('.state-mark, .starter-tile, .folder-card')).toHaveCount(0);
+    await expectAccessible(page);
     await nav(page, 'Checklist');
     await expect(
-      page.getByRole('heading', { name: 'A checklist that matches your application.' }),
+      page.getByRole('heading', { name: 'Your checklist will appear here.' }),
     ).toBeVisible();
-    await checkAccessibility(page);
+    await expectAccessible(page);
     await nav(page, 'Documents');
     await expect(
-      page.getByRole('heading', { name: 'Your documents deserve a proper home.' }),
+      page.getByRole('heading', { name: 'Your documents will appear here.' }),
     ).toBeVisible();
-    await checkAccessibility(page);
+    await expectAccessible(page);
     await nav(page, 'Report');
     await expect(
-      page.getByRole('heading', { name: 'Know what is ready before you submit.' }),
+      page.getByRole('heading', { name: 'Your readiness report will appear here.' }),
     ).toBeVisible();
-    await checkAccessibility(page);
+    await expectAccessible(page);
     await nav(page, 'Activity');
     await expect(page.getByRole('heading', { name: 'Account created', exact: true })).toBeVisible();
     await nav(page, 'Overview');
     await page.getByRole('button', { name: 'Create your first application' }).click();
-    await checkAccessibility(page);
+    await expectAccessible(page);
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
-    await checkAccessibility(page);
+    await expectAccessible(page);
     await page.keyboard.press('Escape');
     expect(
       await page.evaluate(
@@ -94,7 +81,7 @@ test('custom instructions become a working editable application with archive and
   await signup(page);
   try {
     await nav(page, 'Checklist');
-    await page.getByRole('button', { name: 'Build my checklist' }).click();
+    await page.getByRole('button', { name: 'Create your first application' }).click();
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     await page.getByLabel('Application name', { exact: true }).fill('Product designer application');
     await page.getByLabel('Institution or company').fill('Example Studio');
@@ -138,7 +125,7 @@ test('custom instructions become a working editable application with archive and
     await page.reload();
     await nav(page, 'Settings & privacy');
     await expect(page.getByLabel('Display name')).toHaveValue('Updated Applicant');
-    await checkAccessibility(page);
+    await expectAccessible(page);
   } finally {
     await cleanup(page).catch(() => {});
   }
@@ -238,7 +225,7 @@ test('batch intake keeps valid files after a rejected file and explains duplicat
     await expect(queue.getByText('2 of 3 files accepted.', { exact: false })).toBeVisible();
     await expect(queue.getByText('Use a PDF or JPEG file with a simple filename.')).toBeVisible();
     await expect(page.getByText('Inspected', { exact: true })).toHaveCount(2, { timeout: 25000 });
-    await checkAccessibility(page);
+    await expectAccessible(page);
     await page
       .getByLabel('Choose documents to upload')
       .setInputFiles({ name: 'resume-copy.pdf', mimeType: 'application/pdf', buffer: resume });
