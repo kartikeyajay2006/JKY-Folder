@@ -43,6 +43,14 @@ import { Status, date, size } from './components/Status';
 import { api, body, setCsrf, download, ApiError } from './api';
 import { evaluate } from '../shared/evaluate';
 import { uceedPack } from '../shared/packs';
+import { packetPack, deadlineInfo } from '../shared/templates';
+import { ApplicationWizard, type CreateApplicationInput } from './components/ApplicationWizard';
+import { WorkspaceHome, EmptySection, type PacketCard } from './components/WorkspaceHome';
+import { ChecklistEditor } from './components/ChecklistEditor';
+import { ApplicationDetails } from './components/ApplicationDetails';
+import { AccountSettings } from './components/AccountSettings';
+import { ActivityFeed } from './components/ActivityFeed';
+import { PdfPreview } from './components/PdfPreview';
 import type {
   User,
   Packet,
@@ -52,44 +60,42 @@ import type {
   DocumentRecord,
   RulePack,
 } from '../shared/model';
-type View = 'overview' | 'requirements' | 'documents' | 'report' | 'activity' | 'help' | 'settings';
-type PacketCard = { packet: Packet; documentCount: number; latestRun: EvaluationRun | null };
+type View =
+  | 'overview'
+  | 'applications'
+  | 'requirements'
+  | 'documents'
+  | 'report'
+  | 'activity'
+  | 'help'
+  | 'settings';
+
 const navigation = [
   { id: 'overview', label: 'Overview', Icon: LayoutDashboard },
+  { id: 'applications', label: 'Applications', Icon: FolderOpen },
   { id: 'requirements', label: 'Requirements', Icon: ListChecks },
   { id: 'documents', label: 'My documents', Icon: Files },
   { id: 'report', label: 'Readiness report', Icon: FileCheck2 },
   { id: 'activity', label: 'Activity', Icon: Activity },
 ] as const;
 const headings: Record<View, [string, string]> = {
+  applications: ['Your applications.', 'Every opportunity, every deadline, every next step.'],
   overview: [
-    'A little closer to your next chapter.',
-    'Your application, brought together. Here’s where things stand.',
+    'Application overview',
+    'Track your requirements, review your evidence, and resolve the next action.',
   ],
   requirements: [
-    'Every requirement. A clear next step.',
+    'Document checklist',
     'Connect each instruction to its evidence, one document at a time.',
   ],
-  documents: [
-    'Everything in its right place.',
-    'Your original files, kept together in a private packet.',
-  ],
+  documents: ['Document library', 'Your original files, kept together in a private packet.'],
   report: [
-    'The details behind your readiness.',
+    'Readiness report',
     'A dated snapshot of what was checked, and what still needs review.',
   ],
-  activity: [
-    'Your progress, one step at a time.',
-    'Uploads and review runs for this application packet.',
-  ],
-  help: [
-    'A little guidance goes a long way.',
-    'Understand your checklist, your evidence, and the limits of a review.',
-  ],
-  settings: [
-    'A workspace that stays yours.',
-    'Manage your account and decide what stays in your folder.',
-  ],
+  activity: ['Workspace activity', 'Uploads and review runs for this application packet.'],
+  help: ['Help center', 'Understand your checklist, your evidence, and the limits of a review.'],
+  settings: ['Settings & privacy', 'Manage your account and decide what stays in your folder.'],
 };
 export default function App() {
   const [user, setUser] = useState<User | null>(null),
@@ -97,8 +103,10 @@ export default function App() {
     [bootError, setBootError] = useState('');
   const [packets, setPackets] = useState<PacketCard[]>([]),
     [activeId, setActiveId] = useState(''),
-    [data, setData] = useState<PacketDetail | null>(null),
-    [pack, setPack] = useState<RulePack>(uceedPack);
+    [data, setData] = useState<PacketDetail | null>(null);
+  const pack = data ? packetPack(data.packet) : uceedPack;
+  const [createTemplate, setCreateTemplate] = useState('college');
+  const [queuedFiles, setQueuedFiles] = useState<File[]>([]);
   const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width:700px)').matches);
   const [view, setView] = useState<View>('overview'),
     [busy, setBusy] = useState(''),
@@ -108,7 +116,7 @@ export default function App() {
     [filter, setFilter] = useState('all'),
     [mobile, setMobile] = useState(false);
   const [modal, setModal] = useState<
-      'create' | 'profile' | 'delete-packet' | 'delete-account' | null
+      'create' | 'profile' | 'details' | 'checklist' | 'delete-packet' | 'delete-account' | null
     >(null),
     [evidence, setEvidence] = useState<Requirement | null>(null),
     [preview, setPreview] = useState<DocumentRecord | null>(null),
@@ -165,7 +173,7 @@ export default function App() {
       .then(([list, packs]) => {
         if (alive) {
           setPackets(list);
-          setPack(packs[0]);
+
           setActiveId((id) => id || list[0]?.packet.id || '');
         }
       })
@@ -245,7 +253,12 @@ export default function App() {
     }
   }
   async function upload(files: FileList | File[] | null) {
-    if (!files || !activeId) return;
+    if (!files) return;
+    if (!activeId) {
+      setQueuedFiles(Array.from(files));
+      startCreate();
+      return;
+    }
     await perform('upload', async () => {
       let uploaded = 0;
       for (const file of Array.from(files)) {
@@ -281,60 +294,45 @@ export default function App() {
       setToast('Review snapshot saved. Your next steps are up to date.');
     });
   }
-  const createForm = (
-    <form
-      className="dialog-body"
-      onSubmit={(event) => {
-        event.preventDefault();
-        const form = new FormData(event.currentTarget);
-        void perform('create', async () => {
-          const p = await api<Packet>('/packets', {
-            method: 'POST',
-            body: body({ title: form.get('title'), packId: pack.id }),
-          });
-          setModal(null);
-          setActiveId(p.id);
-          setView('requirements');
-          await refresh(p.id);
-          setModal('profile');
-        });
-      }}
-    >
-      <p>Give this chapter a name. You can keep separate packets for your application work.</p>
-      <label>
-        Packet name
-        <input
-          name="title"
-          placeholder="e.g. My design school application"
-          minLength={2}
-          maxLength={100}
-          required
-        />
-      </label>
-      <label>
-        Application checklist
-        <select disabled>
-          <option>{pack.title} · reference checklist</option>
-        </select>
-      </label>
-      <div className="soft-notice">
-        <Info size={18} />
-        <p>
-          This checklist is limited to documented evidence and file formats. Check the official
-          instructions before submitting.
-        </p>
-      </div>
-      {error && (
-        <p className="form-error" role="alert">
-          {error}
-        </p>
-      )}
-      <button className="primary full" disabled={!!busy}>
-        Create packet
-        <Plus size={16} />
-      </button>
-    </form>
-  );
+  function startCreate(template = 'college') {
+    setCreateTemplate(template);
+    setModal('create');
+  }
+  async function createApplication(input: CreateApplicationInput) {
+    const p = await api<Packet>('/packets', { method: 'POST', body: body(input) });
+    setActiveId(p.id);
+    setView('requirements');
+    setModal(null);
+    if (queuedFiles.length) {
+      for (const file of queuedFiles) {
+        const form = new FormData();
+        form.append('file', file);
+        await api(`/packets/${p.id}/documents`, { method: 'POST', body: form });
+      }
+      setQueuedFiles([]);
+      setView('documents');
+    }
+    await refresh(p.id);
+    if (!p.customPack) setModal('profile');
+    setToast('Application created. Your next steps are ready.');
+  }
+  function openApplication(id: string) {
+    setActiveId(id);
+    navigate('overview');
+  }
+  async function archiveApplication(p: Packet) {
+    await perform('archive', async () => {
+      await api(`/packets/${p.id}`, {
+        method: 'PATCH',
+        body: body({
+          expectedRevision: p.revision,
+          details: { title: p.title, archived: !p.archived },
+        }),
+      });
+      await refresh();
+      setToast(p.archived ? 'Application restored.' : 'Application archived.');
+    });
+  }
   if (booting)
     return (
       <main className="boot">
@@ -394,10 +392,21 @@ export default function App() {
         >
           <img src="/favicon.svg" alt="" />
           <span>
-            JKY-Folder<span className="brand-caption">A LITTLE MORE READY.</span>
+            JKY-Folder<span className="brand-caption">APPLICATION WORKSPACE</span>
           </span>
         </a>
-        <div className="workspace-selector">
+        <div
+          className="workspace-selector"
+          role="button"
+          tabIndex={0}
+          onClick={() => navigate('applications')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              navigate('applications');
+            }
+          }}
+        >
           <span className="workspace-avatar">{user.name.charAt(0).toUpperCase()}</span>
           <span>
             <strong>My workspace</strong>
@@ -405,7 +414,7 @@ export default function App() {
           </span>
           <ChevronDown size={15} />
         </div>
-        <span className="nav-caption">YOUR APPLICATION</span>
+        <span className="nav-caption">WORKSPACE</span>
         <nav aria-label="Workspace">
           {navigation.map(({ id, label, Icon }) => (
             <button
@@ -426,8 +435,8 @@ export default function App() {
           <div className="tip-icon">
             <Sparkles size={20} />
           </div>
-          <strong>Small steps. Big possibilities.</strong>
-          <p>A missing document today can become a clear next step tomorrow.</p>
+          <strong>Your application toolkit</strong>
+          <p>Start from instructions, connect evidence, and review before submitting.</p>
           <button onClick={() => navigate('help')}>
             How it works
             <ArrowUpRight size={14} />
@@ -507,7 +516,8 @@ export default function App() {
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
-                  if (view === 'overview' && e.target.value) setView('requirements');
+                  if (view === 'overview' && e.target.value)
+                    setView(activeId ? 'requirements' : 'applications');
                 }}
               />
               <kbd>⌘ K</kbd>
@@ -531,7 +541,7 @@ export default function App() {
               <Sparkles size={14} />
               <span>You’re exploring a sample application with fictional documents.</span>
               <button onClick={() => setModal('create')}>
-                Make a new packet
+                Make a new application
                 <ArrowRight size={13} />
               </button>
             </div>
@@ -543,12 +553,20 @@ export default function App() {
                   ? `GOOD TO SEE YOU, ${user.name.split(' ')[0].toUpperCase()}.`
                   : 'YOUR APPLICATION WORKSPACE'}
               </div>
-              <h1>{headings[view][0]}</h1>
-              <p>{headings[view][1]}</p>
+              <h1>
+                {view === 'overview' && !activeId
+                  ? `Welcome, ${user.name.split(' ')[0]}.`
+                  : headings[view][0]}
+              </h1>
+              <p>
+                {view === 'overview' && !activeId
+                  ? 'Let’s turn your next opportunity into a clear, organized application.'
+                  : headings[view][1]}
+              </p>
             </div>
             <button className="primary" onClick={() => setModal('create')}>
               <Plus size={17} />
-              New packet
+              New application
             </button>
           </div>
           {error && (
@@ -576,29 +594,64 @@ export default function App() {
               </select>
             </label>
           )}
-          {view !== 'help' && view !== 'settings' && !activeId ? (
-            <section className="empty-workspace">
-              <div className="empty-folder">
-                <FolderOpen size={52} />
+          {(view === 'applications' || (view === 'overview' && !activeId)) && (
+            <WorkspaceHome
+              user={user}
+              packets={packets}
+              search={search}
+              onCreate={startCreate}
+              onOpen={openApplication}
+              onArchive={(p) => void archiveApplication(p)}
+              onNavigate={navigate}
+            />
+          )}
+          {!activeId && (view === 'requirements' || view === 'documents' || view === 'report') && (
+            <EmptySection
+              view={view}
+              onCreate={startCreate}
+              onUpload={() => inputRef.current?.click()}
+            />
+          )}
+          {activeId &&
+            !data &&
+            ['overview', 'requirements', 'documents', 'report'].includes(view) && (
+              <div className="loading-card" role="status">
+                <RefreshCw className="spin" size={22} />
+                Opening your application…
               </div>
-              <span className="eyebrow">YOUR NEXT CHAPTER STARTS HERE</span>
-              <h2>One application. One organized folder.</h2>
-              <p>
-                Create your first packet, tell us which requirements apply, and bring your
-                supporting documents together.
-              </p>
-              <button className="primary" onClick={() => setModal('create')}>
-                Create my first packet
-                <Plus size={17} />
-              </button>
-              <small>No documents are shared with other users.</small>
-            </section>
-          ) : view !== 'help' && view !== 'settings' && !data ? (
-            <div className="loading-card" role="status">
-              <RefreshCw className="spin" size={22} />
-              Opening your packet…
+            )}
+          {data && ['overview', 'requirements', 'documents', 'report'].includes(view) && (
+            <div className="application-context">
+              <div>
+                <span className="context-dot" />
+                <strong>{data.packet.title}</strong>
+                <span>{data.packet.destination || 'Your application workspace'}</span>
+              </div>
+              <div>
+                <span
+                  className={`deadline-badge ${deadlineInfo(data.packet.deadline).urgent ? 'urgent' : ''}`}
+                >
+                  <Clock size={13} />
+                  {deadlineInfo(data.packet.deadline).label}
+                </span>
+                <button className="text-link" onClick={() => setModal('details')}>
+                  Edit details
+                </button>
+                <button
+                  className="outline"
+                  disabled={!!busy}
+                  onClick={() =>
+                    void perform('download', () =>
+                      download(`/packets/${activeId}/download`, 'jky-folder-application.zip'),
+                    )
+                  }
+                >
+                  <Download size={15} />
+                  Download folder
+                </button>
+              </div>
             </div>
-          ) : null}
+          )}
           {data && view === 'overview' && (
             <>
               <section className="application-card">
@@ -618,9 +671,9 @@ export default function App() {
                 <div className="application-actions">
                   <span className="reference-pill">
                     <span />
-                    Reference checklist
+                    {pack.assurance === 'reference' ? 'Reference checklist' : 'Your checklist'}
                   </span>
-                  <button className="outline" onClick={() => setModal('profile')}>
+                  <button className="outline" onClick={() => setModal('details')}>
                     Application details
                     <ArrowUpRight size={15} />
                   </button>
@@ -632,12 +685,19 @@ export default function App() {
                   </span>
                   <span>
                     <BookOpen size={14} />
-                    Source checked {date(pack.checkedAt)}
+                    {pack.assurance === 'reference'
+                      ? 'Source checked'
+                      : 'Checklist configured'}{' '}
+                    {date(pack.checkedAt)}
                   </span>
-                  <a href={pack.sourceUrl} target="_blank" rel="noreferrer">
-                    Official instructions
-                    <ExternalLink size={12} />
-                  </a>
+                  {pack.sourceUrl && (
+                    <a href={pack.sourceUrl} target="_blank" rel="noreferrer">
+                      {pack.assurance === 'reference'
+                        ? 'Official instructions'
+                        : 'Your source instructions'}
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
                 </div>
               </section>
               <div className="stats-grid">
@@ -693,9 +753,9 @@ export default function App() {
                 <section className="panel next-panel">
                   <div className="panel-heading">
                     <div>
-                      <span className="eyebrow">ONE STEP AT A TIME</span>
+                      <span className="eyebrow">NEXT STEPS</span>
                       <h2>
-                        Your next moves<span className="number-pill">{nextSteps.length}</span>
+                        Next actions<span className="number-pill">{nextSteps.length}</span>
                       </h2>
                     </div>
                     <button className="text-link" onClick={() => navigate('requirements')}>
@@ -761,7 +821,7 @@ export default function App() {
                 </section>
                 <section className="panel progress-panel">
                   <span className="eyebrow">YOUR PACKET AT A GLANCE</span>
-                  <h2>Coming together.</h2>
+                  <h2>Review progress</h2>
                   <div
                     className="progress-ring"
                     style={
@@ -878,10 +938,18 @@ export default function App() {
             <section className="panel checklist-panel">
               <div className="panel-heading">
                 <div>
-                  <span className="eyebrow">{pack.title} · REFERENCE CHECKLIST</span>
+                  <span className="eyebrow">
+                    {pack.title} ·{' '}
+                    {pack.assurance === 'reference' ? 'REFERENCE CHECKLIST' : 'YOUR CHECKLIST'}
+                  </span>
                   <h2>Requirements & evidence</h2>
                 </div>
                 <div className="button-row">
+                  {data.packet.customPack && (
+                    <button className="outline" onClick={() => setModal('checklist')}>
+                      Edit checklist
+                    </button>
+                  )}
                   <button className="outline" onClick={() => setModal('profile')}>
                     Edit application details
                   </button>
@@ -1033,7 +1101,13 @@ export default function App() {
                     <span />
                   </div>
                   {data.documents
-                    .filter((d) => !search || d.name.toLowerCase().includes(search.toLowerCase()))
+                    .filter(
+                      (d) =>
+                        !search ||
+                        `${d.name} ${d.pages.map((p) => p.text).join(' ')}`
+                          .toLowerCase()
+                          .includes(search.toLowerCase()),
+                    )
                     .map((doc) => (
                       <div className="document-row" key={doc.id}>
                         <button className="document-name" onClick={() => setPreview(doc)}>
@@ -1104,7 +1178,9 @@ export default function App() {
                   )}
                   {search &&
                     !data.documents.some((d) =>
-                      d.name.toLowerCase().includes(search.toLowerCase()),
+                      `${d.name} ${d.pages.map((p) => p.text).join(' ')}`
+                        .toLowerCase()
+                        .includes(search.toLowerCase()),
                     ) && <div className="empty-small">No documents match “{search}”.</div>}
                 </div>
                 <div className="panel-note">
@@ -1124,8 +1200,8 @@ export default function App() {
                       <span className="eyebrow">DATED REVIEW SNAPSHOT</span>
                       <h2>{data.packet.title}</h2>
                       <p className="panel-description">
-                        {pack.title} · {date(selectedRun.createdAt)} · Revision{' '}
-                        {selectedRun.packetRevision}
+                        {selectedRun.checklist?.title || pack.title} · {date(selectedRun.createdAt)}{' '}
+                        · Revision {selectedRun.packetRevision}
                       </p>
                     </div>
                     <div className="button-row no-print">
@@ -1235,15 +1311,17 @@ export default function App() {
                         <li key={limit}>{limit}</li>
                       ))}
                     </ul>
-                    <a
-                      className="source-link"
-                      href={pack.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Official source
-                      <ExternalLink size={13} />
-                    </a>
+                    {(selectedRun.checklist?.sourceUrl ?? pack.sourceUrl) && (
+                      <a
+                        className="source-link"
+                        href={selectedRun.checklist?.sourceUrl ?? pack.sourceUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Source instructions
+                        <ExternalLink size={13} />
+                      </a>
+                    )}
                     <p className="microcopy">
                       Pack {selectedRun.packVersion} · Evaluator {selectedRun.evaluatorVersion} ·
                       Run {selectedRun.id}
@@ -1266,58 +1344,12 @@ export default function App() {
               )}
             </>
           )}
-          {data && view === 'activity' && (
-            <section className="panel timeline-panel">
-              <div className="panel-heading">
-                <h2>Your packet timeline</h2>
-                <span className="private-label">
-                  <Clock size={14} />
-                  Dated events
-                </span>
-              </div>
-              {[
-                ...data.documents.map((d) => ({
-                  id: d.id,
-                  time: d.createdAt,
-                  title: 'Document added',
-                  description: d.name,
-                  Icon: FileText,
-                })),
-                ...data.runs.map((r) => ({
-                  id: r.id,
-                  time: r.createdAt,
-                  title: 'Review snapshot saved',
-                  description: `Packet revision ${r.packetRevision} · ${r.counts.pass} reviewed · ${r.counts.fail} action needed`,
-                  Icon: FileCheck2,
-                })),
-                {
-                  id: 'created',
-                  time: data.packet.createdAt,
-                  title: 'A new chapter started',
-                  description: data.packet.title,
-                  Icon: FolderOpen,
-                },
-              ]
-                .sort((a, b) => b.time.localeCompare(a.time))
-                .map((event) => (
-                  <article className="timeline-event" key={event.id}>
-                    <span>
-                      <event.Icon size={18} />
-                    </span>
-                    <div>
-                      <h3>{event.title}</h3>
-                      <p>{event.description}</p>
-                      <small>{new Date(event.time).toLocaleString('en-IN')}</small>
-                    </div>
-                  </article>
-                ))}
-            </section>
-          )}
+          {view === 'activity' && <ActivityFeed packets={packets} />}
           {view === 'help' && (
             <div className="help-grid">
               <section className="panel help-panel">
                 <span className="eyebrow">THE WAY IT WORKS</span>
-                <h2>Clarity, one connection at a time.</h2>
+                <h2>How to review an application</h2>
                 {[
                   [
                     '1',
@@ -1351,7 +1383,7 @@ export default function App() {
               </section>
               <section className="panel help-panel">
                 <span className="eyebrow">GOOD TO KNOW</span>
-                <h2>Honest about the boundaries.</h2>
+                <h2>Frequently asked questions</h2>
                 <details open>
                   <summary>Does “reviewed” mean accepted?</summary>
                   <p>
@@ -1388,10 +1420,12 @@ export default function App() {
                     that packet are purged so deleted evidence does not remain in a report snapshot.
                   </p>
                 </details>
-                <a className="source-link" href={pack.sourceUrl} target="_blank" rel="noreferrer">
-                  Check the official {pack.title} instructions
-                  <ExternalLink size={14} />
-                </a>
+                {pack.sourceUrl && (
+                  <a className="source-link" href={pack.sourceUrl} target="_blank" rel="noreferrer">
+                    Read the {pack.title} source instructions
+                    <ExternalLink size={14} />
+                  </a>
+                )}
               </section>
               <section className="panel help-limitations">
                 <h2>Checklist coverage</h2>
@@ -1405,6 +1439,7 @@ export default function App() {
           )}
           {view === 'settings' && (
             <div className="settings-grid">
+              <AccountSettings user={user} onUser={setUser} />
               <section className="panel settings-panel">
                 <span className="eyebrow">YOUR ACCOUNT</span>
                 <h2>{user.name}</h2>
@@ -1501,14 +1536,47 @@ export default function App() {
         </div>
       )}
       {modal === 'create' && (
-        <Dialog
-          title="Start a new application packet"
+        <ApplicationWizard
+          initialTemplate={createTemplate}
           onClose={() => {
-            if (!busy) setModal(null);
+            setModal(null);
+            setQueuedFiles([]);
           }}
-        >
-          {createForm}
-        </Dialog>
+          onCreate={createApplication}
+        />
+      )}
+      {modal === 'details' && data && (
+        <ApplicationDetails
+          packet={data.packet}
+          onClose={() => setModal(null)}
+          onSave={async (details) => {
+            await update(
+              `/packets/${activeId}`,
+              { expectedRevision: data.packet.revision, details },
+              'PATCH',
+            );
+            await refresh();
+            setModal(null);
+            setToast('Application details saved.');
+          }}
+        />
+      )}
+      {modal === 'checklist' && data && (
+        <ChecklistEditor
+          pack={pack}
+          notes={data.packet.notes || ''}
+          onClose={() => setModal(null)}
+          onSave={async (input) => {
+            await update(
+              `/packets/${activeId}/checklist`,
+              { expectedRevision: data.packet.revision, ...input },
+              'PUT',
+            );
+            await refresh();
+            setModal(null);
+            setToast('Checklist updated. Save a fresh review when ready.');
+          }}
+        />
       )}
       {modal === 'profile' && data && (
         <ProfileDialog
@@ -1533,6 +1601,11 @@ export default function App() {
           documents={data.documents}
           existing={data.packet.links[evidence.id]}
           packetId={activeId}
+          onUpload={() => {
+            setEvidence(null);
+            navigate('documents');
+            inputRef.current?.click();
+          }}
           onClose={() => setEvidence(null)}
           onSave={async (link) => {
             await update(
@@ -1547,7 +1620,7 @@ export default function App() {
         />
       )}
       {preview && (
-        <Dialog title={preview.name} onClose={() => setPreview(null)}>
+        <Dialog wide title={preview.name} onClose={() => setPreview(null)}>
           <div className="dialog-body">
             <div className="document-preview-detail">
               {preview.status === 'ready' ? (
@@ -1557,15 +1630,24 @@ export default function App() {
                     alt={`Original evidence ${preview.name}`}
                   />
                 ) : (
-                  preview.pages.map((page) => (
-                    <section key={page.number}>
-                      <span className="eyebrow">PAGE {page.number}</span>
-                      <pre>
-                        {page.text ||
-                          'No text extracted. Download and review the original manually.'}
-                      </pre>
-                    </section>
-                  ))
+                  <>
+                    <PdfPreview
+                      url={`/api/packets/${activeId}/documents/${preview.id}/content`}
+                      name={preview.name}
+                    />
+                    <details className="extracted-text-details">
+                      <summary>Extracted document text</summary>
+                      {preview.pages.map((page) => (
+                        <section key={page.number}>
+                          <span className="eyebrow">PAGE {page.number}</span>
+                          <pre>
+                            {page.text ||
+                              'No text extracted. Download and review the original manually.'}
+                          </pre>
+                        </section>
+                      ))}
+                    </details>
+                  </>
                 )
               ) : (
                 <p>

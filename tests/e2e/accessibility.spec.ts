@@ -28,7 +28,7 @@ test('automated accessibility of welcome, workspace views and review dialogs', a
   await page.goto('/');
   await check(page);
   await page.getByRole('button', { name: 'Explore the demo' }).click();
-  await page.getByRole('heading', { name: 'Coming together.' }).waitFor();
+  await page.getByRole('heading', { name: 'Review progress' }).waitFor();
   await check(page);
   await nav(page, 'Requirements');
   await check(page);

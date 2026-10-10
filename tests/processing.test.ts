@@ -9,15 +9,13 @@ async function setup() {
   const directory = mkdtempSync(join(tmpdir(), 'jky-worker-'));
   const runtime = createApp({ dataDir: directory });
   const agent = request.agent(runtime.app);
-  const auth = await agent
-    .post('/api/auth/register')
-    .send({
-      name: 'Worker Test',
-      email: 'worker@example.test',
-      password: 'a-strong-test-password',
-      adult: true,
-      consent: true,
-    });
+  const auth = await agent.post('/api/auth/register').send({
+    name: 'Worker Test',
+    email: 'worker@example.test',
+    password: 'a-strong-test-password',
+    adult: true,
+    consent: true,
+  });
   const csrf = auth.body.csrf;
   const created = await agent
     .post('/api/packets')

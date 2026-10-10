@@ -9,6 +9,7 @@ import {
   Download,
 } from 'lucide-react';
 import { Dialog } from './Dialog';
+import { PdfPreview } from './PdfPreview';
 import { size } from './Status';
 import type { Requirement, DocumentRecord, EvidenceLink, RulePack } from '../../shared/model';
 export function EvidenceDialog({
@@ -19,6 +20,7 @@ export function EvidenceDialog({
   packetId,
   onClose,
   onSave,
+  onUpload,
 }: {
   requirement: Requirement;
   pack: RulePack;
@@ -27,6 +29,7 @@ export function EvidenceDialog({
   packetId: string;
   onClose: () => void;
   onSave: (link: EvidenceLink) => Promise<void>;
+  onUpload: () => void;
 }) {
   const available = documents.filter((d) => d.status === 'ready');
   const [documentId, setDocumentId] = useState(existing?.documentId || available[0]?.id || '');
@@ -73,19 +76,32 @@ export function EvidenceDialog({
                   />
                 ) : (
                   <>
-                    <span className="paper-tag">EXTRACTED PAGE TEXT</span>
-                    <h3>{doc.name}</h3>
-                    {doc.pages
-                      .filter((p) => p.number >= pageFrom && p.number <= pageTo)
-                      .map((p) => (
-                        <div key={p.number} className="extracted-page">
-                          <span>Page {p.number}</span>
-                          <pre>
-                            {p.text ||
-                              'No readable text was extracted. Download the original and review it manually; scanned-page OCR is not available.'}
-                          </pre>
-                        </div>
-                      ))}
+                    <PdfPreview
+                      url={`/api/packets/${packetId}/documents/${doc.id}/content`}
+                      name={doc.name}
+                      page={pageFrom}
+                      onPageChange={(page) => {
+                        setPageFrom(page);
+                        setPageTo(page);
+                        setReview('unreviewed');
+                      }}
+                    />
+                    <details className="extracted-text-details" open>
+                      <summary>Extracted page text</summary>
+                      <span className="paper-tag">EXTRACTED PAGE TEXT</span>
+                      <h3>{doc.name}</h3>
+                      {doc.pages
+                        .filter((p) => p.number >= pageFrom && p.number <= pageTo)
+                        .map((p) => (
+                          <div key={p.number} className="extracted-page">
+                            <span>Page {p.number}</span>
+                            <pre>
+                              {p.text ||
+                                'No readable text was extracted. Download the original and review it manually; scanned-page OCR is not available.'}
+                            </pre>
+                          </div>
+                        ))}
+                    </details>
                   </>
                 )}
               </div>
@@ -101,6 +117,9 @@ export function EvidenceDialog({
               <FileText size={44} />
               <h3>Your evidence goes here.</h3>
               <p>Upload a document first, then connect it to this requirement.</p>
+              <button className="primary" onClick={onUpload}>
+                Upload supporting document
+              </button>
             </div>
           )}
         </section>
@@ -117,10 +136,14 @@ export function EvidenceDialog({
         >
           <span className="eyebrow">THE REQUIREMENT</span>
           <p>{requirement.description}</p>
-          <a className="source-link" href={pack.sourceUrl} target="_blank" rel="noreferrer">
-            Read the official instructions
-            <ExternalLink size={14} />
-          </a>
+          {pack.sourceUrl && (
+            <a className="source-link" href={pack.sourceUrl} target="_blank" rel="noreferrer">
+              {pack.assurance === 'reference'
+                ? 'Read the official instructions'
+                : 'Read your source instructions'}
+              <ExternalLink size={14} />
+            </a>
+          )}
           <div className="divider" />
           <label>
             Supporting document

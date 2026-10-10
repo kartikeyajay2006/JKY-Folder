@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+const testOrigin = 'http://127.0.0.1:5180';
 export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: false,
@@ -6,7 +9,7 @@ export default defineConfig({
   retries: 0,
   timeout: 45000,
   use: {
-    baseURL: 'http://127.0.0.1:5173',
+    baseURL: testOrigin,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
@@ -19,8 +22,14 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run dev',
-    url: 'http://127.0.0.1:5173',
-    reuseExistingServer: !process.env.CI,
+    url: testOrigin,
+    reuseExistingServer: false,
+    env: {
+      PORT: '3102',
+      WEB_PORT: '5180',
+      APP_ORIGIN: testOrigin,
+      DATA_DIR: join(tmpdir(), `jky-browser-${process.pid}`),
+    },
     timeout: 60000,
   },
 });

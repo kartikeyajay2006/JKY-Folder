@@ -11,9 +11,7 @@ async function navigate(page: import('@playwright/test').Page, label: string) {
 async function demo(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore the demo' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'A little closer to your next chapter.' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Application overview' })).toBeVisible();
 }
 test('demo → evidence review → dated report → stale report → deletion', async ({ page }) => {
   const errors: string[] = [];
@@ -76,9 +74,15 @@ test('demo → evidence review → dated report → stale report → deletion', 
 });
 test('create a packet, inspect a real PDF and connect a page', async ({ page }) => {
   await demo(page);
-  await page.getByRole('button', { name: 'New packet', exact: true }).click();
-  await page.getByLabel('Packet name').fill('Browser-tested packet');
-  await page.getByRole('button', { name: 'Create packet', exact: true }).click();
+  await page.getByRole('button', { name: 'New application', exact: true }).click();
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: /UCEED 2027/ })
+    .click();
+  await page.getByRole('button', { name: 'Continue', exact: true }).click();
+  await page.getByLabel('Application name', { exact: true }).fill('Browser-tested packet');
+  await page.getByRole('button', { name: 'Review checklist', exact: true }).click();
+  await page.getByRole('button', { name: 'Create application', exact: true }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await page.getByLabel('Qualifying examination', { exact: true }).selectOption('completed');
   await page.getByLabel('Application category', { exact: true }).selectOption('general');
@@ -116,11 +120,11 @@ test('dialog traps keyboard focus and narrow screens avoid horizontal overflow',
   page,
 }) => {
   await demo(page);
-  await page.getByRole('button', { name: 'New packet', exact: true }).click();
+  await page.getByRole('button', { name: 'New application', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await page.keyboard.press('Shift+Tab');
-  await expect(dialog.getByRole('button', { name: 'Create packet', exact: true })).toBeFocused();
+  await expect(dialog.getByRole('button', { name: 'Continue', exact: true })).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(dialog.getByRole('button', { name: 'Close dialog' })).toBeFocused();
   await page.keyboard.press('Escape');
