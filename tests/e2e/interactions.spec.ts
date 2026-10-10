@@ -155,3 +155,57 @@ test('quick actions run real reviews, readiness opens reports and file drops ins
     await cleanup(page).catch(() => {});
   }
 });
+
+test('files dropped on any page reach the current folder and the palette searches real data', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Explore the demo' }).click();
+  await page.getByRole('heading', { name: 'My design school application', level: 1 }).waitFor();
+  try {
+    await page.keyboard.press('Control+.');
+    await page.getByLabel('Search quick actions').fill('signature');
+    const palette = page.getByRole('dialog');
+    await expect(palette.getByRole('group', { name: 'This checklist' })).toContainText(
+      'Needs your review',
+    );
+    await expect(palette.getByRole('group', { name: 'Documents' })).toContainText('signature.jpg');
+    await page.keyboard.press('Enter');
+    await expect(
+      page.getByRole('dialog').getByRole('heading', { name: 'Signature', exact: true }),
+    ).toBeVisible();
+    await page.keyboard.press('Escape');
+
+    const pdf = await PDFDocument.create();
+    pdf.addPage().drawText('Synthetic file dropped on the overview page', { x: 40, y: 700 });
+    const bytes = Array.from(await pdf.save());
+    const transfer = await page.evaluateHandle((bytes) => {
+      const transfer = new DataTransfer();
+      transfer.items.add(
+        new File([new Uint8Array(bytes)], 'overview-drop.pdf', { type: 'application/pdf' }),
+      );
+      return transfer;
+    }, bytes);
+    const target = page.locator('.file-cover');
+    await target.dispatchEvent('dragenter', { dataTransfer: transfer });
+    await expect(page.locator('.drop-overlay')).toContainText(
+      'Drop to add to My design school application',
+    );
+    await target.dispatchEvent('drop', { dataTransfer: transfer });
+    await transfer.dispose();
+    await expect(page.locator('.drop-overlay')).toHaveCount(0);
+    const toast = page.getByRole('status').filter({ hasText: '1 added' });
+    await expect(toast).toBeVisible();
+    await toast.getByRole('button', { name: 'Open checklist' }).click();
+    await expect(page.getByRole('heading', { name: 'Checklist', exact: true })).toBeVisible();
+    await page
+      .locator('.workspace-header')
+      .getByRole('button', { name: /^Documents/ })
+      .click();
+    await expect(
+      page.locator('.document-row').filter({ hasText: 'overview-drop.pdf' }),
+    ).toContainText('Inspected', { timeout: 25000 });
+  } finally {
+    await cleanup(page).catch(() => {});
+  }
+});

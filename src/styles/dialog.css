@@ -160,3 +160,18 @@ html[data-motion='on'] .dialog {
     padding: 14px 12px 12px 16px;
   }
 }
+.command-group + .command-group {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+.command-group-title {
+  padding: 6px 12px 4px;
+  color: var(--ink-3);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.command-icon .state-mark {
+  width: 20px;
+  height: 20px;
+}

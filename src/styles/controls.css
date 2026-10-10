@@ -518,3 +518,22 @@ html[data-motion='on'] .toast {
   display: block;
   margin-top: 2px;
 }
+.toast span {
+  flex: 1;
+}
+.toast-action {
+  flex-shrink: 0;
+  margin-left: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.12);
+  color: #fff;
+  font-weight: 700;
+  font-size: var(--t-sm);
+}
+.toast-action:hover {
+  background: rgb(255 255 255 / 0.2);
+}
+.toast-action:focus-visible {
+  outline-color: var(--tick);
+}

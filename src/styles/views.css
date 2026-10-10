@@ -1906,3 +1906,66 @@ html[data-motion='on'] .folder-grid > li {
 .choice-row input {
   margin: 0;
 }
+
+/* Window-wide drop target */
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--folder) 72%, transparent);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+.drop-card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  max-width: 460px;
+  padding: 34px 32px 30px;
+  border-radius: var(--r-sheet);
+  border: 2px dashed var(--tick);
+  background: var(--sheet);
+  box-shadow: var(--lift-3);
+  text-align: center;
+}
+.drop-card p {
+  font-size: var(--t-lg);
+  font-weight: 700;
+  line-height: 1.3;
+}
+.drop-card small {
+  color: var(--ink-3);
+}
+.pocket-large {
+  width: 190px;
+  height: 150px;
+}
+.pocket-large .pocket-sheet {
+  height: 100px;
+}
+.pocket-large .pocket-front {
+  height: 86px;
+}
+.pocket.is-open .pocket-front {
+  transform: rotateX(-40deg);
+}
+.pocket.is-open .pocket-sheet.sheet-a {
+  transform: translateY(-16px);
+}
+html[data-motion='on'] .drop-overlay {
+  animation: backdrop-in 160ms ease-out both;
+}
+html[data-motion='on'] .drop-card {
+  animation: sheet-in 260ms var(--ease-spring) both;
+}
+html[data-motion='on'] .pocket.is-open .pocket-front {
+  animation: flap-open 360ms var(--ease-spring) both;
+}
+@keyframes flap-open {
+  from {
+    transform: rotateX(0deg);
+  }
+}

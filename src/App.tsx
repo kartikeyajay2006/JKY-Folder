@@ -65,7 +65,9 @@ export default function App() {
   const [view, setView] = useState<View>(initialLocation.current.view),
     [busy, setBusy] = useState(''),
     [error, setError] = useState(''),
-    [toast, setToast] = useState(''),
+    [toast, setToastMessage] = useState(''),
+    [toastAction, setToastAction] = useState<{ label: string; run: () => void } | null>(null),
+    [dropping, setDropping] = useState(false),
     [search, setSearch] = useState('');
   const [modal, setModal] = useState<
       | 'create'
@@ -214,7 +216,7 @@ export default function App() {
   }, [data?.documents]);
   useEffect(() => {
     if (!toast) return;
-    const timer = setTimeout(() => setToast(''), 4500);
+    const timer = setTimeout(() => setToast(''), toastAction ? 7000 : 4500);
     return () => clearTimeout(timer);
   }, [toast]);
   useEffect(() => {
@@ -231,6 +233,46 @@ export default function App() {
     window.addEventListener('keydown', key);
     return () => window.removeEventListener('keydown', key);
   }, []);
+  // Files dragged over any page land in the current application (or start a new one).
+  const latest = useRef({ upload, blocked: false, hidden: false });
+  useEffect(() => {
+    if (!user) return;
+    let depth = 0;
+    const hasFiles = (event: DragEvent) =>
+      !!event.dataTransfer && Array.from(event.dataTransfer.types).includes('Files');
+    const enter = (event: DragEvent) => {
+      if (!hasFiles(event) || latest.current.blocked) return;
+      depth++;
+      if (!latest.current.hidden) setDropping(true);
+    };
+    const over = (event: DragEvent) => {
+      if (!hasFiles(event) || latest.current.blocked) return;
+      event.preventDefault();
+      event.dataTransfer!.dropEffect = 'copy';
+    };
+    const leave = (event: DragEvent) => {
+      if (!hasFiles(event)) return;
+      depth = Math.max(0, depth - 1);
+      if (!depth) setDropping(false);
+    };
+    const drop = (event: DragEvent) => {
+      depth = 0;
+      setDropping(false);
+      if (!hasFiles(event) || event.defaultPrevented || latest.current.blocked) return;
+      event.preventDefault();
+      void latest.current.upload(event.dataTransfer!.files);
+    };
+    window.addEventListener('dragenter', enter);
+    window.addEventListener('dragover', over);
+    window.addEventListener('dragleave', leave);
+    window.addEventListener('drop', drop);
+    return () => {
+      window.removeEventListener('dragenter', enter);
+      window.removeEventListener('dragover', over);
+      window.removeEventListener('dragleave', leave);
+      window.removeEventListener('drop', drop);
+    };
+  }, [user?.id]);
   const live = data?.live || null;
   const selectedRun = data?.runs.find((r) => r.id === reportId) || data?.runs[0];
   const stale =
@@ -264,6 +306,13 @@ export default function App() {
     } finally {
       setBusy('');
     }
+  }
+  function setToast(message: string) {
+    notify(message);
+  }
+  function notify(message: string, action?: { label: string; run: () => void }) {
+    setToastMessage(message);
+    setToastAction(action || null);
   }
   function signedOut() {
     setUser(null);
@@ -322,8 +371,11 @@ export default function App() {
       }
     }
     await refresh().catch((e) => setError(e.message));
-    setToast(
+    notify(
       `${added} added${duplicates ? `, ${duplicates} already present` : ''}${failed ? `, ${failed} could not upload. See the upload results.` : '. Inspection runs separately.'}`,
+      added
+        ? { label: 'Open checklist', run: () => navigate('requirements', packetId) }
+        : undefined,
     );
   }
   async function update(path: string, payload: unknown, method: string) {
@@ -343,7 +395,10 @@ export default function App() {
       });
       await refresh();
       setReportId(run.id);
-      setToast('Review snapshot saved. Your next steps are up to date.');
+      notify('Review snapshot saved. Your next steps are up to date.', {
+        label: 'Open report',
+        run: () => navigate('report'),
+      });
     });
   }
   function startCreate(template = 'college') {
@@ -394,6 +449,11 @@ export default function App() {
   function chooseFiles() {
     inputRef.current?.click();
   }
+  latest.current = {
+    upload,
+    blocked: !!modal || !!evidence || !!preview || !!deleteDoc,
+    hidden: view === 'documents',
+  };
   if (booting)
     return (
       <main className="boot" aria-busy="true">
@@ -651,13 +711,55 @@ export default function App() {
         {toast && (
           <div className="toast" role="status">
             <Check size={17} aria-hidden="true" />
-            {toast}
+            <span>{toast}</span>
+            {toastAction && (
+              <button
+                className="toast-action"
+                onClick={() => {
+                  toastAction.run();
+                  setToast('');
+                }}
+              >
+                {toastAction.label}
+              </button>
+            )}
+          </div>
+        )}
+        {dropping && (
+          <div className="drop-overlay" aria-hidden="true">
+            <div className="drop-card">
+              <div className="pocket pocket-large is-open">
+                <span className="pocket-back" />
+                <span className="pocket-sheet sheet-a" />
+                <span className="pocket-sheet sheet-b" />
+                <span className="pocket-front" />
+              </div>
+              <p>
+                {data ? (
+                  <>
+                    Drop to add to <strong>{data.packet.title}</strong>
+                  </>
+                ) : (
+                  'Drop to start a new application with these files'
+                )}
+              </p>
+              <small>
+                {rules.formats}, up to {rules.perFile} each. Originals are never changed.
+              </small>
+            </div>
           </div>
         )}
         {modal === 'quick-actions' && (
           <QuickActions
             hasApplication={!!data}
             busy={!!busy}
+            packets={packets}
+            activeId={activeId}
+            checks={live?.checks || []}
+            documents={data?.documents || []}
+            onOpenApplication={(id) => navigate('overview', id)}
+            onOpenRequirement={openRequirement}
+            onOpenDocument={setPreview}
             onClose={() => setModal(null)}
             onCreate={() => startCreate()}
             onUpload={() => {
