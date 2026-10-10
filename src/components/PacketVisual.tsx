@@ -43,6 +43,10 @@ export function PacketVisual({ compact = false }: { compact?: boolean }) {
           strokeDasharray="3 7"
         />
         <circle cx="260" cy="220" r="206" stroke="#9f8cb6" strokeOpacity=".08" />
+        <g className="orbit-sweep">
+          <circle cx="260" cy="49" r="3" fill="#dcc1fa" />
+          <circle cx="260" cy="391" r="1.8" fill="#957ab7" />
+        </g>
         <g className="blueprint-particles">
           {Array.from({ length: 66 }, (_, i) => (
             <circle
@@ -55,48 +59,50 @@ export function PacketVisual({ compact = false }: { compact?: boolean }) {
             />
           ))}
         </g>
-        <g className="packet-pages">
-          <path
-            d="m182 83 183 28 4 209-200-22Z"
-            fill="#18151f"
-            stroke="#6a5a7c"
-            strokeOpacity=".65"
-          />
-          <path
-            d="m149 103 201 2 22 213-208 23Z"
-            fill="#1d1825"
-            stroke="#9f8bae"
-            strokeOpacity=".55"
-          />
-          <path
-            d="M190 145h114m-111 19h81m-78 20h105m-103 20h59"
-            stroke="#9d8cab"
-            strokeOpacity=".5"
-            strokeLinecap="round"
-            strokeWidth="3"
-          />
-          <path
-            d="m131 153 104-12 33 34 126-12c9-1 17 6 17 15l-5 174c0 10-7 18-17 20l-215 35c-11 2-20-5-22-16l-33-216c-2-11 3-20 12-22Z"
-            fill={`url(#${compact ? 'packet-surface-compact' : 'packet-surface'})`}
-            stroke={`url(#${compact ? 'packet-edge-compact' : 'packet-edge'})`}
-            strokeWidth="1.4"
-          />
-          <path d="m139 211 241-22" stroke="#70637e" strokeOpacity=".6" />
-          <path
-            d="m209 271 18 15 33-40"
-            stroke="#dfd4ef"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="m188 325 57-7m-55 18 83-13"
-            stroke="#6b6077"
-            strokeLinecap="round"
-            strokeWidth="2"
-          />
-          <circle cx="348" cy="332" r="9" stroke="#6c5b85" />
-          <path d="m344 332 3 3 5-6" stroke="#b3d8c4" strokeLinecap="round" />
+        <g className="packet-drift">
+          <g className="packet-pages">
+            <path
+              d="m182 83 183 28 4 209-200-22Z"
+              fill="#18151f"
+              stroke="#6a5a7c"
+              strokeOpacity=".65"
+            />
+            <path
+              d="m149 103 201 2 22 213-208 23Z"
+              fill="#1d1825"
+              stroke="#9f8bae"
+              strokeOpacity=".55"
+            />
+            <path
+              d="M190 145h114m-111 19h81m-78 20h105m-103 20h59"
+              stroke="#9d8cab"
+              strokeOpacity=".5"
+              strokeLinecap="round"
+              strokeWidth="3"
+            />
+            <path
+              d="m131 153 104-12 33 34 126-12c9-1 17 6 17 15l-5 174c0 10-7 18-17 20l-215 35c-11 2-20-5-22-16l-33-216c-2-11 3-20 12-22Z"
+              fill={`url(#${compact ? 'packet-surface-compact' : 'packet-surface'})`}
+              stroke={`url(#${compact ? 'packet-edge-compact' : 'packet-edge'})`}
+              strokeWidth="1.4"
+            />
+            <path d="m139 211 241-22" stroke="#70637e" strokeOpacity=".6" />
+            <path
+              d="m209 271 18 15 33-40"
+              stroke="#dfd4ef"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="m188 325 57-7m-55 18 83-13"
+              stroke="#6b6077"
+              strokeLinecap="round"
+              strokeWidth="2"
+            />
+            <circle cx="348" cy="332" r="9" stroke="#6c5b85" />
+            <path d="m344 332 3 3 5-6" stroke="#b3d8c4" strokeLinecap="round" />
+          </g>
         </g>
         <g stroke="#897398" strokeOpacity=".7" strokeWidth=".8">
           <path d="M104 124H55v-25m348 32h56v37M158 328H58v-28m349 32h45v38" />

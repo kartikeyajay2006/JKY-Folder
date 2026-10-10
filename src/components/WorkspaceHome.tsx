@@ -19,6 +19,7 @@ import {
   Search,
 } from 'lucide-react';
 import { PacketVisual } from './PacketVisual';
+import { AnimatedNumber } from './AnimatedNumber';
 import { templates, deadlineInfo } from '../../shared/templates';
 import type { CheckState, EvaluationRun, Packet, User } from '../../shared/model';
 export interface PacketCard {
@@ -131,7 +132,9 @@ export function WorkspaceHome({
               <Icon size={20} />
             </span>
             <span>{label}</span>
-            <strong>{value}</strong>
+            <strong>
+              <AnimatedNumber value={value} />
+            </strong>
             <small>{note}</small>
           </article>
         ))}

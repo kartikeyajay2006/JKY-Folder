@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   Activity,
   ArrowUpRight,
@@ -13,7 +13,9 @@ import {
   Search,
   Settings,
   UserRound,
+  Zap,
 } from 'lucide-react';
+import { MotionToggle } from '../motion/MotionProvider';
 import type { User } from '../../shared/model';
 import type { WorkspaceView } from '../workspace-location';
 
@@ -36,6 +38,7 @@ export function WorkspaceHeader({
   busy,
   attention,
   searchRef,
+  onQuickActions,
 }: {
   user: User;
   view: WorkspaceView;
@@ -46,24 +49,41 @@ export function WorkspaceHeader({
   busy: boolean;
   attention: number;
   searchRef: React.RefObject<HTMLInputElement | null>;
+  onQuickActions: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const account = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const first = useRef<HTMLButtonElement>(null);
   const activeTab = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const tab = activeTab.current;
-    const strip = tab?.parentElement;
-    if (tab && strip) {
+  const tabStrip = useRef<HTMLElement>(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+  useLayoutEffect(() => {
+    const strip = tabStrip.current,
+      tab = activeTab.current;
+    if (!strip) return;
+    const update = () => {
+      const selected = activeTab.current;
+      if (!selected) return;
       const left =
-        tab.getBoundingClientRect().left - strip.getBoundingClientRect().left + strip.scrollLeft;
+        selected.getBoundingClientRect().left -
+        strip.getBoundingClientRect().left +
+        strip.scrollLeft;
       strip.scrollTo({
-        left: left - (strip.clientWidth - tab.clientWidth) / 2,
+        left: left - (strip.clientWidth - selected.clientWidth) / 2,
         behavior: 'instant',
       });
-    }
-  }, [view]);
+      setIndicator({
+        left,
+        width: selected.clientWidth,
+      });
+    };
+    update();
+    const resize = new ResizeObserver(update);
+    resize.observe(strip);
+    if (tab) resize.observe(tab);
+    return () => resize.disconnect();
+  }, [view, attention]);
   useEffect(() => {
     if (!open) return;
     first.current?.focus();
@@ -118,6 +138,7 @@ export function WorkspaceHeader({
           {user.demo ? 'Demo workspace' : 'Personal workspace'}
         </span>
         <div className="masthead-tools">
+          <MotionToggle />
           <label className="header-search">
             <Search size={16} />
             <input
@@ -194,7 +215,12 @@ export function WorkspaceHeader({
         </div>
       </div>
       <div className="navigation-bar" id="workspace-navigation">
-        <nav aria-label="Workspace" className="workspace-tabs">
+        <nav ref={tabStrip} aria-label="Workspace" className="workspace-tabs">
+          <span
+            className="workspace-tab-indicator"
+            aria-hidden="true"
+            style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
+          />
           {navigation.map(({ id, label, Icon }) => (
             <button
               ref={view === id ? activeTab : undefined}
@@ -212,6 +238,14 @@ export function WorkspaceHeader({
           ))}
         </nav>
         <nav aria-label="Workspace support" className="workspace-support">
+          <button
+            aria-label="Quick actions"
+            title="Quick actions · Ctrl/Cmd + ."
+            onClick={onQuickActions}
+          >
+            <Zap size={17} />
+            <span>Quick actions</span>
+          </button>
           <button
             className={view === 'help' ? 'is-current' : ''}
             aria-current={view === 'help' ? 'page' : undefined}

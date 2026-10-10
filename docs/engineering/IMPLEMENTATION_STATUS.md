@@ -65,6 +65,21 @@ The sidebar markup, mobile drawer, scrim and corresponding styles were removed. 
 
 The dark visual system covers the welcome page, populated and empty workspace states, portfolio, requirements, documents, reports, activity, help, settings, account entry, setup/edit dialogs, JPEG evidence and original PDF controls. The PDF canvas retains a paper background. Printed reports retain a light background for readability.
 
-Animations use short opacity/transform transitions, with explicit reduced-motion handling and no perpetual visual effects. The new welcome page has working process/workflow/account anchors, real registration/sign-in and the existing isolated demo entry. All checklist, upload, evidence, report, account and deletion workflows remain connected to the existing API.
+That revision used short opacity/transform transitions, with explicit reduced-motion handling and no perpetual visual effects. The new welcome page has working process/workflow/account anchors, real registration/sign-in and the existing isolated demo entry. All checklist, upload, evidence, report, account and deletion workflows remain connected to the existing API.
 
 The suite now includes **20 desktop/mobile browser checks**, including explicit no-sidebar assertions, account-menu arrow/Escape behavior, search from account settings, active-tab state, modal background isolation, narrow-screen overflow and reduced motion. Screenshots are refreshed from disposable synthetic accounts; the personal local data is retained.
+
+
+## Motion and interaction revision
+
+The welcome illustration now floats, its orbit moves and particles brighten gently while visible. Pointer movement adjusts the illustration and card lighting on devices with a fine pointer. Offscreen illustration effects stop, and CSS animations pause when the browser document is hidden. Scroll reveals use native IntersectionObserver/Web Animations APIs; pointer updates are scheduled through requestAnimationFrame rather than React renders.
+
+A visible animation control pauses motion and persists the choice in browser storage. System reduced-motion preferences always take priority. Pausing cancels reveal/ripple effects, disables CSS transitions and continuous motion, clears pointer transforms, and presents final counter values directly. Keyboard and touch users retain the same actions without pointer effects.
+
+The workspace includes a moving active-tab indicator, short section entrances, button ripples, row hover feedback, toast feedback, animated counters and an SVG readiness arc. The ring is a real button opening the report. Screen readers receive actual counter values immediately while the decorative count transition plays. Counters derive from real workspace data; no extra evidence judgments are implied by animation.
+
+Quick actions provides searchable, keyboard-operated access to creating applications, choosing uploads, saving review snapshots and opening sections. It initially focuses its search field, skips disabled actions during arrow navigation, and shares the existing API-backed operations. Ctrl/Cmd + period opens it; Ctrl/Cmd + K continues to focus workspace search.
+
+File drop targets now react to drag entry, nested drag departure and release. Dropping uploads actual originals through the existing private intake API; format/size/ownership checks and per-file outcomes remain enforced. The welcome workflow preview has three selectable example panels with tab/arrow/Home/End support. Examples remain clearly illustrative and separate technical checks from personal content review.
+
+The verification suite has 39 domain/API/worker tests and 24 desktop/mobile browser checks. Added journeys verify continuous illustration motion, pointer response, persistent pause/reload behavior, system reduced motion, keyboard preview tabs, quick-action focus/navigation, real review snapshots, original-file drops and inspection, and accessibility of the new controls. The visual review also caught and removed a legacy ring mask that covered the new center label. A short browser recording and updated screenshots use isolated fictional accounts only.

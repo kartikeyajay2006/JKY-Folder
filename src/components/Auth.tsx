@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { api, body, setCsrf } from '../api';
 import { PacketVisual } from './PacketVisual';
+import { WorkflowPreview } from './WorkflowPreview';
+import { MotionToggle } from '../motion/MotionProvider';
 import type { User } from '../../shared/model';
 export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => void }) {
   const [mode, setMode] = useState<'login' | 'register'>('register');
@@ -53,9 +55,12 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
           <a href="#how-it-works">How it works</a>
           <a href="#evidence-first">The workflow</a>
         </nav>
-        <a className="outline" href="#account">
-          Open workspace <ArrowUpRight size={15} />
-        </a>
+        <div className="welcome-header-tools">
+          <MotionToggle />
+          <a className="outline" href="#account">
+            Open workspace <ArrowUpRight size={15} />
+          </a>
+        </div>
       </header>
       <main id="welcome-content">
         <section className="welcome-hero">
@@ -172,49 +177,7 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
               Make room for your next opportunity <ArrowUpRight size={16} />
             </a>
           </div>
-          <div className="evidence-example">
-            <div className="example-window-header">
-              <span>
-                <span />
-                <span />
-                <span />
-              </span>
-              <span>ILLUSTRATIVE WORKFLOW</span>
-            </div>
-            <div className="example-window-body">
-              <div className="example-window-title">
-                <span className="example-symbol">
-                  <FileCheck2 size={23} />
-                </span>
-                <div>
-                  <small>CHECKLIST ITEM</small>
-                  <h3>Academic transcript</h3>
-                </div>
-              </div>
-              <div className="example-connection">
-                <Link2 size={15} />
-                <span>Connected to supporting evidence</span>
-              </div>
-              <div className="example-file">
-                <FileText size={23} />
-                <div>
-                  <strong>transcript.pdf</strong>
-                  <span>Original document · page 1</span>
-                </div>
-                <ArrowUpRight size={17} />
-              </div>
-              <div className="example-review">
-                <ShieldCheck size={19} />
-                <div>
-                  <strong>Your review matters.</strong>
-                  <p>File checks and your own content review are recorded separately.</p>
-                </div>
-              </div>
-            </div>
-            <span className="example-window-footer">
-              Example only · A review is not an acceptance guarantee.
-            </span>
-          </div>
+          <WorkflowPreview />
         </section>
         <div className="welcome-account-section">
           <div className="welcome-account-copy">
