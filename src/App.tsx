@@ -1,3 +1,4 @@
+import { UploadStart } from './components/UploadStart';
 import { useState, useEffect, useLayoutEffect, useRef, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { useMotion } from './motion/MotionProvider';
@@ -11,7 +12,7 @@ import { size, date } from './components/Status';
 import { api, body, setCsrf, download, ApiError, uploadOriginal } from './api';
 import { CatalogProvider, uploadRules, type Catalog } from './catalog';
 import { ApplicationWizard, type CreateApplicationInput } from './components/ApplicationWizard';
-import { WorkspaceHome, EmptySection, type PacketCard } from './components/WorkspaceHome';
+import { WorkspaceHome, type PacketCard } from './components/WorkspaceHome';
 import { ChecklistEditor } from './components/ChecklistEditor';
 import { ApplicationDetails } from './components/ApplicationDetails';
 import { ActivityFeed } from './components/ActivityFeed';
@@ -66,11 +67,11 @@ export default function App() {
   const [previewPage, setPreviewPage] = useState(1),
     [highlightFact, setHighlightFact] = useState<DocumentFact | null>(null);
   const [packetsLoaded, setPacketsLoaded] = useState(false);
-  const [createTemplate, setCreateTemplate] = useState('college');
-  const [queuedFiles, setQueuedFiles] = useState<File[]>([]);
-  const [uploadBatch, setUploadBatch] = useState<{ packetId: string; items: UploadItem[] } | null>(
-    null,
-  );
+  const [uploadBatch, setUploadBatch] = useState<{
+    packetId: string;
+    intakeId: string;
+    items: UploadItem[];
+  } | null>(null);
   const [view, setView] = useState<View>(initialLocation.current.view),
     [busy, setBusy] = useState(''),
     [error, setError] = useState(''),
@@ -93,6 +94,7 @@ export default function App() {
     [deleteDoc, setDeleteDoc] = useState<DocumentRecord | null>(null),
     [reportId, setReportId] = useState('');
   const uploadAbort = useRef<AbortController | null>(null);
+  const newFolderUpload = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null),
     searchRef = useRef<HTMLInputElement>(null),
     selectionRef = useRef('');
@@ -101,13 +103,21 @@ export default function App() {
   packetsRef.current = packets;
   ownerRef.current = user?.id;
   selectionRef.current = activeId;
+  useEffect(() => {
+    const input = inputRef.current;
+    const cancelled = () => {
+      newFolderUpload.current = false;
+    };
+    input?.addEventListener('cancel', cancelled);
+    return () => input?.removeEventListener('cancel', cancelled);
+  }, [booting, user?.id, catalog]);
   useLayoutEffect(() => {
     if (user) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [user?.id]);
   async function refresh(preferred = selectionRef.current) {
     const ownerAtStart = ownerRef.current;
     const selectionAtStart = selectionRef.current;
-    const list = await api<PacketCard[]>('/packets');
+    const list = (await api<PacketCard[]>('/packets')).filter((p) => p.documentCount > 0);
     if (!ownerAtStart || ownerRef.current !== ownerAtStart) return;
     setPackets(list);
     if (selectionRef.current !== selectionAtStart) return;
@@ -157,12 +167,12 @@ export default function App() {
       setToast('');
       setPacketsLoaded(false);
       setUploadBatch(null);
-      setQueuedFiles([]);
       return;
     }
     let alive = true;
     api<PacketCard[]>('/packets')
-      .then((list) => {
+      .then((rows) => {
+        const list = rows.filter((p) => p.documentCount > 0);
         if (alive) {
           setPackets(list);
           setActiveId((id) =>
@@ -180,6 +190,14 @@ export default function App() {
     setPreviewPage(1);
     setHighlightFact(null);
   }, [preview?.id]);
+  useEffect(() => {
+    if (
+      packetsLoaded &&
+      !activeId &&
+      ['applications', 'requirements', 'documents', 'report'].includes(view)
+    )
+      setView('overview');
+  }, [packetsLoaded, activeId, view]);
   const activeOwned = packets.some((p) => p.packet.id === activeId);
   useEffect(() => {
     setData(null);
@@ -288,7 +306,9 @@ export default function App() {
     };
   }, [user?.id]);
   const live = data?.live || null;
-  const selectedRun = data?.runs.find((r) => r.id === reportId) || data?.runs[0];
+  const selectedRun =
+    data?.runs.find((r) => r.id === reportId) ||
+    data?.runs.find((r) => data.packet.mode === 'instructions' || r.checklist?.id === data.pack.id);
   const stale =
     !!selectedRun &&
     !!data &&
@@ -338,6 +358,7 @@ export default function App() {
   }
   function signedOut() {
     uploadAbort.current?.abort();
+    newFolderUpload.current = false;
     ownerRef.current = undefined;
     setUser(null);
     setPackets([]);
@@ -351,22 +372,19 @@ export default function App() {
     setToast('');
     setToastAction(null);
     setUploadBatch(null);
-    setQueuedFiles([]);
     setData(null);
     setActiveId('');
     setCsrf('');
   }
-  async function upload(files: FileList | File[] | null) {
+  async function upload(files: FileList | File[] | null, intakeId?: string) {
     if (!files || !files.length || busy) return;
-    if (!activeId) {
-      setQueuedFiles(Array.from(files));
-      startCreate();
-      return;
-    }
-    await perform('upload', () => addFiles(activeId, Array.from(files)));
+    const packetId = newFolderUpload.current ? '' : activeId;
+    newFolderUpload.current = false;
+    await perform('upload', () => addFiles(packetId, Array.from(files), intakeId));
     if (inputRef.current) inputRef.current.value = '';
   }
-  async function addFiles(packetId: string, files: File[]) {
+  async function addFiles(packetId: string, files: File[], intakeId: string = crypto.randomUUID()) {
+    let targetId = packetId;
     const controller = new AbortController();
     uploadAbort.current = controller;
     const owner = ownerRef.current;
@@ -375,10 +393,10 @@ export default function App() {
       file,
       status: 'queued',
     }));
-    setUploadBatch({ packetId, items });
+    setUploadBatch({ packetId, intakeId, items });
     const updateItem = (id: string, change: Partial<UploadItem>) =>
       setUploadBatch((batch) =>
-        batch?.packetId === packetId
+        batch?.items.some((item) => item.id === id)
           ? {
               ...batch,
               items: batch.items.map((item) => (item.id === id ? { ...item, ...change } : item)),
@@ -396,13 +414,20 @@ export default function App() {
       if (owner !== ownerRef.current) return;
       updateItem(item.id, { status: 'uploading', progress: 0 });
       try {
-        const result = await uploadOriginal<{ duplicate: boolean }>(
-          `/packets/${packetId}/documents`,
+        const result = await uploadOriginal<{ duplicate: boolean; packetId: string }>(
+          targetId ? `/packets/${targetId}/documents` : '/intake',
           item.file,
           (progress) => updateItem(item.id, { progress }),
           controller.signal,
+          targetId ? undefined : intakeId,
         );
         if (owner !== ownerRef.current) return;
+        if (!targetId) {
+          targetId = result.packetId;
+          setUploadBatch((batch) => (batch ? { ...batch, packetId: targetId } : batch));
+          navigate('documents', targetId);
+          await refresh(targetId);
+        }
         updateItem(item.id, { status: result.duplicate ? 'duplicate' : 'added' });
         if (result.duplicate) duplicates++;
         else added++;
@@ -421,11 +446,25 @@ export default function App() {
     }
     if (owner !== ownerRef.current) return;
     uploadAbort.current = null;
-    await refresh().catch((e) => setError(e.message));
+    // Recover a first upload accepted before its response was lost.
+    if (!targetId) {
+      const recovered = await api<PacketCard[]>('/packets')
+        .then((rows) =>
+          rows.find((row) => row.packet.intakeId === intakeId && row.documentCount > 0),
+        )
+        .catch(() => undefined);
+      if (owner !== ownerRef.current) return;
+      if (recovered) {
+        targetId = recovered.packet.id;
+        setUploadBatch((batch) => (batch ? { ...batch, packetId: targetId } : batch));
+        navigate('documents', targetId);
+      }
+    }
+    await refresh(targetId).catch((e) => setError(e.message));
     notify(
       `${added} added${duplicates ? `, ${duplicates} already present` : ''}${failed ? `, ${failed} could not upload. See the upload results.` : '. Inspection runs separately.'}`,
       added
-        ? { label: 'Open checklist', run: () => navigate('requirements', packetId) }
+        ? { label: 'Open checklist', run: () => navigate('requirements', targetId) }
         : undefined,
     );
   }
@@ -452,25 +491,35 @@ export default function App() {
       });
     });
   }
-  function startCreate(template = 'college') {
+  function startCreate() {
     if (busy) return;
-    setCreateTemplate(template);
+    newFolderUpload.current = true;
+    chooseFiles();
+  }
+  function startInstructions() {
+    if (busy || !data?.documents.length) return;
     setModal('create');
   }
   async function createApplication(input: CreateApplicationInput) {
-    const p = await api<Packet>('/packets', { method: 'POST', body: body(input) });
-    const files = queuedFiles;
-    navigate(files.length ? 'documents' : 'requirements', p.id);
+    if (!data?.documents.length) return;
+    await api(`/packets/${activeId}/instructions`, {
+      method: 'PUT',
+      body: body({
+        expectedRevision: data.packet.revision,
+        packId: input.packId,
+        templateId: input.templateId,
+        requirements: input.requirements,
+        sourceUrl: input.sourceUrl,
+        instructionText: input.instructionText,
+        title: input.title,
+        destination: input.destination,
+        deadline: input.deadline,
+      }),
+    });
     setModal(null);
-    setQueuedFiles([]);
-    if (inputRef.current) inputRef.current.value = '';
-    if (files.length) {
-      await perform('upload', () => addFiles(p.id, files));
-    } else {
-      await refresh(p.id).catch((e) => setError(e.message));
-      setToast('Application created. Your next steps are ready.');
-    }
-    if (!p.customPack) setModal('profile');
+    await refresh();
+    navigate('requirements');
+    if (input.packId) setModal('profile');
   }
   async function archiveApplication(p: Packet) {
     await perform('archive', async () => {
@@ -543,7 +592,6 @@ export default function App() {
             setToast('');
             setToastAction(null);
             setUploadBatch(null);
-            setQueuedFiles([]);
             setActiveId(id || '');
             setUser(u);
             setView('overview');
@@ -559,7 +607,7 @@ export default function App() {
     view === 'overview'
       ? activeId
         ? null
-        : [`Welcome, ${user.name.split(' ')[0]}.`, 'Let’s set up your first application folder.']
+        : [`Welcome, ${user.name.split(' ')[0]}.`, 'Add your documents to begin.']
       : headings[view];
   return (
     <CatalogProvider catalog={catalog}>
@@ -651,9 +699,11 @@ export default function App() {
                   onOpen={(id) => navigate('overview', id)}
                 />
               )}
-              {data && (view === 'requirements' || view === 'overview') && (
-                <SourceDetails data={data} onUpdated={() => refresh()} />
-              )}
+              {data &&
+                data.packet.mode === 'instructions' &&
+                (view === 'requirements' || view === 'overview') && (
+                  <SourceDetails data={data} onUpdated={() => refresh()} />
+                )}
               {data?.consistencyConcerns?.length ? (
                 <section className="sheet">
                   <h2>Confirmed values to compare</h2>
@@ -671,7 +721,18 @@ export default function App() {
                   ))}
                 </section>
               ) : null}
-              {showHome && (
+              {!activeId && (perApplication || view === 'applications') && (
+                <UploadStart
+                  busy={busy}
+                  items={uploadBatch?.packetId ? null : uploadBatch?.items || null}
+                  onChoose={chooseFiles}
+                  onUpload={(files) => void upload(files)}
+                  onRetry={(files) => void upload(files, uploadBatch?.intakeId)}
+                  onDismiss={() => setUploadBatch(null)}
+                  onCancel={() => uploadAbort.current?.abort()}
+                />
+              )}
+              {showHome && activeId && (
                 <WorkspaceHome
                   user={user}
                   packets={packets}
@@ -681,10 +742,6 @@ export default function App() {
                   onArchive={(p) => void archiveApplication(p)}
                 />
               )}
-              {!activeId &&
-                (view === 'requirements' || view === 'documents' || view === 'report') && (
-                  <EmptySection view={view} onCreate={startCreate} onUpload={chooseFiles} />
-                )}
               {activeId && !data && perApplication && (
                 <div className="skeleton-sheet" role="status" aria-label="Opening your application">
                   <span />
@@ -720,6 +777,7 @@ export default function App() {
                   busy={busy}
                   onOpenRequirement={openRequirement}
                   onEditChecklist={() => setModal('checklist')}
+                  onInstructions={startInstructions}
                   onProfile={() => setModal('profile')}
                   onReview={() => void checkPacket()}
                 />
@@ -851,7 +909,7 @@ export default function App() {
         )}
         {modal === 'quick-actions' && (
           <QuickActions
-            hasApplication={!!data}
+            hasApplication={!!data?.documents.length}
             busy={!!busy}
             packets={packets}
             activeId={activeId}
@@ -872,11 +930,8 @@ export default function App() {
         )}
         {modal === 'create' && (
           <ApplicationWizard
-            initialTemplate={createTemplate}
-            onClose={() => {
-              setModal(null);
-              setQueuedFiles([]);
-            }}
+            initialTitle={data?.packet.title || ''}
+            onClose={() => setModal(null)}
             onCreate={createApplication}
           />
         )}

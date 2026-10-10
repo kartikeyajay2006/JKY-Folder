@@ -45,7 +45,7 @@ test('top navigation and account menu work with keyboard, search and reduced mot
     await expect(page.locator('.requirement-row')).toHaveCount(1);
     await expect(page.getByRole('heading', { name: 'Signature', exact: true })).toBeVisible();
     await header.getByRole('button', { name: 'Applications', exact: true }).click();
-    await page.getByRole('button', { name: 'New application', exact: true }).click();
+    await page.getByRole('button', { name: 'Quick actions', exact: true }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     expect(await header.evaluate((element) => (element as HTMLElement).inert)).toBe(true);
     await page.keyboard.press('Escape');

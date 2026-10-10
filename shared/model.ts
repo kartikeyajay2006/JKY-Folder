@@ -154,6 +154,8 @@ export interface EvidenceLink extends EvidenceAnchor {
 export const evidenceAnchors = (link?: EvidenceLink): EvidenceAnchor[] =>
   link ? [link, ...(link.additional || [])] : [];
 export interface Packet {
+  mode?: 'uploads' | 'instructions';
+  intakeId?: string;
   id: string;
   title: string;
   packId: string;

@@ -20,13 +20,15 @@ PORT=3010 WEB_PORT=5183 APP_ORIGIN=http://127.0.0.1:5183 npm run dev
 
 ## Review a packet
 
-Choose **New application**, select a college, scholarship, job or custom starter, and add its name, destination, deadline and original instructions. The starter checklist is editable before creation. Importing instructions creates one editable item per nonempty line; it does not infer conditional meanings. Confirm required/optional items, formats, conditions and any size or literal phrase checks against your actual instructions. Use **Edit checklist** to revise it later.
+Start with **Choose documents** or drop your PDF/JPEG originals into the upload entry. The first accepted file creates a folder named from that file, and later files in the same batch join it. An invalid first file creates no folder. There is no preset checklist, profile questionnaire or setup wizard in this path.
 
-The separate UCEED 2027 reference option has conditional profile questions. Confirm those answers or leave them unknown when you need to check them. Unknown answers remain unresolved.
+Applications and document/checklist/report tabs appear only for folders containing uploaded originals. The default checklist has one review item per uploaded file. Inspection, page previews, personal review notes and dated reports operate on those actual files. Deleting the last file hides the empty folder and returns to the upload entry without removing other folders.
 
-Upload PDFs or JPEGs, wait for inspection, then open a requirement and connect a document and page range. The PDF viewer renders the actual selected original page with pagination and zoom. Inspect it, record your own review note, and save the evidence link. Run a review to save a dated snapshot. Uploading first from an empty document section opens setup and attaches those selected files to the newly created application.
+To check an institution’s required documents, open **Checklist → Add application instructions** explicitly. Choose an editable starter, paste your actual instructions or select the versioned reference. Confirm the rules before activating them. Only this instructions mode shows missing application requirements and conditional profile questions. Changing modes preserves your originals and historical reports; existing evidence assignments require a fresh review against the chosen instructions.
 
-Batch intake reports each file separately. A rejected file does not stop later files from being attempted or remove accepted files. Duplicate bytes return the existing document without a second copy. Retry temporary failures or choose a supported replacement. Intake acceptance and successful inspection are separate states.
+Older folders without an explicit mode open with a checklist derived from their actual uploaded files. Their prior reference/custom instructions, profile and reports remain stored; nothing is erased by this display change. The isolated demo explicitly uses instructions mode.
+
+Batch intake reports each file separately. A rejected file does not stop later files from being attempted or remove accepted files. Duplicate bytes return the existing document without a second copy. A lost first-upload response is recovered into the original folder; retrying the same batch reuses that folder. Retry temporary failures or choose a supported replacement. Intake acceptance and successful inspection are separate states.
 
 The report distinguishes supported technical checks and applicant content confirmation. Changing a profile, file, evidence link, checklist or application details makes an earlier report historical. Changing custom requirements or original instruction notes resets prior content confirmations. A newer evaluator version also marks older snapshots historical. Running a fresh review creates a new snapshot. A retry with unchanged revisions, checklist version and evaluator version reuses the existing run.
 

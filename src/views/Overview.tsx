@@ -60,7 +60,8 @@ export function OverviewView({
   const counts = live.counts;
   const applicable = live.checks.filter((c) => c.state !== 'not_applicable').length;
   const latest = runs[0];
-  const kind = kindLabel(catalog, packet.kind, pack);
+  const kind =
+    packet.mode === 'instructions' ? kindLabel(catalog, packet.kind, pack) : 'Document folder';
   const totals: [CheckState, number][] = [
     ['pass', counts.pass],
     ['fail', counts.fail + counts.error],

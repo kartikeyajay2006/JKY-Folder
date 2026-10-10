@@ -54,6 +54,11 @@ test('demo → evidence review → dated report → stale report → deletion', 
   await expect(
     page.getByText('This report is historical. Your packet, checklist or evaluator has changed.'),
   ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
+    ),
+  ).toBe(true);
   await page.getByRole('button', { name: 'Run a fresh review' }).click();
   await expect(
     page.getByText('This report is historical. Your packet, checklist or evaluator has changed.'),
@@ -75,7 +80,23 @@ test('demo → evidence review → dated report → stale report → deletion', 
 test('create a packet, inspect a real PDF and connect a page', async ({ page }) => {
   await demo(page);
   await navigate(page, 'Applications');
+  const chooser = page.waitForEvent('filechooser');
   await page.getByRole('button', { name: 'New application', exact: true }).click();
+  const picked = await chooser;
+  const pdf = await PDFDocument.create();
+  const font = await pdf.embedFont(StandardFonts.Helvetica);
+  pdf
+    .addPage()
+    .drawText('Synthetic browser test - age evidence', { x: 50, y: 700, font, size: 16 });
+  const bytes = await pdf.save();
+  await picked.setFiles({
+    name: 'browser-age.pdf',
+    mimeType: 'application/pdf',
+    buffer: Buffer.from(bytes),
+  });
+  await expect(page.getByText('Inspected', { exact: true })).toBeVisible({ timeout: 25000 });
+  await navigate(page, 'Checklist');
+  await page.getByRole('button', { name: 'Add application instructions' }).click();
   await page
     .getByRole('dialog')
     .getByRole('button', { name: /UCEED 2027/ })
@@ -84,24 +105,9 @@ test('create a packet, inspect a real PDF and connect a page', async ({ page }) 
   await page.getByLabel('Application name', { exact: true }).fill('Browser-tested packet');
   await page.getByRole('button', { name: 'Review checklist', exact: true }).click();
   await page.getByRole('button', { name: 'Create application', exact: true }).click();
-  await expect(page.getByRole('dialog')).toBeVisible();
   await page.getByLabel('Qualifying examination', { exact: true }).selectOption('completed');
   await page.getByLabel('Application category', { exact: true }).selectOption('general');
   await page.getByRole('button', { name: 'Confirm my answers' }).click();
-  await expect(page.getByRole('dialog')).not.toBeVisible();
-  await navigate(page, 'Documents');
-  const pdf = await PDFDocument.create();
-  const font = await pdf.embedFont(StandardFonts.Helvetica);
-  pdf
-    .addPage()
-    .drawText('Synthetic browser test - age evidence', { x: 50, y: 700, font, size: 16 });
-  const bytes = await pdf.save();
-  await page.getByLabel('Choose documents to upload').setInputFiles({
-    name: 'browser-age.pdf',
-    mimeType: 'application/pdf',
-    buffer: Buffer.from(bytes),
-  });
-  await expect(page.getByText('Inspected', { exact: true })).toBeVisible({ timeout: 25000 });
   await navigate(page, 'Checklist');
   await page
     .getByRole('article')
@@ -122,11 +128,12 @@ test('dialog traps keyboard focus and narrow screens avoid horizontal overflow',
 }) => {
   await demo(page);
   await navigate(page, 'Applications');
-  await page.getByRole('button', { name: 'New application', exact: true }).click();
+  await page.getByRole('button', { name: 'Quick actions', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await page.keyboard.press('Shift+Tab');
-  await expect(dialog.getByRole('button', { name: 'Continue', exact: true })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(dialog.getByRole('button').last()).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(dialog.getByRole('button', { name: 'Close dialog' })).toBeFocused();
   await page.keyboard.press('Escape');

@@ -12,7 +12,7 @@
     "start": "tsx server/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test",
+    "test:e2e": "playwright test --project=desktop && playwright test --project=mobile",
     "check": "npm run typecheck && npm test && npm run build",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"shared/**/*.ts\" \"server/**/*.{ts,mjs}\" \"tests/**/*.ts\" \"*.ts\" index.html package.json .github/workflows/ci.yml",
     "rules": "tsx server/curate.ts",

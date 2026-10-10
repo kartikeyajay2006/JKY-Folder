@@ -118,11 +118,13 @@ export function WorkspaceHeader({
       <div className="masthead">
         <a
           className="masthead-brand"
-          href="?view=applications"
-          aria-label="JKY-Folder, all applications"
+          href={packets.length ? '?view=applications' : '?'}
+          aria-label={
+            packets.length ? 'JKY-Folder, all applications' : 'JKY-Folder, upload documents'
+          }
           onClick={(event) => {
             event.preventDefault();
-            navigate('applications');
+            navigate(packets.length ? 'applications' : 'overview');
           }}
         >
           <Wordmark />
@@ -220,17 +222,19 @@ export function WorkspaceHeader({
       </div>
       <div className="folder-tabs-bar" id="workspace-navigation">
         <nav aria-label="Workspace" className="folder-tabs" ref={tabStrip}>
-          <button
-            className={`folder-tab drawer-tab ${view === 'applications' ? 'is-current' : ''}`}
-            aria-current={view === 'applications' ? 'page' : undefined}
-            onClick={() => navigate('applications')}
-          >
-            <FolderOpen size={16} aria-hidden="true" />
-            Applications
-            <span className="count" aria-hidden="true">
-              {packets.length}
-            </span>
-          </button>
+          {packets.length > 0 && (
+            <button
+              className={`folder-tab drawer-tab ${view === 'applications' ? 'is-current' : ''}`}
+              aria-current={view === 'applications' ? 'page' : undefined}
+              onClick={() => navigate('applications')}
+            >
+              <FolderOpen size={16} aria-hidden="true" />
+              Applications
+              <span className="count" aria-hidden="true">
+                {packets.length}
+              </span>
+            </button>
+          )}
           {active && (
             <span className="folder-name" title={active.title}>
               {packets.length > 1 ? (
@@ -253,7 +257,7 @@ export function WorkspaceHeader({
               )}
             </span>
           )}
-          {folderTabs.map(({ id, label }) => (
+          {(active ? folderTabs : []).map(({ id, label }) => (
             <button
               key={id}
               className={`folder-tab ${view === id ? 'is-current' : ''}`}

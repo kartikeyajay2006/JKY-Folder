@@ -38,7 +38,7 @@ import { zipSync, strToU8 } from 'fflate';
 import { limits } from '../shared/limits';
 import { evidenceAnchors } from '../shared/model';
 import { suggestEvidence, consistencyConcerns } from '../shared/facts';
-import { availablePacks, resolvePack, sourceChanged } from './rule-packs';
+import { availablePacks, resolvePack, sourceChanged, isUploadPacket } from './rule-packs';
 import { preferences, refreshReminders } from './reminders';
 import {
   profileQuestions,
@@ -90,7 +90,18 @@ export function createApp(options: {
   production?: boolean;
 }) {
   const store = createStore(resolve(options.dataDir));
-  const packetPack = (p: Packet) => resolvePack(store, p);
+  const packetPack = (p: Packet) => {
+    if (isUploadPacket(p))
+      for (const doc of store.documents(p.id))
+        p.links['upload-' + doc.id] ||= {
+          documentId: doc.id,
+          pageFrom: 1,
+          pageTo: Math.max(1, doc.pageCount),
+          review: 'unreviewed',
+          note: '',
+        };
+    return resolvePack(store, p);
+  };
   const app = express();
   const prod = options.production || false;
   const allowedOrigins = new Set([
@@ -297,6 +308,15 @@ export function createApp(options: {
   function owned(req: Request): Packet {
     const p = store.packet(String(req.params.packetId), user(req).id);
     if (!p) throw new HttpError(404, 'Packet not found.');
+    if (isUploadPacket(p))
+      for (const doc of store.documents(p.id))
+        p.links['upload-' + doc.id] ||= {
+          documentId: doc.id,
+          pageFrom: 1,
+          pageTo: Math.max(1, doc.pageCount),
+          review: 'unreviewed',
+          note: '',
+        };
     return p;
   }
   function checkRevision(p: Packet, expected: number) {
@@ -409,6 +429,53 @@ export function createApp(options: {
   app.get('/api/packets/:packetId/sources', (req, res) => {
     const p = owned(req);
     res.json({ pack: packetPack(p), changed: sourceChanged(store, p) });
+  });
+  app.put('/api/packets/:packetId/instructions', (req, res) => {
+    const input = z
+      .object({
+        expectedRevision: revision,
+        packId: z.string().optional(),
+        templateId: z.enum(['college', 'scholarship', 'job', 'custom']).optional(),
+        requirements: requirementsSchema.optional(),
+        sourceUrl: sourceUrlSchema.optional(),
+        instructionText: z.string().max(limits.instructionChars).optional(),
+        title: z.string().trim().min(2).max(100).optional(),
+        destination: z.string().trim().max(160).optional(),
+        deadline: deadlineSchema.optional(),
+      })
+      .strict()
+      .parse(req.body);
+    const p = owned(req);
+    checkRevision(p, input.expectedRevision);
+    if (!store.documents(p.id).length)
+      throw new HttpError(400, 'Upload your documents before adding application instructions.');
+    if (input.packId) {
+      const pack = availablePacks(store).find((pack) => pack.id === input.packId);
+      if (!pack) throw new HttpError(400, 'Choose a supported reference.');
+      p.packId = pack.id;
+      p.packSnapshot = structuredClone(pack);
+      delete p.customPack;
+    } else {
+      if (!input.templateId || !input.requirements?.length)
+        throw new HttpError(400, 'Confirm your actual requirements.');
+      p.customPack = makeCustomPack({
+        id: 'custom-' + p.id,
+        title: p.title,
+        sourceUrl: input.sourceUrl,
+        requirements: input.requirements,
+      });
+      p.packId = p.customPack.id;
+    }
+    p.mode = 'instructions';
+    p.title = input.title || p.title;
+    if (p.customPack) p.customPack.title = p.title;
+    p.destination = input.destination ?? p.destination;
+    p.deadline = input.deadline ?? p.deadline;
+    p.links = {};
+    p.notes = input.instructionText || '';
+    touch(p);
+    store.audit(user(req).id, 'checklist.updated', p.id);
+    res.json(p);
   });
   app.post('/api/packets/:packetId/accept-checklist-update', (req, res) => {
     const input = z.object({ expectedRevision: revision }).strict().parse(req.body),
@@ -573,6 +640,7 @@ export function createApp(options: {
     const now = new Date().toISOString();
     const p: Packet = {
       id: randomUUID(),
+      mode: 'instructions',
       title: input.title,
       packId: input.packId || 'custom',
       revision: 1,
@@ -734,6 +802,109 @@ export function createApp(options: {
     storage: multer.memoryStorage(),
     limits: { fileSize: limits.fileBytes, files: 1, fields: 0, parts: 1 },
   });
+  function acceptDocument(req: Request, p: Packet, file: Express.Multer.File) {
+    const name = file.originalname.normalize('NFKC');
+    if (name.length > 160 || /[\x00-\x1f\x7f/\\]/.test(name) || !/^.+\.(pdf|jpg|jpeg)$/i.test(name))
+      throw new HttpError(400, 'Use a PDF or JPEG file with a simple filename.');
+    const signature = file.buffer.subarray(0, 5).toString();
+    const jpeg = file.buffer[0] === 255 && file.buffer[1] === 216 && file.buffer[2] === 255;
+    if (signature !== '%PDF-' && !jpeg)
+      throw new HttpError(400, 'This is not a supported PDF or JPEG file.');
+    const docs = store.documents(p.id),
+      digest = hash(file.buffer);
+    const duplicate = docs.find((d) => d.hash === digest);
+    if (duplicate) return { document: duplicate, duplicate: true, packetId: p.id };
+    if (
+      docs.length >= limits.packetFiles ||
+      docs.reduce((n, d) => n + d.size, 0) + file.size > limits.packetBytes
+    )
+      throw new HttpError(
+        400,
+        `Packet limit reached: ${limits.packetFiles} files or ${limits.packetBytes / 1024 / 1024} MB.`,
+      );
+    const id = randomUUID(),
+      key = randomUUID();
+    writeFileSync(join(store.objects, key), file.buffer, { mode: 0o600 });
+    const doc: DocumentRecord = {
+      id,
+      packetId: p.id,
+      name,
+      size: file.size,
+      hash: digest,
+      mime: 'application/octet-stream',
+      status: 'processing',
+      pageCount: 0,
+      pages: [],
+      createdAt: new Date().toISOString(),
+    };
+    try {
+      store.db.transaction(() => {
+        store.db
+          .prepare('INSERT INTO documents VALUES(?,?,?,?)')
+          .run(id, p.id, key, JSON.stringify(doc));
+        store.db.prepare("INSERT INTO jobs VALUES(?,?,'queued')").run(id, p.id);
+        if (isUploadPacket(p))
+          p.links['upload-' + id] = {
+            documentId: id,
+            pageFrom: 1,
+            pageTo: 1,
+            review: 'unreviewed',
+            note: '',
+          };
+        touch(p);
+        store.audit(user(req).id, 'document.uploaded', id);
+      })();
+    } catch (error) {
+      unlinkSync(join(store.objects, key));
+      throw error;
+    }
+    return { document: doc, duplicate: false, packetId: p.id };
+  }
+  app.post('/api/intake', upload.single('file'), (req, res) => {
+    if (!req.file) throw new HttpError(400, 'Choose one PDF or JPEG file.');
+    const intakeId = z.string().uuid().optional().parse(req.get('x-intake-id'));
+    if (intakeId) {
+      const existing = store.db
+        .prepare("SELECT id FROM packets WHERE userId=? AND json_extract(payload, '$.intakeId')=?")
+        .get(user(req).id, intakeId) as { id: string } | undefined;
+      if (existing) {
+        res
+          .status(202)
+          .json(acceptDocument(req, store.packet(existing.id, user(req).id)!, req.file));
+        return;
+      }
+    }
+    const count = store.db
+      .prepare(
+        'SELECT COUNT(*) AS n FROM packets WHERE userId=? AND EXISTS (SELECT 1 FROM documents WHERE packetId=packets.id)',
+      )
+      .get(user(req).id) as { n: number };
+    if (count.n >= limits.packets) throw new HttpError(400, 'Your folder limit has been reached.');
+    const now = new Date().toISOString();
+    const p: Packet = {
+      id: randomUUID(),
+      mode: 'uploads',
+      intakeId,
+      title: req.file.originalname.replace(/\.[^.]+$/, '').slice(0, 100) || 'Uploaded documents',
+      packId: 'uploads',
+      revision: 1,
+      profile: { ...emptyProfile },
+      links: {},
+      createdAt: now,
+      updatedAt: now,
+      kind: 'custom',
+    };
+    // Metadata and original acceptance commit together. An invalid first file creates no folder.
+    const result = store.db.transaction(() => {
+      store.db
+        .prepare('INSERT INTO packets VALUES(?,?,?)')
+        .run(p.id, user(req).id, JSON.stringify(p));
+      const result = acceptDocument(req, p, req.file!);
+      store.audit(user(req).id, 'packet.created', p.id);
+      return result;
+    })();
+    res.status(202).json(result);
+  });
   app.post(
     '/api/packets/:packetId/documents',
     (req, res, next) => {
@@ -742,61 +913,8 @@ export function createApp(options: {
     },
     upload.single('file'),
     (req, res) => {
-      const p = owned(req);
       if (!req.file) throw new HttpError(400, 'Choose one PDF or JPEG file.');
-      const file = req.file;
-      const name = file.originalname.normalize('NFKC');
-      if (
-        name.length > 160 ||
-        /[\x00-\x1f\x7f/\\]/.test(name) ||
-        !/^.+\.(pdf|jpg|jpeg)$/i.test(name)
-      )
-        throw new HttpError(400, 'Use a PDF or JPEG file with a simple filename.');
-      const signature = file.buffer.subarray(0, 5).toString();
-      const jpeg = file.buffer[0] === 255 && file.buffer[1] === 216 && file.buffer[2] === 255;
-      if (signature !== '%PDF-' && !jpeg)
-        throw new HttpError(400, 'This is not a supported PDF or JPEG file.');
-      const docs = store.documents(p.id),
-        digest = hash(file.buffer);
-      const duplicate = docs.find((d) => d.hash === digest);
-      if (duplicate) return res.json({ document: duplicate, duplicate: true });
-      if (
-        docs.length >= limits.packetFiles ||
-        docs.reduce((n, d) => n + d.size, 0) + file.size > limits.packetBytes
-      )
-        throw new HttpError(
-          400,
-          `Packet limit reached: ${limits.packetFiles} files or ${limits.packetBytes / 1024 / 1024} MB.`,
-        );
-      const id = randomUUID(),
-        key = randomUUID();
-      writeFileSync(join(store.objects, key), file.buffer, { mode: 0o600 });
-      const doc: DocumentRecord = {
-        id,
-        packetId: p.id,
-        name,
-        size: file.size,
-        hash: digest,
-        mime: 'application/octet-stream',
-        status: 'processing',
-        pageCount: 0,
-        pages: [],
-        createdAt: new Date().toISOString(),
-      };
-      try {
-        store.db.transaction(() => {
-          store.db
-            .prepare('INSERT INTO documents VALUES(?,?,?,?)')
-            .run(id, p.id, key, JSON.stringify(doc));
-          store.db.prepare("INSERT INTO jobs VALUES(?,?,'queued')").run(id, p.id);
-          touch(p);
-          store.audit(user(req).id, 'document.uploaded', id);
-        })();
-      } catch (error) {
-        unlinkSync(join(store.objects, key));
-        throw error;
-      }
-      res.status(202).json({ document: doc, duplicate: false });
+      res.status(202).json(acceptDocument(req, owned(req), req.file));
     },
   );
   app.put('/api/packets/:packetId/evidence/:requirementId', (req, res) => {
@@ -939,6 +1057,8 @@ export function createApp(options: {
   app.post('/api/packets/:packetId/evaluate', (req, res) => {
     const input = z.object({ expectedRevision: revision }).parse(req.body);
     const p = owned(req);
+    if (isUploadPacket(p) && !store.documents(p.id).length)
+      throw new HttpError(400, 'Upload an original before saving a document review.');
     checkRevision(p, input.expectedRevision);
     if (sourceChanged(store, p))
       throw new HttpError(

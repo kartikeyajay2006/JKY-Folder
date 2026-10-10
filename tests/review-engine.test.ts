@@ -32,6 +32,7 @@ export const packet = (): Packet => ({
   id: 'p',
   title: 'Synthetic packet',
   packId: 'pack',
+  mode: 'instructions',
   revision: 1,
   profile: { ...emptyProfile },
   links: {},
@@ -237,6 +238,9 @@ describe('curator lifecycle and source changes', () => {
       expect(refreshReminders(store, 'u')).toEqual([]);
       const p = { ...packet(), deadline: '2026-10-12', customPack: pack() };
       store.db.prepare('INSERT INTO packets VALUES(?,?,?)').run(p.id, 'u', JSON.stringify(p));
+      store.db
+        .prepare('INSERT INTO documents VALUES(?,?,?,?)')
+        .run('d', p.id, 'fixture', JSON.stringify(document()));
       expect(refreshReminders(store, 'u', new Date('2026-10-10T12:00:00Z'))).toHaveLength(1);
       expect(refreshReminders(store, 'u', new Date('2026-10-10T12:00:00Z'))).toHaveLength(1);
     } finally {

@@ -933,6 +933,8 @@ html[data-motion='on'] .upload-zone.is-uploading .pocket-sheet.sheet-a {
 /* Report: a printed document */
 .report-view {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: 18px;
 }
 .report-toolbar {
@@ -945,7 +947,8 @@ html[data-motion='on'] .upload-zone.is-uploading .pocket-sheet.sheet-a {
 .report-history {
   display: grid;
   gap: 6px;
-  min-width: min(360px, 100%);
+  min-width: 0;
+  width: min(360px, 100%);
 }
 .report-paper {
   position: relative;

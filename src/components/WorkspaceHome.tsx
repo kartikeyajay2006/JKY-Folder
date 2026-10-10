@@ -112,7 +112,9 @@ export function WorkspaceHome({
                       aria-labelledby={`folder-${p.id}`}
                     >
                       <span className="folder-card-tab">
-                        {kindLabel(catalog, p.kind, checklist)}
+                        {p.mode === 'instructions'
+                          ? kindLabel(catalog, p.kind, checklist)
+                          : 'Document folder'}
                       </span>
                       <div className="folder-card-body">
                         <button className="folder-card-title" onClick={() => onOpen(p.id)}>
@@ -202,44 +204,6 @@ export function WorkspaceHome({
           )}
         </>
       }
-      <section className="starter-section" aria-labelledby="starter-title">
-        <div className="section-head">
-          <h2 id="starter-title">Start from a checklist</h2>
-          <p>Every starter is editable. Reference checklists keep a dated, versioned source.</p>
-        </div>
-        <ul className="starter-grid">
-          {catalog.packs.map((pack) => (
-            <li key={pack.id}>
-              <button className="starter-tile is-reference" onClick={() => onCreate(pack.id)}>
-                <span className="starter-kind">Reference checklist</span>
-                <strong>{pack.title}</strong>
-                <p>
-                  {plural(pack.requirementCount, 'item')}, {pack.conditionalCount} of them depend on
-                  your answers.
-                </p>
-                <span className="starter-foot">
-                  Use this checklist <ArrowRight size={15} aria-hidden="true" />
-                </span>
-              </button>
-            </li>
-          ))}
-          {catalog.templates.map((t) => (
-            <li key={t.id}>
-              <button className="starter-tile" onClick={() => onCreate(t.id)}>
-                <span className="starter-kind">{t.kind === 'custom' ? 'Blank' : 'Starter'}</span>
-                <strong>{t.title}</strong>
-                <p>{t.description}</p>
-                <span className="starter-foot">
-                  {t.kind === 'custom'
-                    ? 'Use your own instructions'
-                    : `${plural(t.starter.length, 'editable item')}`}
-                  <ArrowRight size={15} aria-hidden="true" />
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
       <p className="workspace-trust">Signed in as {user.name}.</p>
     </div>
   );

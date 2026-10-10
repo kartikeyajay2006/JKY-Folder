@@ -86,8 +86,8 @@ export function QuickActions({
     {
       id: 'create',
       group: 'Actions',
-      title: 'Create an application',
-      hint: 'Choose a starter or use your instructions',
+      title: 'Upload to a new folder',
+      hint: 'Choose your original files to start a folder',
       icon: icon(Plus),
       action: onCreate,
       disabled: busy,
@@ -103,25 +103,31 @@ export function QuickActions({
       action: onUpload,
       disabled: busy,
     },
-    {
-      id: 'review',
-      group: 'Actions',
-      title: 'Run a readiness review',
-      hint: hasApplication
-        ? 'Save a dated snapshot of your checks'
-        : 'Create an application before running a review',
-      icon: icon(FileCheck2),
-      action: onReview,
-      disabled: busy || !hasApplication,
-    },
-    ...sections.map(([id, title, hint, Icon]) => ({
-      id: `view-${id}`,
-      group: 'Go to',
-      title,
-      hint,
-      icon: icon(Icon),
-      action: () => onNavigate(id),
-    })),
+    ...(hasApplication
+      ? [
+          {
+            id: 'review',
+            group: 'Actions',
+            title: 'Run a readiness review',
+            hint: hasApplication
+              ? 'Save a dated snapshot of your checks'
+              : 'Create an application before running a review',
+            icon: icon(FileCheck2),
+            action: onReview,
+            disabled: busy || !hasApplication,
+          },
+        ]
+      : []),
+    ...sections
+      .filter(([id]) => hasApplication || ['activity', 'settings', 'help'].includes(id))
+      .map(([id, title, hint, Icon]) => ({
+        id: `view-${id}`,
+        group: 'Go to',
+        title,
+        hint,
+        icon: icon(Icon),
+        action: () => onNavigate(id),
+      })),
     ...checks.map((check) => ({
       id: `requirement-${check.requirementId}`,
       group: 'This checklist',

@@ -20,6 +20,17 @@ async function signup(page: Page) {
   await page.getByRole('heading', { name: 'Welcome, Fresh.' }).waitFor();
   return email;
 }
+async function uploadFirst(page: Page, name = 'uploaded.pdf') {
+  const pdf = await PDFDocument.create();
+  pdf.addPage().drawText('Synthetic upload-first original.');
+  await page
+    .getByLabel('Choose documents to upload')
+    .setInputFiles({ name, mimeType: 'application/pdf', buffer: Buffer.from(await pdf.save()) });
+  await expect(page.getByRole('button', { name: `Open ${name}`, exact: true })).toBeVisible();
+  await expect(page.getByText('Inspected', { exact: true }).first()).toBeVisible({
+    timeout: 20000,
+  });
+}
 async function cleanup(page: Page) {
   const me = await page.request.get('/api/me');
   if (me.ok()) {
@@ -30,51 +41,26 @@ async function cleanup(page: Page) {
     });
   }
 }
-test('fresh account has useful distinct sections and accessible setup', async ({ page }) => {
+test('fresh account shows upload entry with no application or checklist navigation', async ({
+  page,
+}) => {
   await signup(page);
   try {
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    await expect(page.getByRole('heading', { name: 'Upload your first document.' })).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: 'You have no applications yet.' }),
-    ).toBeVisible();
-    // A new account sees only the explanation and the path: nothing pre-filled or ticked.
-    await expect(page.getByRole('list', { name: 'How to prepare an application' })).toContainText(
-      'Start here',
-    );
-    await expect(page.locator('.state-mark, .starter-tile, .folder-card')).toHaveCount(0);
-    await expectAccessible(page);
-    await nav(page, 'Checklist');
+      page.locator('.state-mark,.starter-tile,.folder-card,.requirement-row'),
+    ).toHaveCount(0);
     await expect(
-      page.getByRole('heading', { name: 'Your checklist will appear here.' }),
-    ).toBeVisible();
-    await expectAccessible(page);
-    await nav(page, 'Documents');
-    await expect(
-      page.getByRole('heading', { name: 'Your documents will appear here.' }),
-    ).toBeVisible();
-    await expectAccessible(page);
-    await nav(page, 'Report');
-    await expect(
-      page.getByRole('heading', { name: 'Your readiness report will appear here.' }),
-    ).toBeVisible();
+      page
+        .locator('#workspace-navigation')
+        .getByRole('button', { name: /Applications|Checklist|Documents|Report/ }),
+    ).toHaveCount(0);
     await expectAccessible(page);
     await nav(page, 'Activity');
-    await expect(page.getByRole('heading', { name: 'Account created', exact: true })).toHaveCount(
-      0,
-    );
     expect(await (await page.request.get('/api/activity')).json()).toEqual([]);
-    expect(await (await page.request.get('/api/notifications')).json()).toEqual([]);
-    await nav(page, 'Overview');
-    await page.getByRole('button', { name: 'Create your first application' }).click();
+    await page.locator('.masthead-brand').click();
+    await expect(page.getByRole('heading', { name: 'Upload your first document.' })).toBeVisible();
     await expectAccessible(page);
-    await page.getByRole('button', { name: 'Continue', exact: true }).click();
-    await expectAccessible(page);
-    await page.keyboard.press('Escape');
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
-      ),
-    ).toBe(true);
   } finally {
     await cleanup(page).catch(() => {});
   }
@@ -84,8 +70,9 @@ test('custom instructions become a working editable application with archive and
 }) => {
   await signup(page);
   try {
+    await uploadFirst(page);
     await nav(page, 'Checklist');
-    await page.getByRole('button', { name: 'Create your first application' }).click();
+    await page.getByRole('button', { name: 'Add application instructions' }).click();
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     await page.getByLabel('Application name', { exact: true }).fill('Product designer application');
     await page.getByLabel('Institution or company').fill('Example Studio');
@@ -137,7 +124,6 @@ test('custom instructions become a working editable application with archive and
 test('documents-first onboarding inspects and renders real PDF pages', async ({ page }) => {
   await signup(page);
   try {
-    await nav(page, 'Documents');
     const pdf = await PDFDocument.create();
     const font = await pdf.embedFont(StandardFonts.Helvetica);
     pdf.addPage().drawText('Synthetic resume - Fresh Applicant', { x: 40, y: 700, size: 18, font });
@@ -147,21 +133,13 @@ test('documents-first onboarding inspects and renders real PDF pages', async ({ 
       mimeType: 'application/pdf',
       buffer: Buffer.from(await pdf.save()),
     });
-    await expect(page.getByRole('dialog')).toBeVisible();
-    await page
-      .getByRole('dialog')
-      .getByRole('button', { name: /Job application/ })
-      .click();
-    await page.getByRole('button', { name: 'Continue', exact: true }).click();
-    await page.getByLabel('Application name', { exact: true }).fill('Documents-first application');
-    await page.getByRole('button', { name: 'Review checklist' }).click();
-    await page.getByRole('button', { name: 'Create application', exact: true }).click();
+    await expect(page.getByRole('dialog')).toHaveCount(0);
     await expect(page.getByText('Inspected', { exact: true })).toBeVisible({ timeout: 25000 });
     await nav(page, 'Checklist');
     await page
       .getByRole('article')
-      .filter({ has: page.getByRole('heading', { name: 'Resume', exact: true }) })
-      .getByRole('button', { name: 'Connect evidence' })
+      .filter({ has: page.getByRole('heading', { name: 'resume.pdf', exact: true }) })
+      .getByRole('button', { name: 'Review evidence' })
       .click();
     await expect(
       page.getByRole('img', { name: 'Document preview: resume.pdf, page 1' }),
@@ -197,7 +175,6 @@ test('batch intake keeps valid files after a rejected file and explains duplicat
 }) => {
   await signup(page);
   try {
-    await nav(page, 'Documents');
     async function fixture(text: string) {
       const pdf = await PDFDocument.create();
       pdf.addPage().drawText(text, { x: 40, y: 700 });
@@ -217,14 +194,6 @@ test('batch intake keeps valid files after a rejected file and explains duplicat
         buffer: await fixture('Synthetic qualification for batch intake'),
       },
     ]);
-    await page
-      .getByRole('dialog')
-      .getByRole('button', { name: /Job application/ })
-      .click();
-    await page.getByRole('button', { name: 'Continue', exact: true }).click();
-    await page.getByLabel('Application name', { exact: true }).fill('Batch intake application');
-    await page.getByRole('button', { name: 'Review checklist' }).click();
-    await page.getByRole('button', { name: 'Create application', exact: true }).click();
     const queue = page.getByRole('region', { name: 'Upload results' });
     await expect(queue.getByText('2 of 3 files accepted.', { exact: false })).toBeVisible();
     await expect(queue.getByText('Use a PDF or JPEG file with a simple filename.')).toBeVisible();
@@ -250,17 +219,29 @@ test('application URLs survive refresh and Back and account password controls re
   const email = await signup(page);
   try {
     async function create(name: string) {
-      await nav(page, 'Applications');
-      await page.getByRole('button', { name: 'New application', exact: true }).click();
-      await page
-        .getByRole('dialog')
-        .getByRole('button', { name: /Job application/ })
-        .click();
-      await page.getByRole('button', { name: 'Continue', exact: true }).click();
-      await page.getByLabel('Application name', { exact: true }).fill(name);
-      await page.getByRole('button', { name: 'Review checklist' }).click();
-      await page.getByRole('button', { name: 'Create application', exact: true }).click();
-      await expect(page.getByRole('heading', { name: 'Requirements & evidence' })).toBeVisible();
+      if (
+        (await page.locator('.folder-card').count()) ||
+        (await page
+          .locator('.workspace-header')
+          .getByRole('button', { name: 'Applications', exact: true })
+          .count())
+      ) {
+        await nav(page, 'Applications');
+        const chooser = page.waitForEvent('filechooser');
+        await page.getByRole('button', { name: 'New application', exact: true }).click();
+        const picked = await chooser;
+        const pdf = await PDFDocument.create();
+        pdf.addPage().drawText(name);
+        await picked.setFiles({
+          name: name + '.pdf',
+          mimeType: 'application/pdf',
+          buffer: Buffer.from(await pdf.save()),
+        });
+        await expect(
+          page.getByRole('button', { name: 'Open ' + name + '.pdf', exact: true }),
+        ).toBeVisible();
+      } else await uploadFirst(page, name + '.pdf');
+      await nav(page, 'Checklist');
     }
     await create('First synthetic application');
     await nav(page, 'Documents');
@@ -281,6 +262,8 @@ test('application URLs survive refresh and Back and account password controls re
     ).toBeVisible();
     await page.goBack();
     await expect(page.getByRole('heading', { name: 'Checklist', exact: true })).toBeVisible();
+    await page.goBack();
+    await expect(page.getByRole('heading', { name: 'Documents', exact: true })).toBeVisible();
     await page.goBack();
     await expect(
       page.getByRole('heading', { name: 'Your applications', exact: true }),

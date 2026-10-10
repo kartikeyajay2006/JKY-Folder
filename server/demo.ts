@@ -39,6 +39,7 @@ export async function seedDemo(store: Store, userId: string) {
       nationality: 'indian',
     },
     links: {},
+    mode: 'instructions',
     createdAt: now,
     updatedAt: now,
   };

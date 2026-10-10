@@ -160,12 +160,13 @@ test('multiple evidence components, fact correction and source details work in b
     await cleanup(page).catch(() => {});
   }
 });
-test('a lost upload response retries safely and cancellation preserves an empty workspace', async ({
+test('a lost upload response retries without duplicates and cancellation preserves existing originals', async ({
   page,
 }) => {
   const csrf = await signup(page);
   try {
     const pid = await create(page, csrf);
+    await upload(page, csrf, pid, 'baseline.pdf', 'Existing synthetic original.');
     await page.reload();
     await page.locator('#workspace-navigation').waitFor();
     await nav(page, 'Documents');
@@ -187,7 +188,7 @@ test('a lost upload response retries safely and cancellation preserves an empty 
     await page.getByRole('button', { name: 'Retry failed uploads' }).click();
     await expect(page.getByRole('button', { name: 'Open network.pdf', exact: true })).toBeVisible();
     expect((await (await page.request.get(`/api/packets/${pid}`)).json()).documents).toHaveLength(
-      1,
+      2,
     );
     await page.unroute('**/api/packets/*/documents');
     await page.route('**/api/packets/*/documents', async (route) => {

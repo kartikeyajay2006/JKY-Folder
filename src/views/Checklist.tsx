@@ -30,6 +30,7 @@ export function ChecklistView({
   onEditChecklist,
   onProfile,
   onReview,
+  onInstructions,
 }: {
   data: PacketDetail;
   live: EvaluationRun;
@@ -39,6 +40,7 @@ export function ChecklistView({
   onEditChecklist: () => void;
   onProfile: () => void;
   onReview: () => void;
+  onInstructions?: () => void;
 }) {
   const { questions } = useCatalog();
   const [filter, setFilter] = useState<(typeof filters)[number]['id']>('all');
@@ -71,7 +73,9 @@ export function ChecklistView({
             {pack.title},{' '}
             {pack.assurance === 'reference'
               ? 'a versioned reference checklist'
-              : 'a checklist you configured'}
+              : packet.mode === 'instructions'
+                ? 'a checklist you configured'
+                : 'only files you uploaded'}
             . {plural(pack.requirements.length, 'item')}.
             {pack.sourceUrl && (
               <>
@@ -85,16 +89,23 @@ export function ChecklistView({
           </p>
         </div>
         <div className="button-row">
-          {packet.customPack && (
+          {packet.mode !== 'instructions' && onInstructions && (
+            <button className="outline" onClick={onInstructions}>
+              Add application instructions
+            </button>
+          )}
+          {packet.mode === 'instructions' && packet.customPack && (
             <button className="outline" onClick={onEditChecklist}>
               <ListChecks size={16} aria-hidden="true" />
               Edit checklist
             </button>
           )}
-          <button className="outline" onClick={onProfile}>
-            <SlidersHorizontal size={16} aria-hidden="true" />
-            Edit application details
-          </button>
+          {packet.mode === 'instructions' && (
+            <button className="outline" onClick={onProfile}>
+              <SlidersHorizontal size={16} aria-hidden="true" />
+              Edit application details
+            </button>
+          )}
           <button className="primary" disabled={!!busy} onClick={onReview}>
             {busy === 'evaluate' ? 'Saving…' : 'Run review'}
           </button>

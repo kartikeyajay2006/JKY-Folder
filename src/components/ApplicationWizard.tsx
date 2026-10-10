@@ -34,11 +34,13 @@ const icons = {
   custom: SlidersHorizontal,
 };
 export function ApplicationWizard({
-  initialTemplate = 'college',
+  initialTemplate = 'custom',
+  initialTitle = '',
   onClose,
   onCreate,
 }: {
   initialTemplate?: string;
+  initialTitle?: string;
   onClose: () => void;
   onCreate: (input: CreateApplicationInput) => Promise<void>;
 }) {
@@ -47,7 +49,7 @@ export function ApplicationWizard({
     templates.find((t) => t.id === id)?.starter.map((r) => ({ ...r })) || [];
   const [selected, setSelected] = useState(initialTemplate),
     [step, setStep] = useState(0),
-    [title, setTitle] = useState(''),
+    [title, setTitle] = useState(initialTitle),
     [destination, setDestination] = useState(''),
     [deadline, setDeadline] = useState(''),
     [sourceUrl, setSourceUrl] = useState(''),
@@ -85,7 +87,7 @@ export function ApplicationWizard({
   return (
     <Dialog
       wide
-      title="Create an application"
+      title="Add application instructions"
       onClose={() => {
         if (!busy) onClose();
       }}
@@ -331,7 +333,14 @@ export function ApplicationWizard({
               </button>
             )}
             {step === 0 ? (
-              <button className="primary" type="button" onClick={() => setStep(1)}>
+              <button
+                className="primary"
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setStep(1);
+                }}
+              >
                 Continue
               </button>
             ) : step === 1 ? (

@@ -15,7 +15,7 @@ export function refreshReminders(store: Store, userId: string, now = new Date())
       payload: string;
     }[]
   ).map((r) => JSON.parse(r.payload) as Packet);
-  for (const p of packets.filter((p) => !p.archived)) {
+  for (const p of packets.filter((p) => !p.archived && store.documents(p.id).length > 0)) {
     const save = (kind: Reminder['kind'], key: string, message: string) => {
       const id = `${p.id}:${kind}:${key}`;
       const reminder: Reminder = {
@@ -57,5 +57,9 @@ export function refreshReminders(store: Store, userId: string, now = new Date())
       .all(userId) as { payload: string }[]
   )
     .map((r) => JSON.parse(r.payload) as Reminder)
-    .filter((r) => (r.kind === 'deadline' ? prefs.deadlines : prefs.sourceChanges));
+    .filter(
+      (r) =>
+        store.documents(r.packetId).length > 0 &&
+        (r.kind === 'deadline' ? prefs.deadlines : prefs.sourceChanges),
+    );
 }

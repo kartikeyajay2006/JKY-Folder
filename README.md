@@ -2,7 +2,7 @@
 
 **Application instructions. Supporting documents. A clear next step.**
 
-A working local application for preparing college, scholarship and job document folders. Create an application from an editable starter or your actual instructions, bring original files together, connect evidence to pages, and save a report of missing documents and unresolved checks.
+A working local application for preparing college, scholarship and job document folders. Upload your original files to start a folder. Its checklist contains only those files. You can explicitly add your actual application instructions later, connect evidence to pages, and save a dated review.
 
 ![JKY-Folder landing page in the Gold theme](docs/engineering/screenshots/landing.png)
 
@@ -22,6 +22,8 @@ npm run dev
 Open **http://127.0.0.1:5173** and choose **Explore the demo**. The demo has fictional documents, an isolated account and a real working review workflow. You can also create your own adults-only development account. Use synthetic documents while public launch gates remain open.
 
 ## What works
+
+New accounts show an upload entry. Application folders and document/checklist/report navigation appear after files are supplied; reports are saved only when you run a review. No starter or reference checklist is selected automatically. Empty folders are hidden from navigation, and removing the last file returns to the upload entry.
 
 - Account registration, sign-in, display-name updates, password changes, session revocation and account deletion.
 - Two themes of three colours each: **Gold** (white, royal blue, gold leaf) and **Silver** (black, white, brushed silver). They follow the device or a saved choice, switch with a circular reveal, and every colour pair meets WCAG AA.
@@ -59,7 +61,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The verification suite has **371 domain/API/worker/benchmark tests** and **32 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, quick actions, real file drops, account-menu interaction, the example folder's keyboard tabs, persistent animation controls, reduced motion, light/dark themes, drop-anywhere intake, palette search, phone-width overflow against the visual viewport, and automated accessibility across core screens and dialogs in both themes. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
+The verification suite has **375 domain/API/worker/benchmark tests** and **38 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, quick actions, real file drops, account-menu interaction, the example folder's keyboard tabs, persistent animation controls, reduced motion, light/dark themes, drop-anywhere intake, palette search, phone-width overflow against the visual viewport, and automated accessibility across core screens and dialogs in both themes. Browser tests run desktop and mobile against separate fresh servers, using isolated ports and disposable synthetic accounts independent of your personal local data. This keeps the expanded suite below the normal per-server authentication limits. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
 
 GitHub Actions runs the checks on pushes and pull requests and retains browser failure traces for seven days. Application source can be formatted with `npm run format`.
 

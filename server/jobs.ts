@@ -88,6 +88,9 @@ export function startJobs(store: Store) {
           .run(JSON.stringify(updated), row.id);
         store.db.prepare("UPDATE jobs SET status='done' WHERE id=?").run(row.id);
         const packet: Packet = JSON.parse(packetRow.payload);
+        const anchor = packet.links['upload-' + row.id];
+        if (packet.mode !== 'instructions' && anchor?.review === 'unreviewed')
+          anchor.pageTo = Math.max(1, updated.pageCount);
         packet.revision++;
         packet.updatedAt = new Date().toISOString();
         store.savePacket(packet);

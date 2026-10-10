@@ -20,7 +20,39 @@ export function availablePacks(store: Store): RulePack[] {
   }
   return [...latest.values()];
 }
+export const isUploadPacket = (p: Packet) => p.mode !== 'instructions';
+export function uploadedFilePack(store: Store, packet: Packet): RulePack {
+  const documents = store.documents(packet.id);
+  return {
+    id: 'uploads-' + packet.id,
+    version: 'uploads.' + packet.revision,
+    title: 'Your uploaded files',
+    cycle: '',
+    stage: 'Document review',
+    sourceUrl: '',
+    checkedAt: packet.updatedAt,
+    assurance: 'user_defined',
+    requirements: documents.map((doc) => ({
+      id: 'upload-' + doc.id,
+      title: doc.name,
+      description:
+        'Inspect this uploaded original for legibility and accuracy. No application requirements are inferred from the file.',
+      group: 'Supporting evidence',
+      condition: { op: 'always' },
+      mime: 'any',
+      extension: 'any',
+      sourceSection: 'Your uploaded original',
+      reviewHint: 'Review only the document you supplied and record what you checked.',
+    })),
+    limitations: [
+      'This checklist contains only your uploaded files. It does not check an institution’s required documents.',
+      'Add your actual application instructions explicitly to check completeness.',
+      'Content confirmations record your review, not authenticity or institutional acceptance.',
+    ],
+  };
+}
 export function resolvePack(store: Store, packet: Packet): RulePack {
+  if (isUploadPacket(packet)) return uploadedFilePack(store, packet);
   const result =
     packet.customPack ||
     packet.packSnapshot ||
@@ -29,7 +61,7 @@ export function resolvePack(store: Store, packet: Packet): RulePack {
   return result;
 }
 export function sourceChanged(store: Store, packet: Packet) {
-  if (packet.customPack) return false;
+  if (isUploadPacket(packet) || packet.customPack) return false;
   const current = availablePacks(store).find((p) => p.id === packet.packId);
   const selected = resolvePack(store, packet);
   if (!current || current.version !== selected.version) return true;

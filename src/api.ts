@@ -51,6 +51,7 @@ export function uploadOriginal<T>(
   file: File,
   onProgress: (percent: number) => void,
   signal: AbortSignal,
+  intakeId?: string,
 ): Promise<T> {
   return new Promise((resolve, reject) => {
     if (signal.aborted) return reject(new DOMException('Upload cancelled.', 'AbortError'));
@@ -60,6 +61,7 @@ export function uploadOriginal<T>(
     xhr.open('POST', '/api' + path);
     xhr.withCredentials = true;
     if (csrf) xhr.setRequestHeader('x-csrf-token', csrf);
+    if (intakeId) xhr.setRequestHeader('x-intake-id', intakeId);
     xhr.timeout = 120000;
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));

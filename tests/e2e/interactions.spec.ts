@@ -132,12 +132,11 @@ test('quick actions run real reviews, readiness opens reports and file drops ins
     await expectAccessible(page);
     await page.getByRole('button', { name: 'Quick actions', exact: true }).click();
     await expectAccessible(page);
-    await page.getByLabel('Search quick actions').fill('create an application');
-    await dialog.getByRole('button', { name: /Create an application/ }).click();
-    await expect(
-      page.getByRole('dialog').getByRole('heading', { name: 'Create an application', exact: true }),
-    ).toBeVisible();
-    await page.keyboard.press('Escape');
+    await page.getByLabel('Search quick actions').fill('upload to a new folder');
+    const newChooser = page.waitForEvent('filechooser');
+    await dialog.getByRole('button', { name: /Upload to a new folder/ }).click();
+    await (await newChooser).setFiles([]);
+    await expect(page.getByRole('dialog')).toHaveCount(0);
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= Math.ceil(visualViewport!.width),
