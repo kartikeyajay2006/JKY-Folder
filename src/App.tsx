@@ -41,7 +41,7 @@ import { EvidenceDialog } from './components/EvidenceDialog';
 import { ProfileDialog } from './components/ProfileDialog';
 import { Status, date, size } from './components/Status';
 import { api, body, setCsrf, download, ApiError } from './api';
-import { evaluate } from '../shared/evaluate';
+import { evaluate, EVALUATOR_VERSION } from '../shared/evaluate';
 import { uceedPack } from '../shared/packs';
 import { packetPack, deadlineInfo } from '../shared/templates';
 import { ApplicationWizard, type CreateApplicationInput } from './components/ApplicationWizard';
@@ -51,6 +51,12 @@ import { ApplicationDetails } from './components/ApplicationDetails';
 import { AccountSettings } from './components/AccountSettings';
 import { ActivityFeed } from './components/ActivityFeed';
 import { PdfPreview } from './components/PdfPreview';
+import { UploadQueue, type UploadItem } from './components/UploadQueue';
+import {
+  readWorkspaceLocation,
+  writeWorkspaceLocation,
+  type WorkspaceView,
+} from './workspace-location';
 import type {
   User,
   Packet,
@@ -58,17 +64,8 @@ import type {
   EvaluationRun,
   Requirement,
   DocumentRecord,
-  RulePack,
 } from '../shared/model';
-type View =
-  | 'overview'
-  | 'applications'
-  | 'requirements'
-  | 'documents'
-  | 'report'
-  | 'activity'
-  | 'help'
-  | 'settings';
+type View = WorkspaceView;
 
 const navigation = [
   { id: 'overview', label: 'Overview', Icon: LayoutDashboard },
@@ -98,17 +95,22 @@ const headings: Record<View, [string, string]> = {
   settings: ['Settings & privacy', 'Manage your account and decide what stays in your folder.'],
 };
 export default function App() {
+  const initialLocation = useRef(readWorkspaceLocation());
   const [user, setUser] = useState<User | null>(null),
     [booting, setBooting] = useState(true),
     [bootError, setBootError] = useState('');
   const [packets, setPackets] = useState<PacketCard[]>([]),
-    [activeId, setActiveId] = useState(''),
+    [activeId, setActiveId] = useState(initialLocation.current.application),
     [data, setData] = useState<PacketDetail | null>(null);
+  const [packetsLoaded, setPacketsLoaded] = useState(false);
   const pack = data ? packetPack(data.packet) : uceedPack;
   const [createTemplate, setCreateTemplate] = useState('college');
   const [queuedFiles, setQueuedFiles] = useState<File[]>([]);
+  const [uploadBatch, setUploadBatch] = useState<{ packetId: string; items: UploadItem[] } | null>(
+    null,
+  );
   const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width:700px)').matches);
-  const [view, setView] = useState<View>('overview'),
+  const [view, setView] = useState<View>(initialLocation.current.view),
     [busy, setBusy] = useState(''),
     [error, setError] = useState(''),
     [toast, setToast] = useState(''),
@@ -131,14 +133,23 @@ export default function App() {
   const inputRef = useRef<HTMLInputElement>(null),
     searchRef = useRef<HTMLInputElement>(null),
     selectionRef = useRef('');
+  const packetsRef = useRef(packets);
+  const ownerRef = useRef(user?.id);
+  packetsRef.current = packets;
+  ownerRef.current = user?.id;
   selectionRef.current = activeId;
   async function refresh(preferred = selectionRef.current) {
+    const ownerAtStart = ownerRef.current;
+    const selectionAtStart = selectionRef.current;
     const list = await api<PacketCard[]>('/packets');
+    if (!ownerAtStart || ownerRef.current !== ownerAtStart) return;
     setPackets(list);
+    if (selectionRef.current !== selectionAtStart) return;
     const id = list.some((p) => p.packet.id === preferred) ? preferred : list[0]?.packet.id || '';
     setActiveId(id);
     if (id) {
       const detail = await api<PacketDetail>(`/packets/${id}`);
+      if (ownerRef.current !== ownerAtStart) return;
       if (
         selectionRef.current === id ||
         !selectionRef.current ||
@@ -167,26 +178,37 @@ export default function App() {
     };
   }, []);
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setPackets([]);
+      setData(null);
+      setToast('');
+      setPacketsLoaded(false);
+      setUploadBatch(null);
+      setQueuedFiles([]);
+      return;
+    }
     let alive = true;
-    Promise.all([api<PacketCard[]>('/packets'), api<RulePack[]>('/packs')])
-      .then(([list, packs]) => {
+    api<PacketCard[]>('/packets')
+      .then((list) => {
         if (alive) {
           setPackets(list);
-
-          setActiveId((id) => id || list[0]?.packet.id || '');
+          setActiveId((id) =>
+            list.some((p) => p.packet.id === id) ? id : list[0]?.packet.id || '',
+          );
+          setPacketsLoaded(true);
         }
       })
       .catch((e) => setError(e.message));
     return () => {
       alive = false;
     };
-  }, [user]);
+  }, [user?.id]);
+  const activeOwned = packets.some((p) => p.packet.id === activeId);
   useEffect(() => {
-    if (!activeId) return;
-    let alive = true;
     setData(null);
     setReportId('');
+    if (!user || !activeId || !activeOwned) return;
+    let alive = true;
     api<PacketDetail>(`/packets/${activeId}`)
       .then((result) => {
         if (alive) setData(result);
@@ -197,7 +219,33 @@ export default function App() {
     return () => {
       alive = false;
     };
-  }, [activeId]);
+  }, [activeId, activeOwned, user?.id]);
+  useEffect(() => {
+    if (user && packetsLoaded) writeWorkspaceLocation(view, activeId, 'replace');
+  }, [view, activeId, user?.id, packetsLoaded]);
+  useEffect(() => {
+    const pop = () => {
+      const location = readWorkspaceLocation();
+      setView(location.view);
+      const application =
+        location.application &&
+        !packetsRef.current.some((p) => p.packet.id === location.application)
+          ? packetsRef.current[0]?.packet.id || ''
+          : location.application;
+      setActiveId(application);
+      setSearch('');
+      setFilter('all');
+      setMobile(false);
+      setModal(null);
+      setEvidence(null);
+      setPreview(null);
+      setDeleteDoc(null);
+      setError('');
+      if (!application) setData(null);
+    };
+    window.addEventListener('popstate', pop);
+    return () => window.removeEventListener('popstate', pop);
+  }, []);
   useEffect(() => {
     if (!data?.documents.some((d) => d.status === 'processing')) return;
     const timer = setInterval(() => {
@@ -225,10 +273,19 @@ export default function App() {
     [data, pack],
   );
   const selectedRun = data?.runs.find((r) => r.id === reportId) || data?.runs[0];
-  const stale = !!selectedRun && selectedRun.packetRevision !== data?.packet.revision;
+  const stale =
+    !!selectedRun &&
+    (selectedRun.packetRevision !== data?.packet.revision ||
+      selectedRun.packVersion !== pack.version ||
+      selectedRun.evaluatorVersion !== EVALUATOR_VERSION);
   const required = live?.checks.filter((c) => c.state !== 'not_applicable') || [];
   const nextSteps = required.filter((c) => c.state !== 'pass');
-  function navigate(next: View) {
+  function navigate(next: View, id = activeId) {
+    writeWorkspaceLocation(next, id, 'push');
+    if (id !== activeId) {
+      setData(null);
+      setActiveId(id);
+    }
     setView(next);
     setMobile(false);
     setSearch('');
@@ -253,26 +310,62 @@ export default function App() {
     }
   }
   async function upload(files: FileList | File[] | null) {
-    if (!files) return;
+    if (!files || !files.length || busy) return;
     if (!activeId) {
       setQueuedFiles(Array.from(files));
       startCreate();
       return;
     }
-    await perform('upload', async () => {
-      let uploaded = 0;
-      for (const file of Array.from(files)) {
-        const form = new FormData();
-        form.append('file', file);
-        await api(`/packets/${activeId}/documents`, { method: 'POST', body: form });
-        uploaded++;
-      }
-      await refresh();
-      setToast(
-        `${uploaded} file${uploaded === 1 ? '' : 's'} added. Inspection will finish shortly.`,
-      );
-    });
+    await perform('upload', () => addFiles(activeId, Array.from(files)));
     if (inputRef.current) inputRef.current.value = '';
+  }
+  async function addFiles(packetId: string, files: File[]) {
+    const items: UploadItem[] = files.map((file) => ({
+      id: crypto.randomUUID(),
+      file,
+      status: 'queued',
+    }));
+    setUploadBatch({ packetId, items });
+    const updateItem = (id: string, change: Partial<UploadItem>) =>
+      setUploadBatch((batch) =>
+        batch?.packetId === packetId
+          ? {
+              ...batch,
+              items: batch.items.map((item) => (item.id === id ? { ...item, ...change } : item)),
+            }
+          : batch,
+      );
+    let added = 0,
+      duplicates = 0,
+      failed = 0;
+    for (const item of items) {
+      updateItem(item.id, { status: 'uploading' });
+      try {
+        const form = new FormData();
+        form.append('file', item.file);
+        const result = await api<{ duplicate: boolean }>(`/packets/${packetId}/documents`, {
+          method: 'POST',
+          body: form,
+        });
+        updateItem(item.id, { status: result.duplicate ? 'duplicate' : 'added' });
+        if (result.duplicate) duplicates++;
+        else added++;
+      } catch (e) {
+        failed++;
+        updateItem(item.id, { status: 'failed', error: (e as Error).message });
+        if (e instanceof ApiError && e.status === 401) {
+          setUser(null);
+          setData(null);
+          setActiveId('');
+          setCsrf('');
+          return;
+        }
+      }
+    }
+    await refresh().catch((e) => setError(e.message));
+    setToast(
+      `${added} added${duplicates ? `, ${duplicates} already present` : ''}${failed ? `, ${failed} could not upload — see upload results` : '. Inspection runs separately.'}`,
+    );
   }
   async function update(path: string, payload: unknown, method: string) {
     try {
@@ -295,30 +388,27 @@ export default function App() {
     });
   }
   function startCreate(template = 'college') {
+    if (busy) return;
     setCreateTemplate(template);
     setModal('create');
   }
   async function createApplication(input: CreateApplicationInput) {
     const p = await api<Packet>('/packets', { method: 'POST', body: body(input) });
-    setActiveId(p.id);
-    setView('requirements');
+    const files = queuedFiles;
+    navigate(files.length ? 'documents' : 'requirements', p.id);
     setModal(null);
-    if (queuedFiles.length) {
-      for (const file of queuedFiles) {
-        const form = new FormData();
-        form.append('file', file);
-        await api(`/packets/${p.id}/documents`, { method: 'POST', body: form });
-      }
-      setQueuedFiles([]);
-      setView('documents');
+    setQueuedFiles([]);
+    if (inputRef.current) inputRef.current.value = '';
+    if (files.length) {
+      await perform('upload', () => addFiles(p.id, files));
+    } else {
+      await refresh(p.id).catch((e) => setError(e.message));
+      setToast('Application created. Your next steps are ready.');
     }
-    await refresh(p.id);
     if (!p.customPack) setModal('profile');
-    setToast('Application created. Your next steps are ready.');
   }
   function openApplication(id: string) {
-    setActiveId(id);
-    navigate('overview');
+    navigate('overview', id);
   }
   async function archiveApplication(p: Packet) {
     await perform('archive', async () => {
@@ -512,12 +602,20 @@ export default function App() {
               <input
                 ref={searchRef}
                 aria-label="Search requirements or documents"
-                placeholder="Find in your folder…"
+                placeholder={
+                  view === 'applications' ? 'Find an application…' : 'Find in your folder…'
+                }
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
-                  if (view === 'overview' && e.target.value)
-                    setView(activeId ? 'requirements' : 'applications');
+                  if (
+                    !['requirements', 'documents', 'applications'].includes(view) &&
+                    e.target.value
+                  ) {
+                    const next = activeId ? 'requirements' : 'applications';
+                    writeWorkspaceLocation(next, activeId, 'push');
+                    setView(next);
+                  }
                 }}
               />
               <kbd>⌘ K</kbd>
@@ -540,7 +638,7 @@ export default function App() {
             <div className="demo-strip">
               <Sparkles size={14} />
               <span>You’re exploring a sample application with fictional documents.</span>
-              <button onClick={() => setModal('create')}>
+              <button disabled={!!busy} onClick={() => startCreate()}>
                 Make a new application
                 <ArrowRight size={13} />
               </button>
@@ -564,7 +662,7 @@ export default function App() {
                   : headings[view][1]}
               </p>
             </div>
-            <button className="primary" onClick={() => setModal('create')}>
+            <button className="primary" disabled={!!busy} onClick={() => startCreate()}>
               <Plus size={17} />
               New application
             </button>
@@ -585,7 +683,7 @@ export default function App() {
           {packets.length > 1 && (
             <label className="packet-switcher">
               Active packet
-              <select value={activeId} onChange={(e) => setActiveId(e.target.value)}>
+              <select value={activeId} onChange={(e) => navigate(view, e.target.value)}>
                 {packets.map((item) => (
                   <option key={item.packet.id} value={item.packet.id}>
                     {item.packet.title}
@@ -924,8 +1022,8 @@ export default function App() {
                 <Info size={17} />
                 <p>
                   <strong>Before you submit</strong> · A reviewed item includes your own content
-                  confirmation. Read the official instructions for checks this reference checklist
-                  doesn’t cover.
+                  confirmation. Check your institution or employer’s original instructions for
+                  details beyond this checklist’s coverage.
                 </p>
                 <button onClick={() => navigate('help')}>
                   What we check
@@ -1056,6 +1154,14 @@ export default function App() {
           )}
           {data && view === 'documents' && (
             <>
+              {uploadBatch?.packetId === activeId && (
+                <UploadQueue
+                  items={uploadBatch.items}
+                  busy={busy === 'upload'}
+                  onRetry={(files) => void upload(files)}
+                  onDismiss={() => setUploadBatch(null)}
+                />
+              )}
               <section
                 className="upload-zone"
                 onDragOver={(e) => e.preventDefault()}
@@ -1243,7 +1349,9 @@ export default function App() {
                   {stale && (
                     <div className="stale-banner" role="status">
                       <RefreshCw size={19} />
-                      <span>This report is historical. Your packet changed after this review.</span>
+                      <span>
+                        This report is historical. Your packet, checklist or evaluator has changed.
+                      </span>
                       <button
                         className="text-link"
                         onClick={() => void checkPacket()}
@@ -1396,6 +1504,23 @@ export default function App() {
                   <p>
                     A required profile answer or interpretable piece of evidence is missing. Unknown
                     is kept visible so the checklist does not give false confidence.
+                  </p>
+                </details>
+                <details>
+                  <summary>How do custom checklists work?</summary>
+                  <p>
+                    Choose a starter or paste your actual document instructions. Importing creates
+                    one editable item per nonempty line. Confirm required items, formats and
+                    conditions yourself; the app does not interpret admissions or employer rules
+                    automatically.
+                  </p>
+                </details>
+                <details>
+                  <summary>What if one upload fails?</summary>
+                  <p>
+                    Each file has a separate result. Accepted files remain in your folder while
+                    rejected files show the reason. You can retry a temporary failure or choose a
+                    supported PDF or JPEG replacement.
                   </p>
                 </details>
                 <details>

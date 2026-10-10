@@ -8,6 +8,7 @@ import type {
   EvaluationRun,
   CheckResult,
 } from './model';
+export const EVALUATOR_VERSION = '1.1.0';
 export function applicability(predicate: Predicate, profile: Profile): boolean | null {
   if (predicate.op === 'always') return true;
   if (predicate.op === 'not') {
@@ -210,7 +211,7 @@ export function evaluate(
     packetId: packet.id,
     packetRevision: packet.revision,
     packVersion: pack.version,
-    evaluatorVersion: '1.0.0',
+    evaluatorVersion: EVALUATOR_VERSION,
     createdAt: now,
     summary,
     checks,

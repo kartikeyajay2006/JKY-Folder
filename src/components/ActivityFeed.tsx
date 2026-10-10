@@ -21,6 +21,7 @@ const labels: Record<string, string> = {
   'packet.created': 'Application created',
   'packet.updated': 'Application details updated',
   'checklist.updated': 'Checklist updated',
+  'profile.confirmed': 'Application profile confirmed',
   'document.uploaded': 'Document uploaded',
   'document.deleted': 'Document deleted',
   'packet.deleted': 'Application deleted',
@@ -51,7 +52,13 @@ export function ActivityFeed({ packets }: { packets: PacketCard[] }) {
   useEffect(() => {
     void refresh();
   }, []);
-  const shown = events.filter((event) => filter === 'all' || event.action.startsWith(filter));
+  const shown = events.filter(
+    (event) =>
+      filter === 'all' ||
+      (filter === 'packet' && /^(packet|checklist|profile|evidence)\./.test(event.action)) ||
+      (filter === 'document' && /^(document|inspection)\./.test(event.action)) ||
+      (filter === 'account' && /^(account|consent)\./.test(event.action)),
+  );
   return (
     <section className="panel activity-feed">
       <div className="panel-heading">

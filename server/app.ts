@@ -24,7 +24,7 @@ import {
   type User,
   type EvaluationRun,
 } from '../shared/model';
-import { evaluate } from '../shared/evaluate';
+import { evaluate, EVALUATOR_VERSION } from '../shared/evaluate';
 import { makeCustomPack, packetPack, starterRequirements, templates } from '../shared/templates';
 import {
   requirementSchema,
@@ -678,7 +678,12 @@ export function createApp(options: {
     checkRevision(p, input.expectedRevision);
     const prior = store
       .runs(p.id)
-      .find((r) => r.packetRevision === p.revision && r.packVersion === packetPack(p).version);
+      .find(
+        (r) =>
+          r.packetRevision === p.revision &&
+          r.packVersion === packetPack(p).version &&
+          r.evaluatorVersion === EVALUATOR_VERSION,
+      );
     if (prior) return res.json(prior);
     const run = evaluate(p, store.documents(p.id), packetPack(p), randomUUID());
     store.db
@@ -700,7 +705,10 @@ export function createApp(options: {
       packetTitle: p.title,
       application: run.checklist?.title || pack.title,
       sourceUrl: run.checklist?.sourceUrl ?? pack.sourceUrl,
-      stale: run.packetRevision !== p.revision,
+      stale:
+        run.packetRevision !== p.revision ||
+        run.packVersion !== pack.version ||
+        run.evaluatorVersion !== EVALUATOR_VERSION,
       run,
     };
     res.setHeader('Content-Disposition', 'attachment; filename="jky-folder-report.json"');

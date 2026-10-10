@@ -31,7 +31,12 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
 export const body = (value: unknown) => JSON.stringify(value);
 export async function download(path: string, name: string) {
   const response = await fetch('/api' + path, { credentials: 'same-origin' });
-  if (!response.ok) throw new Error('The report could not be downloaded. Refresh and try again.');
+  if (!response.ok) {
+    const details = await response.json().catch(() => null);
+    throw new Error(
+      details?.error || 'The download could not be completed. Refresh and try again.',
+    );
+  }
   const blob = await response.blob();
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');

@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 import AxeBuilder from '@axe-core/playwright';
 async function nav(page: Page, label: string) {
+  await page.locator('#workspace-navigation').waitFor({ state: 'attached' });
   if (await page.getByRole('button', { name: 'Open navigation' }).isVisible())
     await page.getByRole('button', { name: 'Open navigation' }).click();
   await page
@@ -10,14 +11,16 @@ async function nav(page: Page, label: string) {
     .click();
 }
 async function signup(page: Page) {
+  const email = `fresh-${crypto.randomUUID()}@example.test`;
   await page.goto('/');
   await page.getByLabel('Your name').fill('Fresh Applicant');
-  await page.getByLabel('Email address').fill(`fresh-${crypto.randomUUID()}@example.test`);
+  await page.getByLabel('Email address').fill(email);
   await page.getByLabel('Password', { exact: true }).fill('synthetic-browser-password');
   await page.getByLabel('I am 18 or older.').check();
   await page.getByLabel(/I agree to this development/).check();
   await page.getByRole('button', { name: 'Create my workspace' }).click();
   await page.getByRole('heading', { name: 'Welcome, Fresh.' }).waitFor();
+  return email;
 }
 async function cleanup(page: Page) {
   const me = await page.request.get('/api/me');
@@ -147,13 +150,11 @@ test('documents-first onboarding inspects and renders real PDF pages', async ({ 
     const font = await pdf.embedFont(StandardFonts.Helvetica);
     pdf.addPage().drawText('Synthetic resume - Fresh Applicant', { x: 40, y: 700, size: 18, font });
     pdf.addPage().drawText('Synthetic portfolio - second page', { x: 40, y: 700, size: 18, font });
-    await page
-      .getByLabel('Choose documents to upload')
-      .setInputFiles({
-        name: 'resume.pdf',
-        mimeType: 'application/pdf',
-        buffer: Buffer.from(await pdf.save()),
-      });
+    await page.getByLabel('Choose documents to upload').setInputFiles({
+      name: 'resume.pdf',
+      mimeType: 'application/pdf',
+      buffer: Buffer.from(await pdf.save()),
+    });
     await expect(page.getByRole('dialog')).toBeVisible();
     await page
       .getByRole('dialog')
@@ -192,6 +193,131 @@ test('documents-first onboarding inspects and renders real PDF pages', async ({ 
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
+  } finally {
+    await cleanup(page).catch(() => {});
+  }
+});
+
+test('batch intake keeps valid files after a rejected file and explains duplicates', async ({
+  page,
+}) => {
+  await signup(page);
+  try {
+    await nav(page, 'My documents');
+    async function fixture(text: string) {
+      const pdf = await PDFDocument.create();
+      pdf.addPage().drawText(text, { x: 40, y: 700 });
+      return Buffer.from(await pdf.save());
+    }
+    const resume = await fixture('Synthetic resume for batch intake');
+    await page.getByLabel('Choose documents to upload').setInputFiles([
+      { name: 'resume.pdf', mimeType: 'application/pdf', buffer: resume },
+      {
+        name: 'unsupported.txt',
+        mimeType: 'text/plain',
+        buffer: Buffer.from('Unsupported synthetic text'),
+      },
+      {
+        name: 'qualification.pdf',
+        mimeType: 'application/pdf',
+        buffer: await fixture('Synthetic qualification for batch intake'),
+      },
+    ]);
+    await page
+      .getByRole('dialog')
+      .getByRole('button', { name: /Job application/ })
+      .click();
+    await page.getByRole('button', { name: 'Continue', exact: true }).click();
+    await page.getByLabel('Application name', { exact: true }).fill('Batch intake application');
+    await page.getByRole('button', { name: 'Review checklist' }).click();
+    await page.getByRole('button', { name: 'Create application', exact: true }).click();
+    const queue = page.getByRole('region', { name: 'Upload results' });
+    await expect(queue.getByText('2 of 3 files accepted.', { exact: false })).toBeVisible();
+    await expect(queue.getByText('Use a PDF or JPEG file with a simple filename.')).toBeVisible();
+    await expect(page.getByText('Inspected', { exact: true })).toHaveCount(2, { timeout: 25000 });
+    await checkAccessibility(page);
+    await page
+      .getByLabel('Choose documents to upload')
+      .setInputFiles({ name: 'resume-copy.pdf', mimeType: 'application/pdf', buffer: resume });
+    await expect(queue.getByText('Already in this folder — no second copy created')).toBeVisible();
+    await expect(page.getByText('Inspected', { exact: true })).toHaveCount(2);
+    await page.getByRole('button', { name: 'Dismiss upload results' }).click();
+    await expect(queue).not.toBeVisible();
+  } finally {
+    await cleanup(page).catch(() => {});
+  }
+});
+
+test('application URLs survive refresh and Back and account password controls remain usable', async ({
+  page,
+}) => {
+  const email = await signup(page);
+  try {
+    async function create(name: string) {
+      await page.getByRole('button', { name: 'New application', exact: true }).click();
+      await page
+        .getByRole('dialog')
+        .getByRole('button', { name: /Job application/ })
+        .click();
+      await page.getByRole('button', { name: 'Continue', exact: true }).click();
+      await page.getByLabel('Application name', { exact: true }).fill(name);
+      await page.getByRole('button', { name: 'Review checklist' }).click();
+      await page.getByRole('button', { name: 'Create application', exact: true }).click();
+      await expect(page.getByRole('heading', { name: 'Requirements & evidence' })).toBeVisible();
+    }
+    await create('First synthetic application');
+    await nav(page, 'My documents');
+    const firstUrl = page.url();
+    expect(new URL(firstUrl).searchParams.get('view')).toBe('documents');
+    await create('Second synthetic application');
+    await nav(page, 'My documents');
+    const secondUrl = page.url();
+    expect(new URL(secondUrl).searchParams.get('application')).not.toBe(
+      new URL(firstUrl).searchParams.get('application'),
+    );
+    await page.reload();
+    await expect(page.getByRole('heading', { name: 'Document library' })).toBeVisible();
+    await expect(
+      page
+        .locator('.application-context')
+        .getByText('Second synthetic application', { exact: true }),
+    ).toBeVisible();
+    await page.goBack();
+    await expect(page.getByRole('heading', { name: 'Document checklist' })).toBeVisible();
+    await page.goBack();
+    await expect(page).toHaveURL(firstUrl);
+    await expect(page.getByRole('heading', { name: 'Document library' })).toBeVisible();
+    await expect(
+      page
+        .locator('.application-context')
+        .getByText('First synthetic application', { exact: true }),
+    ).toBeVisible();
+    await nav(page, 'Settings & privacy');
+    await page.getByLabel('Current password', { exact: true }).fill('synthetic-browser-password');
+    await page
+      .getByLabel('New password', { exact: true })
+      .fill('synthetic-updated-browser-password');
+    await page
+      .getByLabel('Confirm new password', { exact: true })
+      .fill('synthetic-updated-browser-password');
+    await page.getByRole('button', { name: 'Update password' }).click();
+    await expect(
+      page
+        .getByRole('status')
+        .filter({ hasText: 'Password updated. Other sessions have been signed out.' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Sign out other sessions', exact: true }).click();
+    await expect(
+      page.getByRole('status').filter({ hasText: 'Other sessions have been signed out.' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Sign out', exact: true }).last().click();
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+    await page.getByLabel('Email address').fill(email);
+    await page.getByLabel('Password', { exact: true }).fill('synthetic-updated-browser-password');
+    await page.getByRole('button', { name: 'Sign in', exact: true }).last().click();
+    await expect(page.getByRole('heading', { name: 'Application overview' })).toBeVisible();
+    await nav(page, 'Settings & privacy');
+    await expect(page.getByLabel('Display name')).toHaveValue('Fresh Applicant');
   } finally {
     await cleanup(page).catch(() => {});
   }

@@ -52,11 +52,11 @@ test('demo → evidence review → dated report → stale report → deletion', 
   await page.getByRole('button', { name: 'Confirm my answers' }).click();
   await navigate(page, 'Readiness report');
   await expect(
-    page.getByText('This report is historical. Your packet changed after this review.'),
+    page.getByText('This report is historical. Your packet, checklist or evaluator has changed.'),
   ).toBeVisible();
   await page.getByRole('button', { name: 'Run a fresh review' }).click();
   await expect(
-    page.getByText('This report is historical. Your packet changed after this review.'),
+    page.getByText('This report is historical. Your packet, checklist or evaluator has changed.'),
   ).not.toBeVisible();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export JSON' }).click();

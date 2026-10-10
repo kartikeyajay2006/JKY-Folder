@@ -7,7 +7,7 @@ import { unzipSync, strFromU8 } from 'fflate';
 import { createHash } from 'node:crypto';
 import { createApp } from '../server/app';
 import { starterRequirements, importInstructionLines, packetPack } from '../shared/templates';
-import { evaluate } from '../shared/evaluate';
+import { evaluate, EVALUATOR_VERSION } from '../shared/evaluate';
 let runtime: ReturnType<typeof createApp>, directory: string;
 beforeEach(() => {
   directory = mkdtempSync(join(tmpdir(), 'jky-applications-'));
@@ -19,15 +19,13 @@ afterEach(() => {
 });
 async function account(email = 'applicant@example.test') {
   const agent = request.agent(runtime.app);
-  const auth = await agent
-    .post('/api/auth/register')
-    .send({
-      name: 'Synthetic Applicant',
-      email,
-      password: 'synthetic-starting-password',
-      adult: true,
-      consent: true,
-    });
+  const auth = await agent.post('/api/auth/register').send({
+    name: 'Synthetic Applicant',
+    email,
+    password: 'synthetic-starting-password',
+    adult: true,
+    consent: true,
+  });
   expect(auth.status).toBe(201);
   return { agent, csrf: auth.body.csrf };
 }
@@ -133,6 +131,30 @@ it('updates custom checklist versions and keeps old report source provenance', a
   const report = await a.agent.get(`/api/packets/${p.id}/reports/${first.body.id}`);
   expect(report.body.sourceUrl).toBe('https://example.test/original');
   expect(report.body.stale).toBe(true);
+});
+it('preserves an older evaluator snapshot and creates a current review once per input version', async () => {
+  const a = await account(),
+    p = await application(a);
+  const old = evaluate(p, [], packetPack(p), 'old-evaluator-snapshot');
+  old.evaluatorVersion = '1.0.0';
+  runtime.store.db
+    .prepare('INSERT INTO runs VALUES(?,?,?,?)')
+    .run(old.id, p.id, old.createdAt, JSON.stringify(old));
+  const historical = await a.agent.get(`/api/packets/${p.id}/reports/${old.id}`);
+  expect(historical.body.stale).toBe(true);
+  const current = await a.agent
+    .post(`/api/packets/${p.id}/evaluate`)
+    .set('x-csrf-token', a.csrf)
+    .send({ expectedRevision: p.revision });
+  expect(current.status).toBe(201);
+  expect(current.body.evaluatorVersion).toBe(EVALUATOR_VERSION);
+  expect(current.body.id).not.toBe(old.id);
+  const retry = await a.agent
+    .post(`/api/packets/${p.id}/evaluate`)
+    .set('x-csrf-token', a.csrf)
+    .send({ expectedRevision: p.revision });
+  expect(retry.status).toBe(200);
+  expect(retry.body.id).toBe(current.body.id);
 });
 it('invalidates content confirmations when a custom requirement changes', async () => {
   const a = await account(),
