@@ -36,7 +36,12 @@ import {
 } from './application-schema';
 import { zipSync, strToU8 } from 'fflate';
 import { limits } from '../shared/limits';
-import { profileQuestions, profileAnswers, conditionOptions } from '../shared/profile';
+import {
+  profileQuestions,
+  profileAnswers,
+  conditionOptions,
+  conditionFields,
+} from '../shared/profile';
 const scrypt = promisify(rawScrypt);
 const hash = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
 const answer = <F extends keyof Profile>(field: F) =>
@@ -256,6 +261,7 @@ export function createApp(options: {
         id: t.id,
         kind: t.kind,
         title: t.title,
+        label: t.label,
         description: t.description,
         starter: starterRequirements(t.id),
       })),
@@ -270,6 +276,14 @@ export function createApp(options: {
         requirementCount: p.requirements.length,
         conditionalCount: p.requirements.filter((r) => r.condition.op !== 'always').length,
         groups: [...new Set(p.requirements.map((r) => r.group))],
+        items: p.requirements.map((r) => ({
+          id: r.id,
+          title: r.title,
+          group: r.group,
+          mime: r.mime,
+          conditional: r.condition.op !== 'always',
+          dependsOn: conditionFields(r.condition),
+        })),
       })),
     }),
   );

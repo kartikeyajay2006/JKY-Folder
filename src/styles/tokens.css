@@ -1,0 +1,81 @@
+/*
+  JKY-Folder visual system.
+  The product is a folder on a desk: a navy cover with index tabs, white sheets on a cool desk,
+  teal ticks for reviewed evidence, red pen for missing items, marigold for things you must check.
+*/
+:root {
+  color-scheme: light;
+
+  /* Desk, sheets and rules */
+  --desk: #e3e9ef;
+  --desk-deep: #d5dde6;
+  --sheet: #ffffff;
+  --sheet-tint: #f5f7fa;
+  --line: #d4dce5;
+  --line-strong: #b4c0cd;
+
+  /* Ink (brand navy) */
+  --ink: #0b2341;
+  --ink-2: #34475e;
+  --ink-3: #56677c;
+  --ink-inverse: #f3f6fa;
+
+  /* Folder cover */
+  --folder: #0b2341;
+  --folder-raised: #15365f;
+  --folder-edge: #2a4d78;
+  --folder-text: #c9d6e6;
+
+  /* Check states */
+  --tick: #00b7a5;
+  --tick-ink: #00756a;
+  --tick-wash: #dbf4ef;
+  --miss: #d8443d;
+  --miss-ink: #ae2a23;
+  --miss-wash: #fbe5e3;
+  --flag: #f0a202;
+  --flag-ink: #845300;
+  --flag-wash: #fdf0d3;
+  --ask: #4b5bd6;
+  --ask-ink: #3442ad;
+  --ask-wash: #e7eafd;
+  --idle: #8795a6;
+  --idle-ink: #56677c;
+  --idle-wash: #edf1f5;
+
+  /* Type */
+  --font: 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-data: 'Atkinson Hyperlegible Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+  --t-xs: 0.78rem;
+  --t-sm: 0.875rem;
+  --t-base: 1rem;
+  --t-md: 1.125rem;
+  --t-lg: 1.3rem;
+  --t-xl: 1.65rem;
+  --t-2xl: 2.15rem;
+  --t-3xl: clamp(2.1rem, 3.6vw, 2.9rem);
+  --t-display: clamp(2.6rem, 6.2vw, 5.1rem);
+
+  /* Shape: sheets are softer than controls; labels are nearly square like paper stickers */
+  --r-sheet: 16px;
+  --r-card: 12px;
+  --r-control: 10px;
+  --r-label: 5px;
+  --r-tab: 11px;
+
+  /* Elevation is tinted with the ink, never a neutral grey */
+  --lift-1: 0 1px 0 rgb(11 35 65 / 0.05), 0 1px 3px rgb(11 35 65 / 0.06);
+  --lift-2: 0 1px 0 rgb(11 35 65 / 0.05), 0 10px 26px -14px rgb(11 35 65 / 0.32);
+  --lift-3: 0 2px 0 rgb(11 35 65 / 0.04), 0 26px 60px -24px rgb(11 35 65 / 0.45);
+
+  /* Rhythm */
+  --gutter: clamp(16px, 3.2vw, 32px);
+  --page: 1220px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+  --fast: 140ms;
+  --medium: 260ms;
+  --slow: 520ms;
+}

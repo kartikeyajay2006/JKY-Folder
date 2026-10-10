@@ -3,13 +3,15 @@ import { PDFDocument, StandardFonts } from 'pdf-lib';
 async function navigate(page: import('@playwright/test').Page, label: string) {
   await page
     .locator('.workspace-header')
-    .getByRole('button', { name: label, exact: label !== 'Requirements' })
+    .getByRole('button', { name: label, exact: label !== 'Checklist' })
     .click();
 }
 async function demo(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore the demo' }).click();
-  await expect(page.getByRole('heading', { name: 'Application overview' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'My design school application', level: 1 }),
+  ).toBeVisible();
 }
 test('demo → evidence review → dated report → stale report → deletion', async ({ page }) => {
   const errors: string[] = [];
@@ -19,7 +21,7 @@ test('demo → evidence review → dated report → stale report → deletion', 
     if (response.status() >= 500) serverFailures.push(response.url());
   });
   await demo(page);
-  await navigate(page, 'Requirements');
+  await navigate(page, 'Checklist');
   await page
     .getByRole('article')
     .filter({ has: page.getByRole('heading', { name: 'Signature', exact: true }) })
@@ -40,15 +42,15 @@ test('demo → evidence review → dated report → stale report → deletion', 
   await page.getByRole('button', { name: 'Save evidence link' }).click();
   await expect(page.getByRole('dialog')).not.toBeVisible();
   await page.getByRole('button', { name: 'Run review', exact: true }).click();
-  await navigate(page, 'Readiness report');
+  await navigate(page, 'Report');
   await expect(
     page.getByRole('heading', { name: 'A few things need your attention.' }),
   ).toBeVisible();
-  await navigate(page, 'Requirements');
+  await navigate(page, 'Checklist');
   await page.getByRole('button', { name: 'Edit application details' }).click();
   await page.getByLabel('Application category', { exact: true }).selectOption('general');
   await page.getByRole('button', { name: 'Confirm my answers' }).click();
-  await navigate(page, 'Readiness report');
+  await navigate(page, 'Report');
   await expect(
     page.getByText('This report is historical. Your packet, checklist or evaluator has changed.'),
   ).toBeVisible();
@@ -59,19 +61,20 @@ test('demo → evidence review → dated report → stale report → deletion', 
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export JSON' }).click();
   expect((await downloadPromise).suggestedFilename()).toBe('jky-folder-report.json');
-  await navigate(page, 'My documents');
+  await navigate(page, 'Documents');
   await page.getByRole('button', { name: 'Delete signature.jpg', exact: true }).click();
   await page.getByRole('button', { name: 'Yes, delete' }).click();
   await expect(
     page.getByRole('button', { name: 'Delete signature.jpg', exact: true }),
   ).not.toBeVisible();
-  await navigate(page, 'Readiness report');
+  await navigate(page, 'Report');
   await expect(page.getByRole('heading', { name: 'Your first review is waiting.' })).toBeVisible();
   expect(errors).toEqual([]);
   expect(serverFailures).toEqual([]);
 });
 test('create a packet, inspect a real PDF and connect a page', async ({ page }) => {
   await demo(page);
+  await navigate(page, 'Applications');
   await page.getByRole('button', { name: 'New application', exact: true }).click();
   await page
     .getByRole('dialog')
@@ -86,7 +89,7 @@ test('create a packet, inspect a real PDF and connect a page', async ({ page }) 
   await page.getByLabel('Application category', { exact: true }).selectOption('general');
   await page.getByRole('button', { name: 'Confirm my answers' }).click();
   await expect(page.getByRole('dialog')).not.toBeVisible();
-  await navigate(page, 'My documents');
+  await navigate(page, 'Documents');
   const pdf = await PDFDocument.create();
   const font = await pdf.embedFont(StandardFonts.Helvetica);
   pdf
@@ -99,7 +102,7 @@ test('create a packet, inspect a real PDF and connect a page', async ({ page }) 
     buffer: Buffer.from(bytes),
   });
   await expect(page.getByText('Inspected', { exact: true })).toBeVisible({ timeout: 25000 });
-  await navigate(page, 'Requirements');
+  await navigate(page, 'Checklist');
   await page
     .getByRole('article')
     .filter({ has: page.getByRole('heading', { name: 'Proof of age', exact: true }) })
@@ -118,6 +121,7 @@ test('dialog traps keyboard focus and narrow screens avoid horizontal overflow',
   page,
 }) => {
   await demo(page);
+  await navigate(page, 'Applications');
   await page.getByRole('button', { name: 'New application', exact: true }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();

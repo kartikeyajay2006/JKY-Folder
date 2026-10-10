@@ -3,12 +3,8 @@ import {
   Activity,
   ArrowUpRight,
   ChevronDown,
-  Files,
-  FileCheck2,
   FolderOpen,
   HelpCircle,
-  LayoutDashboard,
-  ListChecks,
   LogOut,
   Search,
   Settings,
@@ -16,16 +12,16 @@ import {
   Zap,
 } from 'lucide-react';
 import { MotionToggle } from '../motion/MotionProvider';
+import { Wordmark } from './Brand';
 import type { User } from '../../shared/model';
 import type { WorkspaceView } from '../workspace-location';
+import type { PacketCard } from './WorkspaceHome';
 
-export const navigation = [
-  { id: 'overview', label: 'Overview', Icon: LayoutDashboard },
-  { id: 'applications', label: 'Applications', Icon: FolderOpen },
-  { id: 'requirements', label: 'Requirements', Icon: ListChecks },
-  { id: 'documents', label: 'My documents', Icon: Files },
-  { id: 'report', label: 'Readiness report', Icon: FileCheck2 },
-  { id: 'activity', label: 'Activity', Icon: Activity },
+export const folderTabs = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'requirements', label: 'Checklist' },
+  { id: 'documents', label: 'Documents' },
+  { id: 'report', label: 'Report' },
 ] as const;
 
 export function WorkspaceHeader({
@@ -34,9 +30,13 @@ export function WorkspaceHeader({
   search,
   onSearch,
   onNavigate,
+  onSwitch,
   onLogout,
   busy,
   attention,
+  documents,
+  packets,
+  activeId,
   searchRef,
   onQuickActions,
 }: {
@@ -45,9 +45,13 @@ export function WorkspaceHeader({
   search: string;
   onSearch: (value: string) => void;
   onNavigate: (view: WorkspaceView) => void;
+  onSwitch: (id: string) => void;
   onLogout: () => void;
   busy: boolean;
   attention: number;
+  documents: number;
+  packets: PacketCard[];
+  activeId: string;
   searchRef: React.RefObject<HTMLInputElement | null>;
   onQuickActions: () => void;
 }) {
@@ -55,35 +59,20 @@ export function WorkspaceHeader({
   const account = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const first = useRef<HTMLButtonElement>(null);
-  const activeTab = useRef<HTMLButtonElement>(null);
+  const active = packets.find((p) => p.packet.id === activeId)?.packet;
   const tabStrip = useRef<HTMLElement>(null);
-  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
   useLayoutEffect(() => {
-    const strip = tabStrip.current,
-      tab = activeTab.current;
-    if (!strip) return;
-    const update = () => {
-      const selected = activeTab.current;
-      if (!selected) return;
-      const left =
-        selected.getBoundingClientRect().left -
-        strip.getBoundingClientRect().left +
-        strip.scrollLeft;
-      strip.scrollTo({
-        left: left - (strip.clientWidth - selected.clientWidth) / 2,
-        behavior: 'instant',
-      });
-      setIndicator({
-        left,
-        width: selected.clientWidth,
-      });
-    };
-    update();
-    const resize = new ResizeObserver(update);
-    resize.observe(strip);
-    if (tab) resize.observe(tab);
-    return () => resize.disconnect();
-  }, [view, attention]);
+    // Keep the current tab visible when the strip scrolls horizontally on narrow screens.
+    const strip = tabStrip.current;
+    const current = strip?.querySelector<HTMLElement>('.is-current');
+    if (!strip || !current) return;
+    const left =
+      current.getBoundingClientRect().left -
+      strip.getBoundingClientRect().left +
+      strip.scrollLeft -
+      (strip.clientWidth - current.offsetWidth) / 2;
+    strip.scrollTo({ left: Math.max(0, left), behavior: 'instant' });
+  }, [view]);
   useEffect(() => {
     if (!open) return;
     first.current?.focus();
@@ -117,41 +106,59 @@ export function WorkspaceHeader({
     setOpen(false);
     onNavigate(next);
   }
+  const initials = user.name
+    .split(' ')
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
   return (
     <header className="workspace-header">
       <div className="masthead">
         <a
-          className="product-brand"
-          href="?view=overview"
+          className="masthead-brand"
+          href="?view=applications"
+          aria-label="JKY-Folder, all applications"
           onClick={(event) => {
             event.preventDefault();
-            navigate('overview');
+            navigate('applications');
           }}
         >
-          <img src="/favicon.svg" alt="" width="34" height="34" />
-          <span>
-            JKY<span className="brand-dash">—</span>Folder<span className="brand-period">.</span>
-          </span>
+          <Wordmark />
         </a>
-        <span className="workspace-edition">
-          <span />
-          {user.demo ? 'Demo workspace' : 'Personal workspace'}
-        </span>
-        <div className="masthead-tools">
+        {user.demo && <span className="demo-badge">Demo</span>}
+        <label className="header-search">
+          <Search size={17} aria-hidden="true" />
+          <input
+            ref={searchRef}
+            type="search"
+            aria-label="Search requirements or documents"
+            placeholder={view === 'applications' ? 'Find an application' : 'Search this folder'}
+            value={search}
+            onChange={(event) => onSearch(event.target.value)}
+          />
+          <kbd aria-hidden="true">Ctrl K</kbd>
+        </label>
+        <nav aria-label="Account" className="masthead-tools">
+          <button
+            className={`masthead-button ${view === 'activity' ? 'is-current' : ''}`}
+            aria-label="Activity"
+            aria-current={view === 'activity' ? 'page' : undefined}
+            onClick={() => navigate('activity')}
+          >
+            <Activity size={17} aria-hidden="true" />
+            <span>Activity</span>
+          </button>
+          <button
+            className="masthead-button"
+            aria-label="Quick actions"
+            title="Quick actions (Ctrl + .)"
+            onClick={onQuickActions}
+          >
+            <Zap size={17} aria-hidden="true" />
+            <span>Quick actions</span>
+          </button>
           <MotionToggle />
-          <label className="header-search">
-            <Search size={16} />
-            <input
-              ref={searchRef}
-              aria-label="Search requirements or documents"
-              placeholder={
-                view === 'applications' ? 'Find an application…' : 'Search your workspace…'
-              }
-              value={search}
-              onChange={(event) => onSearch(event.target.value)}
-            />
-            <kbd>⌘ K</kbd>
-          </label>
           <div
             className="account-menu"
             ref={account}
@@ -168,15 +175,10 @@ export function WorkspaceHeader({
               aria-controls="account-menu"
               onClick={() => setOpen(!open)}
             >
-              <span className="account-initials">
-                {user.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .slice(0, 2)
-                  .join('')}
+              <span className="account-initials" aria-hidden="true">
+                {initials}
               </span>
-              <span className="account-first-name">{user.name.split(' ')[0]}</span>
-              <ChevronDown size={14} />
+              <ChevronDown size={15} aria-hidden="true" />
             </button>
             {open && (
               <div
@@ -190,12 +192,12 @@ export function WorkspaceHeader({
                   <span>{user.demo ? 'Fictional demo account' : user.email}</span>
                 </div>
                 <button ref={first} role="menuitem" onClick={() => navigate('settings')}>
-                  <UserRound size={16} />
+                  <UserRound size={16} aria-hidden="true" />
                   Settings & privacy
-                  <ArrowUpRight size={14} />
+                  <ArrowUpRight size={14} aria-hidden="true" />
                 </button>
                 <button role="menuitem" onClick={() => navigate('help')}>
-                  <HelpCircle size={16} />
+                  <HelpCircle size={16} aria-hidden="true" />
                   Help & guidance
                 </button>
                 <button
@@ -206,62 +208,89 @@ export function WorkspaceHeader({
                     onLogout();
                   }}
                 >
-                  <LogOut size={16} />
+                  <LogOut size={16} aria-hidden="true" />
                   Sign out
                 </button>
               </div>
             )}
           </div>
-        </div>
+        </nav>
       </div>
-      <div className="navigation-bar" id="workspace-navigation">
-        <nav ref={tabStrip} aria-label="Workspace" className="workspace-tabs">
-          <span
-            className="workspace-tab-indicator"
-            aria-hidden="true"
-            style={{ width: indicator.width, transform: `translateX(${indicator.left}px)` }}
-          />
-          {navigation.map(({ id, label, Icon }) => (
+      <div className="folder-tabs-bar" id="workspace-navigation">
+        <nav aria-label="Workspace" className="folder-tabs" ref={tabStrip}>
+          <button
+            className={`folder-tab drawer-tab ${view === 'applications' ? 'is-current' : ''}`}
+            aria-current={view === 'applications' ? 'page' : undefined}
+            onClick={() => navigate('applications')}
+          >
+            <FolderOpen size={16} aria-hidden="true" />
+            Applications
+            <span className="count" aria-hidden="true">
+              {packets.length}
+            </span>
+          </button>
+          {active && (
+            <span className="folder-name" title={active.title}>
+              {packets.length > 1 ? (
+                <label>
+                  <span className="visually-hidden">Current application</span>
+                  <select
+                    value={activeId}
+                    disabled={busy}
+                    onChange={(event) => onSwitch(event.target.value)}
+                  >
+                    {packets.map((item) => (
+                      <option key={item.packet.id} value={item.packet.id}>
+                        {item.packet.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ) : (
+                <span>{active.title}</span>
+              )}
+            </span>
+          )}
+          {folderTabs.map(({ id, label }) => (
             <button
-              ref={view === id ? activeTab : undefined}
               key={id}
-              className={`workspace-tab ${view === id ? 'is-current' : ''}`}
+              className={`folder-tab ${view === id ? 'is-current' : ''}`}
               aria-current={view === id ? 'page' : undefined}
               onClick={() => navigate(id)}
             >
-              <Icon size={16} />
               {label}
               {id === 'requirements' && attention > 0 && (
-                <span className="tab-count">{attention}</span>
+                <>
+                  <span className="count attention" aria-hidden="true">
+                    {attention}
+                  </span>
+                  <span className="visually-hidden">, {attention} need attention</span>
+                </>
+              )}
+              {id === 'documents' && documents > 0 && (
+                <span className="count" aria-hidden="true">
+                  {documents}
+                </span>
               )}
             </button>
           ))}
-        </nav>
-        <nav aria-label="Workspace support" className="workspace-support">
+          <span className="tabs-spacer" aria-hidden="true" />
           <button
-            aria-label="Quick actions"
-            title="Quick actions · Ctrl/Cmd + ."
-            onClick={onQuickActions}
-          >
-            <Zap size={17} />
-            <span>Quick actions</span>
-          </button>
-          <button
-            className={view === 'help' ? 'is-current' : ''}
+            className={`folder-tab utility-tab ${view === 'help' ? 'is-current' : ''}`}
             aria-current={view === 'help' ? 'page' : undefined}
             aria-label="Help & guidance"
             onClick={() => navigate('help')}
           >
-            <HelpCircle size={17} />
+            <HelpCircle size={16} aria-hidden="true" />
             <span>Help</span>
           </button>
           <button
-            className={view === 'settings' ? 'is-current' : ''}
+            className={`folder-tab utility-tab ${view === 'settings' ? 'is-current' : ''}`}
             aria-current={view === 'settings' ? 'page' : undefined}
             aria-label="Settings & privacy"
             onClick={() => navigate('settings')}
           >
-            <Settings size={17} />
+            <Settings size={16} aria-hidden="true" />
           </button>
         </nav>
       </div>

@@ -33,36 +33,28 @@ test('workflow preview supports keyboard selection and motion can be paused pers
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'on');
+  // The folder plays its arrival sequence once: the sheet drops in and the marks are drawn.
+  const folder = page.locator('.hero-folder');
+  await expect(folder).toHaveClass(/is-intro/);
   await expect
     .poll(() =>
-      page
-        .locator('.packet-drift')
-        .evaluate((element) =>
-          element.getAnimations().some((animation) => animation.playState === 'running'),
-        ),
+      folder.evaluate((element) =>
+        element
+          .getAnimations({ subtree: true })
+          .some((animation) => animation.playState === 'running'),
+      ),
     )
     .toBe(true);
-  if (await page.evaluate(() => matchMedia('(hover:hover) and (pointer:fine)').matches)) {
-    const visual = page.locator('.packet-visual');
-    const bounds = await visual.boundingBox();
-    if (!bounds) throw new Error('Packet visual is missing.');
-    await page.mouse.move(bounds.x + bounds.width * 0.7, bounds.y + bounds.height * 0.3);
-    await expect
-      .poll(() => visual.evaluate((element) => element.style.getPropertyValue('--pointer-x')))
-      .not.toBe('');
-  }
-  const define = page.getByRole('tab', { name: '01 Define' });
-  await define.click();
+  await expect(page.getByRole('tabpanel')).toContainText('Recent photograph');
+  await page.getByRole('tab', { name: 'Checklist' }).click();
+  await expect(folder).not.toHaveClass(/is-intro/);
   await page.keyboard.press('End');
-  await expect(page.getByRole('tab', { name: '03 Review' })).toHaveAttribute(
-    'aria-selected',
-    'true',
-  );
-  await expect(page.getByRole('tabpanel')).toContainText('Your content review is still needed');
+  await expect(page.getByRole('tab', { name: 'Report' })).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('tabpanel')).toContainText('A few things need your attention.');
   await page.keyboard.press('Home');
   await page.keyboard.press('ArrowRight');
-  await expect(page.getByRole('tab', { name: '02 Connect' })).toBeFocused();
-  await expect(page.getByRole('tabpanel')).toContainText('transcript.pdf');
+  await expect(page.getByRole('tab', { name: 'Documents' })).toBeFocused();
+  await expect(page.getByRole('tabpanel')).toContainText('recent-photograph.jpg');
   await page.getByRole('button', { name: 'Pause animations' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
   expect(
@@ -90,10 +82,16 @@ test('quick actions run real reviews, readiness opens reports and file drops ins
 }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore the demo' }).click();
-  await page.getByRole('heading', { name: 'Application overview' }).waitFor();
+  await page.getByRole('heading', { name: 'My design school application', level: 1 }).waitFor();
   try {
+    await page.getByRole('button', { name: 'Signature: Needs your review' }).click();
+    await expect(
+      page.getByRole('dialog').getByRole('heading', { name: 'Signature' }),
+    ).toBeVisible();
+    await page.keyboard.press('Escape');
     await page
-      .getByRole('button', { name: 'Open readiness report: 3 of 6 evidence items reviewed' })
+      .locator('.workspace-header')
+      .getByRole('button', { name: 'Report', exact: true })
       .click();
     await expect(
       page.getByRole('heading', { name: 'Readiness report', exact: true }),
@@ -117,9 +115,7 @@ test('quick actions run real reviews, readiness opens reports and file drops ins
     await dialog.getByRole('button', { name: /Upload documents/ }).click();
     const chooser = await chooserEvent;
     await chooser.setFiles([]);
-    await expect(
-      page.getByRole('heading', { name: 'Document library', exact: true }),
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Documents', exact: true })).toBeVisible();
     const pdf = await PDFDocument.create();
     pdf
       .addPage()

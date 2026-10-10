@@ -19,16 +19,16 @@ async function check(page: import('@playwright/test').Page) {
 async function nav(page: import('@playwright/test').Page, label: string) {
   await page
     .locator('.workspace-header')
-    .getByRole('button', { name: label, exact: label !== 'Requirements' })
+    .getByRole('button', { name: label, exact: label !== 'Checklist' })
     .click();
 }
 test('automated accessibility of welcome, workspace views and review dialogs', async ({ page }) => {
   await page.goto('/');
   await check(page);
   await page.getByRole('button', { name: 'Explore the demo' }).click();
-  await page.getByRole('heading', { name: 'Review progress' }).waitFor();
+  await page.getByRole('heading', { name: 'Where this application stands' }).waitFor();
   await check(page);
-  await nav(page, 'Requirements');
+  await nav(page, 'Checklist');
   await check(page);
   await page.getByRole('button', { name: 'Edit application details' }).click();
   await page.getByRole('dialog').waitFor();
@@ -42,8 +42,12 @@ test('automated accessibility of welcome, workspace views and review dialogs', a
   await page.getByRole('dialog').waitFor();
   await check(page);
   await page.keyboard.press('Escape');
-  await nav(page, 'My documents');
+  await nav(page, 'Documents');
   await check(page);
-  await nav(page, 'Readiness report');
+  await nav(page, 'Report');
+  await check(page);
+  await nav(page, 'Applications');
+  await check(page);
+  await page.getByRole('button', { name: 'Help & guidance' }).click();
   await check(page);
 });

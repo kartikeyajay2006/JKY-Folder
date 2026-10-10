@@ -31,6 +31,15 @@ export function MotionProvider({ children }: { children: ReactNode }) {
       delete document.documentElement.dataset.motion;
     };
   }, [active]);
+  useEffect(() => {
+    // Continuous effects pause while the tab is hidden.
+    const visibility = () => {
+      document.documentElement.dataset.motionVisibility = document.hidden ? 'hidden' : 'visible';
+    };
+    visibility();
+    document.addEventListener('visibilitychange', visibility);
+    return () => document.removeEventListener('visibilitychange', visibility);
+  }, []);
   function toggle() {
     setEnabled((previous) => {
       const next = !previous;
@@ -71,7 +80,7 @@ export function MotionToggle() {
       aria-pressed={!active}
       onClick={toggle}
     >
-      {active ? <Pause size={15} /> : <Play size={15} />}
+      {active ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
     </button>
   );
 }

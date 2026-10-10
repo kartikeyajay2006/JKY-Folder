@@ -7,6 +7,7 @@ import {
   CheckCheck,
   ShieldCheck,
   Download,
+  Link2,
 } from 'lucide-react';
 import { api } from '../api';
 import type { PacketCard } from './WorkspaceHome';
@@ -16,12 +17,14 @@ interface AuditEvent {
   objectId: string;
   createdAt: string;
 }
+// Plain-language names for the server's audit event codes.
 const labels: Record<string, string> = {
   'consent.development-review.accepted': 'Account created',
+  'demo.created': 'Demo workspace prepared',
   'packet.created': 'Application created',
   'packet.updated': 'Application details updated',
   'checklist.updated': 'Checklist updated',
-  'profile.confirmed': 'Application profile confirmed',
+  'profile.confirmed': 'Application answers confirmed',
   'document.uploaded': 'Document uploaded',
   'document.deleted': 'Document deleted',
   'packet.deleted': 'Application deleted',
@@ -33,11 +36,24 @@ const labels: Record<string, string> = {
   'account.sessions.revoked': 'Other sessions signed out',
   'inspection.retried': 'Document inspection retried',
 };
+const filters = [
+  { id: 'all', label: 'Everything', pattern: /./ },
+  { id: 'packet', label: 'Applications', pattern: /^(packet|checklist|profile|evidence)\./ },
+  { id: 'document', label: 'Documents', pattern: /^(document|inspection)\./ },
+  { id: 'account', label: 'Account', pattern: /^(account|consent|demo)\./ },
+] as const;
+const day = (value: string) =>
+  new Intl.DateTimeFormat('en-IN', { weekday: 'long', day: 'numeric', month: 'long' }).format(
+    new Date(value),
+  );
+const time = (value: string) =>
+  new Intl.DateTimeFormat('en-IN', { hour: '2-digit', minute: '2-digit' }).format(new Date(value));
+
 export function ActivityFeed({ packets }: { packets: PacketCard[] }) {
   const [events, setEvents] = useState<AuditEvent[]>([]),
     [busy, setBusy] = useState(true),
     [error, setError] = useState(''),
-    [filter, setFilter] = useState('all');
+    [filter, setFilter] = useState<(typeof filters)[number]['id']>('all');
   async function refresh() {
     setBusy(true);
     setError('');
@@ -52,34 +68,32 @@ export function ActivityFeed({ packets }: { packets: PacketCard[] }) {
   useEffect(() => {
     void refresh();
   }, []);
-  const shown = events.filter(
-    (event) =>
-      filter === 'all' ||
-      (filter === 'packet' && /^(packet|checklist|profile|evidence)\./.test(event.action)) ||
-      (filter === 'document' && /^(document|inspection)\./.test(event.action)) ||
-      (filter === 'account' && /^(account|consent)\./.test(event.action)),
-  );
+  const pattern = filters.find((f) => f.id === filter)!.pattern;
+  const shown = events.filter((event) => pattern.test(event.action));
+  const days = shown.reduce<{ day: string; events: AuditEvent[] }[]>((groups, event) => {
+    const label = day(event.createdAt);
+    const last = groups.at(-1);
+    if (last?.day === label) last.events.push(event);
+    else groups.push({ day: label, events: [event] });
+    return groups;
+  }, []);
   return (
-    <section className="panel activity-feed">
-      <div className="panel-heading">
-        <div>
-          <span className="eyebrow">YOUR WORKSPACE HISTORY</span>
-          <h2>Recent activity</h2>
-          <p>Saved events across all of your applications.</p>
-        </div>
-        <button className="outline" disabled={busy} onClick={() => void refresh()}>
-          <RefreshCw size={15} />
+    <section className="sheet activity-feed" aria-labelledby="activity-title">
+      <div className="sheet-head">
+        <h2 id="activity-title">Saved events</h2>
+        <button className="outline small-button" disabled={busy} onClick={() => void refresh()}>
+          <RefreshCw size={15} aria-hidden="true" className={busy ? 'spin' : ''} />
           Refresh activity
         </button>
       </div>
-      <div className="filter-tabs">
-        {[
-          ['all', 'Everything'],
-          ['packet', 'Applications'],
-          ['document', 'Documents'],
-          ['account', 'Account'],
-        ].map(([id, label]) => (
-          <button key={id} onClick={() => setFilter(id)} className={filter === id ? 'active' : ''}>
+      <div className="filter-tabs" role="group" aria-label="Filter activity">
+        {filters.map(({ id, label }) => (
+          <button
+            key={id}
+            aria-pressed={filter === id}
+            onClick={() => setFilter(id)}
+            className={filter === id ? 'active' : ''}
+          >
             {label}
           </button>
         ))}
@@ -89,49 +103,54 @@ export function ActivityFeed({ packets }: { packets: PacketCard[] }) {
           {error}
         </p>
       )}
-      {busy ? (
+      {busy && !events.length ? (
         <p className="empty-small" role="status">
           Loading your activity…
         </p>
       ) : shown.length ? (
-        <div className="audit-list">
-          {shown.map((event) => {
-            const Icon = event.action.includes('export')
-              ? Download
-              : event.action.includes('evaluated')
-                ? CheckCheck
-                : event.action.startsWith('document')
-                  ? FileText
-                  : event.action.startsWith('account')
-                    ? ShieldCheck
-                    : FolderOpen;
-            const title = packets.find((p) => p.packet.id === event.objectId)?.packet.title;
-            return (
-              <article className="audit-event" key={event.id}>
-                <span>
-                  <Icon size={18} />
-                </span>
-                <div>
-                  <h3>{labels[event.action] || 'Workspace updated'}</h3>
-                  <p>{title || 'Private workspace event'}</p>
-                </div>
-                <time dateTime={event.createdAt}>
-                  {new Date(event.createdAt).toLocaleString('en-IN', {
-                    day: 'numeric',
-                    month: 'short',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}
-                </time>
-              </article>
-            );
-          })}
+        <div className="timeline">
+          {days.map((group) => (
+            <section key={group.day} className="timeline-day" aria-label={group.day}>
+              <h3 className="timeline-date">{group.day}</h3>
+              <ol>
+                {group.events.map((event) => {
+                  const Icon = event.action.includes('export')
+                    ? Download
+                    : event.action.includes('evaluated')
+                      ? CheckCheck
+                      : event.action.startsWith('evidence')
+                        ? Link2
+                        : event.action.startsWith('document') ||
+                            event.action.startsWith('inspection')
+                          ? FileText
+                          : event.action.startsWith('account') || event.action.startsWith('consent')
+                            ? ShieldCheck
+                            : FolderOpen;
+                  const title = packets.find((p) => p.packet.id === event.objectId)?.packet.title;
+                  return (
+                    <li className="audit-event" key={event.id}>
+                      <span className="audit-icon" aria-hidden="true">
+                        <Icon size={16} />
+                      </span>
+                      <div>
+                        <h4>{labels[event.action] || 'Workspace updated'}</h4>
+                        <p>{title || 'Private workspace event'}</p>
+                      </div>
+                      <time dateTime={event.createdAt} className="data">
+                        {time(event.createdAt)}
+                      </time>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          ))}
         </div>
       ) : (
         <div className="empty-small">
-          <Activity size={24} />
+          <Activity size={24} aria-hidden="true" />
           <h3>No events in this category yet.</h3>
-          <p>Uploads, saved reviews and account changes will appear here as you work.</p>
+          <p>Uploads, saved reviews and account changes appear here as you work.</p>
         </div>
       )}
     </section>

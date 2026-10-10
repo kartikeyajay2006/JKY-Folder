@@ -1,56 +1,28 @@
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import {
-  Files,
-  FileCheck2,
-  Activity,
-  Settings,
-  Search,
-  Plus,
-  ArrowUpRight,
-  ArrowRight,
-  ChevronRight,
-  Check,
-  AlertCircle,
-  Clock,
-  FileText,
-  Image as ImageIcon,
-  Upload,
-  ShieldCheck,
-  ExternalLink,
-  RefreshCw,
-  Download,
-  Trash2,
-  LogOut,
-  FolderOpen,
-  Link2,
-  X,
-  Printer,
-  Sparkles,
-  BookOpen,
-  CheckCheck,
-  Info,
-} from 'lucide-react';
+import { AlertCircle, Check, Download, ShieldCheck, Trash2, X } from 'lucide-react';
 import { Auth } from './components/Auth';
+import { BrandMark } from './components/Brand';
 import { Dialog } from './components/Dialog';
 import { EvidenceDialog } from './components/EvidenceDialog';
 import { ProfileDialog } from './components/ProfileDialog';
-import { Status, date, size } from './components/Status';
+import { size, date } from './components/Status';
 import { api, body, setCsrf, download, ApiError } from './api';
-import { deadlineInfo } from '../shared/templates';
-import { applicabilityNote } from '../shared/profile';
 import { CatalogProvider, uploadRules, type Catalog } from './catalog';
 import { ApplicationWizard, type CreateApplicationInput } from './components/ApplicationWizard';
 import { WorkspaceHome, EmptySection, type PacketCard } from './components/WorkspaceHome';
 import { ChecklistEditor } from './components/ChecklistEditor';
 import { ApplicationDetails } from './components/ApplicationDetails';
-import { AccountSettings } from './components/AccountSettings';
 import { ActivityFeed } from './components/ActivityFeed';
 import { PdfPreview } from './components/PdfPreview';
-import { UploadQueue, type UploadItem } from './components/UploadQueue';
+import { type UploadItem } from './components/UploadQueue';
 import { WorkspaceHeader } from './components/WorkspaceHeader';
 import { QuickActions } from './components/QuickActions';
-import { AnimatedNumber, ReadinessRing } from './components/AnimatedNumber';
-import { UploadDropzone } from './components/UploadDropzone';
+import { OverviewView } from './views/Overview';
+import { ChecklistView } from './views/Checklist';
+import { DocumentsView } from './views/Documents';
+import { ReportView } from './views/Report';
+import { HelpView } from './views/Help';
+import { SettingsView } from './views/Settings';
 import {
   readWorkspaceLocation,
   writeWorkspaceLocation,
@@ -66,24 +38,14 @@ import type {
 } from '../shared/model';
 type View = WorkspaceView;
 
-const headings: Record<View, [string, string]> = {
-  applications: ['Your applications.', 'Every opportunity, every deadline, every next step.'],
-  overview: [
-    'Application overview',
-    'Track your requirements, review your evidence, and resolve the next action.',
-  ],
-  requirements: [
-    'Document checklist',
-    'Connect each instruction to its evidence, one document at a time.',
-  ],
-  documents: ['Document library', 'Your original files, kept together in a private packet.'],
-  report: [
-    'Readiness report',
-    'A dated snapshot of what was checked, and what still needs review.',
-  ],
-  activity: ['Workspace activity', 'Uploads and review runs for this application packet.'],
-  help: ['Help center', 'Understand your checklist, your evidence, and the limits of a review.'],
-  settings: ['Settings & privacy', 'Manage your account and decide what stays in your folder.'],
+const headings: Record<Exclude<View, 'overview'>, [string, string]> = {
+  applications: ['Your applications', 'Every opportunity you are preparing, with its deadline.'],
+  requirements: ['Checklist', 'Connect each requirement to the page that supports it.'],
+  documents: ['Documents', 'Your original files, kept privately in this application’s folder.'],
+  report: ['Readiness report', 'A dated record of what was checked and what still needs you.'],
+  activity: ['Activity', 'Everything saved in your workspace, newest first.'],
+  help: ['Help & guidance', 'How the checklist works, and what a review can and cannot tell you.'],
+  settings: ['Settings & privacy', 'Your profile, password, sessions and what stays stored.'],
 };
 export default function App() {
   const initialLocation = useRef(readWorkspaceLocation());
@@ -95,7 +57,6 @@ export default function App() {
     [activeId, setActiveId] = useState(initialLocation.current.application),
     [data, setData] = useState<PacketDetail | null>(null);
   const [packetsLoaded, setPacketsLoaded] = useState(false);
-  const pack = data?.pack;
   const [createTemplate, setCreateTemplate] = useState('college');
   const [queuedFiles, setQueuedFiles] = useState<File[]>([]);
   const [uploadBatch, setUploadBatch] = useState<{ packetId: string; items: UploadItem[] } | null>(
@@ -105,8 +66,7 @@ export default function App() {
     [busy, setBusy] = useState(''),
     [error, setError] = useState(''),
     [toast, setToast] = useState(''),
-    [search, setSearch] = useState(''),
-    [filter, setFilter] = useState('all');
+    [search, setSearch] = useState('');
   const [modal, setModal] = useState<
       | 'create'
       | 'profile'
@@ -235,7 +195,6 @@ export default function App() {
           : location.application;
       setActiveId(application);
       setSearch('');
-      setFilter('all');
       setModal(null);
       setEvidence(null);
       setPreview(null);
@@ -291,7 +250,6 @@ export default function App() {
     }
     setView(next);
     setSearch('');
-    setFilter('all');
     setError('');
   }
   async function perform(name: string, operation: () => Promise<void>) {
@@ -302,14 +260,16 @@ export default function App() {
     } catch (e) {
       setError((e as Error).message);
       if (e instanceof ApiError && e.status === 409) await refresh().catch(() => {});
-      if (e instanceof ApiError && e.status === 401) {
-        setUser(null);
-        setData(null);
-        setActiveId('');
-      }
+      if (e instanceof ApiError && e.status === 401) signedOut();
     } finally {
       setBusy('');
     }
+  }
+  function signedOut() {
+    setUser(null);
+    setData(null);
+    setActiveId('');
+    setCsrf('');
   }
   async function upload(files: FileList | File[] | null) {
     if (!files || !files.length || busy) return;
@@ -356,17 +316,14 @@ export default function App() {
         failed++;
         updateItem(item.id, { status: 'failed', error: (e as Error).message });
         if (e instanceof ApiError && e.status === 401) {
-          setUser(null);
-          setData(null);
-          setActiveId('');
-          setCsrf('');
+          signedOut();
           return;
         }
       }
     }
     await refresh().catch((e) => setError(e.message));
     setToast(
-      `${added} added${duplicates ? `, ${duplicates} already present` : ''}${failed ? `, ${failed} could not upload — see upload results` : '. Inspection runs separately.'}`,
+      `${added} added${duplicates ? `, ${duplicates} already present` : ''}${failed ? `, ${failed} could not upload. See the upload results.` : '. Inspection runs separately.'}`,
     );
   }
   async function update(path: string, payload: unknown, method: string) {
@@ -409,9 +366,6 @@ export default function App() {
     }
     if (!p.customPack) setModal('profile');
   }
-  function openApplication(id: string) {
-    navigate('overview', id);
-  }
   async function archiveApplication(p: Packet) {
     await perform('archive', async () => {
       await api(`/packets/${p.id}`, {
@@ -425,17 +379,33 @@ export default function App() {
       setToast(p.archived ? 'Application restored.' : 'Application archived.');
     });
   }
+  function logout() {
+    void perform('logout', async () => {
+      await api('/auth/logout', { method: 'POST', body: body({}) });
+      signedOut();
+    });
+  }
+  function openRequirement(requirementId: string) {
+    const requirement = data?.pack.requirements.find((r) => r.id === requirementId);
+    const check = live?.checks.find((c) => c.requirementId === requirementId);
+    if (check?.state === 'unknown') setModal('profile');
+    else if (requirement) setEvidence(requirement);
+  }
+  function chooseFiles() {
+    inputRef.current?.click();
+  }
   if (booting)
     return (
-      <main className="boot">
-        <img src="/favicon.svg" alt="" />
+      <main className="boot" aria-busy="true">
+        <BrandMark />
         <h1>JKY-Folder</h1>
-        <p>Making room for your next chapter…</p>
+        <p>Opening your folders…</p>
       </main>
     );
   if ((bootError && !user) || !catalog)
     return (
       <main className="boot">
+        <BrandMark />
         <h1>Your workspace is temporarily unavailable.</h1>
         <p role="alert">{bootError || 'The product catalog could not be loaded.'}</p>
         <button className="primary" onClick={() => window.location.reload()}>
@@ -456,6 +426,15 @@ export default function App() {
       </CatalogProvider>
     );
   const rules = uploadRules(catalog.limits);
+  const perApplication =
+    view === 'overview' || view === 'requirements' || view === 'documents' || view === 'report';
+  const showHome = view === 'applications' || (view === 'overview' && !activeId);
+  const heading: [string, string] | null =
+    view === 'overview'
+      ? activeId
+        ? null
+        : [`Welcome, ${user.name.split(' ')[0]}.`, 'Let’s set up your first application folder.']
+      : headings[view];
   return (
     <CatalogProvider catalog={catalog}>
       <div className="app-shell">
@@ -464,12 +443,16 @@ export default function App() {
         </a>
         <WorkspaceHeader
           user={user}
-          view={view}
+          view={showHome && view === 'overview' ? 'applications' : view}
           search={search}
           searchRef={searchRef}
           busy={!!busy}
           attention={nextSteps.length}
+          documents={data?.documents.length || 0}
+          packets={packets}
+          activeId={activeId}
           onNavigate={navigate}
+          onSwitch={(id) => navigate(perApplication ? view : 'overview', id)}
           onQuickActions={() => setModal('quick-actions')}
           onSearch={(value) => {
             setSearch(value);
@@ -479,55 +462,52 @@ export default function App() {
               setView(next);
             }
           }}
-          onLogout={() =>
-            void perform('logout', async () => {
-              await api('/auth/logout', { method: 'POST', body: body({}) });
-              setUser(null);
-              setData(null);
-              setActiveId('');
-              setCsrf('');
-            })
-          }
+          onLogout={logout}
         />
         <div className="main-shell">
           <main id="main-content" tabIndex={-1} className={`workspace-content view-${view}`}>
             <div className="view-transition" key={`${view}-${activeId}`}>
               {user.demo && (
                 <div className="demo-strip">
-                  <Sparkles size={14} />
-                  <span>You’re exploring a sample application with fictional documents.</span>
-                  <button disabled={!!busy} onClick={() => startCreate()}>
-                    Make a new application
-                    <ArrowRight size={13} />
+                  <span>
+                    You’re in the demo. Every document here is fictional, and the workspace is
+                    deleted after {catalog.limits.sessionHours} hours.
+                  </span>
+                  <button className="text-link" disabled={!!busy} onClick={() => startCreate()}>
+                    Start your own application
                   </button>
                 </div>
               )}
-              <div className="page-heading">
-                <div>
-                  <div className="eyebrow">
-                    {view === 'overview'
-                      ? `GOOD TO SEE YOU, ${user.name.split(' ')[0].toUpperCase()}.`
-                      : 'YOUR APPLICATION WORKSPACE'}
+              {heading && (
+                <div className="page-heading">
+                  <div>
+                    {data && perApplication && (
+                      <nav aria-label="Breadcrumb" className="breadcrumb">
+                        <ol>
+                          <li>
+                            <button onClick={() => navigate('applications')}>Applications</button>
+                          </li>
+                          <li>
+                            <button onClick={() => navigate('overview')}>
+                              {data.packet.title}
+                            </button>
+                          </li>
+                        </ol>
+                      </nav>
+                    )}
+                    <h1>{heading[0]}</h1>
+                    <p>{heading[1]}</p>
                   </div>
-                  <h1>
-                    {view === 'overview' && !activeId
-                      ? `Welcome, ${user.name.split(' ')[0]}.`
-                      : headings[view][0]}
-                  </h1>
-                  <p>
-                    {view === 'overview' && !activeId
-                      ? 'Let’s turn your next opportunity into a clear, organized application.'
-                      : headings[view][1]}
-                  </p>
+                  {view === 'applications' && (
+                    <button className="primary" disabled={!!busy} onClick={() => startCreate()}>
+                      New application
+                    </button>
+                  )}
                 </div>
-                <button className="primary" disabled={!!busy} onClick={() => startCreate()}>
-                  <Plus size={17} />
-                  New application
-                </button>
-              </div>
+              )}
               {error && (
                 <div className="error-banner" role="alert">
-                  <AlertCircle size={18} />
+                  <AlertCircle size={18} aria-hidden="true" />
                   <span>{error}</span>
                   <button
                     className="icon-button"
@@ -538,987 +518,116 @@ export default function App() {
                   </button>
                 </div>
               )}
-              {packets.length > 1 && (
-                <label className="packet-switcher">
-                  Active packet
-                  <select value={activeId} onChange={(e) => navigate(view, e.target.value)}>
-                    {packets.map((item) => (
-                      <option key={item.packet.id} value={item.packet.id}>
-                        {item.packet.title}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {(view === 'applications' || (view === 'overview' && !activeId)) && (
+              {showHome && (
                 <WorkspaceHome
                   user={user}
                   packets={packets}
                   search={search}
                   onCreate={startCreate}
-                  onOpen={openApplication}
+                  onOpen={(id) => navigate('overview', id)}
                   onArchive={(p) => void archiveApplication(p)}
-                  onNavigate={navigate}
                 />
               )}
               {!activeId &&
                 (view === 'requirements' || view === 'documents' || view === 'report') && (
-                  <EmptySection
-                    view={view}
-                    onCreate={startCreate}
-                    onUpload={() => inputRef.current?.click()}
-                  />
+                  <EmptySection view={view} onCreate={startCreate} onUpload={chooseFiles} />
                 )}
-              {activeId &&
-                !data &&
-                ['overview', 'requirements', 'documents', 'report'].includes(view) && (
-                  <div className="loading-card" role="status">
-                    <RefreshCw className="spin" size={22} />
-                    Opening your application…
-                  </div>
-                )}
-              {data && ['overview', 'requirements', 'documents', 'report'].includes(view) && (
-                <div className="application-context">
-                  <div>
-                    <span className="context-dot" />
-                    <strong>{data.packet.title}</strong>
-                    <span>{data.packet.destination || 'Your application workspace'}</span>
-                  </div>
-                  <div>
-                    <span
-                      className={`deadline-badge ${deadlineInfo(data.packet.deadline).urgent ? 'urgent' : ''}`}
-                    >
-                      <Clock size={13} />
-                      {deadlineInfo(data.packet.deadline).label}
-                    </span>
-                    <button className="text-link" onClick={() => setModal('details')}>
-                      Edit details
-                    </button>
-                    <button
-                      className="outline"
-                      disabled={!!busy}
-                      onClick={() =>
-                        void perform('download', () =>
-                          download(`/packets/${activeId}/download`, 'jky-folder-application.zip'),
-                        )
-                      }
-                    >
-                      <Download size={15} />
-                      Download folder
-                    </button>
-                  </div>
+              {activeId && !data && perApplication && (
+                <div className="loading-card" role="status">
+                  <BrandMark />
+                  Opening your application…
                 </div>
               )}
-              {data && view === 'overview' && (
-                <>
-                  <section className="application-card">
-                    <div className="application-info">
-                      <span className="application-icon">
-                        <FolderOpen size={27} />
-                      </span>
-                      <div>
-                        <span className="eyebrow">CURRENT APPLICATION</span>
-                        <h2>
-                          {data.pack.title}
-                          <span className="cycle-tag">{data.pack.cycle} CYCLE</span>
-                        </h2>
-                        <p>{data.packet.title}</p>
-                      </div>
-                    </div>
-                    <div className="application-actions">
-                      <span className="reference-pill">
-                        <span />
-                        {data.pack.assurance === 'reference'
-                          ? 'Reference checklist'
-                          : 'Your checklist'}
-                      </span>
-                      <button className="outline" onClick={() => setModal('details')}>
-                        Application details
-                        <ArrowUpRight size={15} />
-                      </button>
-                    </div>
-                    <div className="application-footer">
-                      <span>
-                        <ShieldCheck size={14} />
-                        Private packet
-                      </span>
-                      <span>
-                        <BookOpen size={14} />
-                        {data.pack.assurance === 'reference'
-                          ? 'Source checked'
-                          : 'Checklist configured'}{' '}
-                        {date(data.pack.checkedAt)}
-                      </span>
-                      {data.pack.sourceUrl && (
-                        <a href={data.pack.sourceUrl} target="_blank" rel="noreferrer">
-                          {data.pack.assurance === 'reference'
-                            ? 'Official instructions'
-                            : 'Your source instructions'}
-                          <ExternalLink size={12} />
-                        </a>
-                      )}
-                    </div>
-                  </section>
-                  <div className="stats-grid">
-                    <div className="stat-card">
-                      <span className="stat-icon mint">
-                        <CheckCheck size={19} />
-                      </span>
-                      <div>
-                        <span>Evidence reviewed</span>
-                        <strong>
-                          <AnimatedNumber value={live?.counts.pass || 0} />
-                          <small>/ {required.length}</small>
-                        </strong>
-                      </div>
-                      <p>File checked + your content review</p>
-                    </div>
-                    <div className="stat-card">
-                      <span className="stat-icon peach">
-                        <AlertCircle size={19} />
-                      </span>
-                      <div>
-                        <span>Needs attention</span>
-                        <strong>
-                          <AnimatedNumber
-                            value={(live?.counts.fail || 0) + (live?.counts.error || 0)}
-                          />
-                        </strong>
-                      </div>
-                      <p>Missing evidence or a file to fix</p>
-                    </div>
-                    <div className="stat-card">
-                      <span className="stat-icon butter">
-                        <Clock size={19} />
-                      </span>
-                      <div>
-                        <span>Still to review</span>
-                        <strong>
-                          <AnimatedNumber
-                            value={
-                              (live?.counts.needs_review || 0) +
-                              (live?.counts.unknown || 0) +
-                              (live?.counts.pending || 0)
-                            }
-                          />
-                        </strong>
-                      </div>
-                      <p>A question, a check, a next step</p>
-                    </div>
-                    <div className="stat-card">
-                      <span className="stat-icon lilac">
-                        <Files size={19} />
-                      </span>
-                      <div>
-                        <span>Documents in your folder</span>
-                        <strong>
-                          <AnimatedNumber value={data.documents.length} />
-                        </strong>
-                      </div>
-                      <p>Originals stay together and private</p>
-                    </div>
-                  </div>
-                  <div className="overview-grid">
-                    <section className="panel next-panel">
-                      <div className="panel-heading">
-                        <div>
-                          <span className="eyebrow">NEXT STEPS</span>
-                          <h2>
-                            Next actions<span className="number-pill">{nextSteps.length}</span>
-                          </h2>
-                        </div>
-                        <button className="text-link" onClick={() => navigate('requirements')}>
-                          View checklist
-                          <ArrowUpRight size={14} />
-                        </button>
-                      </div>
-                      <p className="panel-description">
-                        A few things to take care of before you move forward.
-                      </p>
-                      {nextSteps.length ? (
-                        nextSteps.slice(0, 3).map((check, i) => (
-                          <button
-                            className="next-step"
-                            key={check.requirementId}
-                            onClick={() =>
-                              check.state === 'unknown'
-                                ? setModal('profile')
-                                : setEvidence(
-                                    data.pack.requirements.find(
-                                      (r) => r.id === check.requirementId,
-                                    )!,
-                                  )
-                            }
-                          >
-                            <span
-                              className={`step-symbol ${check.state === 'fail' ? 'peach' : 'butter'}`}
-                            >
-                              {check.state === 'fail' ? <AlertCircle size={18} /> : <EyeIcon />}
-                            </span>
-                            <span className="step-content">
-                              <span className="step-kind">
-                                {check.state === 'fail'
-                                  ? 'EVIDENCE NEEDED'
-                                  : check.state === 'unknown'
-                                    ? 'DETAIL TO CONFIRM'
-                                    : 'A LITTLE REVIEW'}
-                              </span>
-                              <strong>{check.title}</strong>
-                              <small>
-                                {[
-                                  check.reason,
-                                  applicabilityNote(
-                                    data.pack.requirements.find(
-                                      (r) => r.id === check.requirementId,
-                                    )!,
-                                    data.packet.profile,
-                                    catalog.questions,
-                                  ),
-                                ]
-                                  .filter(Boolean)
-                                  .join(' ')}
-                              </small>
-                            </span>
-                            <ChevronRight size={17} />
-                          </button>
-                        ))
-                      ) : (
-                        <div className="all-reviewed">
-                          <CheckCheck size={34} />
-                          <h3>Supported checks are reviewed.</h3>
-                          <p>
-                            Keep the checklist’s limitations in mind and confirm the official
-                            instructions before submitting.
-                          </p>
-                        </div>
-                      )}
-                      <div className="next-panel-footer">
-                        <ShieldCheck size={15} />
-                        <span>No guesswork. Unknown answers stay visible.</span>
-                      </div>
-                    </section>
-                    <section className="panel progress-panel">
-                      <span className="eyebrow">YOUR PACKET AT A GLANCE</span>
-                      <h2>Review progress</h2>
-                      <ReadinessRing
-                        reviewed={live?.counts.pass || 0}
-                        total={required.length}
-                        onOpen={() => navigate('report')}
-                      />
-                      <div className="progress-legend">
-                        <span>
-                          <i className="legend-dot green" />
-                          Reviewed<strong>{live?.counts.pass || 0}</strong>
-                        </span>
-                        <span>
-                          <i className="legend-dot orange" />
-                          Action needed
-                          <strong>{(live?.counts.fail || 0) + (live?.counts.error || 0)}</strong>
-                        </span>
-                        <span>
-                          <i className="legend-dot yellow" />
-                          Unresolved
-                          <strong>
-                            {(live?.counts.unknown || 0) +
-                              (live?.counts.needs_review || 0) +
-                              (live?.counts.pending || 0)}
-                          </strong>
-                        </span>
-                      </div>
-                      <button
-                        className="primary full"
-                        onClick={() => void checkPacket()}
-                        disabled={!!busy}
-                      >
-                        {busy === 'evaluate' ? 'Checking…' : 'Run a packet review'}
-                        <ArrowRight size={16} />
-                      </button>
-                      <p className="microcopy">
-                        Scoped checks, not an admission or authenticity guarantee.
-                      </p>
-                    </section>
-                  </div>
-                  <section className="panel recent-panel">
-                    <div className="panel-heading">
-                      <h2>
-                        In your folder<span className="number-pill">{data.documents.length}</span>
-                      </h2>
-                      <button className="text-link" onClick={() => navigate('documents')}>
-                        All documents
-                        <ArrowUpRight size={14} />
-                      </button>
-                    </div>
-                    <div className="recent-documents">
-                      {data.documents.slice(0, 3).map((doc) => (
-                        <button
-                          className="recent-document"
-                          key={doc.id}
-                          onClick={() => setPreview(doc)}
-                        >
-                          <span
-                            className={`file-icon ${doc.mime === 'image/jpeg' ? 'image-file' : ''}`}
-                          >
-                            {doc.mime === 'image/jpeg' ? (
-                              <ImageIcon size={22} />
-                            ) : (
-                              <FileText size={22} />
-                            )}
-                          </span>
-                          <span>
-                            <strong>{doc.name}</strong>
-                            <small>
-                              {doc.status === 'ready'
-                                ? `${doc.mime === 'image/jpeg' ? 'JPEG' : 'PDF'} · ${size(doc.size)} · ${doc.pageCount} page${doc.pageCount === 1 ? '' : 's'}`
-                                : doc.status === 'processing'
-                                  ? 'Inspecting…'
-                                  : 'Inspection failed'}
-                            </small>
-                          </span>
-                          <ArrowUpRight size={15} />
-                        </button>
-                      ))}
-                      <button
-                        className="add-document-mini"
-                        onClick={() => inputRef.current?.click()}
-                        disabled={!!busy}
-                      >
-                        <Plus size={20} />
-                        <span>Add document</span>
-                      </button>
-                    </div>
-                  </section>
-                  <div className="gentle-note">
-                    <Info size={17} />
-                    <p>
-                      <strong>Before you submit</strong> · A reviewed item includes your own content
-                      confirmation. Check your institution or employer’s original instructions for
-                      details beyond this checklist’s coverage.
-                    </p>
-                    <button onClick={() => navigate('help')}>
-                      What we check
-                      <ArrowRight size={14} />
-                    </button>
-                  </div>
-                </>
+              {data && live && view === 'overview' && (
+                <OverviewView
+                  data={data}
+                  live={live}
+                  nextSteps={nextSteps}
+                  busy={busy}
+                  onNavigate={navigate}
+                  onOpenRequirement={openRequirement}
+                  onDetails={() => setModal('details')}
+                  onReview={() => void checkPacket()}
+                  onPreview={setPreview}
+                  onUpload={chooseFiles}
+                  onDownload={() =>
+                    void perform('download', () =>
+                      download(`/packets/${activeId}/download`, 'jky-folder-application.zip'),
+                    )
+                  }
+                />
               )}
-              {data && view === 'requirements' && (
-                <section className="panel checklist-panel">
-                  <div className="panel-heading">
-                    <div>
-                      <span className="eyebrow">
-                        {data.pack.title} ·{' '}
-                        {data.pack.assurance === 'reference'
-                          ? 'REFERENCE CHECKLIST'
-                          : 'YOUR CHECKLIST'}
-                      </span>
-                      <h2>Requirements & evidence</h2>
-                    </div>
-                    <div className="button-row">
-                      {data.packet.customPack && (
-                        <button className="outline" onClick={() => setModal('checklist')}>
-                          Edit checklist
-                        </button>
-                      )}
-                      <button className="outline" onClick={() => setModal('profile')}>
-                        Edit application details
-                      </button>
-                      <button
-                        className="primary"
-                        disabled={!!busy}
-                        onClick={() => void checkPacket()}
-                      >
-                        <RefreshCw size={15} />
-                        Run review
-                      </button>
-                    </div>
-                  </div>
-                  <div className="filter-tabs">
-                    {[
-                      ['all', 'All requirements'],
-                      ['attention', 'Needs attention'],
-                      ['reviewed', 'Reviewed'],
-                      ['excluded', 'Not required'],
-                    ].map(([id, label]) => (
-                      <button
-                        key={id}
-                        className={filter === id ? 'active' : ''}
-                        onClick={() => setFilter(id)}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="checklist-rows">
-                    {live?.checks
-                      .filter(
-                        (check) =>
-                          (!search ||
-                            `${check.title} ${check.reason}`
-                              .toLowerCase()
-                              .includes(search.toLowerCase())) &&
-                          (filter === 'all' ||
-                            (filter === 'attention' &&
-                              check.state !== 'pass' &&
-                              check.state !== 'not_applicable') ||
-                            (filter === 'reviewed' && check.state === 'pass') ||
-                            (filter === 'excluded' && check.state === 'not_applicable')),
-                      )
-                      .map((check) => (
-                        <article
-                          className={`requirement-row ${check.state === 'not_applicable' ? 'not-required' : ''}`}
-                          key={check.requirementId}
-                        >
-                          <span
-                            className={`requirement-icon ${check.state === 'pass' ? 'mint' : check.state === 'fail' ? 'peach' : 'neutral'}`}
-                          >
-                            {check.state === 'pass' ? (
-                              <Check size={20} />
-                            ) : check.state === 'fail' ? (
-                              <AlertCircle size={20} />
-                            ) : (
-                              <FileText size={20} />
-                            )}
-                          </span>
-                          <div className="requirement-copy">
-                            <span className="row-group">{check.group}</span>
-                            <h3>{check.title}</h3>
-                            <p>{check.reason}</p>
-                            {check.evidence && (
-                              <span className="linked-file">
-                                <Link2 size={12} />
-                                {check.evidence.name} · page {check.evidence.pageFrom}
-                                {check.evidence.pageTo !== check.evidence.pageFrom
-                                  ? `–${check.evidence.pageTo}`
-                                  : ''}
-                                {check.verification === 'user' ? ' · reviewed by you' : ''}
-                              </span>
-                            )}
-                          </div>
-                          <div className="requirement-actions">
-                            <Status state={check.state} />
-                            <button
-                              className="text-link"
-                              onClick={() =>
-                                check.state === 'unknown'
-                                  ? setModal('profile')
-                                  : setEvidence(
-                                      data.pack.requirements.find(
-                                        (r) => r.id === check.requirementId,
-                                      )!,
-                                    )
-                              }
-                            >
-                              {check.state === 'unknown'
-                                ? 'Confirm details'
-                                : check.evidence
-                                  ? 'Review evidence'
-                                  : 'Connect evidence'}
-                              <ArrowUpRight size={14} />
-                            </button>
-                          </div>
-                        </article>
-                      ))}
-                  </div>
-                  {search &&
-                    !live?.checks.some((check) =>
-                      `${check.title} ${check.reason}`.toLowerCase().includes(search.toLowerCase()),
-                    ) && <div className="empty-small">No requirements match “{search}”.</div>}
-                  <div className="panel-note">
-                    <Info size={15} />
-                    This is a live checklist preview. Run a review to save a dated report.
-                  </div>
-                </section>
+              {data && live && view === 'requirements' && (
+                <ChecklistView
+                  data={data}
+                  live={live}
+                  search={search}
+                  busy={busy}
+                  onOpenRequirement={openRequirement}
+                  onEditChecklist={() => setModal('checklist')}
+                  onProfile={() => setModal('profile')}
+                  onReview={() => void checkPacket()}
+                />
               )}
               {data && view === 'documents' && (
-                <>
-                  {uploadBatch?.packetId === activeId && (
-                    <UploadQueue
-                      items={uploadBatch.items}
-                      busy={busy === 'upload'}
-                      onRetry={(files) => void upload(files)}
-                      onDismiss={() => setUploadBatch(null)}
-                    />
-                  )}
-                  <UploadDropzone
-                    busy={!!busy}
-                    uploading={busy === 'upload'}
-                    onChoose={() => inputRef.current?.click()}
-                    onFiles={(files) => void upload(files)}
-                  />
-                  <section className="panel documents-panel">
-                    <div className="panel-heading">
-                      <h2>
-                        Your originals<span className="number-pill">{data.documents.length}</span>
-                      </h2>
-                      <span className="private-label">
-                        <ShieldCheck size={14} />
-                        Private to your account
-                      </span>
-                    </div>
-                    <div className="document-table">
-                      <div className="table-heading">
-                        <span>DOCUMENT</span>
-                        <span>FILE DETAILS</span>
-                        <span>INSPECTION</span>
-                        <span />
-                      </div>
-                      {data.documents
-                        .filter(
-                          (d) =>
-                            !search ||
-                            `${d.name} ${d.pages.map((p) => p.text).join(' ')}`
-                              .toLowerCase()
-                              .includes(search.toLowerCase()),
-                        )
-                        .map((doc) => (
-                          <div className="document-row" key={doc.id}>
-                            <button className="document-name" onClick={() => setPreview(doc)}>
-                              <span
-                                className={`file-icon ${doc.mime === 'image/jpeg' ? 'image-file' : ''}`}
-                              >
-                                {doc.mime === 'image/jpeg' ? (
-                                  <ImageIcon size={21} />
-                                ) : (
-                                  <FileText size={21} />
-                                )}
-                              </span>
-                              <span>
-                                <strong>{doc.name}</strong>
-                                <small>Added {date(doc.createdAt)}</small>
-                              </span>
-                            </button>
-                            <span className="document-details">
-                              {size(doc.size)}
-                              <small>
-                                {doc.status === 'ready'
-                                  ? `${doc.pageCount} page${doc.pageCount === 1 ? '' : 's'}`
-                                  : 'Awaiting inspection'}
-                              </small>
-                            </span>
-                            <span>
-                              {doc.status === 'ready' ? (
-                                <span className="status status-pass">
-                                  <Check size={13} />
-                                  Inspected
-                                </span>
-                              ) : (
-                                <span className="inspection-actions">
-                                  <Status
-                                    state={doc.status === 'processing' ? 'pending' : 'error'}
-                                  />
-                                  {doc.status === 'error' && (
-                                    <button
-                                      className="text-link"
-                                      disabled={!!busy}
-                                      onClick={() =>
-                                        void perform('retry', async () => {
-                                          await api(
-                                            `/packets/${activeId}/documents/${doc.id}/retry`,
-                                            {
-                                              method: 'POST',
-                                              body: body({
-                                                expectedRevision: data.packet.revision,
-                                              }),
-                                            },
-                                          );
-                                          await refresh();
-                                        })
-                                      }
-                                    >
-                                      Retry inspection
-                                      <RefreshCw size={12} />
-                                    </button>
-                                  )}
-                                </span>
-                              )}
-                            </span>
-                            <button
-                              className="icon-button delete-button"
-                              aria-label={`Delete ${doc.name}`}
-                              onClick={() => setDeleteDoc(doc)}
-                              disabled={!!busy}
-                            >
-                              <Trash2 size={17} />
-                            </button>
-                          </div>
-                        ))}
-                      {!data.documents.length && (
-                        <div className="empty-small">
-                          Your folder is ready for its first document.
-                        </div>
-                      )}
-                      {search &&
-                        !data.documents.some((d) =>
-                          `${d.name} ${d.pages.map((p) => p.text).join(' ')}`
-                            .toLowerCase()
-                            .includes(search.toLowerCase()),
-                        ) && <div className="empty-small">No documents match “{search}”.</div>}
-                    </div>
-                    <div className="panel-note">
-                      <ShieldCheck size={15} />
-                      Originals are preserved. Inspection checks a file’s structure, not its
-                      authenticity.
-                    </div>
-                  </section>
-                </>
+                <DocumentsView
+                  data={data}
+                  search={search}
+                  busy={busy}
+                  uploadBatch={uploadBatch?.packetId === activeId ? uploadBatch.items : null}
+                  onUpload={(files) => void upload(files)}
+                  onChoose={chooseFiles}
+                  onDismissBatch={() => setUploadBatch(null)}
+                  onPreview={setPreview}
+                  onDelete={setDeleteDoc}
+                  onRetry={(doc) =>
+                    void perform('retry', async () => {
+                      await api(`/packets/${activeId}/documents/${doc.id}/retry`, {
+                        method: 'POST',
+                        body: body({ expectedRevision: data.packet.revision }),
+                      });
+                      await refresh();
+                    })
+                  }
+                />
               )}
               {data && view === 'report' && (
-                <>
-                  {selectedRun ? (
-                    <section className="panel report-panel">
-                      <div className="panel-heading">
-                        <div>
-                          <span className="eyebrow">DATED REVIEW SNAPSHOT</span>
-                          <h2>{data.packet.title}</h2>
-                          <p className="panel-description">
-                            {selectedRun.checklist?.title || data.pack.title} ·{' '}
-                            {date(selectedRun.createdAt)} · Revision {selectedRun.packetRevision}
-                          </p>
-                        </div>
-                        <div className="button-row no-print">
-                          <button
-                            className="outline"
-                            onClick={() =>
-                              void perform('export', async () => {
-                                await download(
-                                  `/packets/${activeId}/reports/${selectedRun.id}`,
-                                  'jky-folder-report.json',
-                                );
-                                setToast('Report downloaded.');
-                              })
-                            }
-                            disabled={!!busy}
-                          >
-                            <Download size={15} />
-                            Export JSON
-                          </button>
-                          <button className="outline" onClick={() => window.print()}>
-                            <Printer size={15} />
-                            Print / PDF
-                          </button>
-                        </div>
-                      </div>
-                      {data.runs.length > 1 && (
-                        <label className="report-history no-print">
-                          Review history
-                          <select
-                            value={selectedRun.id}
-                            onChange={(e) => setReportId(e.target.value)}
-                          >
-                            {data.runs.map((run) => (
-                              <option key={run.id} value={run.id}>
-                                Revision {run.packetRevision} ·{' '}
-                                {new Date(run.createdAt).toLocaleString('en-IN')}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                      )}
-                      {stale && (
-                        <div className="stale-banner" role="status">
-                          <RefreshCw size={19} />
-                          <span>
-                            This report is historical. Your packet, checklist or evaluator has
-                            changed.
-                          </span>
-                          <button
-                            className="text-link"
-                            onClick={() => void checkPacket()}
-                            disabled={!!busy}
-                          >
-                            Run a fresh review
-                            <ArrowRight size={14} />
-                          </button>
-                        </div>
-                      )}
-                      <div
-                        className={`report-summary ${selectedRun.summary === 'ready_for_supported_checks' ? 'summary-reviewed' : ''}`}
-                      >
-                        <FileCheck2 size={32} />
-                        <div>
-                          <span className="eyebrow">
-                            {stale ? 'HISTORICAL RESULT' : 'REVIEW OUTCOME'}
-                          </span>
-                          <h3>
-                            {selectedRun.summary === 'action_required'
-                              ? 'A few things need your attention.'
-                              : selectedRun.summary === 'ready_for_supported_checks'
-                                ? 'Your supported checks are reviewed.'
-                                : selectedRun.summary === 'processing'
-                                  ? 'Some evidence is still processing.'
-                                  : 'A little more review is needed.'}
-                          </h3>
-                          <p>
-                            {selectedRun.counts.pass} reviewed ·{' '}
-                            {selectedRun.counts.fail + selectedRun.counts.error} action needed ·{' '}
-                            {selectedRun.counts.unknown +
-                              selectedRun.counts.needs_review +
-                              selectedRun.counts.pending}{' '}
-                            unresolved
-                          </p>
-                        </div>
-                      </div>
-                      <div className="report-checks">
-                        {selectedRun.checks.map((check) => (
-                          <article key={check.requirementId}>
-                            <div>
-                              <h3>{check.title}</h3>
-                              <p>{check.reason}</p>
-                              {check.evidence && (
-                                <small>
-                                  {check.evidence.name} · page {check.evidence.pageFrom} ·{' '}
-                                  {check.verification === 'user'
-                                    ? 'Your content confirmation'
-                                    : 'Technical check only'}
-                                </small>
-                              )}
-                              {check.reviewNote && <blockquote>{check.reviewNote}</blockquote>}
-                            </div>
-                            <Status state={check.state} />
-                          </article>
-                        ))}
-                      </div>
-                      <section className="report-limits">
-                        <h3>
-                          <Info size={17} />
-                          The boundaries of this review
-                        </h3>
-                        <ul>
-                          {selectedRun.limitations.map((limit) => (
-                            <li key={limit}>{limit}</li>
-                          ))}
-                        </ul>
-                        {(selectedRun.checklist?.sourceUrl ?? data.pack.sourceUrl) && (
-                          <a
-                            className="source-link"
-                            href={selectedRun.checklist?.sourceUrl ?? data.pack.sourceUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Source instructions
-                            <ExternalLink size={13} />
-                          </a>
-                        )}
-                        <p className="microcopy">
-                          Pack {selectedRun.packVersion} · Evaluator {selectedRun.evaluatorVersion}{' '}
-                          · Run {selectedRun.id}
-                        </p>
-                      </section>
-                    </section>
-                  ) : (
-                    <section className="empty-workspace">
-                      <FileCheck2 size={48} />
-                      <h2>Your first review is waiting.</h2>
-                      <p>
-                        Save a snapshot of your requirements and evidence, with all unresolved
-                        checks included.
-                      </p>
-                      <button
-                        className="primary"
-                        disabled={!!busy}
-                        onClick={() => void checkPacket()}
-                      >
-                        Run a packet review
-                        <ArrowRight size={16} />
-                      </button>
-                    </section>
-                  )}
-                </>
+                <ReportView
+                  data={data}
+                  run={selectedRun}
+                  stale={stale}
+                  busy={busy}
+                  onSelect={setReportId}
+                  onReview={() => void checkPacket()}
+                  onDownload={() =>
+                    void perform('download', () =>
+                      download(`/packets/${activeId}/download`, 'jky-folder-application.zip'),
+                    )
+                  }
+                  onExport={(run) =>
+                    void perform('export', async () => {
+                      await download(
+                        `/packets/${activeId}/reports/${run.id}`,
+                        'jky-folder-report.json',
+                      );
+                      setToast('Report downloaded.');
+                    })
+                  }
+                />
               )}
               {view === 'activity' && <ActivityFeed packets={packets} />}
-              {view === 'help' && (
-                <div className="help-grid">
-                  <section className="panel help-panel">
-                    <span className="eyebrow">THE WAY IT WORKS</span>
-                    <h2>How to review an application</h2>
-                    {[
-                      [
-                        '1',
-                        'Tell us your application details',
-                        'Confirmed answers decide which requirements apply. Leave an answer unknown when you need to check it.',
-                      ],
-                      [
-                        '2',
-                        'Bring your originals together',
-                        'Upload PDF or JPEG evidence. Files are inspected before they can be linked or downloaded.',
-                      ],
-                      [
-                        '3',
-                        'Connect and inspect your evidence',
-                        'Open a requirement, select its supporting file and page, and review the content against the official instructions.',
-                      ],
-                      [
-                        '4',
-                        'Save a dated packet review',
-                        'A report keeps its input revisions and unresolved findings. A changed packet needs a fresh review.',
-                      ],
-                    ].map(([n, title, text]) => (
-                      <article className="help-step" key={n}>
-                        <span>{n}</span>
-                        <div>
-                          <h3>{title}</h3>
-                          <p>{text}</p>
-                        </div>
-                      </article>
-                    ))}
-                  </section>
-                  <section className="panel help-panel">
-                    <span className="eyebrow">GOOD TO KNOW</span>
-                    <h2>Frequently asked questions</h2>
-                    <details open>
-                      <summary>Does “reviewed” mean accepted?</summary>
-                      <p>
-                        No. It means the supported format check and your content confirmation are
-                        recorded. It does not guarantee authenticity, eligibility or admission.
-                      </p>
-                    </details>
-                    <details>
-                      <summary>Why is a requirement still unknown?</summary>
-                      <p>
-                        A required profile answer or interpretable piece of evidence is missing.
-                        Unknown is kept visible so the checklist does not give false confidence.
-                      </p>
-                    </details>
-                    <details>
-                      <summary>How do custom checklists work?</summary>
-                      <p>
-                        Choose a starter or paste your actual document instructions. Importing
-                        creates one editable item per nonempty line. Confirm required items, formats
-                        and conditions yourself; the app does not interpret admissions or employer
-                        rules automatically.
-                      </p>
-                    </details>
-                    <details>
-                      <summary>What if one upload fails?</summary>
-                      <p>
-                        Each file has a separate result. Accepted files remain in your folder while
-                        rejected files show the reason. You can retry a temporary failure or choose
-                        a supported PDF or JPEG replacement.
-                      </p>
-                    </details>
-                    <details>
-                      <summary>Can you read scanned PDFs?</summary>
-                      <p>
-                        Text-based PDF pages are extracted. Image-only pages need manual review; OCR
-                        is not available in this development release.
-                      </p>
-                    </details>
-                    <details>
-                      <summary>Where are my documents stored?</summary>
-                      <p>
-                        In this server’s private development data directory, outside the public
-                        assets. Only your authenticated account can request them. Use fictional
-                        documents until the public launch reviews are complete.
-                      </p>
-                    </details>
-                    <details>
-                      <summary>What happens when I delete evidence?</summary>
-                      <p>
-                        The active original, extracted content and links are removed. Saved reports
-                        for that packet are purged so deleted evidence does not remain in a report
-                        snapshot.
-                      </p>
-                    </details>
-                    {pack?.sourceUrl && (
-                      <a
-                        className="source-link"
-                        href={pack.sourceUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Read the {pack.title} source instructions
-                        <ExternalLink size={14} />
-                      </a>
-                    )}
-                  </section>
-                  {pack && (
-                    <section className="panel help-limitations">
-                      <h2>Checklist coverage</h2>
-                      <ul>
-                        {pack.limitations.map((limit) => (
-                          <li key={limit}>{limit}</li>
-                        ))}
-                      </ul>
-                    </section>
-                  )}
-                </div>
-              )}
+              {view === 'help' && <HelpView pack={data?.pack} />}
               {view === 'settings' && (
-                <div className="settings-grid">
-                  <AccountSettings user={user} onUser={setUser} />
-                  <section className="panel settings-panel">
-                    <span className="eyebrow">YOUR ACCOUNT</span>
-                    <h2>{user.name}</h2>
-                    <p>
-                      {user.demo
-                        ? `An isolated fictional demo workspace. It expires after ${catalog.limits.sessionHours} hours.`
-                        : user.email}
-                    </p>
-                    <div className="settings-line">
-                      <ShieldCheck size={19} />
-                      <div>
-                        <strong>Private by default</strong>
-                        <p>Evidence access is tied to your signed-in account.</p>
-                      </div>
-                    </div>
-                    <div className="settings-line">
-                      <Files size={19} />
-                      <div>
-                        <strong>
-                          {packets.length} application packet{packets.length === 1 ? '' : 's'}
-                        </strong>
-                        <p>Each packet has its own profile, evidence and review history.</p>
-                      </div>
-                    </div>
-                    <button
-                      className="outline"
-                      disabled={!!busy}
-                      onClick={() =>
-                        void perform('logout', async () => {
-                          await api('/auth/logout', { method: 'POST', body: body({}) });
-                          setUser(null);
-                          setData(null);
-                          setActiveId('');
-                          setCsrf('');
-                        })
-                      }
-                    >
-                      <LogOut size={16} />
-                      Sign out
-                    </button>
-                  </section>
-                  <section className="panel settings-panel">
-                    <span className="eyebrow">YOU’RE IN CONTROL</span>
-                    <h2>Keep what you need.</h2>
-                    <p>
-                      Deleting removes active originals and extracted content. Deleted evidence will
-                      no longer be available in your reports.
-                    </p>
-                    {data && (
-                      <div className="danger-setting">
-                        <div>
-                          <strong>Delete this packet</strong>
-                          <p>{data.packet.title}</p>
-                        </div>
-                        <button
-                          className="danger-outline"
-                          onClick={() => setModal('delete-packet')}
-                        >
-                          Delete packet
-                        </button>
-                      </div>
-                    )}
-                    <div className="danger-setting">
-                      <div>
-                        <strong>Delete your account</strong>
-                        <p>Remove all packets, documents and sessions.</p>
-                      </div>
-                      <button className="danger-outline" onClick={() => setModal('delete-account')}>
-                        Delete account
-                      </button>
-                    </div>
-                  </section>
-                </div>
+                <SettingsView
+                  user={user}
+                  packets={packets}
+                  packet={data?.packet}
+                  busy={!!busy}
+                  onUser={setUser}
+                  onLogout={logout}
+                  onDeletePacket={() => setModal('delete-packet')}
+                  onDeleteAccount={() => setModal('delete-account')}
+                />
               )}
             </div>
             <input
@@ -1531,17 +640,17 @@ export default function App() {
               onChange={(e) => void upload(e.target.files)}
             />
             <footer className="workspace-footer">
-              <span>One folder. A clearer next step.</span>
+              <span>JKY-Folder helps you prepare. Your institution decides.</span>
               <span>
-                <ShieldCheck size={13} />
-                Your evidence stays yours.
+                <ShieldCheck size={14} aria-hidden="true" />
+                Documents are private to your account.
               </span>
             </footer>
           </main>
         </div>
         {toast && (
           <div className="toast" role="status">
-            <Check size={17} />
+            <Check size={17} aria-hidden="true" />
             {toast}
           </div>
         )}
@@ -1553,7 +662,7 @@ export default function App() {
             onCreate={() => startCreate()}
             onUpload={() => {
               navigate('documents');
-              inputRef.current?.click();
+              chooseFiles();
             }}
             onReview={() => void checkPacket()}
             onNavigate={navigate}
@@ -1598,7 +707,7 @@ export default function App() {
               );
               await refresh();
               setModal(null);
-              setToast('Checklist updated. Save a fresh review when ready.');
+              setToast('Checklist updated. Save a fresh review when you’re ready.');
             }}
           />
         )}
@@ -1614,7 +723,7 @@ export default function App() {
               );
               await refresh();
               setModal(null);
-              setToast('Application details saved. Run a new review when you’re ready.');
+              setToast('Answers saved. Run a new review when you’re ready.');
             }}
           />
         )}
@@ -1628,7 +737,7 @@ export default function App() {
             onUpload={() => {
               setEvidence(null);
               navigate('documents');
-              inputRef.current?.click();
+              chooseFiles();
             }}
             onClose={() => setEvidence(null)}
             onSave={async (link) => {
@@ -1645,7 +754,7 @@ export default function App() {
         )}
         {preview && (
           <Dialog wide title={preview.name} onClose={() => setPreview(null)}>
-            <div className="dialog-body">
+            <div className="dialog-body document-dialog">
               <div className="document-preview-detail">
                 {preview.status === 'ready' ? (
                   preview.mime === 'image/jpeg' ? (
@@ -1654,49 +763,50 @@ export default function App() {
                       alt={`Original evidence ${preview.name}`}
                     />
                   ) : (
-                    <>
-                      <PdfPreview
-                        url={`/api/packets/${activeId}/documents/${preview.id}/content`}
-                        name={preview.name}
-                      />
-                      <details className="extracted-text-details">
-                        <summary>Extracted document text</summary>
-                        {preview.pages.map((page) => (
-                          <section key={page.number}>
-                            <span className="eyebrow">PAGE {page.number}</span>
-                            <pre>
-                              {page.text ||
-                                'No text extracted. Download and review the original manually.'}
-                            </pre>
-                          </section>
-                        ))}
-                      </details>
-                    </>
+                    <PdfPreview
+                      url={`/api/packets/${activeId}/documents/${preview.id}/content`}
+                      name={preview.name}
+                    />
                   )
                 ) : (
-                  <p>
+                  <p className="empty-small">
                     {preview.status === 'processing'
                       ? 'This file is being inspected. It will be available shortly.'
                       : preview.error || 'This file could not be inspected.'}
                   </p>
                 )}
               </div>
-              <p className="microcopy">
-                {size(preview.size)} · Uploaded {date(preview.createdAt)}
-              </p>
-              {preview.status === 'ready' && (
-                <a
-                  className="primary"
-                  href={`/api/packets/${activeId}/documents/${preview.id}/content`}
-                  download={preview.name}
-                >
-                  <Download size={16} />
-                  Download original
-                </a>
+              {preview.status === 'ready' && preview.mime !== 'image/jpeg' && (
+                <details className="extracted-text-details">
+                  <summary>Extracted document text</summary>
+                  {preview.pages.map((page) => (
+                    <section key={page.number} className="extracted-page">
+                      <span>Page {page.number}</span>
+                      <pre>
+                        {page.text ||
+                          'No text extracted. Download the original and review it yourself.'}
+                      </pre>
+                    </section>
+                  ))}
+                </details>
               )}
-              <p className="microcopy">
-                Extracted text is a reading aid. Always compare it with the original.
-              </p>
+              <div className="document-dialog-footer">
+                <p className="microcopy">
+                  <span className="data">{size(preview.size)}</span>, uploaded{' '}
+                  {date(preview.createdAt)}. Extracted text is a reading aid; always compare it with
+                  the original.
+                </p>
+                {preview.status === 'ready' && (
+                  <a
+                    className="primary"
+                    href={`/api/packets/${activeId}/documents/${preview.id}/content`}
+                    download={preview.name}
+                  >
+                    <Download size={16} aria-hidden="true" />
+                    Download original
+                  </a>
+                )}
+              </div>
             </div>
           </Dialog>
         )}
@@ -1707,7 +817,7 @@ export default function App() {
                 ? 'Delete this document?'
                 : modal === 'delete-account'
                   ? 'Delete your entire workspace?'
-                  : 'Delete this application packet?'
+                  : 'Delete this application?'
             }
             onClose={() => {
               if (!busy) {
@@ -1718,13 +828,13 @@ export default function App() {
           >
             <div className="dialog-body">
               <div className="soft-notice danger-notice">
-                <Trash2 size={20} />
+                <Trash2 size={20} aria-hidden="true" />
                 <p>
                   {deleteDoc
-                    ? 'The original, extracted pages and links will be removed. Reports for this packet will also be removed.'
+                    ? `${deleteDoc.name}, its extracted pages and its evidence links will be removed. Saved reports for this application are removed too.`
                     : modal === 'delete-account'
-                      ? 'All your application packets, documents, reports and account sessions will be removed.'
-                      : 'All documents, evidence links and reports in this packet will be removed.'}{' '}
+                      ? 'All your applications, documents, reports and sessions will be removed.'
+                      : 'All documents, evidence links and reports in this application will be removed.'}{' '}
                   This cannot be undone.
                 </p>
               </div>
@@ -1733,7 +843,7 @@ export default function App() {
                   {error}
                 </p>
               )}
-              <div className="button-row">
+              <div className="button-row dialog-actions">
                 <button
                   className="outline"
                   onClick={() => {
@@ -1754,10 +864,7 @@ export default function App() {
                           method: 'DELETE',
                           body: body({ confirmation: 'DELETE' }),
                         });
-                        setUser(null);
-                        setActiveId('');
-                        setData(null);
-                        setCsrf('');
+                        signedOut();
                       } else if (deleteDoc && data) {
                         await api(`/packets/${activeId}/documents/${deleteDoc.id}`, {
                           method: 'DELETE',
@@ -1786,7 +893,4 @@ export default function App() {
       </div>
     </CatalogProvider>
   );
-}
-function EyeIcon() {
-  return <Search size={18} />;
 }

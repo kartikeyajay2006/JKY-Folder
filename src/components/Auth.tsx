@@ -1,27 +1,18 @@
 import { useState } from 'react';
-import {
-  ArrowRight,
-  ArrowUpRight,
-  GraduationCap,
-  Award,
-  BriefcaseBusiness,
-  ListChecks,
-  FileText,
-  Clock,
-  Check,
-  FileCheck2,
-  FolderCheck,
-  ShieldCheck,
-  Link2,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { api, body, setCsrf } from '../api';
-import { PacketVisual } from './PacketVisual';
-import { WorkflowPreview } from './WorkflowPreview';
+import { HeroFolder } from './HeroFolder';
+import { BrandMark, Wordmark } from './Brand';
+import { StateMark, stateLabels, stateMeaning, plural } from './Status';
 import { MotionToggle } from '../motion/MotionProvider';
-import type { User } from '../../shared/model';
-import { useCatalog } from '../catalog';
+import { uploadRules, useCatalog } from '../catalog';
+import type { CheckState, User } from '../../shared/model';
+
+const legend: CheckState[] = ['pass', 'fail', 'needs_review', 'unknown', 'not_applicable'];
+
 export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => void }) {
-  const { limits } = useCatalog();
+  const { limits, packs, templates } = useCatalog();
+  const rules = uploadRules(limits);
   const [mode, setMode] = useState<'login' | 'register'>('register');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -41,193 +32,178 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
       setBusy(false);
     }
   }
+  const tryDemo = () => void authenticate('/auth/demo', {});
   return (
-    <div className="welcome">
+    <div className="landing">
       <a href="#welcome-content" className="skip-link">
         Skip to content
       </a>
-      <header className="welcome-navigation">
-        <a className="product-brand" href="#welcome-content">
-          <img src="/favicon.svg" alt="" width="34" height="34" />
-          <span>
-            JKY<span className="brand-dash">—</span>Folder<span className="brand-period">.</span>
-          </span>
+      <header className="landing-nav">
+        <a className="landing-brand" href="#welcome-content" aria-label="JKY-Folder home">
+          <Wordmark />
         </a>
         <nav aria-label="Product">
           <a href="#how-it-works">How it works</a>
-          <a href="#evidence-first">The workflow</a>
+          <a href="#checklists">Checklists</a>
+          <a href="#honest-states">What a review means</a>
         </nav>
-        <div className="welcome-header-tools">
+        <div className="landing-nav-tools">
           <MotionToggle />
-          <a className="outline" href="#account">
-            Open workspace <ArrowUpRight size={15} />
+          <a className="outline small-button" href="#account" onClick={() => setMode('login')}>
+            Sign in
           </a>
         </div>
       </header>
       <main id="welcome-content">
-        <section className="welcome-hero">
-          <div className="welcome-hero-copy">
-            <span className="hero-kicker">
-              <span />
-              YOUR NEXT CHAPTER, IN ORDER
-            </span>
-            <h1>
-              Every document.
-              <br />
-              Every requirement.
-              <br />
-              <span>One clear next step.</span>
-            </h1>
-            <p>
-              From application instructions to supporting evidence. Bring it all together, see
-              what’s missing, and review with clarity.
+        <section className="hero" aria-labelledby="hero-title">
+          <div className="hero-copy">
+            <h1 id="hero-title">Know what your application is missing before you submit.</h1>
+            <p className="hero-lede">
+              JKY-Folder turns application instructions into a checklist, keeps your original
+              documents together, and links every requirement to the page that proves it.
             </p>
-            <div className="welcome-hero-actions">
-              <button
-                className="primary demo-cta"
-                disabled={busy}
-                onClick={() => void authenticate('/auth/demo', {})}
-              >
-                {busy ? 'Opening your workspace…' : 'Explore the demo'}
-                <ArrowRight size={17} />
+            <div className="hero-actions">
+              <button className="primary hero-button" disabled={busy} onClick={tryDemo}>
+                {busy ? 'Opening the demo…' : 'Explore the demo'}
+                <ArrowRight size={18} aria-hidden="true" />
               </button>
-              <a className="outline" href="#account" onClick={() => setMode('register')}>
-                Get started <ArrowUpRight size={16} />
+              <a
+                className="outline hero-button"
+                href="#account"
+                onClick={() => setMode('register')}
+              >
+                Create an account
               </a>
             </div>
-            <span className="welcome-demo-note">
-              No signup needed for the demo. Fictional files, real workflow.
-            </span>
-            <div className="welcome-use-cases">
-              <span>MADE FOR</span>
-              <span>
-                <GraduationCap size={16} />
-                College
-              </span>
-              <span>
-                <Award size={16} />
-                Scholarships
-              </span>
-              <span>
-                <BriefcaseBusiness size={16} />
-                Your next job
-              </span>
-            </div>
+            <p className="hero-note">
+              The demo opens a private workspace with fictional documents. No sign-up needed.
+            </p>
           </div>
-          <PacketVisual />
+          <HeroFolder />
         </section>
-        <section className="welcome-method" id="how-it-works">
-          <div className="landing-section-heading">
-            <span className="eyebrow">THE PROCESS</span>
-            <h2>
-              A little structure.
-              <br />
-              <span>A lot more clarity.</span>
-            </h2>
-            <p>Three connected steps. One place to keep moving.</p>
+
+        <section className="how" id="how-it-works" aria-labelledby="how-title">
+          <h2 id="how-title">From instructions to a dated review</h2>
+          <ol className="how-steps">
+            <li>
+              <h3>Build the checklist</h3>
+              <p>
+                Start from a reference checklist, a starter, or paste your own instructions. Each
+                line becomes an item you can edit.
+              </p>
+            </li>
+            <li>
+              <h3>Link originals to pages</h3>
+              <p>
+                Add {rules.formats} originals, preview them, and connect each requirement to the
+                exact page that supports it.
+              </p>
+            </li>
+            <li>
+              <h3>Save a review</h3>
+              <p>
+                See what is reviewed, missing or unresolved, then keep a dated report you can print
+                or export.
+              </p>
+            </li>
+          </ol>
+        </section>
+
+        <section className="catalog-section" id="checklists" aria-labelledby="checklists-title">
+          <div className="section-head">
+            <h2 id="checklists-title">Start from a real checklist, or your own</h2>
+            <p>
+              Reference checklists keep their source and the date it was checked. Starters are
+              suggestions you shape to your instructions.
+            </p>
           </div>
-          <div className="method-grid">
-            {[
-              {
-                n: '01',
-                title: 'Start with the instructions.',
-                text: 'Choose a starter or build a checklist from the requirements you received. Make it fit your application.',
-                Icon: ListChecks,
-                label: 'DEFINE',
-              },
-              {
-                n: '02',
-                title: 'Connect the evidence.',
-                text: 'Bring in your original files. Link each requirement to a supporting document and the exact pages.',
-                Icon: Link2,
-                label: 'CONNECT',
-              },
-              {
-                n: '03',
-                title: 'Know your next step.',
-                text: 'Review missing evidence and file checks. Save a dated report of what you reviewed and what needs attention.',
-                Icon: FileCheck2,
-                label: 'REVIEW',
-              },
-            ].map(({ n, title, text, Icon, label }) => (
-              <article key={n}>
-                <div>
-                  <span>
-                    {n} / {label}
-                  </span>
-                  <Icon size={21} />
-                </div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
+          <ul className="catalog-folders">
+            {packs.map((pack) => (
+              <li key={pack.id} className="catalog-folder is-reference">
+                <span className="catalog-tab">Reference</span>
+                <h3>{pack.title}</h3>
+                <p>
+                  {plural(pack.requirementCount, 'item')} across{' '}
+                  {pack.groups.join(', ').toLowerCase()}. {pack.conditionalCount} depend on your
+                  answers.
+                </p>
+                <p className="catalog-source">
+                  Source checked{' '}
+                  {new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(
+                    new Date(pack.checkedAt),
+                  )}
+                </p>
+              </li>
             ))}
-          </div>
+            {templates
+              .filter((t) => t.starter.length)
+              .map((t) => (
+                <li key={t.id} className="catalog-folder">
+                  <span className="catalog-tab">Starter</span>
+                  <h3>{t.title}</h3>
+                  <p>{t.description}</p>
+                  <p className="catalog-source">{plural(t.starter.length, 'editable item')}</p>
+                </li>
+              ))}
+          </ul>
         </section>
-        <section className="welcome-evidence" id="evidence-first">
-          <div className="landing-section-heading">
-            <span className="eyebrow">EVIDENCE FIRST</span>
-            <h2>
-              A finding you
-              <br />
-              <span>can follow.</span>
-            </h2>
+
+        <section className="honesty" id="honest-states" aria-labelledby="honesty-title">
+          <div className="honesty-copy">
+            <h2 id="honesty-title">Every item gets an honest state</h2>
             <p>
-              Every checklist item connects to its supporting file. Review the original, record what
-              you checked, and keep unanswered questions visible.
+              There is no single readiness score to misread. Each requirement shows exactly where it
+              stands, and anything uncertain stays visible until you resolve it.
             </p>
-            <a className="text-link" href="#account">
-              Make room for your next opportunity <ArrowUpRight size={16} />
-            </a>
+            <ul className="never-list">
+              <li>It never says an application will be accepted.</li>
+              <li>It never claims a document is authentic.</li>
+              <li>It never logs in to portals or submits for you.</li>
+              <li>“Not sure” is never treated as “no”.</li>
+            </ul>
           </div>
-          <WorkflowPreview />
+          <dl className="state-legend">
+            {legend.map((state) => (
+              <div key={state}>
+                <dt>
+                  <StateMark state={state} size={26} />
+                  {stateLabels[state]}
+                </dt>
+                <dd>{stateMeaning[state]}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
-        <div className="welcome-account-section">
-          <div className="welcome-account-copy">
-            <span className="eyebrow">YOUR PRIVATE WORKSPACE</span>
-            <h2>
-              Your next opportunity.
-              <br />
-              <span>Organized from day one.</span>
+
+        <section className="account-section" aria-labelledby="account-title">
+          <div className="account-copy">
+            <h2 id="account-title">
+              {mode === 'register' ? 'Open your own folder.' : 'Welcome back.'}
             </h2>
-            <p>
-              Keep separate folders for college, scholarships and jobs. Create your checklist, add
-              the originals, and pick up exactly where you left off.
-            </p>
-            <div>
-              <span>
-                <ShieldCheck size={18} />
-                Account-controlled document access
-              </span>
-              <span>
-                <FolderCheck size={18} />
-                Your originals, in one place
-              </span>
-              <span>
-                <Clock size={18} />
-                Dated reports and clear next steps
-              </span>
-            </div>
-            <p className="welcome-account-note">
-              Local development preview. Use synthetic documents while public launch reviews remain
-              open.
-            </p>
-          </div>
-          <section className="auth-card" id="account" aria-label="Your account">
-            <span className="eyebrow">YOUR PRIVATE WORKSPACE</span>
-            <h2>{mode === 'register' ? 'Make room for your future.' : 'Welcome back.'}</h2>
             <p>
               {mode === 'register'
-                ? 'Start with one application. Take it one document at a time.'
-                : 'Your documents and next steps are waiting for you.'}
+                ? 'Keep separate folders for college, scholarships and jobs, and pick up exactly where you left off.'
+                : 'Your applications, documents and saved reviews are waiting.'}
             </p>
-            <div className="segmented">
+            <p className="account-warning">
+              This is a development preview. Please use fictional documents until public launch
+              reviews are complete.
+            </p>
+          </div>
+          <div className="auth-card" id="account">
+            <div className="segmented" role="group" aria-label="Account">
               <button
+                aria-pressed={mode === 'register'}
                 className={mode === 'register' ? 'active' : ''}
                 onClick={() => setMode('register')}
               >
                 Create account
               </button>
-              <button className={mode === 'login' ? 'active' : ''} onClick={() => setMode('login')}>
+              <button
+                aria-pressed={mode === 'login'}
+                className={mode === 'login' ? 'active' : ''}
+                onClick={() => setMode('login')}
+              >
                 Sign in
               </button>
             </div>
@@ -256,7 +232,7 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
                     autoComplete="name"
                     minLength={2}
                     maxLength={80}
-                    placeholder="e.g. Aanya Mehra"
+                    placeholder="As you’d like to be greeted"
                     required
                   />
                 </label>
@@ -305,26 +281,17 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
               )}
               <button className="primary full" disabled={busy}>
                 {busy ? 'Please wait…' : mode === 'register' ? 'Create my workspace' : 'Sign in'}
-                <ArrowRight size={17} />
               </button>
             </form>
-            <div className="auth-note">
-              <ShieldCheck size={19} />
-              <p>
-                Development preview. The checklist helps you review documents; it does not guarantee
-                eligibility or acceptance.
-              </p>
-            </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </main>
-      <footer className="welcome-footer">
-        <a className="product-brand" href="#welcome-content">
-          <span>
-            JKY<span className="brand-dash">—</span>Folder<span className="brand-period">.</span>
-          </span>
-        </a>
-        <span>Every document. One clear next step.</span>
+      <footer className="landing-footer">
+        <span className="landing-footer-brand">
+          <BrandMark />
+          JKY-Folder
+        </span>
+        <span>Prepare your application. Your institution decides.</span>
         <span>© {new Date().getFullYear()} JKY-Folder</span>
       </footer>
     </div>

@@ -49,13 +49,13 @@ export function ChecklistEditor({
           }
         }}
       >
-        <p>
+        <p className="microcopy">
           Keep your checklist aligned with the instructions you received. Changes make saved reports
           historical.
         </p>
         <RequirementRows rows={rows} onChange={setRows} />
         <button
-          className="outline"
+          className="outline add-row"
           type="button"
           disabled={rows.length >= limits.requirements}
           onClick={() =>
@@ -68,7 +68,7 @@ export function ChecklistEditor({
             ])
           }
         >
-          <Plus size={16} />
+          <Plus size={16} aria-hidden="true" />
           Add requirement
         </button>
         <label>
@@ -85,7 +85,7 @@ export function ChecklistEditor({
           />
         </label>
         <div className="soft-notice">
-          <AlertCircle size={18} />
+          <AlertCircle size={18} aria-hidden="true" />
           <p>
             Removing an item removes its evidence link. Older reports remain historical and retain
             the checks used at that time.
@@ -97,7 +97,7 @@ export function ChecklistEditor({
           </p>
         )}
         <button className="primary full" disabled={busy || !rows.length}>
-          <Save size={16} />
+          <Save size={16} aria-hidden="true" />
           {busy ? 'Saving…' : 'Save checklist'}
         </button>
       </form>

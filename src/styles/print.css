@@ -1,0 +1,38 @@
+@media print {
+  @page {
+    margin: 16mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .workspace-header,
+  .workspace-footer,
+  .demo-strip,
+  .page-heading,
+  .no-print,
+  .toast,
+  .skip-link {
+    display: none !important;
+  }
+  .workspace-content {
+    padding: 0;
+    max-width: none;
+  }
+  .report-paper {
+    max-width: none;
+    padding: 0;
+    box-shadow: none !important;
+    background: #fff !important;
+  }
+  .report-stamp,
+  .deadline-stamp {
+    rotate: 0deg;
+  }
+  .report-table tr {
+    break-inside: avoid;
+  }
+  .status {
+    border: 1px solid currentColor;
+  }
+}

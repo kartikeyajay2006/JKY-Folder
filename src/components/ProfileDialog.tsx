@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, HelpCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { Dialog } from './Dialog';
 import type { Profile } from '../../shared/model';
 import { useCatalog } from '../catalog';
@@ -24,7 +24,7 @@ export function ProfileDialog({
       }}
     >
       <form
-        className="dialog-body"
+        className="dialog-body profile-form"
         onSubmit={(e) => {
           e.preventDefault();
           setBusy(true);
@@ -34,10 +34,10 @@ export function ProfileDialog({
         }}
       >
         <div className="soft-notice">
-          <HelpCircle size={19} />
+          <HelpCircle size={19} aria-hidden="true" />
           <p>
-            These answers determine which documents you need. “I’m not sure” stays unresolved — it
-            is never treated as “no.”
+            These answers decide which documents you need. “I’m not sure” stays unresolved; it is
+            never treated as “no”.
           </p>
         </div>
         {questions.map((q) => (
@@ -67,7 +67,6 @@ export function ProfileDialog({
         )}
         <button className="primary full" disabled={busy}>
           {busy ? 'Saving…' : 'Confirm my answers'}
-          <Check size={16} />
         </button>
       </form>
     </Dialog>

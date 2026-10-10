@@ -7,15 +7,13 @@ test('top navigation and account menu work with keyboard, search and reduced mot
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await page.getByRole('button', { name: 'Explore the demo' }).click();
-  await page.getByRole('heading', { name: 'Application overview' }).waitFor();
+  await page.getByRole('heading', { name: 'My design school application', level: 1 }).waitFor();
   try {
     await expect(page.locator('aside,.sidebar,.sidebar-scrim')).toHaveCount(0);
     const header = page.locator('.workspace-header');
     await expect(header).toBeVisible();
     await header.getByRole('button', { name: 'Activity', exact: true }).click();
-    await expect(
-      page.getByRole('heading', { name: 'Workspace activity', exact: true }),
-    ).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Activity', exact: true })).toBeVisible();
     await expect(header.getByRole('button', { name: 'Activity', exact: true })).toHaveAttribute(
       'aria-current',
       'page',
@@ -43,14 +41,15 @@ test('top navigation and account menu work with keyboard, search and reduced mot
     ).toBeVisible();
     await page.keyboard.press('Control+k');
     await expect(
-      page.getByRole('textbox', { name: 'Search requirements or documents' }),
+      page.getByRole('searchbox', { name: 'Search requirements or documents' }),
     ).toBeFocused();
-    await page.getByRole('textbox', { name: 'Search requirements or documents' }).fill('signature');
-    await expect(
-      page.getByRole('heading', { name: 'Document checklist', exact: true }),
-    ).toBeVisible();
+    await page
+      .getByRole('searchbox', { name: 'Search requirements or documents' })
+      .fill('signature');
+    await expect(page.getByRole('heading', { name: 'Checklist', exact: true })).toBeVisible();
     await expect(page.locator('.requirement-row')).toHaveCount(1);
     await expect(page.getByRole('heading', { name: 'Signature', exact: true })).toBeVisible();
+    await header.getByRole('button', { name: 'Applications', exact: true }).click();
     await page.getByRole('button', { name: 'New application', exact: true }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     expect(await header.evaluate((element) => (element as HTMLElement).inert)).toBe(true);

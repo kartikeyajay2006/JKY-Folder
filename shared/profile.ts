@@ -120,6 +120,15 @@ function matched(predicate: Predicate, profile: Profile): { field: keyof Profile
   return [];
 }
 
+/** The profile questions a requirement's condition depends on. */
+export function conditionFields(predicate: Predicate): (keyof Profile)[] {
+  if (predicate.op === 'eq' || predicate.op === 'in') return [predicate.field];
+  if (predicate.op === 'and' || predicate.op === 'or')
+    return [...new Set(predicate.args.flatMap(conditionFields))];
+  if (predicate.op === 'not') return conditionFields(predicate.arg);
+  return [];
+}
+
 /** Explains, from confirmed answers, why a conditional requirement applies. */
 export function applicabilityNote(
   requirement: Pick<Requirement, 'condition'>,

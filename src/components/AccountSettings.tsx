@@ -21,13 +21,10 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
     }
   }
   return (
-    <section className="panel account-controls">
-      <div className="panel-heading">
-        <div>
-          <span className="eyebrow">ACCOUNT PREFERENCES</span>
-          <h2>Profile & security</h2>
-        </div>
-        <ShieldCheck size={24} />
+    <section className="sheet account-controls" aria-labelledby="security-title">
+      <div className="sheet-head">
+        <h2 id="security-title">Profile & security</h2>
+        <ShieldCheck size={22} aria-hidden="true" />
       </div>
       <form
         onSubmit={(e) => {
@@ -52,10 +49,12 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
           <input value={user.email} disabled readOnly />
           <span className="field-help">Your sign-in email stays attached to this account.</span>
         </label>
-        <button className="outline" disabled={!!busy}>
-          <Save size={16} />
-          Save profile
-        </button>
+        <div>
+          <button className="outline" disabled={!!busy}>
+            <Save size={16} aria-hidden="true" />
+            Save profile
+          </button>
+        </div>
       </form>
       {!user.demo && (
         <form
@@ -82,7 +81,7 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
           }}
         >
           <h3>
-            <KeyRound size={18} />
+            <KeyRound size={18} aria-hidden="true" />
             Change password
           </h3>
           <label>
@@ -119,16 +118,17 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
               />
             </label>
           </div>
-          <button className="outline" disabled={!!busy}>
-            <KeyRound size={16} />
-            Update password
-          </button>
+          <div>
+            <button className="outline" disabled={!!busy}>
+              Update password
+            </button>
+          </div>
         </form>
       )}
       <div className="session-control">
         <div>
           <h3>
-            <Monitor size={18} />
+            <Monitor size={18} aria-hidden="true" />
             Other sessions
           </h3>
           <p>Sign out your account on other browsers while keeping this session active.</p>
@@ -153,7 +153,7 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
       )}
       {success && (
         <p className="success-notice" role="status">
-          <Check size={17} />
+          <Check size={17} aria-hidden="true" />
           {success}
         </p>
       )}

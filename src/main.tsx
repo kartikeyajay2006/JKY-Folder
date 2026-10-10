@@ -2,11 +2,18 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { MotionProvider } from './motion/MotionProvider';
-import { ExperienceMotion } from './motion/ExperienceMotion';
-import './styles.css';
-import './product.css';
-import './experience.css';
-import './motion.css';
+import '@fontsource-variable/atkinson-hyperlegible-next';
+import '@fontsource-variable/atkinson-hyperlegible-mono';
+import './styles/tokens.css';
+import './styles/base.css';
+import './styles/controls.css';
+import './styles/dialog.css';
+import './styles/shell.css';
+import './styles/landing.css';
+import './styles/views.css';
+import './styles/forms.css';
+import './styles/motion.css';
+import './styles/print.css';
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() {
@@ -17,7 +24,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { fai
       return (
         <main className="boot">
           <h1>Let’s reopen your workspace.</h1>
-          <p>Something interrupted this view. Your saved packet remains on the server.</p>
+          <p>Something interrupted this view. Your saved applications are safe on the server.</p>
           <button className="primary" onClick={() => location.reload()}>
             Reload workspace
           </button>
@@ -30,7 +37,6 @@ createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>
       <MotionProvider>
-        <ExperienceMotion />
         <App />
       </MotionProvider>
     </ErrorBoundary>

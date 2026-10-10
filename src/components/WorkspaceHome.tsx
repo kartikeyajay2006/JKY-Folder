@@ -1,27 +1,8 @@
-import { useState } from 'react';
-import {
-  ListChecks,
-  ArrowRight,
-  Plus,
-  FolderOpen,
-  Clock3,
-  Files,
-  CheckCheck,
-  GraduationCap,
-  Award,
-  BriefcaseBusiness,
-  SlidersHorizontal,
-  UploadCloud,
-  FileCheck2,
-  Check,
-  Archive,
-  RotateCcw,
-  Search,
-} from 'lucide-react';
-import { PacketVisual } from './PacketVisual';
-import { AnimatedNumber } from './AnimatedNumber';
+import { useState, type CSSProperties } from 'react';
+import { Archive, ArrowRight, RotateCcw, Search } from 'lucide-react';
 import { deadlineInfo } from '../../shared/templates';
-import { useCatalog } from '../catalog';
+import { kindLabel, useCatalog } from '../catalog';
+import { StateMark, dateTime, plural } from './Status';
 import type { CheckState, EvaluationRun, Packet, User } from '../../shared/model';
 export interface PacketCard {
   packet: Packet;
@@ -31,6 +12,12 @@ export interface PacketCard {
   requirementCount?: number;
   checklist?: { title: string; assurance: 'reference' | 'user_defined' };
 }
+const filters = [
+  { id: 'active', label: 'Active' },
+  { id: 'archived', label: 'Archived' },
+  { id: 'all', label: 'All applications' },
+] as const;
+
 export function WorkspaceHome({
   user,
   packets,
@@ -38,7 +25,6 @@ export function WorkspaceHome({
   onCreate,
   onOpen,
   onArchive,
-  onNavigate,
 }: {
   user: User;
   packets: PacketCard[];
@@ -46,13 +32,11 @@ export function WorkspaceHome({
   onCreate: (template?: string) => void;
   onOpen: (id: string) => void;
   onArchive: (packet: Packet) => void;
-  onNavigate: (view: 'documents' | 'requirements' | 'report') => void;
 }) {
-  const { templates } = useCatalog();
-  const [filter, setFilter] = useState('active'),
+  const catalog = useCatalog();
+  const [filter, setFilter] = useState<(typeof filters)[number]['id']>('active'),
     [sort, setSort] = useState('recent');
-  const docs = packets.reduce((n, p) => n + p.documentCount, 0),
-    reports = packets.filter((p) => p.latestRun).length;
+  const docs = packets.reduce((n, p) => n + p.documentCount, 0);
   const active = packets.filter((p) => !p.packet.archived);
   const soon = active.filter(
     (p) => p.packet.deadline && deadlineInfo(p.packet.deadline).urgent,
@@ -68,146 +52,57 @@ export function WorkspaceHome({
         ? (a.packet.deadline || '9999').localeCompare(b.packet.deadline || '9999')
         : b.packet.updatedAt.localeCompare(a.packet.updatedAt),
     );
-  const icons = {
-    college: GraduationCap,
-    scholarship: Award,
-    job: BriefcaseBusiness,
-    custom: SlidersHorizontal,
-  };
   return (
     <div className="portfolio">
-      {!packets.length && (
-        <section className="onboarding-hero">
+      {!packets.length ? (
+        <section className="first-folder" aria-labelledby="first-title">
           <div>
-            <span className="hero-kicker">
-              <span />
-              YOUR NEXT OPPORTUNITY STARTS HERE
-            </span>
-            <h2>
-              A clear path from
-              <br />
-              documents to done.
-            </h2>
+            <h2 id="first-title">Start with one application.</h2>
             <p>
-              Turn your application instructions into a checklist, bring your files together, and
-              know exactly what needs attention.
+              Pick a starting checklist, add the originals you plan to submit, and link each
+              requirement to the page that supports it.
             </p>
             <button className="primary" onClick={() => onCreate()}>
-              Create your first application <ArrowRight size={17} />
-            </button>
-            <small>
-              <Check size={14} />
-              Account ready · Your documents stay private
-            </small>
-          </div>
-          <PacketVisual compact />
-        </section>
-      )}
-      <div className="portfolio-stats">
-        {[
-          {
-            label: 'Active applications',
-            value: active.length,
-            Icon: FolderOpen,
-            note: 'Every opportunity in one place',
-          },
-          {
-            label: 'Documents organized',
-            value: docs,
-            Icon: Files,
-            note: 'Original files in private folders',
-          },
-          {
-            label: 'Reviews saved',
-            value: reports,
-            Icon: CheckCheck,
-            note: 'Applications with dated snapshots',
-          },
-          {
-            label: 'Due within 7 days',
-            value: soon,
-            Icon: Clock3,
-            note: 'Including overdue applications',
-          },
-        ].map(({ label, value, Icon, note }) => (
-          <article className="portfolio-stat" key={label}>
-            <span className="portfolio-stat-icon">
-              <Icon size={20} />
-            </span>
-            <span>{label}</span>
-            <strong>
-              <AnimatedNumber value={value} />
-            </strong>
-            <small>{note}</small>
-          </article>
-        ))}
-      </div>
-      {!packets.length && (
-        <section className="setup-section">
-          <div className="section-header">
-            <div>
-              <span className="eyebrow">A SIMPLE WORKFLOW</span>
-              <h2>Get ready in three steps</h2>
-            </div>
-            <span className="step-count">Your workspace is ready</span>
-          </div>
-          <div className="setup-steps">
-            {[
-              {
-                title: 'Create your application',
-                text: 'Choose a starter or use the instructions you received.',
-                Icon: FolderOpen,
-                action: () => onCreate(),
-              },
-              {
-                title: 'Add your documents',
-                text: 'Upload originals and connect them to checklist items.',
-                Icon: UploadCloud,
-                action: () => onNavigate('documents'),
-              },
-              {
-                title: 'Review before you submit',
-                text: 'Resolve missing evidence and save a dated report.',
-                Icon: FileCheck2,
-                action: () => onNavigate('report'),
-              },
-            ].map(({ title, text, Icon, action }, i) => (
-              <button key={title} className="setup-step" onClick={action}>
-                <span className="setup-number">0{i + 1}</span>
-                <Icon size={22} />
-                <strong>{title}</strong>
-                <p>{text}</p>
-                <span className="text-link">
-                  Get started <ArrowRight size={14} />
-                </span>
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-      {!!packets.length && (
-        <section className="application-portfolio">
-          <div className="section-header">
-            <div>
-              <span className="eyebrow">YOUR OPPORTUNITIES</span>
-              <h2>
-                Applications <span className="number-pill">{displayed.length}</span>
-              </h2>
-            </div>
-            <button className="outline" onClick={() => onCreate()}>
-              <Plus size={16} />
-              New application
+              Create your first application
             </button>
           </div>
+          <ol className="first-steps">
+            <li>
+              <strong>Choose a checklist</strong>
+              <span>A starter, a reference checklist, or your own instructions.</span>
+            </li>
+            <li>
+              <strong>Add your originals</strong>
+              <span>PDF and JPEG files stay private and unchanged.</span>
+            </li>
+            <li>
+              <strong>Save a dated review</strong>
+              <span>See exactly what is missing before you submit.</span>
+            </li>
+          </ol>
+        </section>
+      ) : (
+        <>
+          <p className="portfolio-summary">
+            {plural(active.length, 'active application')}, {plural(docs, 'document')} in folders
+            {soon ? (
+              <>
+                , and <strong>{plural(soon, 'deadline')}</strong> within 7 days.
+              </>
+            ) : (
+              ', and no deadline in the next 7 days.'
+            )}
+          </p>
           <div className="portfolio-toolbar">
-            <div className="filter-tabs">
-              {['active', 'archived', 'all'].map((f) => (
+            <div className="filter-tabs" role="group" aria-label="Show applications">
+              {filters.map((f) => (
                 <button
-                  key={f}
-                  className={filter === f ? 'active' : ''}
-                  onClick={() => setFilter(f)}
+                  key={f.id}
+                  aria-pressed={filter === f.id}
+                  className={filter === f.id ? 'active' : ''}
+                  onClick={() => setFilter(f.id)}
                 >
-                  {f === 'active' ? 'Active' : f === 'archived' ? 'Archived' : 'All applications'}
+                  {f.label}
                 </button>
               ))}
             </div>
@@ -223,84 +118,99 @@ export function WorkspaceHome({
               </select>
             </label>
           </div>
-          <div className="application-grid">
+          <ul className="folder-grid">
             {displayed.map(
-              ({
-                packet: p,
-                documentCount,
-                currentCounts,
-                requirementCount,
-                latestRun,
-                checklist,
-              }) => {
-                const Icon = icons[p.kind || 'college'];
+              ({ packet: p, documentCount, currentCounts, latestRun, checklist }, i) => {
                 const due = deadlineInfo(p.deadline);
                 const counts = currentCounts || latestRun?.counts;
-                const total = counts
+                const required = counts
                   ? Object.entries(counts)
                       .filter(([state]) => state !== 'not_applicable')
                       .reduce((n, [, v]) => n + v, 0)
-                  : requirementCount || 0;
+                  : 0;
                 const reviewed = counts?.pass || 0;
+                const toFix = counts ? counts.fail + counts.error : 0;
                 return (
-                  <article className="opportunity-card" key={p.id}>
-                    <div className="opportunity-top">
-                      <span className={`opportunity-icon kind-${p.kind || 'college'}`}>
-                        <Icon size={24} />
+                  <li key={p.id} style={{ '--i': i } as CSSProperties}>
+                    <article
+                      className={`folder-card kind-${p.kind || 'custom'} ${p.archived ? 'is-archived' : ''}`}
+                      aria-labelledby={`folder-${p.id}`}
+                    >
+                      <span className="folder-card-tab">
+                        {kindLabel(catalog, p.kind, checklist)}
                       </span>
-                      <span className={`deadline-badge ${due.urgent ? 'urgent' : ''}`}>
-                        <Clock3 size={13} />
-                        {due.label}
-                      </span>
-                    </div>
-                    <button className="opportunity-title" onClick={() => onOpen(p.id)}>
-                      <h3>{p.title}</h3>
-                      <p>
-                        {p.destination ||
-                          (checklist?.assurance === 'reference'
-                            ? `${checklist.title} reference`
-                            : 'Custom application checklist')}
-                      </p>
-                    </button>
-                    <div className="application-progress">
-                      <div>
-                        <span>
-                          {reviewed} of {total} items reviewed
-                        </span>
-                        <strong>{total ? Math.round((reviewed / total) * 100) : 0}%</strong>
+                      <div className="folder-card-body">
+                        <button className="folder-card-title" onClick={() => onOpen(p.id)}>
+                          <h3 id={`folder-${p.id}`}>{p.title}</h3>
+                          <span>{p.destination || 'No institution added'}</span>
+                        </button>
+                        <div className="folder-progress" aria-hidden="true">
+                          <span
+                            className="progress-pass"
+                            style={{ flexGrow: reviewed } as CSSProperties}
+                          />
+                          <span
+                            className="progress-fix"
+                            style={{ flexGrow: toFix } as CSSProperties}
+                          />
+                          <span
+                            className="progress-rest"
+                            style={
+                              {
+                                flexGrow: Math.max(0, required - reviewed - toFix),
+                              } as CSSProperties
+                            }
+                          />
+                        </div>
+                        <p className="folder-facts">
+                          <span>
+                            <StateMark state="pass" size={16} />
+                            {reviewed} of {required} reviewed
+                          </span>
+                          {toFix > 0 && (
+                            <span>
+                              <StateMark state="fail" size={16} />
+                              {toFix} to fix
+                            </span>
+                          )}
+                        </p>
+                        <dl className="folder-meta">
+                          <div>
+                            <dt>Deadline</dt>
+                            <dd className={due.urgent ? 'is-urgent' : ''}>{due.label}</dd>
+                          </div>
+                          <div>
+                            <dt>Documents</dt>
+                            <dd className="data">{documentCount}</dd>
+                          </div>
+                          <div>
+                            <dt>Last review</dt>
+                            <dd>{latestRun ? dateTime(latestRun.createdAt) : 'Not saved yet'}</dd>
+                          </div>
+                        </dl>
                       </div>
-                      <div className="progress-track">
-                        <span style={{ width: `${total ? (reviewed / total) * 100 : 0}%` }} />
+                      <div className="folder-card-footer">
+                        <button className="text-link" onClick={() => onOpen(p.id)}>
+                          Open application <ArrowRight size={15} aria-hidden="true" />
+                        </button>
+                        <button
+                          className="icon-button"
+                          title={p.archived ? 'Restore application' : 'Archive application'}
+                          aria-label={`${p.archived ? 'Restore' : 'Archive'} ${p.title}`}
+                          onClick={() => onArchive(p)}
+                        >
+                          {p.archived ? <RotateCcw size={17} /> : <Archive size={17} />}
+                        </button>
                       </div>
-                    </div>
-                    <div className="opportunity-meta">
-                      <span>
-                        <Files size={14} />
-                        {documentCount} documents
-                      </span>
-                      <span>{latestRun ? 'Report saved' : 'Not reviewed yet'}</span>
-                    </div>
-                    <div className="opportunity-footer">
-                      <button className="text-link" onClick={() => onOpen(p.id)}>
-                        Open application <ArrowRight size={15} />
-                      </button>
-                      <button
-                        className="icon-button"
-                        title={p.archived ? 'Restore application' : 'Archive application'}
-                        aria-label={`${p.archived ? 'Restore' : 'Archive'} ${p.title}`}
-                        onClick={() => onArchive(p)}
-                      >
-                        {p.archived ? <RotateCcw size={17} /> : <Archive size={17} />}
-                      </button>
-                    </div>
-                  </article>
+                    </article>
+                  </li>
                 );
               },
             )}
-          </div>
+          </ul>
           {!displayed.length && (
             <div className="portfolio-empty">
-              <Search size={25} />
+              <Search size={24} aria-hidden="true" />
               <h3>
                 {search
                   ? 'No matching applications'
@@ -315,47 +225,51 @@ export function WorkspaceHome({
               </p>
             </div>
           )}
-        </section>
+        </>
       )}
-      <section className="starter-section">
-        <div className="section-header">
-          <div>
-            <span className="eyebrow">MAKE IT YOURS</span>
-            <h2>Start with the right checklist</h2>
-            <p>Editable starters for different kinds of opportunities.</p>
-          </div>
+      <section className="starter-section" aria-labelledby="starter-title">
+        <div className="section-head">
+          <h2 id="starter-title">Start from a checklist</h2>
+          <p>Every starter is editable. Reference checklists keep a dated, versioned source.</p>
         </div>
-        <div className="starter-grid">
-          {templates.map((t) => {
-            const Icon = icons[t.kind];
-            return (
-              <button className="starter-tile" key={t.id} onClick={() => onCreate(t.id)}>
-                <span className={`opportunity-icon kind-${t.kind}`}>
-                  <Icon size={22} />
-                </span>
-                <strong>{t.title}</strong>
-                <p>{t.description}</p>
-                <span>
-                  {t.id === 'custom'
-                    ? 'Use your own instructions'
-                    : `${t.starter.length} editable starter items`}
-                  <ArrowRight size={16} />
+        <ul className="starter-grid">
+          {catalog.packs.map((pack) => (
+            <li key={pack.id}>
+              <button className="starter-tile is-reference" onClick={() => onCreate(pack.id)}>
+                <span className="starter-kind">Reference checklist</span>
+                <strong>{pack.title}</strong>
+                <p>
+                  {plural(pack.requirementCount, 'item')}, {pack.conditionalCount} of them depend on
+                  your answers.
+                </p>
+                <span className="starter-foot">
+                  Use this checklist <ArrowRight size={15} aria-hidden="true" />
                 </span>
               </button>
-            );
-          })}
-        </div>
+            </li>
+          ))}
+          {catalog.templates.map((t) => (
+            <li key={t.id}>
+              <button className="starter-tile" onClick={() => onCreate(t.id)}>
+                <span className="starter-kind">{t.kind === 'custom' ? 'Blank' : 'Starter'}</span>
+                <strong>{t.title}</strong>
+                <p>{t.description}</p>
+                <span className="starter-foot">
+                  {t.kind === 'custom'
+                    ? 'Use your own instructions'
+                    : `${plural(t.starter.length, 'editable item')}`}
+                  <ArrowRight size={15} aria-hidden="true" />
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
       </section>
-      <div className="workspace-trust">
-        <span>
-          <Check size={15} />
-          Signed in as {user.name.split(' ')[0]}
-        </span>
-        <span>Personal reviews · Clear evidence · No acceptance guarantees</span>
-      </div>
+      <p className="workspace-trust">Signed in as {user.name}.</p>
     </div>
   );
 }
+
 export function EmptySection({
   view,
   onCreate,
@@ -369,33 +283,37 @@ export function EmptySection({
     requirements: {
       title: 'A checklist that matches your application.',
       description:
-        'Start with your actual instructions. Add required files, choose formats, and mark optional evidence before reviewing your packet.',
-      Icon: ListChecks,
+        'Start from your actual instructions. Add the files you need, choose formats and mark optional items before you review.',
       button: 'Build my checklist',
+      points: [
+        'One item per required document',
+        'Formats taken from your instructions',
+        'Each item linked to an exact page',
+      ],
     },
     documents: {
       title: 'Your documents deserve a proper home.',
       description:
-        'Create an application folder, then upload PDFs and JPEGs. Inspection, page text and original previews help you connect the right evidence.',
-      Icon: UploadCloud,
-      button: 'Choose documents & create application',
+        'Choose your files and we’ll create an application folder for them. PDF pages are previewed and their text extracted so you can link the right evidence.',
+      button: 'Choose documents and create an application',
+      points: ['Originals stay unchanged', 'Duplicates are detected', 'Private to your account'],
     },
     report: {
       title: 'Know what is ready before you submit.',
       description:
-        'A readiness report shows linked evidence, file checks, your review notes and anything still unresolved. Start an application to create your first report.',
-      Icon: FileCheck2,
+        'A readiness report lists linked evidence, file checks, your review notes and anything unresolved. Start an application to save your first one.',
       button: 'Start an application',
+      points: [
+        'Missing evidence, item by item',
+        'Your own review notes',
+        'Dated, with the checklist version used',
+      ],
     },
   }[view];
-  const Icon = content.Icon;
   return (
-    <section className={`section-empty empty-${view}`}>
-      <div className="section-empty-intro">
-        <span className="empty-section-icon">
-          <Icon size={32} />
-        </span>
-        <h2>{content.title}</h2>
+    <section className={`sheet section-empty empty-${view}`} aria-labelledby="empty-title">
+      <div>
+        <h2 id="empty-title">{content.title}</h2>
         <p>{content.description}</p>
         <button
           className="primary"
@@ -406,61 +324,16 @@ export function EmptySection({
           }
         >
           {content.button}
-          <ArrowRight size={17} />
         </button>
       </div>
-      <div className="section-empty-preview">
-        {view === 'requirements' ? (
-          <>
-            <span className="eyebrow">HOW YOUR CHECKLIST WORKS</span>
-            {[
-              'One item per document requirement',
-              'Formats taken from your instructions',
-              'Evidence connected to exact pages',
-            ].map((text, i) => (
-              <div className="preview-checkline" key={text}>
-                <span>{i + 1}</span>
-                <strong>{text}</strong>
-                <Check size={16} />
-              </div>
-            ))}
-          </>
-        ) : view === 'documents' ? (
-          <>
-            <span className="eyebrow">YOUR ORIGINALS, ORGANIZED</span>
-            {[
-              ['PDF', 'Academic transcript'],
-              ['JPG', 'Identity evidence'],
-              ['PDF', 'Application statement'],
-            ].map(([type, label]) => (
-              <div className="preview-fileline" key={label}>
-                <span>{type}</span>
-                <strong>{label}</strong>
-                <small>Example</small>
-              </div>
-            ))}
-            <p className="field-help">These examples are not files in your account.</p>
-          </>
-        ) : (
-          <>
-            <span className="eyebrow">WHAT THE REPORT WILL COVER</span>
-            {[
-              'Missing supporting evidence',
-              'Supported file-format checks',
-              'Items that need your content review',
-              'Dated source and evidence references',
-            ].map((text) => (
-              <div className="report-coverage" key={text}>
-                <Check size={17} />
-                {text}
-              </div>
-            ))}
-            <p className="field-help">
-              No readiness result is calculated until you have an application.
-            </p>
-          </>
-        )}
-      </div>
+      <ul className="empty-points">
+        {content.points.map((point) => (
+          <li key={point}>
+            <StateMark state="pass" size={20} />
+            {point}
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

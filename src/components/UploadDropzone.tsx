@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
-import { Plus, Upload } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { uploadRules, useCatalog } from '../catalog';
+
 export function UploadDropzone({
   busy,
   uploading,
@@ -15,9 +16,11 @@ export function UploadDropzone({
   const rules = uploadRules(useCatalog().limits);
   const [dragging, setDragging] = useState(false);
   const depth = useRef(0);
+  const open = dragging && !busy;
   return (
     <section
-      className={`upload-zone ${dragging && !busy ? 'is-dragging' : ''}`}
+      className={`upload-zone ${open ? 'is-dragging' : ''} ${uploading ? 'is-uploading' : ''}`}
+      aria-labelledby="upload-title"
       onDragEnter={(event) => {
         if (!event.dataTransfer.types.includes('Files')) return;
         event.preventDefault();
@@ -41,28 +44,34 @@ export function UploadDropzone({
         if (!busy && event.dataTransfer.files.length) onFiles(event.dataTransfer.files);
       }}
     >
-      <span className="upload-icon">
-        <Upload size={27} />
-      </span>
-      <h2>
-        {uploading
-          ? 'Adding your documents…'
-          : dragging && !busy
-            ? 'Release to add your documents'
-            : 'A place for every supporting document.'}
-      </h2>
-      <p>
-        {dragging && !busy
-          ? 'Your originals will be inspected after upload.'
-          : 'Drop your files here, or choose them from your device.'}
-      </p>
-      <button className="primary" onClick={onChoose} disabled={busy}>
-        <Plus size={16} />
-        Choose documents
-      </button>
-      <small>
-        {rules.formats} · Up to {rules.perFile} per file · {rules.files} files per packet
-      </small>
+      <div className="pocket" aria-hidden="true">
+        <span className="pocket-back" />
+        <span className="pocket-sheet sheet-a" />
+        <span className="pocket-sheet sheet-b" />
+        <span className="pocket-front" />
+      </div>
+      <div className="upload-copy">
+        <h2 id="upload-title">
+          {uploading
+            ? 'Adding your documents…'
+            : open
+              ? 'Release to add your documents'
+              : 'Drop originals into this folder'}
+        </h2>
+        <p>
+          {open
+            ? 'Each file is inspected after upload. Nothing is changed in your originals.'
+            : 'Drag files here, or choose them from your device.'}
+        </p>
+        <button className="primary" onClick={onChoose} disabled={busy}>
+          <Plus size={16} aria-hidden="true" />
+          Choose documents
+        </button>
+        <small>
+          {rules.formats}, up to {rules.perFile} each. Up to {rules.files} files and{' '}
+          {rules.perPacket} per application.
+        </small>
+      </div>
     </section>
   );
 }

@@ -5,6 +5,8 @@ export interface ApplicationTemplate {
   id: string;
   kind: ApplicationKind;
   title: string;
+  /** How an application created from this starter is described once it exists. */
+  label: string;
   description: string;
   requirements: {
     title: string;
@@ -18,6 +20,7 @@ export const templates: ApplicationTemplate[] = [
     id: 'college',
     kind: 'college',
     title: 'College admission',
+    label: 'College admission',
     description: 'Organize your academic records and supporting documents.',
     requirements: [
       { title: 'Academic transcript', group: 'Education', format: 'pdf' },
@@ -35,6 +38,7 @@ export const templates: ApplicationTemplate[] = [
     id: 'scholarship',
     kind: 'scholarship',
     title: 'Scholarship',
+    label: 'Scholarship application',
     description: 'Keep academic, financial and eligibility evidence together.',
     requirements: [
       { title: 'Academic transcript', group: 'Education', format: 'pdf' },
@@ -47,6 +51,7 @@ export const templates: ApplicationTemplate[] = [
     id: 'job',
     kind: 'job',
     title: 'Job application',
+    label: 'Job application',
     description: 'Prepare a focused packet for your next role.',
     requirements: [
       { title: 'Resume', group: 'Supporting evidence', format: 'pdf' },
@@ -59,6 +64,7 @@ export const templates: ApplicationTemplate[] = [
     id: 'custom',
     kind: 'custom',
     title: 'Build your own',
+    label: 'Custom checklist',
     description: 'Start from your actual instructions and define each requirement.',
     requirements: [],
   },

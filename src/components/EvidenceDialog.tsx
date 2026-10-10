@@ -52,7 +52,11 @@ export function EvidenceDialog({
         <section className="evidence-preview">
           <div className="preview-toolbar">
             <span>
-              {doc?.mime === 'image/jpeg' ? <ImageIcon size={16} /> : <FileText size={16} />}
+              {doc?.mime === 'image/jpeg' ? (
+                <ImageIcon size={16} aria-hidden="true" />
+              ) : (
+                <FileText size={16} aria-hidden="true" />
+              )}
               Original evidence
             </span>
             {doc && (
@@ -61,7 +65,7 @@ export function EvidenceDialog({
                 download={doc.name}
                 className="text-link"
               >
-                <Download size={14} />
+                <Download size={14} aria-hidden="true" />
                 Download
               </a>
             )}
@@ -88,8 +92,6 @@ export function EvidenceDialog({
                     />
                     <details className="extracted-text-details" open>
                       <summary>Extracted page text</summary>
-                      <span className="paper-tag">EXTRACTED PAGE TEXT</span>
-                      <h3>{doc.name}</h3>
                       {doc.pages
                         .filter((p) => p.number >= pageFrom && p.number <= pageTo)
                         .map((p) => (
@@ -106,17 +108,17 @@ export function EvidenceDialog({
                 )}
               </div>
               <div className="preview-caption">
-                <span>{doc.name}</span>
+                <span className="data">{doc.name}</span>
                 <span>
-                  {size(doc.size)} · {doc.pageCount} page{doc.pageCount === 1 ? '' : 's'}
+                  {size(doc.size)}, {doc.pageCount} page{doc.pageCount === 1 ? '' : 's'}
                 </span>
               </div>
             </>
           ) : (
             <div className="empty-preview">
-              <FileText size={44} />
-              <h3>Your evidence goes here.</h3>
-              <p>Upload a document first, then connect it to this requirement.</p>
+              <FileText size={40} aria-hidden="true" />
+              <h3>No document to show yet.</h3>
+              <p>Upload the original first, then connect it to this requirement.</p>
               <button className="primary" onClick={onUpload}>
                 Upload supporting document
               </button>
@@ -134,14 +136,15 @@ export function EvidenceDialog({
               .finally(() => setBusy(false));
           }}
         >
-          <span className="eyebrow">THE REQUIREMENT</span>
+          <h3 className="evidence-heading">What this item needs</h3>
           <p>{requirement.description}</p>
+          <p className="field-help">{requirement.reviewHint}</p>
           {pack.sourceUrl && (
-            <a className="source-link" href={pack.sourceUrl} target="_blank" rel="noreferrer">
+            <a className="inline-link" href={pack.sourceUrl} target="_blank" rel="noreferrer">
               {pack.assurance === 'reference'
                 ? 'Read the official instructions'
                 : 'Read your source instructions'}
-              <ExternalLink size={14} />
+              <ExternalLink size={14} aria-hidden="true" />
             </a>
           )}
           <div className="divider" />
@@ -213,7 +216,7 @@ export function EvidenceDialog({
                   checked={review === item.value}
                   onChange={() => setReview(item.value)}
                 />
-                <item.Icon size={16} />
+                <item.Icon size={16} aria-hidden="true" />
                 {item.label}
               </label>
             ))}
@@ -244,7 +247,6 @@ export function EvidenceDialog({
           )}
           <button className="primary full" disabled={busy || !doc}>
             {busy ? 'Saving…' : 'Save evidence link'}
-            <Check size={16} />
           </button>
         </form>
       </div>

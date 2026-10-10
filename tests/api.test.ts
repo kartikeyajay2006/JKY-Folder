@@ -227,6 +227,14 @@ describe('server-owned product catalog', () => {
       assurance: 'reference',
     });
     expect(response.body.packs[0].requirements).toBeUndefined();
+    expect(response.body.packs[0].items[0]).toEqual({
+      id: 'photo',
+      title: 'Recent photograph',
+      group: 'Identity',
+      mime: 'image/jpeg',
+      conditional: false,
+      dependsOn: [],
+    });
   });
   it('returns the resolved checklist and a live evaluation with packet details', async () => {
     const a = await account();

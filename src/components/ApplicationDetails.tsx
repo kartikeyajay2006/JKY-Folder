@@ -75,7 +75,7 @@ export function ApplicationDetails({
           </p>
         )}
         <button className="primary full" disabled={busy}>
-          <Save size={16} />
+          <Save size={16} aria-hidden="true" />
           {busy ? 'Saving…' : 'Save application details'}
         </button>
       </form>

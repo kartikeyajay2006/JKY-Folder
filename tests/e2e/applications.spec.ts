@@ -5,7 +5,7 @@ async function nav(page: Page, label: string) {
   await page.locator('#workspace-navigation').waitFor({ state: 'attached' });
   await page
     .locator('.workspace-header')
-    .getByRole('button', { name: label, exact: label !== 'Requirements' })
+    .getByRole('button', { name: label, exact: label !== 'Checklist' })
     .click();
 }
 async function signup(page: Page) {
@@ -51,22 +51,20 @@ test('fresh account has useful distinct sections and accessible setup', async ({
   await signup(page);
   try {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
-    await expect(
-      page.getByRole('heading', { name: 'A clear path from documents to done.' }),
-    ).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Get ready in three steps' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Start with one application.' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Start from a checklist' })).toBeVisible();
     await checkAccessibility(page);
-    await nav(page, 'Requirements');
+    await nav(page, 'Checklist');
     await expect(
       page.getByRole('heading', { name: 'A checklist that matches your application.' }),
     ).toBeVisible();
     await checkAccessibility(page);
-    await nav(page, 'My documents');
+    await nav(page, 'Documents');
     await expect(
       page.getByRole('heading', { name: 'Your documents deserve a proper home.' }),
     ).toBeVisible();
     await checkAccessibility(page);
-    await nav(page, 'Readiness report');
+    await nav(page, 'Report');
     await expect(
       page.getByRole('heading', { name: 'Know what is ready before you submit.' }),
     ).toBeVisible();
@@ -91,7 +89,7 @@ test('custom instructions become a working editable application with archive and
 }) => {
   await signup(page);
   try {
-    await nav(page, 'Requirements');
+    await nav(page, 'Checklist');
     await page.getByRole('button', { name: 'Build my checklist' }).click();
     await page.getByRole('button', { name: 'Continue', exact: true }).click();
     await page.getByLabel('Application name', { exact: true }).fill('Product designer application');
@@ -111,7 +109,7 @@ test('custom instructions become a working editable application with archive and
     await expect(page.getByRole('dialog')).not.toBeVisible();
     await expect(page.getByRole('heading', { name: 'Selected work', exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Run review', exact: true }).click();
-    await nav(page, 'Readiness report');
+    await nav(page, 'Report');
     await expect(
       page.getByRole('heading', { name: 'A few things need your attention.' }),
     ).toBeVisible();
@@ -144,7 +142,7 @@ test('custom instructions become a working editable application with archive and
 test('documents-first onboarding inspects and renders real PDF pages', async ({ page }) => {
   await signup(page);
   try {
-    await nav(page, 'My documents');
+    await nav(page, 'Documents');
     const pdf = await PDFDocument.create();
     const font = await pdf.embedFont(StandardFonts.Helvetica);
     pdf.addPage().drawText('Synthetic resume - Fresh Applicant', { x: 40, y: 700, size: 18, font });
@@ -164,7 +162,7 @@ test('documents-first onboarding inspects and renders real PDF pages', async ({ 
     await page.getByRole('button', { name: 'Review checklist' }).click();
     await page.getByRole('button', { name: 'Create application', exact: true }).click();
     await expect(page.getByText('Inspected', { exact: true })).toBeVisible({ timeout: 25000 });
-    await nav(page, 'Requirements');
+    await nav(page, 'Checklist');
     await page
       .getByRole('article')
       .filter({ has: page.getByRole('heading', { name: 'Resume', exact: true }) })
@@ -185,7 +183,7 @@ test('documents-first onboarding inspects and renders real PDF pages', async ({ 
       .fill('Inspected the second synthetic original page for this requirement.');
     await page.getByRole('button', { name: 'Save evidence link' }).click();
     await page.getByRole('button', { name: 'Run review', exact: true }).click();
-    await nav(page, 'Readiness report');
+    await nav(page, 'Report');
     await expect(
       page.getByRole('heading', { name: 'Your supported checks are reviewed.' }),
     ).toBeVisible();
@@ -202,7 +200,7 @@ test('batch intake keeps valid files after a rejected file and explains duplicat
 }) => {
   await signup(page);
   try {
-    await nav(page, 'My documents');
+    await nav(page, 'Documents');
     async function fixture(text: string) {
       const pdf = await PDFDocument.create();
       pdf.addPage().drawText(text, { x: 40, y: 700 });
@@ -238,7 +236,9 @@ test('batch intake keeps valid files after a rejected file and explains duplicat
     await page
       .getByLabel('Choose documents to upload')
       .setInputFiles({ name: 'resume-copy.pdf', mimeType: 'application/pdf', buffer: resume });
-    await expect(queue.getByText('Already in this folder — no second copy created')).toBeVisible();
+    await expect(
+      queue.getByText('Already in this folder. No second copy was created.'),
+    ).toBeVisible();
     await expect(page.getByText('Inspected', { exact: true })).toHaveCount(2);
     await page.getByRole('button', { name: 'Dismiss upload results' }).click();
     await expect(queue).not.toBeVisible();
@@ -253,6 +253,7 @@ test('application URLs survive refresh and Back and account password controls re
   const email = await signup(page);
   try {
     async function create(name: string) {
+      await nav(page, 'Applications');
       await page.getByRole('button', { name: 'New application', exact: true }).click();
       await page
         .getByRole('dialog')
@@ -265,30 +266,34 @@ test('application URLs survive refresh and Back and account password controls re
       await expect(page.getByRole('heading', { name: 'Requirements & evidence' })).toBeVisible();
     }
     await create('First synthetic application');
-    await nav(page, 'My documents');
+    await nav(page, 'Documents');
     const firstUrl = page.url();
     expect(new URL(firstUrl).searchParams.get('view')).toBe('documents');
     await create('Second synthetic application');
-    await nav(page, 'My documents');
+    await nav(page, 'Documents');
     const secondUrl = page.url();
     expect(new URL(secondUrl).searchParams.get('application')).not.toBe(
       new URL(firstUrl).searchParams.get('application'),
     );
     await page.reload();
-    await expect(page.getByRole('heading', { name: 'Document library' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Documents', exact: true })).toBeVisible();
     await expect(
       page
-        .locator('.application-context')
+        .getByRole('navigation', { name: 'Breadcrumb' })
         .getByText('Second synthetic application', { exact: true }),
     ).toBeVisible();
     await page.goBack();
-    await expect(page.getByRole('heading', { name: 'Document checklist' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Checklist', exact: true })).toBeVisible();
+    await page.goBack();
+    await expect(
+      page.getByRole('heading', { name: 'Your applications', exact: true }),
+    ).toBeVisible();
     await page.goBack();
     await expect(page).toHaveURL(firstUrl);
-    await expect(page.getByRole('heading', { name: 'Document library' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Documents', exact: true })).toBeVisible();
     await expect(
       page
-        .locator('.application-context')
+        .getByRole('navigation', { name: 'Breadcrumb' })
         .getByText('First synthetic application', { exact: true }),
     ).toBeVisible();
     await nav(page, 'Settings & privacy');
@@ -314,7 +319,9 @@ test('application URLs survive refresh and Back and account password controls re
     await page.getByLabel('Email address').fill(email);
     await page.getByLabel('Password', { exact: true }).fill('synthetic-updated-browser-password');
     await page.getByRole('button', { name: 'Sign in', exact: true }).last().click();
-    await expect(page.getByRole('heading', { name: 'Application overview' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Second synthetic application', level: 1 }),
+    ).toBeVisible();
     await nav(page, 'Settings & privacy');
     await expect(page.getByLabel('Display name')).toHaveValue('Fresh Applicant');
   } finally {

@@ -95,7 +95,7 @@ export function ApplicationWizard({
           {['Choose a starting point', 'Application details', 'Confirm requirements'].map(
             (label, i) => (
               <li key={label} className={step === i ? 'current' : step > i ? 'complete' : ''}>
-                <span>{step > i ? <Check size={13} /> : i + 1}</span>
+                <span aria-hidden="true">{step > i ? <Check size={13} /> : i + 1}</span>
                 {label}
               </li>
             ),
@@ -104,9 +104,8 @@ export function ApplicationWizard({
         {step === 0 && (
           <>
             <div className="wizard-intro">
-              <span className="eyebrow">LET’S MAKE THIS YOURS</span>
               <h3>What are you applying for?</h3>
-              <p>Choose a starting point. You can adapt every item in a custom checklist.</p>
+              <p>Choose a starting point. Every item in a starter checklist can be edited.</p>
             </div>
             <div className="template-grid">
               {templates.map((t) => {
@@ -119,8 +118,8 @@ export function ApplicationWizard({
                     key={t.id}
                     onClick={() => choose(t.id)}
                   >
-                    <span className="template-icon">
-                      <Icon size={24} />
+                    <span className="template-icon" aria-hidden="true">
+                      <Icon size={22} />
                     </span>
                     <strong>{t.title}</strong>
                     <p>{t.description}</p>
@@ -128,7 +127,7 @@ export function ApplicationWizard({
                       {t.starter.length
                         ? t.starter.length + ' starter items'
                         : 'Your instructions, your checklist'}
-                      {selected === t.id ? <Check size={16} /> : <ArrowRight size={16} />}
+                      {selected === t.id && <Check size={16} aria-hidden="true" />}
                     </span>
                   </button>
                 );
@@ -142,20 +141,20 @@ export function ApplicationWizard({
                 aria-pressed={selected === p.id}
                 onClick={() => choose(p.id)}
               >
-                <GraduationCap size={21} />
+                <span className="reference-badge">Reference</span>
                 <span>
                   <strong>{p.title}</strong>
                   <small>
-                    Versioned reference checklist · {p.requirementCount} items, {p.conditionalCount}{' '}
+                    A versioned checklist with {p.requirementCount} items; {p.conditionalCount}{' '}
                     depend on your answers
                   </small>
                 </span>
-                {selected === p.id ? <Check size={18} /> : <ArrowRight size={18} />}
+                {selected === p.id && <Check size={18} aria-hidden="true" />}
               </button>
             ))}
-            <p className="wizard-disclosure">
-              Starter templates help you organize. Confirm the required items with your institution
-              or employer.
+            <p className="microcopy">
+              Starters help you organise. Confirm what is actually required with your institution or
+              employer.
             </p>
           </>
         )}
@@ -168,8 +167,8 @@ export function ApplicationWizard({
             }}
           >
             <div className="wizard-intro">
-              <h3>Give your next opportunity a home.</h3>
-              <p>Add the details you want to keep track of.</p>
+              <h3>Name this application.</h3>
+              <p>Only the name is required. You can change any of this later.</p>
             </div>
             <label>
               Application name
@@ -207,7 +206,7 @@ export function ApplicationWizard({
                 <label>
                   Instructions source URL <span className="optional-label">optional</span>
                   <span className="input-icon">
-                    <Link2 size={16} />
+                    <Link2 size={16} aria-hidden="true" />
                     <input
                       type="url"
                       value={sourceUrl}
@@ -230,8 +229,8 @@ export function ApplicationWizard({
                   />
                 </label>
                 <p className="field-help">
-                  We can turn each line into an editable item. Review conditions and formats
-                  yourself before using the checklist.
+                  Each line becomes an editable item. Check conditions and formats yourself before
+                  you rely on the checklist.
                 </p>
                 {instructions.trim() && (
                   <button
@@ -242,7 +241,7 @@ export function ApplicationWizard({
                       setStep(2);
                     }}
                   >
-                    <ListChecks size={16} />
+                    <ListChecks size={16} aria-hidden="true" />
                     Use these lines as requirements
                   </button>
                 )}
@@ -277,7 +276,7 @@ export function ApplicationWizard({
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Read the source <ArrowRight size={15} />
+                  Read the source instructions <ArrowRight size={15} aria-hidden="true" />
                 </a>
               </div>
             ) : (
@@ -297,7 +296,7 @@ export function ApplicationWizard({
                   }
                   disabled={rows.length >= limits.requirements}
                 >
-                  <Plus size={16} />
+                  <Plus size={16} aria-hidden="true" />
                   Add requirement
                 </button>
                 {!rows.length && (
@@ -314,8 +313,10 @@ export function ApplicationWizard({
         )}
         <div className="wizard-footer">
           <span>
-            <FileText size={15} />
-            {reference ? 'Reference checklist' : 'Your own checklist'}
+            <FileText size={15} aria-hidden="true" />
+            {reference
+              ? `${referencePack.title} reference checklist`
+              : `${rows.length} item${rows.length === 1 ? '' : 's'} in your checklist`}
           </span>
           <div>
             {step > 0 && (
@@ -325,17 +326,17 @@ export function ApplicationWizard({
                 disabled={busy}
                 onClick={() => setStep(step - 1)}
               >
-                <ArrowLeft size={15} />
+                <ArrowLeft size={15} aria-hidden="true" />
                 Back
               </button>
             )}
             {step === 0 ? (
               <button className="primary" type="button" onClick={() => setStep(1)}>
-                Continue <ArrowRight size={16} />
+                Continue
               </button>
             ) : step === 1 ? (
               <button className="primary" type="submit" form="application-details">
-                Review checklist <ArrowRight size={16} />
+                Review checklist
               </button>
             ) : (
               <button
@@ -344,7 +345,6 @@ export function ApplicationWizard({
                 onClick={() => void save()}
               >
                 {busy ? 'Creating…' : 'Create application'}
-                <Check size={16} />
               </button>
             )}
           </div>
@@ -426,7 +426,7 @@ export function RequirementRows({
               onClick={() => onChange(rows.filter((_, n) => n !== i))}
               type="button"
             >
-              <Trash2 size={17} />
+              <Trash2 size={17} aria-hidden="true" />
             </button>
           </div>
           <details className="requirement-advanced">

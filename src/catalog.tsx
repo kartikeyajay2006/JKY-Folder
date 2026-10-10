@@ -7,6 +7,7 @@ export interface CatalogTemplate {
   id: string;
   kind: ApplicationKind;
   title: string;
+  label: string;
   description: string;
   starter: Requirement[];
 }
@@ -21,6 +22,14 @@ export interface CatalogPack {
   requirementCount: number;
   conditionalCount: number;
   groups: Requirement['group'][];
+  items: {
+    id: string;
+    title: string;
+    group: Requirement['group'];
+    mime: Requirement['mime'];
+    conditional: boolean;
+    dependsOn: string[];
+  }[];
 }
 export interface Catalog {
   limits: Limits;
@@ -51,4 +60,14 @@ export function uploadRules(limits: Limits) {
     perPacket: megabytes(limits.packetBytes),
     files: limits.packetFiles,
   };
+}
+
+/** The phrase used to describe an application's checklist source. */
+export function kindLabel(
+  catalog: Catalog,
+  kind: ApplicationKind | undefined,
+  pack?: Pick<RulePack, 'assurance' | 'title'>,
+) {
+  if (pack?.assurance === 'reference') return `${pack.title} reference checklist`;
+  return catalog.templates.find((t) => t.kind === (kind || 'custom'))?.label || 'Application';
 }

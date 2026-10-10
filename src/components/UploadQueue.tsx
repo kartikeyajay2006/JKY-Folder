@@ -19,10 +19,9 @@ export function UploadQueue({
   const failed = items.filter((i) => i.status === 'failed');
   const complete = items.filter((i) => i.status === 'added' || i.status === 'duplicate').length;
   return (
-    <section className="panel upload-queue" aria-label="Upload results">
-      <div className="panel-heading">
+    <section className="sheet upload-queue" aria-label="Upload results">
+      <div className="sheet-head">
         <div>
-          <span className="eyebrow">DOCUMENT INTAKE</span>
           <h2>{busy ? 'Adding your files' : 'Upload results'}</h2>
           <p>
             {complete} of {items.length} files accepted. Accepted files are inspected before
@@ -40,7 +39,7 @@ export function UploadQueue({
       </div>
       <ul>
         {items.map((item) => (
-          <li key={item.id} className={item.status === 'failed' ? 'upload-failed' : ''}>
+          <li key={item.id} className={`upload-${item.status}`}>
             {item.status === 'failed' ? (
               <AlertCircle size={18} />
             ) : item.status === 'uploading' ? (
@@ -51,14 +50,14 @@ export function UploadQueue({
               <Check size={18} />
             )}
             <div>
-              <strong>{item.file.name}</strong>
+              <strong className="data">{item.file.name}</strong>
               <p>
                 {item.error ||
                   {
                     queued: 'Waiting to upload',
                     uploading: 'Uploading original…',
-                    added: 'Added — inspection runs separately',
-                    duplicate: 'Already in this folder — no second copy created',
+                    added: 'Added. Inspection runs separately.',
+                    duplicate: 'Already in this folder. No second copy was created.',
                     failed: 'Could not upload',
                   }[item.status]}
               </p>
