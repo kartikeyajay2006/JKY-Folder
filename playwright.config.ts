@@ -2,6 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 const testOrigin = 'http://127.0.0.1:5180';
+// Workers inherit this from the main process, so tests can read the server's email outbox.
+const dataDir = (process.env.JKY_E2E_DATA ||= join(tmpdir(), `jky-browser-${process.pid}`));
 export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: false,
@@ -28,7 +30,8 @@ export default defineConfig({
       PORT: '3102',
       WEB_PORT: '5180',
       APP_ORIGIN: testOrigin,
-      DATA_DIR: join(tmpdir(), `jky-browser-${process.pid}`),
+      DATA_DIR: dataDir,
+      MAIL_TRANSPORT: 'outbox',
     },
     timeout: 60000,
   },

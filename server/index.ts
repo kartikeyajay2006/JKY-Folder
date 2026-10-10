@@ -10,11 +10,21 @@ if (process.env.NODE_ENV === 'production' && !process.env.APP_ORIGIN?.startsWith
 const port = Number(process.env.PORT || 3001);
 const host = process.env.HOST || '127.0.0.1';
 const dataDir = process.env.DATA_DIR || '.data';
+// SMTP when configured. In development without SMTP, emails go to the local outbox
+// (npm run outbox) so password reset and guardian approval work out of the box.
+function mailTransport() {
+  const choice = process.env.MAIL_TRANSPORT;
+  if (choice === 'outbox') return outboxTransport(dataDir);
+  if (choice === 'none') return undefined;
+  const smtp = smtpTransport();
+  if (smtp || process.env.NODE_ENV === 'production') return smtp;
+  return outboxTransport(dataDir);
+}
 const runtime = createApp({
   dataDir,
   origin: process.env.APP_ORIGIN || 'http://localhost:5173',
   production: process.env.NODE_ENV === 'production',
-  mail: process.env.MAIL_TRANSPORT === 'outbox' ? outboxTransport(dataDir) : smtpTransport(),
+  mail: mailTransport(),
 });
 const server = runtime.app.listen(port, host, () =>
   console.log(`JKY-Folder API: http://${host}:${port}`),

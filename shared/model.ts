@@ -161,6 +161,24 @@ export interface DocumentRecord {
   height?: number;
   error?: string;
   createdAt: string;
+  /** Added from another of the applicant's applications without uploading it again. */
+  copiedFrom?: { documentId: string; packetId: string };
+  /** Prepared in the browser from another original in this application, which is kept. */
+  derivedFrom?: { documentId: string; name: string; hash: string; changes: string[] };
+}
+/** One original in the applicant's library, with every application that holds a copy. */
+export interface LibraryDocument {
+  hash: string;
+  name: string;
+  mime: string;
+  size: number;
+  pageCount: number;
+  width?: number;
+  height?: number;
+  status: DocumentRecord['status'];
+  createdAt: string;
+  source: { packetId: string; documentId: string };
+  uses: { packetId: string; packetTitle: string; documentId: string; archived: boolean }[];
 }
 export interface EvidenceAnchor {
   documentId: string;
@@ -195,6 +213,8 @@ export interface Packet {
   notes?: string;
   archived?: boolean;
   packSnapshot?: RulePack;
+  /** The document whose name and date of birth the others are compared with. */
+  identityReference?: string;
 }
 export type ApplicationKind = 'college' | 'scholarship' | 'job' | 'custom';
 export type CheckState =
@@ -244,11 +264,7 @@ export interface EvaluationRun {
   checklist?: { id: string; title: string; sourceUrl: string; assurance: RulePack['assurance'] };
   sourceSnapshots?: SourceSnapshot[];
   sourceObligations?: SourceObligation[];
-  consistencyConcerns?: {
-    kind: 'name' | 'birth_date';
-    facts: { documentId: string; name: string; factId: string; value: string; page: number }[];
-    reason: string;
-  }[];
+  consistencyConcerns?: ConsistencyConcern[];
 }
 export interface PacketDetail {
   packet: Packet;
@@ -261,11 +277,46 @@ export interface PacketDetail {
   evaluatorVersion: string;
   sourceChanged?: boolean;
   suggestions?: EvidenceSuggestion[];
-  consistencyConcerns?: {
-    kind: 'name' | 'birth_date';
-    facts: { documentId: string; name: string; factId: string; value: string; page: number }[];
-    reason: string;
-  }[];
+  consistencyConcerns?: ConsistencyConcern[];
+  /** Name and date of birth across this application's documents, including unconfirmed values. */
+  identity?: IdentityComparison[];
+}
+/**
+ * How one document's value relates to the reference value. "same" and "format" are matches;
+ * the rest are differences an institution may question.
+ */
+export type IdentityVerdict =
+  | 'reference'
+  | 'same'
+  | 'format'
+  | 'order'
+  | 'initials'
+  | 'middle_name'
+  | 'spelling'
+  | 'different'
+  | 'day_month'
+  | 'unreadable';
+export interface IdentityRow {
+  documentId: string;
+  documentName: string;
+  factId: string;
+  page: number;
+  value: string;
+  confirmed: boolean;
+  verdict: IdentityVerdict;
+  detail: string;
+}
+export interface IdentityComparison {
+  kind: 'name' | 'birth_date';
+  reference?: { documentId: string; documentName: string; value: string; chosen: boolean };
+  rows: IdentityRow[];
+  differences: number;
+}
+export interface ConsistencyConcern {
+  kind: 'name' | 'birth_date';
+  facts: { documentId: string; name: string; factId: string; value: string; page: number }[];
+  reason: string;
+  difference?: IdentityVerdict;
 }
 export interface EvidenceSuggestion {
   requirementId: string;
@@ -294,4 +345,18 @@ export interface User {
   name: string;
   email: string;
   demo: boolean;
+  /** Present for applicants who registered as under 18. */
+  guardian?: GuardianState;
+}
+export interface GuardianState {
+  status: 'pending' | 'approved' | 'declined';
+  guardianEmail: string;
+  guardianName?: string;
+  relationship?: 'parent' | 'guardian';
+  /** The first day on which the applicant is certainly 18, from their month of birth. */
+  adultOn: string;
+  requestedAt: string;
+  decidedAt?: string;
+  /** When an account that was never approved is erased. */
+  deleteAfter: string;
 }

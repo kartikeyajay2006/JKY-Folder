@@ -17,6 +17,8 @@ import { createStore } from './store';
 import { createMailService } from './mail-service';
 import { createPushService } from './push';
 import { registerSupport } from './support';
+import { registerLibrary } from './library';
+import { createGuardianService } from './guardian';
 import type { PushSender } from './web-push';
 import type { MailTransport } from './mail';
 import { registerUploads } from './uploads';
@@ -45,6 +47,7 @@ import { zipSync, strToU8 } from 'fflate';
 import { limits } from '../shared/limits';
 import { evidenceAnchors } from '../shared/model';
 import { suggestEvidence, consistencyConcerns } from '../shared/facts';
+import { compareIdentity } from '../shared/identity';
 import { availablePacks, resolvePack, sourceChanged, isUploadPacket } from './rule-packs';
 import { preferences, refreshReminders } from './reminders';
 import {
@@ -127,6 +130,11 @@ export function createApp(options: {
     options.origin || 'http://localhost:5173',
     options.background !== false,
   );
+  const guardian = createGuardianService(store, {
+    origin: options.origin || 'http://localhost:5173',
+    mail: mailService,
+    eraseAccount: (userId) => eraseAccount(userId),
+  });
   const app = express();
   const prod = options.production || false;
   const allowedOrigins = new Set([
@@ -196,6 +204,7 @@ export function createApp(options: {
     message: { error: 'Too many sign-in attempts. Please try later.' },
   });
   mailService.publicRoutes(app, authLimit, (status, message) => new HttpError(status, message));
+  guardian.publicRoutes(app, authLimit, (status, message) => new HttpError(status, message));
   function setSession(res: Response, userId: string) {
     const token = randomBytes(32).toString('hex'),
       csrf = randomBytes(32).toString('hex');
@@ -212,17 +221,48 @@ export function createApp(options: {
     return csrf;
   }
   function readUser(row: { id: string; name: string; email: string; demo: number }): User {
-    return { id: row.id, name: row.name, email: row.email, demo: !!row.demo };
+    const state = row.demo ? undefined : guardian.describe(row.id);
+    return {
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      demo: !!row.demo,
+      ...(state ? { guardian: state } : {}),
+    };
   }
   app.get('/api/health', (_req, res) => res.json({ status: 'ok', version: '0.1.0' }));
   app.post('/api/auth/register', authLimit, async (req, res) => {
     const input = authSchema
       .extend({
         name: z.string().trim().min(2).max(80),
-        adult: z.literal(true),
+        adult: z.boolean(),
         consent: z.literal(true),
+        // Under 18 only: the month of birth (never stored) and the approving adult's email.
+        birthMonth: z
+          .string()
+          .regex(/^(19|20)\d{2}-(0[1-9]|1[0-2])$/, 'Choose your month and year of birth.')
+          .optional(),
+        guardianEmail: z
+          .email()
+          .max(254)
+          .transform((s) => s.toLowerCase().trim())
+          .optional(),
       })
+      .strict()
       .parse(req.body);
+    if (!input.adult) {
+      if (!input.birthMonth || !input.guardianEmail)
+        throw new HttpError(400, 'Add your month of birth and your parent’s or guardian’s email.');
+      const problem = guardian.eligibility(input.birthMonth);
+      if (problem) throw new HttpError(400, problem);
+      if (input.guardianEmail === input.email)
+        throw new HttpError(400, 'Use your parent’s or guardian’s own email address, not yours.');
+      if (!guardian.configured)
+        throw new HttpError(
+          503,
+          'Under-18 accounts are approved by a parent or guardian by email, and email is not set up on this server yet.',
+        );
+    }
     const salt = randomBytes(16).toString('hex');
     const key = (await scrypt(input.password, salt, 64)) as Buffer;
     const id = randomUUID();
@@ -243,8 +283,13 @@ export function createApp(options: {
       throw error;
     }
     store.audit(id, 'consent.development-review.accepted', id);
+    if (!input.adult)
+      guardian.create(id, { birthMonth: input.birthMonth!, guardianEmail: input.guardianEmail! });
     const csrf = setSession(res, id);
-    res.status(201).json({ user: { id, name: input.name, email: input.email, demo: false }, csrf });
+    res.status(201).json({
+      user: readUser({ id, name: input.name, email: input.email, demo: 0 }),
+      csrf,
+    });
   });
   app.post('/api/auth/login', authLimit, async (req, res) => {
     const input = authSchema.parse(req.body);
@@ -348,6 +393,21 @@ export function createApp(options: {
   );
   app.use('/api', authenticated);
   const user = (req: Request) => (req as AuthRequest).user;
+  // Until a parent or guardian approves, an under-18 account can hold no documents.
+  app.use('/api', (req, res, next) => {
+    if (user(req).guardian && user(req).guardian!.status !== 'approved')
+      if (!guardian.allowedWhileWaiting(req)) {
+        return res.status(403).json({
+          error: 'A parent or guardian needs to approve your account before you add documents.',
+        });
+      }
+    next();
+  });
+  guardian.privateRoutes(
+    app,
+    (req) => user(req).id,
+    (status, message) => new HttpError(status, message),
+  );
   mailService.privateRoutes(
     app,
     (req) => user(req).id,
@@ -390,6 +450,25 @@ export function createApp(options: {
     p.updatedAt = new Date().toISOString();
     store.savePacket(p);
   }
+  /** In upload-first folders every original is its own checklist item. */
+  function linkUpload(p: Packet, doc: DocumentRecord) {
+    if (isUploadPacket(p))
+      p.links['upload-' + doc.id] = {
+        documentId: doc.id,
+        pageFrom: 1,
+        pageTo: Math.max(1, doc.pageCount),
+        review: 'unreviewed',
+        note: '',
+      };
+  }
+  registerLibrary(app, store, {
+    userId: (req) => user(req).id,
+    owned,
+    checkRevision,
+    touch,
+    linkUpload,
+    fail: (status, message) => new HttpError(status, message),
+  });
   registerInstructionDrafts(
     app,
     store,
@@ -457,7 +536,9 @@ export function createApp(options: {
         .prepare('UPDATE users SET password=? WHERE id=?')
         .run(newSalt + ':' + key.toString('hex'), user(req).id);
       store.db.prepare('DELETE FROM sessions WHERE userId=?').run(user(req).id);
-      store.db.prepare('DELETE FROM account_tokens WHERE userId=?').run(user(req).id);
+      store.db
+        .prepare("DELETE FROM account_tokens WHERE userId=? AND purpose IN ('reset','verify')")
+        .run(user(req).id);
       store.db
         .prepare("DELETE FROM mail_queue WHERE userId=? AND kind IN ('reset','verify')")
         .run(user(req).id);
@@ -768,7 +849,20 @@ export function createApp(options: {
       sourceChanged: sourceChanged(store, p),
       suggestions: suggestEvidence(p, documents, pack),
       consistencyConcerns: consistencyConcerns(documents),
+      identity: compareIdentity(documents, p.identityReference),
     });
+  });
+  // Which document the others are compared with. A display choice: reports are unaffected.
+  app.put('/api/packets/:packetId/identity-reference', (req, res) => {
+    const input = z.object({ documentId: z.string().uuid().nullable() }).strict().parse(req.body);
+    const p = owned(req);
+    if (input.documentId && !store.documents(p.id).some((d) => d.id === input.documentId))
+      throw new HttpError(404, 'Document not found.');
+    if (input.documentId) p.identityReference = input.documentId;
+    else delete p.identityReference;
+    store.savePacket(p);
+    const documents = store.documents(p.id);
+    res.json(compareIdentity(documents, p.identityReference));
   });
   app.patch('/api/packets/:packetId', (req, res) => {
     const input = z
@@ -923,14 +1017,7 @@ export function createApp(options: {
           .prepare('INSERT INTO documents VALUES(?,?,?,?)')
           .run(id, p.id, key, JSON.stringify(doc));
         store.db.prepare("INSERT INTO jobs VALUES(?,?,'queued')").run(id, p.id);
-        if (isUploadPacket(p))
-          p.links['upload-' + id] = {
-            documentId: id,
-            pageFrom: 1,
-            pageTo: 1,
-            review: 'unreviewed',
-            note: '',
-          };
+        linkUpload(p, doc);
         touch(p);
         store.audit(user(req).id, 'document.uploaded', id);
       })();
@@ -1010,6 +1097,89 @@ export function createApp(options: {
     (req, res) => {
       if (!req.file) throw new HttpError(400, 'Choose one PDF or JPEG file.');
       res.status(202).json(acceptDocument(req, owned(req), req.file));
+    },
+  );
+  const versionUpload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: limits.fileBytes, files: 1, fields: 4, fieldSize: 4000, parts: 5 },
+  });
+  const jsonList = (max: number, length: number) =>
+    z
+      .string()
+      .max(8000)
+      .transform((value, ctx) => {
+        try {
+          return JSON.parse(value) as unknown;
+        } catch {
+          ctx.addIssue({ code: 'custom', message: 'Expected a JSON list.' });
+          return z.NEVER;
+        }
+      })
+      .pipe(z.array(z.string().trim().min(1).max(length)).max(max));
+  // A photo or signature prepared in the browser from an original that stays in the folder.
+  app.post(
+    '/api/packets/:packetId/documents/:documentId/versions',
+    (req, _res, next) => {
+      owned(req);
+      next();
+    },
+    versionUpload.single('file'),
+    (req, res) => {
+      if (!req.file) throw new HttpError(400, 'Choose the edited JPEG image.');
+      const input = z
+        .object({
+          expectedRevision: z.coerce.number().int().positive(),
+          name: z.string().trim().min(5).max(160),
+          changes: jsonList(8, 160),
+          useFor: jsonList(limits.requirements, 120).optional(),
+        })
+        .strict()
+        .parse(req.body);
+      const p = owned(req);
+      checkRevision(p, input.expectedRevision);
+      const source = store.documents(p.id).find((d) => d.id === req.params.documentId);
+      if (!source || source.status !== 'ready' || source.mime !== 'image/jpeg')
+        throw new HttpError(400, 'Choose an inspected JPEG photo or signature.');
+      const jpeg = req.file.buffer[0] === 255 && req.file.buffer[1] === 216;
+      if (!jpeg || !/\.(jpg|jpeg)$/i.test(input.name))
+        throw new HttpError(400, 'The edited image must be saved as a JPEG.');
+      const pack = packetPack(p);
+      const targets = [...new Set(input.useFor || [])];
+      if (targets.some((id) => !pack.requirements.some((r) => r.id === id)))
+        throw new HttpError(400, 'Choose checklist items from this application.');
+      const result = acceptDocument(req, p, { ...req.file, originalname: input.name });
+      if (result.duplicate) return res.json({ ...result, packet: p });
+      const doc = result.document;
+      doc.derivedFrom = {
+        documentId: source.id,
+        name: source.name,
+        hash: source.hash,
+        changes: input.changes,
+      };
+      const fresh = {
+        documentId: doc.id,
+        pageFrom: 1,
+        pageTo: 1,
+        review: 'unreviewed' as const,
+        note: '',
+      };
+      store.db.transaction(() => {
+        store.db
+          .prepare('UPDATE documents SET payload=? WHERE id=? AND packetId=?')
+          .run(JSON.stringify(doc), doc.id, p.id);
+        // The new version takes the original's place for the chosen items; the original stays.
+        for (const id of targets) {
+          const link = p.links[id];
+          if (link && evidenceAnchors(link).some((a) => a.documentId === source.id)) {
+            const swap = <T extends { documentId: string; slot?: string }>(a: T) =>
+              a.documentId === source.id ? { ...fresh, ...(a.slot ? { slot: a.slot } : {}) } : a;
+            p.links[id] = { ...swap(link), additional: link.additional?.map(swap) };
+          } else p.links[id] = { ...fresh };
+        }
+        touch(p);
+        store.audit(user(req).id, 'document.version.created', doc.id);
+      })();
+      res.status(202).json({ document: doc, duplicate: false, packetId: p.id, packet: p });
     },
   );
   app.put('/api/packets/:packetId/evidence/:requirementId', (req, res) => {
@@ -1102,6 +1272,7 @@ export function createApp(options: {
       for (const [rid, link] of Object.entries(p.links))
         if (evidenceAnchors(link).some((a) => a.documentId === req.params.documentId))
           delete p.links[rid];
+      if (p.identityReference === req.params.documentId) delete p.identityReference;
       store.db.prepare('DELETE FROM runs WHERE packetId=?').run(p.id);
       touch(p);
       store.audit(user(req).id, 'document.deleted', String(req.params.documentId));
@@ -1219,16 +1390,17 @@ export function createApp(options: {
     erasePacket(p, user(req).id);
     res.json({ ok: true });
   });
-  app.delete('/api/account', (req, res) => {
-    const input = z.object({ confirmation: z.literal('DELETE') }).parse(req.body);
-    void input;
-    const id = user(req).id;
+  function eraseAccount(id: string) {
     const rows = store.db.prepare('SELECT payload FROM packets WHERE userId=?').all(id) as {
       payload: string;
     }[];
     for (const row of rows) erasePacket(JSON.parse(row.payload), id);
     store.recordDeletion('account', id);
     store.db.prepare('DELETE FROM users WHERE id=?').run(id);
+  }
+  app.delete('/api/account', (req, res) => {
+    z.object({ confirmation: z.literal('DELETE') }).parse(req.body);
+    eraseAccount(user(req).id);
     res.clearCookie('jky_session', { path: '/' });
     res.json({ ok: true });
   });
@@ -1264,6 +1436,7 @@ export function createApp(options: {
     options.jobs === false ? Object.assign(() => {}, { isIdle: () => true }) : startJobs(store);
   function expireDemo() {
     sweepUploads();
+    guardian.sweep();
     store.db.prepare('DELETE FROM sessions WHERE expiresAt<?').run(Date.now());
     const rows = store.db
       .prepare('SELECT id FROM users WHERE demo=1 AND createdAt<?')
@@ -1287,6 +1460,7 @@ export function createApp(options: {
     jobsIdle: stopJobs.isIdle,
     mail: mailService,
     push: pushService,
+    guardian,
     close: () => {
       clearInterval(cleanup);
       stopJobs();

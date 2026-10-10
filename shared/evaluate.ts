@@ -12,7 +12,7 @@ import type {
   Requirement,
   EvidenceAnchor,
 } from './model';
-export const EVALUATOR_VERSION = '2.0.0';
+export const EVALUATOR_VERSION = '2.1.0';
 export function applicability(predicate: Predicate, profile: Profile): boolean | null {
   if (predicate.op === 'always') return true;
   if (predicate.op === 'not') {

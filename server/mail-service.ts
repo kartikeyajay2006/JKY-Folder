@@ -14,10 +14,18 @@ interface QueueRow {
   id: string;
   userId: string;
   packetId: string | null;
-  kind: 'reset' | 'verify' | 'reminder';
+  kind: string;
   payload: string;
   attempts: number;
 }
+/**
+ * Writes a message for a queued row of another feature's kind, or returns null to cancel it.
+ * `tokenHash` names a bearer token the composer stored, which is discarded if sending fails.
+ */
+export type MailComposer = (
+  row: { id: string; userId: string; payload: Record<string, unknown> },
+  now: number,
+) => { to: string; subject: string; text: string; tokenHash?: string } | null;
 export function createMailService(
   store: Store,
   transport: MailTransport | undefined,
@@ -40,6 +48,9 @@ export function createMailService(
   let stopped = false,
     busy = false,
     cursor = 0;
+  const composers = new Map<string, MailComposer>();
+  // Set when mail is queued for immediate delivery; a tick already running picks it up after.
+  let kicked = false;
   const verified = (id: string) =>
     !!store.db
       .prepare(
@@ -48,7 +59,7 @@ export function createMailService(
       .get(id);
   function enqueue(
     userId: string,
-    kind: QueueRow['kind'],
+    kind: string,
     payload: unknown,
     packetId?: string,
     id: string = randomUUID(),
@@ -68,16 +79,19 @@ export function createMailService(
     if (recent) return;
     const row = store.db.prepare('SELECT password FROM users WHERE id=?').get(userId) as
       { password: string } | undefined;
-    if (row)
+    if (row) {
       enqueue(userId, kind, {
         createdAt: Date.now(),
         expiresAt: Date.now() + 1800000,
         passwordFingerprint: hash(row.password),
       });
+      kick();
+    }
   }
   async function tick(now = Date.now()) {
     if (stopped || busy) return;
     busy = true;
+    kicked = false;
     try {
       store.db.prepare('DELETE FROM account_tokens WHERE expiresAt<?').run(now);
       // Bounded keyset batches also generate in-app reminders with every browser closed.
@@ -127,8 +141,21 @@ export function createMailService(
           cancel();
           continue;
         }
-        let subject: string, text: string;
-        if (row.kind === 'reminder') {
+        let subject: string,
+          text: string,
+          to = u.email;
+        const composer = composers.get(row.kind);
+        if (composer) {
+          const message = composer(
+            { id: row.id, userId: row.userId, payload: JSON.parse(row.payload) },
+            now,
+          );
+          if (!message) {
+            cancel();
+            continue;
+          }
+          ({ to, subject, text, tokenHash } = message);
+        } else if (row.kind === 'reminder') {
           const prefs = preferences(store, row.userId),
             p = row.packetId && store.packet(row.packetId, row.userId),
             rr = store.db
@@ -188,7 +215,7 @@ export function createMailService(
         }
         try {
           await transport.send({
-            to: u.email,
+            to,
             subject,
             text,
             messageId: `<jky-${hash(row.id)}-${row.attempts + 1}@${url.hostname}>`,
@@ -219,12 +246,19 @@ export function createMailService(
       }
     } finally {
       busy = false;
+      if (kicked && !stopped) kick();
     }
   }
   const timer = background
     ? setInterval(() => void tick().catch(() => console.error('mail.worker_failed')), 60000)
     : undefined;
   timer?.unref();
+  /** Sends queued account mail now rather than at the next minute's tick. */
+  function kick() {
+    if (!background || !transport || stopped) return;
+    kicked = true;
+    setTimeout(() => void tick().catch(() => console.error('mail.worker_failed')), 0).unref();
+  }
   function publicRoutes(
     app: Express,
     limit: RequestHandler,
@@ -287,7 +321,9 @@ export function createMailService(
         store.db
           .prepare('UPDATE users SET password=? WHERE id=?')
           .run(salt + ':' + key.toString('hex'), latest.userId);
-        store.db.prepare('DELETE FROM account_tokens WHERE userId=?').run(latest.userId);
+        store.db
+          .prepare("DELETE FROM account_tokens WHERE userId=? AND purpose IN ('reset','verify')")
+          .run(latest.userId);
         store.db
           .prepare("DELETE FROM mail_queue WHERE userId=? AND kind IN ('reset','verify')")
           .run(latest.userId);
@@ -359,6 +395,15 @@ export function createMailService(
     privateRoutes,
     verified,
     configured: !!transport,
+    delivery: transport?.label || null,
+    /** Lets another feature send its own kind of message through this queue. */
+    register: (kind: string, composer: MailComposer) => composers.set(kind, composer),
+    queue: (userId: string, kind: string, payload: Record<string, unknown>) => {
+      if (!transport) return undefined;
+      const id = enqueue(userId, kind, { createdAt: Date.now(), ...payload });
+      kick();
+      return id;
+    },
     stop: () => {
       stopped = true;
       if (timer) clearInterval(timer);
