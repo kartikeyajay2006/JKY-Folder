@@ -3,6 +3,7 @@ import { FileGlyph } from '../components/Marks';
 import { Status, date, size, plural } from '../components/Status';
 import { UploadDropzone } from '../components/UploadDropzone';
 import { UploadQueue, type UploadItem } from '../components/UploadQueue';
+import { PendingUploads } from '../components/PendingUploads';
 import { evidenceAnchors } from '../../shared/model';
 import type { DocumentRecord, PacketDetail } from '../../shared/model';
 
@@ -54,6 +55,11 @@ export function DocumentsView({
           onCancel={onCancelUpload}
         />
       )}
+      <PendingUploads
+        packetId={packet.id}
+        busy={busy === 'upload'}
+        onResume={(file) => onUpload([file])}
+      />
       <UploadDropzone
         busy={!!busy}
         uploading={busy === 'upload'}

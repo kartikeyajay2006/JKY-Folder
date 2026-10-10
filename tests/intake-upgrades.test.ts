@@ -18,15 +18,13 @@ afterEach(() => {
 });
 async function account(email = 'resume@example.test') {
   const agent = request.agent(runtime.app);
-  const r = await agent
-    .post('/api/auth/register')
-    .send({
-      name: 'Test Applicant',
-      email,
-      password: 'a-strong-test-password',
-      adult: true,
-      consent: true,
-    });
+  const r = await agent.post('/api/auth/register').send({
+    name: 'Test Applicant',
+    email,
+    password: 'a-strong-test-password',
+    adult: true,
+    consent: true,
+  });
   expect(r.status).toBe(201);
   return { agent, csrf: r.body.csrf };
 }
@@ -204,4 +202,67 @@ it('does not convert incidental prose into requirements and keeps exact page cha
   expect(doc.pages[0].text.slice(c.start, c.start + c.length)).toBe(c.quote);
   expect(c.page).toBe(3);
   expect(c.requirement.optional).toBe(true);
+});
+const put = (a: Awaited<ReturnType<typeof account>>, id: string, offset: number, chunk: Buffer) =>
+  a.agent
+    .put(`/api/uploads/${id}`)
+    .set('x-csrf-token', a.csrf)
+    .set('Content-Type', 'application/octet-stream')
+    .set('upload-offset', String(offset))
+    .send(chunk);
+it('stores each chunk once, lists unfinished uploads by checksum and keeps them private', async () => {
+  const a = await account(),
+    b = await account('lister@example.test'),
+    bytes = Buffer.from('%PDF-chunked original for listing'),
+    sha256 = createHash('sha256').update(bytes).digest('hex'),
+    id = (await begin(a, bytes)).body.id;
+  expect((await put(a, id, 0, bytes.subarray(0, 10))).body.offset).toBe(10);
+  // A duplicate retry of an acknowledged chunk is rejected instead of appending bytes twice.
+  expect((await put(a, id, 0, bytes.subarray(0, 10))).status).toBe(409);
+  const chunks = runtime.store.db
+    .prepare('SELECT offset,length(data) AS n FROM upload_chunks WHERE uploadId=?')
+    .all(id);
+  expect(chunks).toEqual([{ offset: 0, n: 10 }]);
+  const list = await a.agent.get('/api/uploads');
+  expect(list.body).toHaveLength(1);
+  expect(list.body[0]).toMatchObject({ id, name: 'instructions.pdf', offset: 10, sha256 });
+  expect((await a.agent.get(`/api/uploads?sha256=${sha256}`)).body).toHaveLength(1);
+  expect((await a.agent.get(`/api/uploads?sha256=${'0'.repeat(64)}`)).body).toEqual([]);
+  expect((await b.agent.get('/api/uploads')).body).toEqual([]);
+  expect((await put(a, id, 10, bytes.subarray(10))).status).toBe(200);
+  const done = await a.agent.post(`/api/uploads/${id}/complete`).set('x-csrf-token', a.csrf);
+  expect(done.status).toBe(202);
+  expect((await a.agent.get('/api/uploads')).body).toEqual([]);
+  expect(
+    runtime.store.db.prepare('SELECT COUNT(*) AS n FROM upload_chunks WHERE uploadId=?').get(id),
+  ).toEqual({ n: 0 });
+  const doc = (await a.agent.get(`/api/packets/${done.body.packetId}`)).body.documents[0];
+  expect(doc.size).toBe(bytes.length);
+});
+it('moves partial bytes saved by the earlier single-blob format into chunk rows', async () => {
+  const a = await account(),
+    bytes = Buffer.from('%PDF-legacy partial upload bytes'),
+    id = (await begin(a, bytes)).body.id;
+  // Simulate a session written before chunk rows existed.
+  const row = runtime.store.db.prepare('SELECT payload FROM uploads WHERE id=?').get(id) as {
+    payload: string;
+  };
+  const meta = JSON.parse(row.payload);
+  delete meta.received;
+  runtime.store.db
+    .prepare('UPDATE uploads SET payload=?,data=? WHERE id=?')
+    .run(JSON.stringify(meta), bytes.subarray(0, 12), id);
+  runtime.close();
+  runtime = createApp({ dataDir: dir, jobs: false });
+  const agent = request.agent(runtime.app),
+    login = await agent
+      .post('/api/auth/login')
+      .send({ email: 'resume@example.test', password: 'a-strong-test-password' });
+  const again = { agent, csrf: login.body.csrf };
+  expect((await again.agent.get(`/api/uploads/${id}`)).body.offset).toBe(12);
+  expect((await put(again, id, 12, bytes.subarray(12))).status).toBe(200);
+  const done = await again.agent
+    .post(`/api/uploads/${id}/complete`)
+    .set('x-csrf-token', again.csrf);
+  expect(done.status).toBe(202);
 });

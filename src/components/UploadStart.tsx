@@ -1,5 +1,6 @@
 import { UploadDropzone } from './UploadDropzone';
 import { UploadQueue, type UploadItem } from './UploadQueue';
+import { PendingUploads } from './PendingUploads';
 export function UploadStart({
   busy,
   items,
@@ -35,6 +36,11 @@ export function UploadStart({
           onCancel={onCancel}
         />
       )}
+      <PendingUploads
+        packetId={null}
+        busy={busy === 'upload'}
+        onResume={(file) => onUpload([file])}
+      />
       <UploadDropzone
         busy={!!busy}
         uploading={busy === 'upload'}

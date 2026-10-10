@@ -423,6 +423,7 @@ export default function App() {
           controller.signal,
           targetId ? undefined : intakeId,
           owner,
+          (note) => updateItem(item.id, { note: note || undefined }),
         );
         if (owner !== ownerRef.current) return;
         if (!targetId) {

@@ -2020,3 +2020,60 @@ html[data-motion='on'] .journey li:nth-child(3) {
 html[data-motion='on'] .journey li:nth-child(4) {
   animation-delay: 270ms;
 }
+
+/* Unfinished uploads and live transfer notes */
+.pending-uploads ul {
+  display: grid;
+}
+.pending-uploads li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+.pending-uploads li > div:nth-child(2) {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.pending-uploads progress,
+.upload-queue progress {
+  width: 100%;
+  height: 6px;
+  appearance: none;
+  border: 0;
+  border-radius: 3px;
+  background: var(--desk-deep);
+  overflow: hidden;
+}
+.pending-uploads progress::-webkit-progress-bar,
+.upload-queue progress::-webkit-progress-bar {
+  background: var(--desk-deep);
+}
+.pending-uploads progress::-webkit-progress-value,
+.upload-queue progress::-webkit-progress-value {
+  background: var(--metal-sheen);
+  border-radius: 3px;
+  transition: width var(--medium) var(--ease-out);
+}
+.pending-uploads progress::-moz-progress-bar,
+.upload-queue progress::-moz-progress-bar {
+  background: var(--metal);
+}
+.pending-uploads small {
+  color: var(--ink-3);
+}
+.upload-note {
+  color: var(--flag-ink) !important;
+  font-weight: 650;
+}
+@media (max-width: 640px) {
+  .pending-uploads li {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .pending-uploads li > .button-row {
+    grid-column: 2;
+  }
+}

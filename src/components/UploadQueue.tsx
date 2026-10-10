@@ -5,6 +5,8 @@ export interface UploadItem {
   status: 'queued' | 'uploading' | 'added' | 'duplicate' | 'failed' | 'cancelled';
   error?: string;
   progress?: number;
+  /** Live transfer note, such as an automatic retry after a dropped connection. */
+  note?: string;
 }
 export function UploadQueue({
   items,
@@ -60,6 +62,11 @@ export function UploadQueue({
                   value={item.progress || 0}
                   max={100}
                 />
+              )}
+              {item.status === 'uploading' && item.note && (
+                <p className="upload-note" role="status">
+                  {item.note}
+                </p>
               )}
               <p>
                 {item.error ||

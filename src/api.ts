@@ -53,12 +53,77 @@ export async function download(path: string, name: string) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-interface UploadSession {
+export interface UploadSession {
   id: string;
-  offset: number;
+  name?: string;
   size: number;
+  sha256?: string;
+  packetId?: string | null;
+  offset: number;
+  createdAt?: number;
   expiresAt: number;
   result?: unknown;
+}
+const RETRY_DELAYS = [500, 1000, 2000, 4000, 8000];
+const transient = (e: unknown) =>
+  (e as Error)?.name !== 'AbortError' &&
+  (!(e instanceof ApiError) || e.status >= 500 || e.status === 429);
+function pause(ms: number, signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    const timer = setTimeout(done, ms);
+    function done() {
+      signal.removeEventListener('abort', stop);
+      resolve();
+    }
+    function stop() {
+      clearTimeout(timer);
+      reject(new DOMException('Upload paused.', 'AbortError'));
+    }
+    signal.addEventListener('abort', stop, { once: true });
+  });
+}
+function online(signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    if (navigator.onLine) return resolve();
+    const back = () => {
+      signal.removeEventListener('abort', stop);
+      resolve();
+    };
+    const stop = () => {
+      window.removeEventListener('online', back);
+      reject(new DOMException('Upload paused.', 'AbortError'));
+    };
+    window.addEventListener('online', back, { once: true });
+    signal.addEventListener('abort', stop, { once: true });
+  });
+}
+/**
+ * Runs one upload step, retrying transient failures with backoff and waiting out offline
+ * periods, so a dropped connection continues from the last saved chunk by itself.
+ */
+async function resilient<T>(
+  step: () => Promise<T>,
+  signal: AbortSignal,
+  onStatus: (message: string | null) => void,
+  progress: () => number,
+): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const value = await step();
+      if (attempt) onStatus(null);
+      return value;
+    } catch (e) {
+      if (!transient(e) || attempt >= RETRY_DELAYS.length) throw e;
+      if (!navigator.onLine) {
+        onStatus(`You’re offline. Upload continues from ${progress()}% when you reconnect.`);
+        await online(signal);
+        attempt = -1;
+        continue;
+      }
+      onStatus(`Connection interrupted. Retrying from ${progress()}%…`);
+      await pause(RETRY_DELAYS[attempt], signal);
+    }
+  }
 }
 export async function uploadOriginal<T>(
   path: string,
@@ -67,6 +132,7 @@ export async function uploadOriginal<T>(
   signal: AbortSignal,
   intakeId?: string,
   owner = 'session',
+  onStatus: (message: string | null) => void = () => {},
 ): Promise<T> {
   signal.throwIfAborted();
   const bytes = await file.arrayBuffer();
@@ -83,34 +149,48 @@ export async function uploadOriginal<T>(
     /* storage unavailable */
   }
   let session: UploadSession | undefined;
+  const percent = () => (session ? Math.floor((session.offset / file.size) * 100) : 0);
+  const retry = <R>(step: () => Promise<R>) => resilient(step, signal, onStatus, percent);
   if (saved) {
     try {
-      session = await api<UploadSession>(`/uploads/${saved.id}`, { signal });
+      session = await retry(() => api<UploadSession>(`/uploads/${saved!.id}`, { signal }));
     } catch (e) {
       if (!(e instanceof ApiError && e.status === 404)) throw e;
     }
   }
   if (!session) {
-    session = await api<UploadSession>('/uploads', {
-      method: 'POST',
-      signal,
-      body: body({
-        name: file.name,
-        size: file.size,
-        sha256: digest,
-        ...(packetId
-          ? { packetId }
-          : { intakeId: saved?.intakeId || intakeId || crypto.randomUUID() }),
+    // Another tab or device may have started this exact original: continue its saved bytes.
+    const pending = await retry(() =>
+      api<UploadSession[]>(`/uploads?sha256=${digest}`, { signal }),
+    ).catch(() => [] as UploadSession[]);
+    session = pending.find(
+      (s) =>
+        s.name === file.name && s.size === file.size && (s.packetId || '') === (packetId || ''),
+    );
+  }
+  if (!session) {
+    session = await retry(() =>
+      api<UploadSession>('/uploads', {
+        method: 'POST',
+        signal,
+        body: body({
+          name: file.name,
+          size: file.size,
+          sha256: digest,
+          ...(packetId
+            ? { packetId }
+            : { intakeId: saved?.intakeId || intakeId || crypto.randomUUID() }),
+        }),
       }),
-    });
-    try {
-      localStorage.setItem(
-        key,
-        JSON.stringify({ id: session.id, intakeId: saved?.intakeId || intakeId }),
-      );
-    } catch {
-      /* session still usable within this upload */
-    }
+    );
+  }
+  try {
+    localStorage.setItem(
+      key,
+      JSON.stringify({ id: session.id, intakeId: saved?.intakeId || intakeId }),
+    );
+  } catch {
+    /* session still usable within this upload */
   }
   if (session.result) {
     try {
@@ -118,29 +198,42 @@ export async function uploadOriginal<T>(
     } catch {}
     return session.result as T;
   }
-  onProgress(Math.floor((session.offset / file.size) * 100));
+  onProgress(percent());
   while (session.offset < file.size) {
     signal.throwIfAborted();
-    const offset = session.offset,
-      chunk = file.slice(offset, offset + 512 * 1024);
+    const current: UploadSession = session;
     try {
-      session = await sendChunk(session.id, offset, chunk, file.size, onProgress, signal);
+      session = await retry(() =>
+        sendChunk(
+          current.id,
+          current.offset,
+          file.slice(current.offset, current.offset + 512 * 1024),
+          file.size,
+          onProgress,
+          signal,
+        ),
+      );
     } catch (e) {
       if (e instanceof ApiError && e.status === 409) {
-        session = await api<UploadSession>(`/uploads/${session.id}`, { signal });
+        session = await retry(() => api<UploadSession>(`/uploads/${current.id}`, { signal }));
         if (session.result) break;
       } else throw e;
     }
   }
+  const finished: UploadSession = session;
   const result =
-    (session.result as T) ||
-    (await api<T>(`/uploads/${session.id}/complete`, { method: 'POST', body: body({}), signal }));
+    (finished.result as T) ||
+    (await retry(() =>
+      api<T>(`/uploads/${finished.id}/complete`, { method: 'POST', body: body({}), signal }),
+    ));
   try {
     localStorage.removeItem(key);
   } catch {}
   onProgress(100);
   return result;
 }
+/** Unfinished uploads saved on the server for this account. */
+export const pendingUploads = () => api<UploadSession[]>('/uploads');
 function sendChunk(
   id: string,
   offset: number,
