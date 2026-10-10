@@ -1,11 +1,23 @@
 import { ExternalLink } from 'lucide-react';
+import { SupportRequest } from '../components/SupportRequest';
+import type { PacketCard } from '../components/WorkspaceHome';
 import { uploadRules, useCatalog } from '../catalog';
 import { StateMark, stateLabels, stateMeaning } from '../components/Status';
 import type { CheckState, RulePack } from '../../shared/model';
 
 const states: CheckState[] = ['pass', 'fail', 'needs_review', 'unknown', 'not_applicable'];
 
-export function HelpView({ pack }: { pack?: RulePack }) {
+export function HelpView({
+  pack,
+  packets = [],
+  activeId = '',
+  demo = false,
+}: {
+  pack?: RulePack;
+  packets?: PacketCard[];
+  activeId?: string;
+  demo?: boolean;
+}) {
   const { limits } = useCatalog();
   const rules = uploadRules(limits);
   const steps = [
@@ -92,6 +104,7 @@ export function HelpView({ pack }: { pack?: RulePack }) {
           </details>
         ))}
       </section>
+      <SupportRequest packets={packets} activeId={activeId} demo={demo} />
       {pack && (
         <section className="sheet help-coverage" aria-labelledby="coverage-title">
           <h2 id="coverage-title">Limits of the {pack.title} checklist</h2>

@@ -16,6 +16,7 @@ import { join, resolve } from 'node:path';
 import { createStore } from './store';
 import { createMailService } from './mail-service';
 import { createPushService } from './push';
+import { registerSupport } from './support';
 import type { PushSender } from './web-push';
 import type { MailTransport } from './mail';
 import { registerUploads } from './uploads';
@@ -351,6 +352,13 @@ export function createApp(options: {
     app,
     (req) => user(req).id,
     authLimit,
+    (status, message) => new HttpError(status, message),
+  );
+  registerSupport(store).routes(
+    app,
+    user,
+    (userId, packetId) => store.packet(packetId, userId),
+    (userId, action, objectId) => store.audit(userId, action, objectId),
     (status, message) => new HttpError(status, message),
   );
   pushService.routes(

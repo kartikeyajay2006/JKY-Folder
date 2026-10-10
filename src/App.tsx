@@ -847,7 +847,14 @@ export default function App() {
                 />
               )}
               {view === 'activity' && <ActivityFeed packets={packets} />}
-              {view === 'help' && <HelpView pack={data?.pack} />}
+              {view === 'help' && (
+                <HelpView
+                  pack={data?.pack}
+                  packets={packets}
+                  activeId={activeId}
+                  demo={user.demo}
+                />
+              )}
               {view === 'settings' && (
                 <SettingsView
                   user={user}

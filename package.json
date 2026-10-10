@@ -19,7 +19,8 @@
     "backup": "tsx server/backup.ts",
     "test:benchmark": "vitest run tests/benchmark.test.ts tests/benchmark-v2.test.ts",
     "benchmark:review": "tsx server/benchmark-review.ts",
-    "outbox": "tsx server/outbox.ts"
+    "outbox": "tsx server/outbox.ts",
+    "support": "tsx server/support-cli.ts"
   },
   "dependencies": {
     "@fontsource-variable/bodoni-moda": "^5.3.0",
