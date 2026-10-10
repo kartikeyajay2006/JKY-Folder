@@ -195,8 +195,9 @@ test('resumes from a durable chunk after reload and confirms a PDF checklist wit
       .poll(async () => (await (await page.request.get('/api/uploads')).json())[0]?.offset)
       .toBe(524288);
     expect(await (await page.request.get('/api/packets')).json()).toEqual([]);
-    await page.unroute('**/api/uploads/*');
+    // Reload while the second chunk is still held, so the transfer cannot finish in the background.
     await page.reload();
+    await page.unroute('**/api/uploads/*');
     const pending = page.getByRole('region', { name: 'Unfinished uploads' });
     await expect(pending).toContainText('instructions.pdf');
     await expect(pending).toContainText('% of');
