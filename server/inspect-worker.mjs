@@ -15,7 +15,7 @@ async function inspect(path){
     pages.push({number:n,text:text.slice(0,18000).trim()});page.cleanup();
    }
    return {mime:'application/pdf',pageCount:pdf.numPages,pages};
-  }finally{await pdf.destroy();}
+  }finally{await loading.destroy();}
  }
  if(!(bytes[0]===255&&bytes[1]===216&&bytes[2]===255))throw Error('Only actual PDF or JPEG files are supported. Renaming a file does not convert it.');
  const image=sharp(bytes,{limitInputPixels:20_000_000,failOn:'warning'});const metadata=await image.metadata();

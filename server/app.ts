@@ -99,6 +99,11 @@ export function createApp(options:{dataDir:string;origin?:string;jobs?:boolean;p
   store.db.transaction(()=>{store.db.prepare('DELETE FROM documents WHERE id=? AND packetId=?').run(String(req.params.documentId),p.id);for(const [rid,link] of Object.entries(p.links))if(link.documentId===req.params.documentId)delete p.links[rid];store.db.prepare('DELETE FROM runs WHERE packetId=?').run(p.id);touch(p);store.audit(user(req).id,'document.deleted',String(req.params.documentId));})();
   if(existsSync(join(store.objects,row.objectKey)))unlinkSync(join(store.objects,row.objectKey));res.json({ok:true});
  });
+ app.post('/api/packets/:packetId/documents/:documentId/retry',(req,res)=>{
+  const input=z.object({expectedRevision:revision}).parse(req.body);const p=owned(req);checkRevision(p,input.expectedRevision);
+  const doc=store.documents(p.id).find(d=>d.id===req.params.documentId);if(!doc)throw new HttpError(404,'Document not found.');if(doc.status!=='error')throw new HttpError(409,'Only failed inspection can be retried.');
+  store.db.transaction(()=>{doc.status='processing';delete doc.error;store.db.prepare('UPDATE documents SET payload=? WHERE id=? AND packetId=?').run(JSON.stringify(doc),doc.id,p.id);store.db.prepare("UPDATE jobs SET status='queued' WHERE id=?").run(doc.id);touch(p);store.audit(user(req).id,'inspection.retried',doc.id);})();res.status(202).json(doc);
+ });
  app.get('/api/packets/:packetId/documents/:documentId/content',(req,res)=>{
   const p=owned(req);const row=store.db.prepare('SELECT objectKey,payload FROM documents WHERE id=? AND packetId=?').get(String(req.params.documentId),p.id) as {objectKey:string;payload:string}|undefined;if(!row)throw new HttpError(404,'Document not found.');const doc:DocumentRecord=JSON.parse(row.payload);if(doc.status!=='ready')throw new HttpError(409,'This file is not available until inspection succeeds.');
   res.setHeader('Content-Type',doc.mime);res.setHeader('Content-Disposition',`${doc.mime==='image/jpeg'?'inline':'attachment'}; filename*=UTF-8''${encodeURIComponent(doc.name)}`);res.setHeader('Content-Security-Policy',"default-src 'none'; sandbox");res.sendFile(join(store.objects,row.objectKey));
