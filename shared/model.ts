@@ -285,6 +285,7 @@ export interface Reminder {
   readAt?: string;
 }
 export interface NotificationPreferences {
+  email?: boolean;
   deadlines: boolean;
   sourceChanges: boolean;
 }

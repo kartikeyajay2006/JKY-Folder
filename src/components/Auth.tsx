@@ -14,9 +14,27 @@ const legend: CheckState[] = ['pass', 'fail', 'needs_review', 'unknown', 'not_ap
 export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => void }) {
   const { limits, packs, templates } = useCatalog();
   const rules = uploadRules(limits);
-  const [mode, setMode] = useState<'login' | 'register'>('register');
+  const [mode, setMode] = useState<'login' | 'register' | 'forgot'>('register');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  async function recover(email: unknown) {
+    setBusy(true);
+    setError('');
+    setMessage('');
+    try {
+      const r = await api<{ message: string }>('/auth/forgot-password', {
+        method: 'POST',
+        body: body({ email }),
+      });
+      setMessage(r.message);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function authenticate(endpoint: string, payload: unknown) {
     setBusy(true);
     setError('');
@@ -201,7 +219,11 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
         <section className="account-section" aria-labelledby="account-title">
           <div className="account-copy" data-reveal>
             <h2 id="account-title">
-              {mode === 'register' ? 'Open your own folder.' : 'Welcome back.'}
+              {mode === 'register'
+                ? 'Open your own folder.'
+                : mode === 'forgot'
+                  ? 'Recover your password.'
+                  : 'Welcome back.'}
             </h2>
             <p>
               {mode === 'register'
@@ -239,6 +261,10 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
               onSubmit={(event) => {
                 event.preventDefault();
                 const data = new FormData(event.currentTarget);
+                if (mode === 'forgot') {
+                  void recover(data.get('email'));
+                  return;
+                }
                 void authenticate(`/auth/${mode}`, {
                   email: data.get('email'),
                   password: data.get('password'),
@@ -275,18 +301,34 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
                   required
                 />
               </label>
-              <label>
-                Password
-                <input
-                  name="password"
-                  type="password"
-                  autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
-                  minLength={limits.passwordMin}
-                  maxLength={limits.passwordMax}
-                  placeholder={`At least ${limits.passwordMin} characters`}
-                  required
-                />
-              </label>
+              {mode !== 'forgot' && (
+                <label>
+                  Password
+                  <input
+                    name="password"
+                    type="password"
+                    autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
+                    minLength={limits.passwordMin}
+                    maxLength={limits.passwordMax}
+                    placeholder={`At least ${limits.passwordMin} characters`}
+                    required
+                  />
+                </label>
+              )}
+              {mode !== 'forgot' && (
+                <button
+                  type="button"
+                  className="text-link"
+                  onClick={() => {
+                    setMode('forgot');
+                    setMessage('');
+                    setError('');
+                  }}
+                >
+                  Forgot password?
+                </button>
+              )}
+              {message && <p role="status">{message}</p>}
               {mode === 'register' && (
                 <>
                   <label className="checkbox-line">
@@ -308,7 +350,13 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
                 </p>
               )}
               <button className="primary full" disabled={busy}>
-                {busy ? 'Please wait…' : mode === 'register' ? 'Create my workspace' : 'Sign in'}
+                {busy
+                  ? 'Please wait…'
+                  : mode === 'register'
+                    ? 'Create my workspace'
+                    : mode === 'forgot'
+                      ? 'Send reset link'
+                      : 'Sign in'}
               </button>
             </form>
           </div>

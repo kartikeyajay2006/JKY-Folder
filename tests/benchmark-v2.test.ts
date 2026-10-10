@@ -24,6 +24,7 @@ for (const input of corpus.cases)
       link?: Partial<EvidenceAnchor>;
       second?: { slot: string };
       date?: string;
+      dates?: string[];
       omitLinks?: boolean;
       omitDocuments?: boolean;
     };
@@ -88,6 +89,25 @@ for (const input of corpus.cases)
           ],
         },
       ];
+    if (f.dates)
+      doc.facts = f.dates.map((value, i) => ({
+        id: 'date-' + i,
+        kind: 'issue_date',
+        page: 1,
+        originalText: value,
+        value,
+        confidence: 100,
+        history: [
+          {
+            revision: 1,
+            value,
+            confirmed: true,
+            actor: 'reviewer',
+            reason: 'Compared the original date text.',
+            createdAt: '2026-10-10',
+          },
+        ],
+      }));
     const pack: RulePack = {
       id: 'test',
       title: 'Contract',

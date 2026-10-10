@@ -104,6 +104,18 @@ export function restore(
   writeFileSync(join(directory, 'deletions.jsonl'), ledger, { mode: 0o600 });
   const store = createStore(directory);
   try {
+    // Restoring an older snapshot must never resurrect sessions or used account links.
+    store.db.prepare('DELETE FROM sessions').run();
+    const tables = new Set(
+      (
+        store.db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all() as {
+          name: string;
+        }[]
+      ).map((t) => t.name),
+    );
+    if (tables.has('account_tokens')) store.db.prepare('DELETE FROM account_tokens').run();
+    if (tables.has('mail_queue'))
+      store.db.prepare("DELETE FROM mail_queue WHERE kind IN ('reset','verify')").run();
     for (const row of store.db.prepare('SELECT objectKey,payload FROM documents').all() as {
       objectKey: string;
       payload: string;

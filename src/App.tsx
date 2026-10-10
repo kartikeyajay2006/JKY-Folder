@@ -23,6 +23,7 @@ import { QuickActions } from './components/QuickActions';
 import { OverviewView } from './views/Overview';
 import { ChecklistView } from './views/Checklist';
 import { InstructionPdf } from './components/InstructionPdf';
+import { AccountLink, readAccountAction } from './components/AccountLink';
 import { DocumentsView } from './views/Documents';
 import { ReportView } from './views/Report';
 import { HelpView } from './views/Help';
@@ -56,6 +57,7 @@ const headings: Record<Exclude<View, 'overview'>, [string, string]> = {
   settings: ['Settings & privacy', 'Your profile, password, sessions and what stays stored.'],
 };
 export default function App() {
+  const [accountAction] = useState(readAccountAction);
   const motion = useMotion();
   const initialLocation = useRef(readWorkspaceLocation());
   const [user, setUser] = useState<User | null>(null),
@@ -577,6 +579,7 @@ export default function App() {
         </button>
       </main>
     );
+  if (accountAction) return <AccountLink action={accountAction} />;
   if (!user)
     return (
       <CatalogProvider catalog={catalog}>

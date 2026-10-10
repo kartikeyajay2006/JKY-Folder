@@ -20,7 +20,7 @@ References indicate partial implementation of the corresponding workstream, not 
 1. Independently reviewed complete current rule pack, including source omissions and conditional exceptions.
 2. Applicant research and paid-demand validation, with consented outcome records.
 3. Production database/object store, storage encryption and approved retention/backup lifecycle.
-4. HTTPS deployment, verified secure-cookie origin and managed account recovery/email verification.
+4. HTTPS deployment, verified secure-cookie origin and real SMTP/inbox validation for the implemented account recovery/email verification.
 5. Parser isolation with operating-system/container restrictions, malware controls and measured resource limits.
 6. Multi-instance queue leases, atomic cross-instance mutation controls, backup restoration and deletion replay.
 7. Independent penetration and access-control review, operational incident staffing and monitored recovery targets.
@@ -44,4 +44,4 @@ When deleting a document, saved runs for that packet are purged instead of retai
 
 ## Evidence review extension
 
-Source-registry/publication tooling, multiple evidence anchors, structured confirmations/correction history, richer deterministic checks, local English OCR, evidence suggestions, in-app reminders and encrypted local recovery are implemented. See [review-engine contracts](REVIEW_ENGINE.md) for exact limits and operator commands. The bundled registration-page obligation inventory is author-mapped and remains a draft. The synthetic benchmark labels await independent adjudication. Neither extension closes independent rule-pack completeness, held-out benchmark, OS sandbox, automated offsite recovery or public deployment gates.
+Source-registry/publication tooling, multiple evidence anchors, structured confirmations/correction history, richer deterministic checks, local English OCR, evidence suggestions, in-app reminders and encrypted local recovery are implemented. See [review-engine contracts](REVIEW_ENGINE.md) for exact limits and operator commands. The expanded registration/FAQ/brochure coverage inventory is author-mapped and remains a draft. Completeness decisions and blind benchmark label import now enforce review provenance, but actual independent sign-off remains pending. The synthetic benchmark labels await independent adjudication. Neither extension closes independent rule-pack completeness, held-out benchmark, OS sandbox, automated offsite recovery or public deployment gates.

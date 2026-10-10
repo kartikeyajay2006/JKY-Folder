@@ -14,6 +14,8 @@ import { promisify } from 'node:util';
 import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createStore } from './store';
+import { createMailService } from './mail-service';
+import type { MailTransport } from './mail';
 import { registerUploads } from './uploads';
 import { registerInstructionDrafts } from './instruction-drafts';
 import { startJobs } from './jobs';
@@ -93,6 +95,8 @@ export function createApp(options: {
   origin?: string;
   jobs?: boolean;
   production?: boolean;
+  mail?: MailTransport;
+  background?: boolean;
 }) {
   const store = createStore(resolve(options.dataDir));
   const packetPack = (p: Packet) => {
@@ -107,6 +111,12 @@ export function createApp(options: {
         };
     return resolvePack(store, p);
   };
+  const mailService = createMailService(
+    store,
+    options.mail,
+    options.origin || 'http://localhost:5173',
+    options.background !== false,
+  );
   const app = express();
   const prod = options.production || false;
   const allowedOrigins = new Set([
@@ -158,6 +168,7 @@ export function createApp(options: {
     legacyHeaders: false,
     message: { error: 'Too many sign-in attempts. Please try later.' },
   });
+  mailService.publicRoutes(app, authLimit, (status, message) => new HttpError(status, message));
   function setSession(res: Response, userId: string) {
     const token = randomBytes(32).toString('hex'),
       csrf = randomBytes(32).toString('hex');
@@ -310,6 +321,12 @@ export function createApp(options: {
   );
   app.use('/api', authenticated);
   const user = (req: Request) => (req as AuthRequest).user;
+  mailService.privateRoutes(
+    app,
+    (req) => user(req).id,
+    authLimit,
+    (status, message) => new HttpError(status, message),
+  );
   function owned(req: Request): Packet {
     const p = store.packet(String(req.params.packetId), user(req).id);
     if (!p) throw new HttpError(404, 'Packet not found.');
@@ -400,6 +417,10 @@ export function createApp(options: {
         .prepare('UPDATE users SET password=? WHERE id=?')
         .run(newSalt + ':' + key.toString('hex'), user(req).id);
       store.db.prepare('DELETE FROM sessions WHERE userId=?').run(user(req).id);
+      store.db.prepare('DELETE FROM account_tokens WHERE userId=?').run(user(req).id);
+      store.db
+        .prepare("DELETE FROM mail_queue WHERE userId=? AND kind IN ('reset','verify')")
+        .run(user(req).id);
       store.audit(user(req).id, 'account.password.changed', user(req).id);
     })();
     const csrf = setSession(res, user(req).id);
@@ -418,9 +439,15 @@ export function createApp(options: {
   );
   app.put('/api/notification-preferences', (req, res) => {
     const prefs = z
-      .object({ deadlines: z.boolean(), sourceChanges: z.boolean() })
+      .object({
+        deadlines: z.boolean(),
+        sourceChanges: z.boolean(),
+        email: z.boolean().optional().default(false),
+      })
       .strict()
       .parse(req.body);
+    if (prefs.email && (!mailService.configured || !mailService.verified(user(req).id)))
+      throw new HttpError(400, 'Verify your email before enabling email reminders.');
     store.db
       .prepare(
         'INSERT INTO notification_preferences VALUES(?,?) ON CONFLICT(userId) DO UPDATE SET payload=excluded.payload',
@@ -1218,9 +1245,11 @@ export function createApp(options: {
     app,
     store,
     jobsIdle: stopJobs.isIdle,
+    mail: mailService,
     close: () => {
       clearInterval(cleanup);
       stopJobs();
+      mailService.stop();
       store.db.close();
     },
   };

@@ -73,3 +73,44 @@ it('encrypted recovery restores exact objects and replays document and account e
     rmSync(dir, { recursive: true, force: true });
   }
 });
+it('restores durable chunks but clears resurrected sessions and account links', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'jky-account-recovery-')),
+    active = join(dir, 'active'),
+    target = join(dir, 'restore'),
+    file = join(dir, 'backup.jky');
+  const store = createStore(active);
+  try {
+    store.db
+      .prepare('INSERT INTO users VALUES(?,?,?,?,?,?)')
+      .run('u', 'Synthetic', 'u@example.test', 'hash', 0, '2026-10-10');
+    store.db
+      .prepare('INSERT INTO sessions VALUES(?,?,?,?)')
+      .run('session', 'u', 'csrf', Date.now() + 100000);
+    store.db.exec(
+      'CREATE TABLE account_tokens(hash TEXT PRIMARY KEY,userId TEXT REFERENCES users(id),purpose TEXT,expiresAt INTEGER,passwordFingerprint TEXT);CREATE TABLE mail_queue(id TEXT PRIMARY KEY,userId TEXT REFERENCES users(id),kind TEXT);CREATE TABLE uploads(id TEXT PRIMARY KEY,userId TEXT REFERENCES users(id),data BLOB);',
+    );
+    store.db
+      .prepare('INSERT INTO account_tokens VALUES(?,?,?,?,?)')
+      .run('used-token', 'u', 'reset', Date.now() + 100000, 'fingerprint');
+    store.db.prepare('INSERT INTO mail_queue VALUES(?,?,?)').run('reset', 'u', 'reset');
+    store.db
+      .prepare('INSERT INTO uploads VALUES(?,?,?)')
+      .run('partial', 'u', Buffer.from('saved chunk'));
+    await backup(active, file, 'synthetic-backup-password');
+    restore(file, target, 'synthetic-backup-password');
+    const restored = createStore(target);
+    try {
+      expect(restored.db.prepare('SELECT * FROM sessions').all()).toEqual([]);
+      expect(restored.db.prepare('SELECT * FROM account_tokens').all()).toEqual([]);
+      expect(restored.db.prepare('SELECT * FROM mail_queue').all()).toEqual([]);
+      expect(
+        (restored.db.prepare('SELECT data FROM uploads').get() as { data: Buffer }).data.toString(),
+      ).toBe('saved chunk');
+    } finally {
+      restored.db.close();
+    }
+  } finally {
+    store.db.close();
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

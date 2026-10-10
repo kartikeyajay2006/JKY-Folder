@@ -84,4 +84,11 @@ Do not delete the data directory while a server is running. Stop the server befo
 
 ## Current boundaries
 
-The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. Additional OCR languages, managed authentication recovery, payments, institutional access, native apps and all public launch gates remain tracked work. Hosting is deliberately deferred while the requested runtime is localhost.
+The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. Additional OCR languages, verified production email delivery, payments, institutional access, native apps and all public launch gates remain tracked work. Instructions-PDF drafting, resumable intake, password recovery, email verification and background reminder generation are implemented; see the operational contracts below. Hosting is deliberately deferred while the requested runtime is localhost.
+
+
+## PDF intake and email operations
+
+[Durable intake and instruction review](INTAKE_AND_RECOVERY.md) describes chunk expiry, resume after reload, applicant confirmation and deleted-source invalidation. [Official source review](OFFICIAL_REVIEW_AND_BENCHMARK.md) describes the current UCEED scope and blind correctness adjudication. [Account email operations](ACCOUNT_EMAIL.md) lists SMTP settings, verification and opt-in, retry behavior and live-delivery validation.
+
+A stopped server cannot generate or send reminders; closing the browser is supported. If delivery fails, inspect queue statuses and transport configuration without logging tokens, SMTP credentials or email bodies. Correct the provider configuration before retrying failed rows through a reviewed operator recovery process; expired account requests need a fresh link request. Restore into a new directory with the current deletion ledger. Recovery clears active sessions and account-link tokens; applicants must sign in again.

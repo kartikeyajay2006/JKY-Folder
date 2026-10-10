@@ -174,7 +174,7 @@ test('a lost upload response retries without duplicates and cancellation preserv
     pdf.addPage().drawText('Synthetic upload');
     const buffer = Buffer.from(await pdf.save());
     let first = true;
-    await page.route('**/api/packets/*/documents', async (route) => {
+    await page.route('**/api/uploads/*/complete', async (route) => {
       if (first) {
         first = false;
         await route.fetch();
@@ -190,8 +190,8 @@ test('a lost upload response retries without duplicates and cancellation preserv
     expect((await (await page.request.get(`/api/packets/${pid}`)).json()).documents).toHaveLength(
       2,
     );
-    await page.unroute('**/api/packets/*/documents');
-    await page.route('**/api/packets/*/documents', async (route) => {
+    await page.unroute('**/api/uploads/*/complete');
+    await page.route('**/api/uploads/*', async (route) => {
       await new Promise((r) => setTimeout(r, 2000));
       await route.abort('aborted').catch(() => {});
     });
@@ -199,9 +199,9 @@ test('a lost upload response retries without duplicates and cancellation preserv
       .locator('input[type=file]')
       .setInputFiles({ name: 'cancel.pdf', mimeType: 'application/pdf', buffer });
     await page.getByRole('button', { name: 'Cancel remaining uploads' }).click();
-    await expect(page.getByText('Upload cancelled.', { exact: false })).toBeVisible();
+    await expect(page.getByText('Upload paused.', { exact: false })).toBeVisible();
     await expectAccessible(page);
-    await page.unroute('**/api/packets/*/documents');
+    await page.unroute('**/api/uploads/*');
   } finally {
     await cleanup(page).catch(() => {});
   }

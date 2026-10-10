@@ -5,7 +5,9 @@ export function preferences(store: Store, userId: string): NotificationPreferenc
   const row = store.db
     .prepare('SELECT payload FROM notification_preferences WHERE userId=?')
     .get(userId) as { payload: string } | undefined;
-  return row ? JSON.parse(row.payload) : { deadlines: true, sourceChanges: true };
+  return row
+    ? { ...JSON.parse(row.payload), email: !!JSON.parse(row.payload).email }
+    : { deadlines: true, sourceChanges: true, email: false };
 }
 export function refreshReminders(store: Store, userId: string, now = new Date()) {
   const prefs = preferences(store, userId);

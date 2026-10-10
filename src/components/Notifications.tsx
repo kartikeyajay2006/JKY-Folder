@@ -13,17 +13,25 @@ export function Notifications({
   const [items, setItems] = useState<Reminder[]>([]),
     [prefs, setPrefs] = useState<NotificationPreferences | null>(null),
     [error, setError] = useState(''),
-    [busy, setBusy] = useState(false);
+    [busy, setBusy] = useState(false),
+    [delivery, setDelivery] = useState<{
+      configured: boolean;
+      verified: boolean;
+      failed: number;
+    } | null>(null),
+    [message, setMessage] = useState('');
   useEffect(() => {
     let alive = true;
     Promise.all([
       api<Reminder[]>('/notifications'),
       api<NotificationPreferences>('/notification-preferences'),
+      api<{ configured: boolean; verified: boolean; failed: number }>('/account/email-status'),
     ])
-      .then(([items, prefs]) => {
+      .then(([items, prefs, status]) => {
         if (alive) {
           setItems(items);
           setPrefs(prefs);
+          setDelivery(status);
         }
       })
       .catch((e) => {
@@ -75,9 +83,70 @@ export function Notifications({
             Source and checklist changes
           </label>
           <p className="field-help">
-            Reminders appear when you open your workspace. Deadlines use Asia/Kolkata. Email and
-            push delivery are not enabled.
+            Reminders are generated in the background while the server is running. Deadlines use
+            Asia/Kolkata. Enable email delivery below to receive them with the browser closed.
           </p>
+        </fieldset>
+      )}
+      {preferences && prefs && delivery && (
+        <fieldset>
+          <legend>Background email reminders</legend>
+          <p className="field-help">
+            {!delivery.configured
+              ? 'Email delivery needs administrator configuration.'
+              : delivery.verified
+                ? 'Your email is verified.'
+                : 'Verify your email address before enabling delivery.'}
+          </p>
+          {delivery.configured && !delivery.verified && (
+            <button
+              className="outline"
+              disabled={busy}
+              onClick={() => {
+                setBusy(true);
+                setError('');
+                void api('/account/verify-email', { method: 'POST', body: body({}) })
+                  .then(() =>
+                    setMessage('Verification link queued. Check your inbox and spam folder.'),
+                  )
+                  .catch((e) => setError(e.message))
+                  .finally(() => setBusy(false));
+              }}
+            >
+              Send verification link
+            </button>
+          )}
+          <label className="checkbox-line">
+            <input
+              type="checkbox"
+              checked={!!prefs.email}
+              disabled={busy || !delivery.configured || !delivery.verified}
+              onChange={(e) => void save({ ...prefs, email: e.target.checked })}
+            />
+            Email my enabled reminders
+          </label>
+          <button
+            className="text-link"
+            disabled={busy}
+            onClick={() => {
+              setBusy(true);
+              void api<{ configured: boolean; verified: boolean; failed: number }>(
+                '/account/email-status',
+              )
+                .then(setDelivery)
+                .catch((e) => setError(e.message))
+                .finally(() => setBusy(false));
+            }}
+          >
+            Refresh verification status
+          </button>
+          {!!delivery.failed && (
+            <p className="field-help">
+              A delivery could not complete after retries. In-app reminders remain available;
+              contact the administrator to check email delivery.
+            </p>
+          )}
+          {message && <p role="status">{message}</p>}
         </fieldset>
       )}
       <ul>
