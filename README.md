@@ -4,7 +4,11 @@
 
 A working local application for preparing college, scholarship and job document folders. Create an application from an editable starter or your actual instructions, bring original files together, connect evidence to pages, and save a report of missing documents and unresolved checks.
 
-![JKY-Folder workspace with fictional demo evidence](docs/engineering/screenshots/workspace.png)
+![JKY-Folder landing page in the Gold theme](docs/engineering/screenshots/landing.png)
+
+| Gold (light) | Silver (dark) |
+| --- | --- |
+| ![Application overview in the Gold theme](docs/engineering/screenshots/workspace.png) | ![Application overview in the Silver theme](docs/engineering/screenshots/workspace-silver.png) |
 
 ## Run it locally
 
@@ -20,9 +24,12 @@ Open **http://127.0.0.1:5173** and choose **Explore the demo**. The demo has fic
 ## What works
 
 - Account registration, sign-in, display-name updates, password changes, session revocation and account deletion.
-- A dark, responsive workspace with top navigation, account menus, first-use guidance and distinct checklist, document and report sections.
-- An interactive welcome page, floating packet illustration, pointer-responsive cards, animated progress/counters and scroll reveals.
-- Searchable quick actions, visible file-drop feedback, keyboard navigation, persistent pause controls and system reduced-motion support.
+- Two themes of three colours each: **Gold** (white, royal blue, gold leaf) and **Silver** (black, white, brushed silver). They follow the device or a saved choice, switch with a circular reveal, and every colour pair meets WCAG AA.
+- A workspace organised like a physical file: index-tab navigation, an application "file cover" with a deadline stamp, a per-item checklist strip instead of a single readiness score, a grouped checklist ledger, a folder-pocket drop zone and a printable, stamped report.
+- An interactive landing page whose example folder is built from the real reference checklist, with one orchestrated intro (3D folder, drawn ticks, an embossed seal) and scroll reveals.
+- Motion that answers actions: sliding tabs and page transitions, metallic sheen and pointer glare, skeleton loaders, toast timers. A persistent pause control and system reduced-motion stop all of it.
+- A command palette (Ctrl + .) that searches actions, checklist items, documents and applications; files dropped on any page go to the current application; toasts offer the next step.
+- No hard-coded product data in the browser: limits, profile questions, conditions, starters and reference checklists come from the public `/api/catalog`, and packet details include the server-resolved checklist and live evaluation.
 - An application portfolio with real progress counts, search, sorting, deadlines, archive and restore.
 - College, scholarship, job and custom checklist starters; instruction-line import and editable requirements.
 - Optional items, profile conditions, file formats, custom size limits and literal text checks on linked PDF pages.
@@ -46,7 +53,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The verification suite has **39 domain/API/worker tests** and **24 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, quick actions, real file drops, account-menu interaction, interactive workflow tabs, persistent animation controls, reduced motion and automated accessibility across core screens and dialogs. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
+The verification suite has **43 domain/API/worker tests** and **28 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, quick actions, real file drops, account-menu interaction, the example folder's keyboard tabs, persistent animation controls, reduced motion, light/dark themes, drop-anywhere intake, palette search, phone-width overflow against the visual viewport, and automated accessibility across core screens and dialogs in both themes. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
 
 GitHub Actions runs the checks on pushes and pull requests and retains browser failure traces for seven days. Application source can be formatted with `npm run format`.
 
@@ -60,7 +67,7 @@ This implementation has not been publicly deployed or certified as ready for rea
 
 ## Preview and startup plan
 
-[Motion preview](docs/engineering/previews/interactions.webm) · [Quick actions](docs/engineering/screenshots/quick-actions.png) · [Interactive workflow](docs/engineering/screenshots/workflow-preview.png) · [Welcome page](docs/engineering/screenshots/landing.png) · [First-use workspace](docs/engineering/screenshots/welcome.png) · [Application setup](docs/engineering/screenshots/application-setup.png) · [Application portfolio](docs/engineering/screenshots/applications.png) · [PDF preview](docs/engineering/screenshots/pdf-preview.png) · [Mobile workspace](docs/engineering/screenshots/mobile.png) · [Original logo concept](docs/brand/jky-folder-logo-concept.png)
+[Motion preview](docs/engineering/previews/interactions.webm) · [Landing, Silver](docs/engineering/screenshots/landing-silver.png) · [Example folder](docs/engineering/screenshots/workflow-preview.png) · [Checklist](docs/engineering/screenshots/checklist.png) · [Report](docs/engineering/screenshots/report.png) · [Quick actions](docs/engineering/screenshots/quick-actions.png) · [First-use workspace](docs/engineering/screenshots/welcome.png) · [Application setup](docs/engineering/screenshots/application-setup.png) · [Application portfolio](docs/engineering/screenshots/applications.png) · [PDF preview](docs/engineering/screenshots/pdf-preview.png) · [Mobile workspace](docs/engineering/screenshots/mobile.png) · [Sign-in](docs/engineering/screenshots/sign-in.png) · [Original logo concept](docs/brand/jky-folder-logo-concept.png)
 
 The original **29,354-line startup implementation plan** remains preserved as a dated specification across the [master plan](IMPLEMENTATION_PLAN.md) and six detailed volumes. It contains 96 workstreams, 576 deliverables and 2,304 acceptance situations. Implementation references are mapped in the release-gate document; business and expansion deliverables are not marked complete by the existence of code.
 
