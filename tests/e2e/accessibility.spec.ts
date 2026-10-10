@@ -17,10 +17,8 @@ async function check(page: import('@playwright/test').Page) {
   ).toEqual([]);
 }
 async function nav(page: import('@playwright/test').Page, label: string) {
-  if (await page.getByRole('button', { name: 'Open navigation' }).isVisible())
-    await page.getByRole('button', { name: 'Open navigation' }).click();
   await page
-    .getByRole('navigation', { name: 'Workspace' })
+    .locator('.workspace-header')
     .getByRole('button', { name: label, exact: label !== 'Requirements' })
     .click();
 }

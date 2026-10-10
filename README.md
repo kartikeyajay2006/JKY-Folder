@@ -20,7 +20,8 @@ Open **http://127.0.0.1:5173** and choose **Explore the demo**. The demo has fic
 ## What works
 
 - Account registration, sign-in, display-name updates, password changes, session revocation and account deletion.
-- A redesigned responsive workspace with useful first-use guidance and distinct checklist, document and report sections.
+- A dark, responsive workspace with top navigation, account menus, first-use guidance and distinct checklist, document and report sections.
+- An original welcome page and packet illustration, restrained transitions, keyboard navigation and reduced-motion support.
 - An application portfolio with real progress counts, search, sorting, deadlines, archive and restore.
 - College, scholarship, job and custom checklist starters; instruction-line import and editable requirements.
 - Optional items, profile conditions, file formats, custom size limits and literal text checks on linked PDF pages.
@@ -44,7 +45,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The local verification passed **39 domain/API/worker tests** and **18 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus and automated accessibility across core screens and dialogs. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
+The verification suite has **39 domain/API/worker tests** and **20 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, account-menu interaction, reduced motion and automated accessibility across core screens and dialogs. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
 
 GitHub Actions runs the checks on pushes and pull requests and retains browser failure traces for seven days. Application source can be formatted with `npm run format`.
 
@@ -58,7 +59,7 @@ This implementation has not been publicly deployed or certified as ready for rea
 
 ## Preview and startup plan
 
-[First-use workspace](docs/engineering/screenshots/welcome.png) · [Application setup](docs/engineering/screenshots/application-setup.png) · [Application portfolio](docs/engineering/screenshots/applications.png) · [PDF preview](docs/engineering/screenshots/pdf-preview.png) · [Mobile workspace](docs/engineering/screenshots/mobile.png) · [Original logo concept](docs/brand/jky-folder-logo-concept.png)
+[Welcome page](docs/engineering/screenshots/landing.png) · [First-use workspace](docs/engineering/screenshots/welcome.png) · [Application setup](docs/engineering/screenshots/application-setup.png) · [Application portfolio](docs/engineering/screenshots/applications.png) · [PDF preview](docs/engineering/screenshots/pdf-preview.png) · [Mobile workspace](docs/engineering/screenshots/mobile.png) · [Original logo concept](docs/brand/jky-folder-logo-concept.png)
 
 The original **29,354-line startup implementation plan** remains preserved as a dated specification across the [master plan](IMPLEMENTATION_PLAN.md) and six detailed volumes. It contains 96 workstreams, 576 deliverables and 2,304 acceptance situations. Implementation references are mapped in the release-gate document; business and expansion deliverables are not marked complete by the existence of code.
 

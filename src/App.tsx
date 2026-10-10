@@ -1,18 +1,14 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import {
-  LayoutDashboard,
-  ListChecks,
   Files,
   FileCheck2,
   Activity,
   Settings,
-  HelpCircle,
   Search,
   Plus,
   ArrowUpRight,
   ArrowRight,
   ChevronRight,
-  ChevronDown,
   Check,
   AlertCircle,
   Clock,
@@ -27,7 +23,6 @@ import {
   LogOut,
   FolderOpen,
   Link2,
-  Menu,
   X,
   Printer,
   Sparkles,
@@ -52,6 +47,7 @@ import { AccountSettings } from './components/AccountSettings';
 import { ActivityFeed } from './components/ActivityFeed';
 import { PdfPreview } from './components/PdfPreview';
 import { UploadQueue, type UploadItem } from './components/UploadQueue';
+import { WorkspaceHeader } from './components/WorkspaceHeader';
 import {
   readWorkspaceLocation,
   writeWorkspaceLocation,
@@ -67,14 +63,6 @@ import type {
 } from '../shared/model';
 type View = WorkspaceView;
 
-const navigation = [
-  { id: 'overview', label: 'Overview', Icon: LayoutDashboard },
-  { id: 'applications', label: 'Applications', Icon: FolderOpen },
-  { id: 'requirements', label: 'Requirements', Icon: ListChecks },
-  { id: 'documents', label: 'My documents', Icon: Files },
-  { id: 'report', label: 'Readiness report', Icon: FileCheck2 },
-  { id: 'activity', label: 'Activity', Icon: Activity },
-] as const;
 const headings: Record<View, [string, string]> = {
   applications: ['Your applications.', 'Every opportunity, every deadline, every next step.'],
   overview: [
@@ -109,14 +97,12 @@ export default function App() {
   const [uploadBatch, setUploadBatch] = useState<{ packetId: string; items: UploadItem[] } | null>(
     null,
   );
-  const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width:700px)').matches);
   const [view, setView] = useState<View>(initialLocation.current.view),
     [busy, setBusy] = useState(''),
     [error, setError] = useState(''),
     [toast, setToast] = useState(''),
     [search, setSearch] = useState(''),
-    [filter, setFilter] = useState('all'),
-    [mobile, setMobile] = useState(false);
+    [filter, setFilter] = useState('all');
   const [modal, setModal] = useState<
       'create' | 'profile' | 'details' | 'checklist' | 'delete-packet' | 'delete-account' | null
     >(null),
@@ -124,12 +110,6 @@ export default function App() {
     [preview, setPreview] = useState<DocumentRecord | null>(null),
     [deleteDoc, setDeleteDoc] = useState<DocumentRecord | null>(null),
     [reportId, setReportId] = useState('');
-  useEffect(() => {
-    const media = window.matchMedia('(max-width:700px)');
-    const update = () => setNarrow(media.matches);
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
-  }, []);
   const inputRef = useRef<HTMLInputElement>(null),
     searchRef = useRef<HTMLInputElement>(null),
     selectionRef = useRef('');
@@ -138,6 +118,9 @@ export default function App() {
   packetsRef.current = packets;
   ownerRef.current = user?.id;
   selectionRef.current = activeId;
+  useLayoutEffect(() => {
+    if (user) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [user?.id]);
   async function refresh(preferred = selectionRef.current) {
     const ownerAtStart = ownerRef.current;
     const selectionAtStart = selectionRef.current;
@@ -235,7 +218,6 @@ export default function App() {
       setActiveId(application);
       setSearch('');
       setFilter('all');
-      setMobile(false);
       setModal(null);
       setEvidence(null);
       setPreview(null);
@@ -281,13 +263,13 @@ export default function App() {
   const required = live?.checks.filter((c) => c.state !== 'not_applicable') || [];
   const nextSteps = required.filter((c) => c.state !== 'pass');
   function navigate(next: View, id = activeId) {
+    window.scrollTo({ top: 0, behavior: 'instant' });
     writeWorkspaceLocation(next, id, 'push');
     if (id !== activeId) {
       setData(null);
       setActiveId(id);
     }
     setView(next);
-    setMobile(false);
     setSearch('');
     setFilter('all');
     setError('');
@@ -456,184 +438,34 @@ export default function App() {
       <a href="#main-content" className="skip-link">
         Skip to workspace
       </a>
-      {mobile && <div className="sidebar-scrim" onClick={() => setMobile(false)} />}
-      <aside
-        id="workspace-navigation"
-        inert={narrow && !mobile}
-        onKeyDown={(e) => {
-          if (e.key === 'Escape') setMobile(false);
+      <WorkspaceHeader
+        user={user}
+        view={view}
+        search={search}
+        searchRef={searchRef}
+        busy={!!busy}
+        attention={nextSteps.length}
+        onNavigate={navigate}
+        onSearch={(value) => {
+          setSearch(value);
+          if (!['requirements', 'documents', 'applications'].includes(view) && value) {
+            const next = activeId ? 'requirements' : 'applications';
+            writeWorkspaceLocation(next, activeId, 'push');
+            setView(next);
+          }
         }}
-        className={`sidebar ${mobile ? 'sidebar-open' : ''}`}
-      >
-        <button
-          className="sidebar-close icon-button"
-          aria-label="Close navigation"
-          onClick={() => setMobile(false)}
-        >
-          <X size={19} />
-        </button>
-        <a
-          className="brand"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            navigate('overview');
-          }}
-        >
-          <img src="/favicon.svg" alt="" />
-          <span>
-            JKY-Folder<span className="brand-caption">APPLICATION WORKSPACE</span>
-          </span>
-        </a>
-        <div
-          className="workspace-selector"
-          role="button"
-          tabIndex={0}
-          onClick={() => navigate('applications')}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              navigate('applications');
-            }
-          }}
-        >
-          <span className="workspace-avatar">{user.name.charAt(0).toUpperCase()}</span>
-          <span>
-            <strong>My workspace</strong>
-            <small>{user.demo ? 'Sample workspace' : 'Personal workspace'}</small>
-          </span>
-          <ChevronDown size={15} />
-        </div>
-        <span className="nav-caption">WORKSPACE</span>
-        <nav aria-label="Workspace">
-          {navigation.map(({ id, label, Icon }) => (
-            <button
-              key={id}
-              onClick={() => navigate(id)}
-              aria-current={view === id ? 'page' : undefined}
-              className={`nav-item ${view === id ? 'active' : ''}`}
-            >
-              <Icon size={18} />
-              {label}
-              {id === 'requirements' && nextSteps.length > 0 && (
-                <span className="nav-count">{nextSteps.length}</span>
-              )}
-            </button>
-          ))}
-        </nav>
-        <div className="sidebar-tip">
-          <div className="tip-icon">
-            <Sparkles size={20} />
-          </div>
-          <strong>Your application toolkit</strong>
-          <p>Start from instructions, connect evidence, and review before submitting.</p>
-          <button onClick={() => navigate('help')}>
-            How it works
-            <ArrowUpRight size={14} />
-          </button>
-        </div>
-        <div className="sidebar-bottom">
-          <button
-            className={`nav-item ${view === 'help' ? 'active' : ''}`}
-            onClick={() => navigate('help')}
-          >
-            <HelpCircle size={18} />
-            Help & guidance
-          </button>
-          <button
-            className={`nav-item ${view === 'settings' ? 'active' : ''}`}
-            onClick={() => navigate('settings')}
-          >
-            <Settings size={18} />
-            Settings & privacy
-          </button>
-          <div className="sidebar-user">
-            <span className="user-avatar">
-              {user.name
-                .split(' ')
-                .map((n) => n[0])
-                .slice(0, 2)
-                .join('')}
-            </span>
-            <button onClick={() => navigate('settings')}>
-              <strong>{user.name}</strong>
-              <small>{user.demo ? 'Demo explorer' : 'Personal account'}</small>
-            </button>
-            <button
-              className="icon-button"
-              title="Sign out"
-              aria-label="Sign out"
-              onClick={() =>
-                void perform('logout', async () => {
-                  await api('/auth/logout', { method: 'POST', body: body({}) });
-                  setUser(null);
-                  setData(null);
-                  setActiveId('');
-                  setCsrf('');
-                })
-              }
-            >
-              <LogOut size={16} />
-            </button>
-          </div>
-        </div>
-      </aside>
-      <div className="main-shell" inert={narrow && mobile}>
-        <header className="topbar">
-          <button
-            className="mobile-toggle icon-button"
-            aria-label="Open navigation"
-            aria-expanded={mobile}
-            aria-controls="workspace-navigation"
-            onClick={() => setMobile(true)}
-          >
-            <Menu size={20} />
-          </button>
-          <div className="breadcrumb">
-            My workspace
-            <ChevronRight size={13} />
-            <strong>
-              {navigation.find((n) => n.id === view)?.label || headings[view][0].split('.')[0]}
-            </strong>
-          </div>
-          <div className="topbar-right">
-            <div className="search-box">
-              <Search size={16} />
-              <input
-                ref={searchRef}
-                aria-label="Search requirements or documents"
-                placeholder={
-                  view === 'applications' ? 'Find an application…' : 'Find in your folder…'
-                }
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  if (
-                    !['requirements', 'documents', 'applications'].includes(view) &&
-                    e.target.value
-                  ) {
-                    const next = activeId ? 'requirements' : 'applications';
-                    writeWorkspaceLocation(next, activeId, 'push');
-                    setView(next);
-                  }
-                }}
-              />
-              <kbd>⌘ K</kbd>
-            </div>
-            <span className="topbar-divider" />
-            <button className="icon-button" aria-label="Open help" onClick={() => navigate('help')}>
-              <HelpCircle size={19} />
-            </button>
-            <button
-              className="topbar-avatar"
-              aria-label="Account settings"
-              onClick={() => navigate('settings')}
-            >
-              {user.name.charAt(0)}
-            </button>
-          </div>
-        </header>
-        <main id="main-content" tabIndex={-1} className="workspace-content">
+        onLogout={() =>
+          void perform('logout', async () => {
+            await api('/auth/logout', { method: 'POST', body: body({}) });
+            setUser(null);
+            setData(null);
+            setActiveId('');
+            setCsrf('');
+          })
+        }
+      />
+      <div className="main-shell">
+        <main id="main-content" tabIndex={-1} className={`workspace-content view-${view}`}>
           {user.demo && (
             <div className="demo-strip">
               <Sparkles size={14} />

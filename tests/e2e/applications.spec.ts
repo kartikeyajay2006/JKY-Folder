@@ -3,10 +3,8 @@ import { PDFDocument, StandardFonts } from 'pdf-lib';
 import AxeBuilder from '@axe-core/playwright';
 async function nav(page: Page, label: string) {
   await page.locator('#workspace-navigation').waitFor({ state: 'attached' });
-  if (await page.getByRole('button', { name: 'Open navigation' }).isVisible())
-    await page.getByRole('button', { name: 'Open navigation' }).click();
   await page
-    .getByRole('complementary')
+    .locator('.workspace-header')
     .getByRole('button', { name: label, exact: label !== 'Requirements' })
     .click();
 }
@@ -52,6 +50,7 @@ async function checkAccessibility(page: Page) {
 test('fresh account has useful distinct sections and accessible setup', async ({ page }) => {
   await signup(page);
   try {
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
     await expect(
       page.getByRole('heading', { name: 'A clear path from documents to done.' }),
     ).toBeVisible();

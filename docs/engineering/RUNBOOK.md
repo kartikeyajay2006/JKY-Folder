@@ -36,6 +36,8 @@ Export JSON for machine-readable provenance, or use **Print / PDF** for a printa
 
 Use **Applications** to search, sort, open, archive or restore your applications. Archive preserves documents and history; deletion removes them. Dates are tracked as local calendar deadlines without email or push notifications. Application URLs preserve your current application and section across refresh and browser navigation; server ownership checks still apply.
 
+The workspace uses top navigation throughout. On narrow screens, the horizontal tabs scroll and keep the selected section visible. Help and settings remain available beside the tabs and in the account menu. **Ctrl/Cmd + K** focuses workspace search. The account menu supports arrow keys and Escape; Escape returns focus to its trigger. Dialogs keep keyboard focus inside and make the header/content inactive until dismissed. Operating-system reduced-motion preferences disable decorative animations and transitions.
+
 In **Settings & privacy**, update your display name, change your password using the current password, or sign out other sessions. Password changes revoke previous sessions and rotate the current session/CSRF token. Email verification and password-reset email delivery are not included.
 
 ## Document limits

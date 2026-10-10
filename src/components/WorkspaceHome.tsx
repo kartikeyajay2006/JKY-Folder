@@ -18,6 +18,7 @@ import {
   RotateCcw,
   Search,
 } from 'lucide-react';
+import { PacketVisual } from './PacketVisual';
 import { templates, deadlineInfo } from '../../shared/templates';
 import type { CheckState, EvaluationRun, Packet, User } from '../../shared/model';
 export interface PacketCard {
@@ -95,22 +96,7 @@ export function WorkspaceHome({
               Account ready · Your documents stay private
             </small>
           </div>
-          <div className="onboarding-illustration" aria-hidden="true">
-            <div className="illustration-orbit" />
-            <div className="illustration-folder">
-              <FolderOpen size={68} />
-              <span>YOUR NEXT CHAPTER</span>
-            </div>
-            <div className="floating-check">
-              <CheckCheck size={18} />
-              <span>Evidence connected</span>
-            </div>
-            <div className="floating-file">
-              <FileCheck2 size={22} />
-              <span>Application checklist</span>
-            </div>
-            <div className="floating-dot" />
-          </div>
+          <PacketVisual compact />
         </section>
       )}
       <div className="portfolio-stats">

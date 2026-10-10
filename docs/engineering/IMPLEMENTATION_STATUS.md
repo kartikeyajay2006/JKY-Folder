@@ -56,3 +56,15 @@ Current local verification passed **39 domain/API/actual-worker tests and 18 des
 The frontend milestone initially exposed a CI-only mobile test timeout: the test attempted navigation before the authenticated workspace had mounted after reload. The navigation helper now explicitly waits for the workspace. CI retains failure traces/screenshots for seven days to make future failures reviewable.
 
 Hosting is deferred at the owner’s request. The implemented runtime is localhost, with no public deployment, payments, managed recovery emails, OCR, institutional rule-pack certification or claim that the business launch gates have been completed.
+
+## Sidebar-free visual revision
+
+The owner requested a new direction referencing [Mark 1 by Omium](https://mark.omium.ai/). Its public page was reviewed for dark surfaces, restrained accents, large typography, compact navigation and thin borders. JKY-Folder uses original content, original SVG packet artwork and its own application workflows; the reference’s assets and product claims are not copied.
+
+The sidebar markup, mobile drawer, scrim and corresponding styles were removed. A sticky top header now carries workspace search and a keyboard-operated account menu. Horizontal tabs expose all six main sections, with always-available help/settings controls. Tabs scroll independently on narrow screens instead of opening a drawer. Sign-in opens the workspace at the top of the page; changing sections resets the view without scrolling the entire document to reveal a tab.
+
+The dark visual system covers the welcome page, populated and empty workspace states, portfolio, requirements, documents, reports, activity, help, settings, account entry, setup/edit dialogs, JPEG evidence and original PDF controls. The PDF canvas retains a paper background. Printed reports retain a light background for readability.
+
+Animations use short opacity/transform transitions, with explicit reduced-motion handling and no perpetual visual effects. The new welcome page has working process/workflow/account anchors, real registration/sign-in and the existing isolated demo entry. All checklist, upload, evidence, report, account and deletion workflows remain connected to the existing API.
+
+The suite now includes **20 desktop/mobile browser checks**, including explicit no-sidebar assertions, account-menu arrow/Escape behavior, search from account settings, active-tab state, modal background isolation, narrow-screen overflow and reduced motion. Screenshots are refreshed from disposable synthetic accounts; the personal local data is retained.

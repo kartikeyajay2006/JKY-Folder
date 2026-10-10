@@ -24,7 +24,7 @@ export function Dialog({
         ),
       );
     const background = Array.from(
-      document.querySelectorAll<HTMLElement>('.sidebar,.main-shell'),
+      document.querySelectorAll<HTMLElement>('.workspace-header,.main-shell'),
     ).map((element) => ({ element, inert: element.inert }));
     background.forEach((item) => {
       item.element.inert = true;
