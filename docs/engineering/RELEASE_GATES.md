@@ -19,9 +19,9 @@ References indicate partial implementation of the corresponding workstream, not 
 
 1. Independently reviewed complete current rule pack, including source omissions and conditional exceptions. The review workbook and signed-review gate exist; the review itself must be done by a person who did not author the pack.
 2. Applicant research and paid-demand validation, with consented outcome records.
-3. Production database/object store, storage encryption and approved retention/backup lifecycle.
+3. Production database/object store, storage encryption and approved retention/backup lifecycle. Scheduled encrypted backups with retention exist for single-server deployments; off-site copies and a managed database remain open.
 4. HTTPS deployment, verified secure-cookie origin, real SMTP/inbox validation for the implemented account recovery/email verification, and Web Push delivery checked on real Chrome, Firefox and Safari devices.
-5. Parser isolation with operating-system/container restrictions, malware controls and measured resource limits.
+5. Parser isolation with operating-system/container restrictions, malware controls and measured resource limits. ClamAV scanning before inspection (fail closed) and a non-root container exist; an operating-system sandbox for the parser remains open.
 6. Multi-instance queue leases, atomic cross-instance mutation controls, backup restoration and deletion replay.
 7. Independent penetration and access-control review, operational incident staffing and monitored recovery targets.
 8. Qualified legal review, processing notices, processor contracts and an approved age/guardian policy.

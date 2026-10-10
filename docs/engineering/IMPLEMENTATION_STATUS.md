@@ -153,3 +153,16 @@ Verification: 437 domain/API/worker/benchmark tests, 26 desktop and 24 mobile br
 Sign-in limits now count only failed attempts (30 per 15 minutes per address), with separate limits for email sends (20 per 15 minutes) and new accounts (100 per hour), so a classroom on one network can register while guessing and email flooding stay limited.
 
 Verification: 453 domain/API/worker/benchmark tests, 30 desktop and 28 mobile browser scenarios, TypeScript and the production build pass. Evaluator version 2.1.0.
+
+## Launch readiness revision (11 October 2026)
+
+| Item | State | What exists |
+| --- | --- | --- |
+| Put it online | Ready to deploy | Docker image (non-root, health check), Docker Compose with Caddy automatic HTTPS and optional ClamAV, Render blueprint, `TRUST_PROXY`, database-checked `/api/health`, [deployment guide](DEPLOY.md) |
+| Safer file handling | Implemented when configured | ClamAV INSTREAM scanning before any parser; infected files deleted unopened; uploads wait while the scanner is down |
+| Backups | Implemented | Scheduled AES-256-GCM backups with retention (`BACKUP_DIR`, `BACKUP_INTERVAL_HOURS`, `BACKUP_KEEP`) |
+| Install on phone | Implemented | Web app manifest, maskable icons, service worker with an offline page; `/api/` responses are never cached |
+| Document type recognition | Implemented | 17 Indian document types from wording, file name and shape; labels in Documents and My documents; type-aware evidence suggestions |
+| Hindi, payments, more official checklists | Not started | Need translation, pricing and Razorpay keys, and official sources with independent review |
+
+Verification: 462 domain/API/worker/benchmark tests, 31 desktop and 29 mobile browser scenarios, TypeScript and the production build pass.

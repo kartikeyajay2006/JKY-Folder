@@ -91,6 +91,10 @@ Do not delete the data directory while a server is running. Stop the server befo
 The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. Additional OCR languages, verified production email delivery, payments, institutional access, native apps and all public launch gates remain tracked work. Instructions-PDF drafting, resumable intake, password recovery, email verification, background reminders by email and Web Push, and consented support access are implemented; see the operational contracts below. Hosting is deliberately deferred while the requested runtime is localhost.
 
 
+## Hosting
+
+See [deployment](DEPLOY.md) for Docker, Render, HTTPS, scheduled backups and virus scanning.
+
 ## Development email, notifications and support
 
 - Without SMTP settings, `npm run dev` saves recovery, verification, guardian and reminder emails to `.data/outbox`; read them with `npm run outbox` or `npm run outbox -- latest`. `MAIL_TRANSPORT=none` switches email off. Never available in production.

@@ -1,103 +1,164 @@
-# JKY-Folder
+<p align="center">
+  <img src="docs/assets/banner.svg" alt="JKY-Folder: application instructions, supporting documents, a clear next step" width="100%" />
+</p>
 
-**Application instructions. Supporting documents. A clear next step.**
+<p align="center">
+  <a href="https://github.com/kartikeyajay2006/JKY-Folder/actions/workflows/ci.yml"><img alt="Checks" src="https://github.com/kartikeyajay2006/JKY-Folder/actions/workflows/ci.yml/badge.svg" /></a>
+  <img alt="Node 22" src="https://img.shields.io/badge/Node-22.12%2B-102a6b?logo=nodedotjs&logoColor=white" />
+  <img alt="React 19" src="https://img.shields.io/badge/React-19-102a6b?logo=react&logoColor=white" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-102a6b?logo=typescript&logoColor=white" />
+  <img alt="Tests" src="https://img.shields.io/badge/tests-462%20unit%20%C2%B7%2060%20browser-c9a13b" />
+  <img alt="Accessibility" src="https://img.shields.io/badge/WCAG-AA%20checked-c9a13b" />
+</p>
 
-A working local application for preparing college, scholarship and job document folders. Upload your original files to start a folder. Its checklist contains only those files. You can explicitly add your actual application instructions later, connect evidence to pages, and save a dated review.
+<p align="center">
+  <b>JKY-Folder</b> helps students in India prepare the documents for college, scholarship and job applications.<br />
+  Upload your originals, turn the institution’s instructions into a checklist, fix what portals reject, and see exactly what is still missing.
+</p>
 
-![JKY-Folder landing page in the Gold theme](docs/engineering/screenshots/landing.png)
+---
 
-| Gold (light) | Silver (dark) |
+## What it does
+
+| | |
 | --- | --- |
-| ![Application overview in the Gold theme](docs/engineering/screenshots/workspace.png) | ![Application overview in the Silver theme](docs/engineering/screenshots/workspace-silver.png) |
+| **Checklist from the instructions PDF** | Every requirement is drafted with the page it came from. You confirm each one. |
+| **Photo and signature fixer** | Crop, rotate and compress a JPEG to the portal’s exact pixel and KB limits, in the browser. |
+| **Name and date-of-birth check** | Finds spelling, initials, missing middle names and swapped dates across your documents. |
+| **Upload once, use everywhere** | One library of originals, added to any application without uploading again. |
+| **Knows what a document is** | “Looks like: Aadhaar card”, so the right file goes to the right checklist item. |
+| **Under-18 friendly** | A parent or guardian approves the account by email, and can withdraw at any time. |
+| **Works on bad networks** | Uploads resume from the last saved piece; the app installs on your phone. |
+| **Never miss a deadline** | Reminders by email and browser notification, even with the app closed. |
 
-## Run it locally
+<details>
+<summary><b>See it</b> (screenshots)</summary>
+<br />
 
-Requires **Node.js 22.12+**.
+| Landing, Gold | Workspace, Silver |
+| --- | --- |
+| ![Landing page](docs/engineering/screenshots/landing.png) | ![Workspace in the Silver theme](docs/engineering/screenshots/workspace-silver.png) |
+| **Photo and signature fixer** | **Name and date of birth** |
+| ![Photo fixer](docs/engineering/screenshots/photo-fixer-gold.png) | ![Identity check](docs/engineering/screenshots/identity-check-gold.png) |
+| **My documents** | **Waiting for a guardian** |
+| ![My documents](docs/engineering/screenshots/my-documents-gold.png) | ![Guardian approval](docs/engineering/screenshots/guardian-waiting-gold.png) |
+| **Checklist** | **Report** |
+| ![Checklist](docs/engineering/screenshots/checklist.png) | ![Report](docs/engineering/screenshots/report.png) |
+
+</details>
+
+## How it works
+
+<p align="center"><img src="docs/assets/journey-3d.svg" alt="Six rising steps: upload originals, inspect and read, build the checklist, fix and match, review evidence, dated report" width="100%" /></p>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#102a6b','primaryTextColor':'#ffffff','primaryBorderColor':'#0b1f52','lineColor':'#c9a13b','secondaryColor':'#f3f5fa','tertiaryColor':'#fbf3dc','fontFamily':'Helvetica'}}}%%
+flowchart LR
+    A([Your original<br/>PDF or JPEG]) -->|resumable upload| B[Private storage]
+    B --> C{Virus scan}
+    C -->|clean| D[Inspection worker<br/>PDF text · OCR]
+    C -->|infected| X([Deleted unopened])
+    D --> E[Facts and<br/>document type]
+    I([Instructions PDF]) --> F[Draft checklist<br/>with page anchors]
+    F -->|you confirm| G[Checklist]
+    E --> H{Evaluate}
+    G --> H
+    H --> R([Dated report<br/>missing · review · ready])
+```
+
+Nothing becomes “ready” on its own: unknown answers, unread pages and unconfirmed facts stay visible until you check them against the original.
+
+## Architecture
+
+<p align="center"><img src="docs/assets/architecture-3d.svg" alt="Three layers: browser app; API, inspection, mail and push workers; SQLite metadata, private originals and encrypted backups" width="100%" /></p>
+
+<details>
+<summary><b>Under-18 approval, step by step</b></summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#102a6b','primaryTextColor':'#ffffff','actorBkg':'#102a6b','actorTextColor':'#ffffff','signalColor':'#0c1b45','noteBkgColor':'#fbf3dc','fontFamily':'Helvetica'}}}%%
+sequenceDiagram
+    actor S as Student (under 18)
+    participant J as JKY-Folder
+    actor P as Parent or guardian
+    S->>J: Sign up with month and year of birth and a parent's email
+    J-->>S: Waiting page (no documents yet)
+    J->>P: Email with a 7-day approval link
+    P->>J: Approve (name, relationship, consent)
+    J-->>S: Account unlocked
+    J->>P: Email with a link to withdraw at any time
+    P-->>J: Withdraw (optional)
+    J-->>S: Account and documents erased
+```
+
+</details>
+
+| Layer | Built with |
+| --- | --- |
+| Browser | React 19, TypeScript, Vite, PDF.js, canvas image processing, installable web app |
+| Server | Node.js 22, Express 5, zod validation, helmet, per-session rate limits, CSRF tokens |
+| Workers | Separate inspection process (PDF.js text, Tesseract English OCR), ClamAV scanning, mail and Web Push queues |
+| Data | SQLite metadata, private content-hashed originals, encrypted backups, deletion ledger |
+
+## Get started
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open **http://127.0.0.1:5173** and choose **Explore the demo**. The demo has fictional documents, an isolated account and a real working review workflow. You can also create your own development account; under-18 applicants are approved by a parent or guardian by email. Use synthetic documents while public launch gates remain open.
+Open **http://127.0.0.1:5173**, then choose **Explore the demo** (fictional documents) or create an account. Emails such as password resets and guardian approvals go to a local outbox in development; read the newest with `npm run outbox -- latest`.
 
-## What works
+Requires **Node.js 22.12 or newer**. Use synthetic documents until the public launch checks below are complete.
 
-New accounts show an upload entry. Application folders and document/checklist/report navigation appear after files are supplied; reports are saved only when you run a review. No starter or reference checklist is selected automatically. Empty folders are hidden from navigation, and removing the last file returns to the upload entry.
-
-- Account registration, sign-in, display-name updates, password changes, session revocation and account deletion.
-- Two themes of three colours each: **Gold** (white, royal blue, gold leaf) and **Silver** (black, white, brushed silver). They follow the device or a saved choice, switch with a circular reveal, and every colour pair meets WCAG AA.
-- A workspace organised like a physical file: index-tab navigation, an application "file cover" with a deadline stamp, a per-item checklist strip instead of a single readiness score, a grouped checklist ledger, a folder-pocket drop zone and a printable, stamped report.
-- An interactive landing page whose example folder is built from the real reference checklist, with one orchestrated intro (3D folder, drawn ticks, an embossed seal) and scroll reveals.
-- Motion that answers actions: sliding tabs and page transitions, metallic sheen and pointer glare, skeleton loaders, toast timers. A persistent pause control and system reduced-motion stop all of it.
-- A command palette (Ctrl + .) that searches actions, checklist items, documents and applications; files dropped on any page go to the current application; toasts offer the next step.
-- No hard-coded product data in the browser: limits, profile questions, conditions, starters and reference checklists come from the public `/api/catalog`, and packet details include the server-resolved checklist and live evaluation.
-- An application portfolio with real progress counts, search, sorting, deadlines, archive and restore.
-- College, scholarship, job and custom checklist starters; instruction-line import and editable requirements.
-- Optional items, profile conditions, file formats, custom size limits and literal text checks on linked PDF pages.
-- A versioned UCEED 2027 reference checklist with explicit unknown profile answers.
-- Private PDF/JPEG intake with per-file batch results, bounded asynchronous inspection, retries and duplicate detection.
-- Actual PDF page previews with pagination and zoom, page-text extraction, JPEG previews and private original downloads.
-- Requirement-to-document/page evidence links, multiple reviewed components or accepted alternatives, and clearly labelled personal review notes.
-- Source snapshot hashes, exact obligation anchors, a curator draft/review/publication workflow and visible source-change handling.
-- Structured fact confirmation, manual transcription, immutable correction history and confirmed-value comparison.
-- Requirement-specific size, page, image-dimension and confirmed-date checks.
-- Local English OCR for image-only PDF pages and JPEGs, with coordinates, confidence, uncertainty warnings and conservative evidence suggestions.
-- Resumable uploads: originals travel in saved 512 KB chunks; a dropped connection retries with backoff, waits out offline periods and continues from the last saved chunk by itself. Unfinished uploads are listed with how much is saved, and the same file finishes from any tab or device within 24 hours.
-- Instructions PDF to draft checklist: proposals with exact page anchors, joined wrapped lines, document lists under headings, size/pixel/page/format limits read from the wording and suggested conditions (for example "SC/ST candidates"). Review shows the source page beside each proposal; nothing is activated until you decide every item and confirm.
-- Fit a photo or signature to a checklist item's pixel and file-size limits in the browser: crop with the mouse, touch or keyboard, rotate, whiten signature paper, and see every check pass before saving it as a new version. The original is kept.
-- Under-18 applicants can sign up: a parent or guardian approves by email before any document is added, and can withdraw later, which deletes the account. Only the date the applicant turns 18 is stored.
-- Name and date of birth compared across documents: capitals, titles, punctuation and date formats match; spelling, initials, order, missing middle names and swapped day/month are named, with parents' and schools' names ignored.
-- My documents: every original once, with the applications that use it. Add any of them to another application without uploading again.
-- Password recovery and email verification with single-use, 30-minute links, plus emailed reminders through a background worker. In development without SMTP, emails are saved to a local outbox (`npm run outbox`) so recovery and guardian approval work out of the box.
-- Reminders on closed browsers through Web Push (RFC 8291/8292, built-in crypto): turn notifications on per device, send a test, and receive generic deadline and source-change notices with no titles or file names on the lock screen.
-- Contact support from Help without sending documents: urgent wrong-result and privacy reports are prioritised, and sharing an application with support is opt-in, limited to 24 or 72 hours, revocable and recorded in your activity.
-- Offline review workbooks for the independent reviewer of a rule pack and for blind benchmark labelling; their downloads are verified by the existing review and adjudication commands.
-- Private in-app deadline/source reminders and preferences. Rate limits suit students on a shared hostel or college network: requests are counted per signed-in session, only failed sign-ins and link attempts count towards the guessing limit, and email sends and new accounts have their own per-network limits.
-- Encrypted local backups, exact-object integrity checks and post-backup deletion replay on restoration.
-- Conservative technical checks, missing evidence, unknown applicability and review-needed states.
-- Versioned review snapshots, stale-report notices, JSON exports, printable reports and private ZIP folder downloads.
-- Application URLs that retain the selected section on refresh and support browser Back/Forward.
-- Search across requirements and extracted document text, filters, real account activity, help and privacy controls.
-- Deletion of active documents, extracted pages, facts, links, jobs, reports and account sessions; recovery replays deletion records.
-
-**A reviewed item is not a guarantee of authenticity, eligibility or institutional acceptance.** Starters are editable organizing suggestions, not official application rules. Instruction import creates one item per nonempty line; you confirm its meaning and conditions. The UCEED pack is a limited reference, not an independently approved complete official checklist. English OCR is a reading aid; uncertain scans and unsupported languages require manual review. Automatic certificate judgments are not implemented.
-
-## Verify the application
+## Put it online
 
 ```sh
-npm run check
-npx playwright install chromium
-npm run test:e2e
+cp .env.example .env            # set APP_ORIGIN, SMTP and BACKUP_PASSWORD
+DOMAIN=jkyfolder.example docker compose --profile https --profile scan up -d
 ```
 
-The verification suite has **453 domain/API/worker/benchmark tests** and **58 desktop/mobile browser checks** (the two offline reviewer workbooks run on desktop only), plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, photo fitting that saves a passing new version, guardian approval and withdrawal through the outbox, name and date-of-birth comparison, reuse from My documents, uploads that recover from dropped connections, offline periods and reloads, instructions-PDF drafting and review, password reset through the development outbox, Web Push encryption and VAPID signing against the RFC formats, support requests with time-limited access, reviewer workbooks whose downloads pass the real review and adjudication gates, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, quick actions, real file drops, account-menu interaction, the example folder's keyboard tabs, persistent animation controls, reduced motion, light/dark themes, drop-anywhere intake, palette search, phone-width overflow against the visual viewport, and automated accessibility across core screens and dialogs in both themes. Browser tests run desktop and mobile against separate fresh servers, using isolated ports and disposable synthetic accounts independent of your personal local data. This keeps the expanded suite below the normal per-server authentication limits. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
+That runs the app with automatic HTTPS and virus scanning on any small server. On Render, create a **Blueprint** from this repository ([`render.yaml`](render.yaml)). Details: [deployment guide](docs/engineering/DEPLOY.md).
 
-GitHub Actions runs the checks on pushes and pull requests and retains browser failure traces for seven days. Application source can be formatted with `npm run format`.
+## Quality
 
-## Architecture and boundaries
+```sh
+npm run check        # TypeScript, 462 unit and API tests, production build
+npm run test:e2e     # 60 desktop and mobile browser journeys with accessibility scans
+```
 
-React + TypeScript + Vite client; Express API; SQLite metadata; private filesystem originals; durable document jobs and a separate inspection process. Data lives in the ignored `.data` directory and is never a public asset. The current runtime is intended for a **local single-instance development release**.
+Every push runs both in GitHub Actions. Browser tests cover real uploads and OCR, interrupted uploads, the photo fixer, guardian approval through the outbox, both themes, keyboard use, phone widths and automated WCAG 2.1 AA scans.
 
-Read the [review-engine contracts](docs/engineering/REVIEW_ENGINE.md), [runbook](docs/engineering/RUNBOOK.md), [implementation status](docs/engineering/IMPLEMENTATION_STATUS.md), [release gates](docs/engineering/RELEASE_GATES.md) and [security notes](SECURITY.md) before operating it. Production hosting, independently reviewed rule-pack completeness, managed storage, hardened isolation, automated offsite recovery operations, legal review, paid-demand validation and payment processing remain required startup work. The 312 author-labelled critical-negative cases are internal regression evidence; independent held-out benchmark adjudication remains open.
+## Project map
 
-This implementation has not been publicly deployed or certified as ready for real sensitive applicant documents.
+```
+src/        Browser app: views, components, photo fitting, themes and motion
+server/     API, inspection jobs, uploads, mail, push, guardian approval, backups, scanning
+shared/     Checklist evaluation, fact extraction, name/date matching, document types
+tests/      Unit/API tests and Playwright browser journeys
+docs/       Engineering contracts, operations runbook, startup plan and brand
+```
 
-## Preview and startup plan
+## Documentation
 
-[Motion preview](docs/engineering/previews/interactions.webm) · [Landing, Silver](docs/engineering/screenshots/landing-silver.png) · [Example folder](docs/engineering/screenshots/workflow-preview.png) · [Checklist](docs/engineering/screenshots/checklist.png) · [Report](docs/engineering/screenshots/report.png) · [Quick actions](docs/engineering/screenshots/quick-actions.png) · [First-use workspace](docs/engineering/screenshots/welcome.png) · [Application setup](docs/engineering/screenshots/application-setup.png) · [Application portfolio](docs/engineering/screenshots/applications.png) · [PDF preview](docs/engineering/screenshots/pdf-preview.png) · [Mobile workspace](docs/engineering/screenshots/mobile.png) · [Sign-in](docs/engineering/screenshots/sign-in.png) · [Original logo concept](docs/brand/jky-folder-logo-concept.png)
-
-The original **29,354-line startup implementation plan** remains preserved as a dated specification across the [master plan](IMPLEMENTATION_PLAN.md) and six detailed volumes. It contains 96 workstreams, 576 deliverables and 2,304 acceptance situations. Implementation references are mapped in the release-gate document; business and expansion deliverables are not marked complete by the existence of code.
-
-| Volume | Subject |
+| Read this | For |
 | --- | --- |
-| [01](docs/plan/01-strategy-product-brand.md) | Strategy, discovery, product experience and brand |
-| [02](docs/plan/02-requirements-documents-evidence.md) | Requirements, conditional rules, documents and evidence |
-| [03](docs/plan/03-architecture-data-delivery.md) | Architecture, contracts, persistence and delivery |
-| [04](docs/plan/04-trust-privacy-quality.md) | Security, privacy, evaluation and release assurance |
-| [05](docs/plan/05-operations-pricing-launch.md) | Operations, pricing, launch and customer support |
-| [06](docs/plan/06-roadmap-growth-governance.md) | Roadmap, growth, expansion and governance |
+| [Every feature](docs/engineering/FEATURES.md) | The complete list of what works today |
+| [Applicant tools](docs/engineering/APPLICANT_TOOLS.md) | Photo fixer, under-18 approval, name/date check, My documents |
+| [Deployment](docs/engineering/DEPLOY.md) | Docker, Render, HTTPS, backups, virus scanning |
+| [Runbook](docs/engineering/RUNBOOK.md) | Running, checking and recovering the service |
+| [Intake and recovery](docs/engineering/INTAKE_AND_RECOVERY.md) · [Email](docs/engineering/ACCOUNT_EMAIL.md) · [Review engine](docs/engineering/REVIEW_ENGINE.md) | Contracts behind uploads, mail and evaluation |
+| [Release gates](docs/engineering/RELEASE_GATES.md) · [Status](docs/engineering/IMPLEMENTATION_STATUS.md) · [Security](SECURITY.md) | What is done and what must happen before public launch |
+| [Startup plan](IMPLEMENTATION_PLAN.md) | 96 workstreams across strategy, product, trust, operations and growth |
 
-[Research sources](docs/SOURCES.md) · [Brand brief](docs/brand/LOGO_BRIEF.md)
+## Before public launch
 
-Repository owner and sole author of publication commits: **kartikeyajay2006**.
+The software is complete for a private pilot. These need people rather than code:
+
+- An independent reviewer signs off the UCEED checklist and the correctness test answers (offline review workbooks are ready).
+- A lawyer reviews privacy, the under-18 policy and the terms; an outside tester runs a security review.
+- Real SMTP credentials, a domain and hosting; then a pilot with real students.
+
+A reviewed item means the file checks passed and you confirmed the content yourself. It is never a guarantee of authenticity, eligibility or acceptance; your institution decides.
+
+<p align="center"><sub>Built and maintained by <b>kartikeyajay2006</b>.</sub></p>
