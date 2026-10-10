@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { prepareOfficialPack } from './official-pack';
 import { createStore } from './store';
 import { saveDraft, transitionPack, digest } from './rule-packs';
+import { packWorkbook } from './review-workbook';
 import type { RulePack, SourceSnapshot } from '../shared/model';
 const [command, ...args] = process.argv.slice(2);
 const flag = (name: string) => {
@@ -115,6 +116,15 @@ try {
         representation: snapshot.representation,
       }),
     );
+  } else if (command === 'review-sheet') {
+    // An offline HTML workbook for the independent reviewer; it produces the signed review file.
+    if (!flag('dossier') || !flag('out'))
+      throw Error('Use review-sheet --dossier <file> --out <file.html>.');
+    writeFileSync(flag('out'), packWorkbook(JSON.parse(readFileSync(flag('dossier'), 'utf8'))), {
+      mode: 0o600,
+      flag: 'wx',
+    });
+    console.log(JSON.stringify({ workbook: flag('out') }));
   } else if (command === 'draft') {
     const pack = JSON.parse(readFileSync(flag('file'), 'utf8')) as RulePack;
     console.log(JSON.stringify(saveDraft(store, pack, flag('actor'))));
@@ -144,7 +154,7 @@ try {
     );
   } else
     throw Error(
-      'Use capture --id --url --title; draft --file --actor; review/publish/retire --id --version --actor; or inspect.',
+      'Use capture --id --url --title; prepare-uceed; review-sheet --dossier --out; draft --file --actor; review/publish/retire --id --version --actor; or inspect.',
     );
 } finally {
   store.db.close();

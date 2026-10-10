@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { z } from 'zod';
-import corpus from '../tests/fixtures/benchmark-v2.json';
+import corpus from '../tests/fixtures/benchmark-v2.json' with { type: 'json' };
+import { benchmarkWorkbook, type BlindExport } from './review-workbook';
 const digest = (v: unknown) => createHash('sha256').update(JSON.stringify(v)).digest('hex');
 export const blindBenchmark = () => ({
   version: corpus.version,
@@ -88,6 +89,12 @@ if (process.argv[1]?.endsWith('benchmark-review.ts')) {
         2,
       ),
     );
+  } else if (command === 'sheet' && file && out) {
+    // An offline HTML labelling workbook built from a blind export; it produces reviewer labels.
+    writeFileSync(out, benchmarkWorkbook(JSON.parse(readFileSync(file, 'utf8')) as BlindExport), {
+      mode: 0o600,
+      flag: 'wx',
+    });
   } else if (command === 'adjudicate' && file && out)
     writeFileSync(
       out,
@@ -95,6 +102,6 @@ if (process.argv[1]?.endsWith('benchmark-review.ts')) {
     );
   else
     throw Error(
-      'Use export <blind-output.json> or adjudicate <reviewer-labels.json> <report.json>.',
+      'Use export <blind-output.json>, sheet <blind-output.json> <workbook.html> or adjudicate <reviewer-labels.json> <report.json>.',
     );
 }

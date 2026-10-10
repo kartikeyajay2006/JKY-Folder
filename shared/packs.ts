@@ -1,6 +1,6 @@
-import referenceSource from './reference-source.json';
-import registrationDraft from './uceed-registration-draft.json';
-import referenceObligations from './reference-obligations.json';
+import referenceSource from './reference-source.json' with { type: 'json' };
+import registrationDraft from './uceed-registration-draft.json' with { type: 'json' };
+import referenceObligations from './reference-obligations.json' with { type: 'json' };
 import type { SourceSnapshot, SourceObligation } from './model';
 import type { RulePack, Requirement, Predicate } from './model';
 const eq = (field: string, value: string) => ({ op: 'eq', field, value }) as Predicate;
