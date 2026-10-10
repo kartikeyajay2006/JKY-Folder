@@ -140,3 +140,16 @@ See [intake and recovery](INTAKE_AND_RECOVERY.md), [official review and benchmar
 Rate limiting now counts requests per signed-in session, with a per-address backstop, so applicants behind one shared network address no longer exhaust each other's allowance.
 
 Verification: 437 domain/API/worker/benchmark tests, 26 desktop and 24 mobile browser scenarios (the reviewer workbooks are desktop-only), TypeScript and the production build pass. Two independent reviews (rule-pack completeness and benchmark labels) remain human evidence gates; the software only enforces and records them.
+
+## Applicant tools revision (11 October 2026)
+
+| Request | State | What exists | Limits |
+| --- | --- | --- | --- |
+| Photo and signature fixer | Implemented | Crop, rotate, resize and compress in the browser to the checklist's limits or typed sizes; signature background whitening; every check shown before saving; saved as a new version with lineage and optional evidence move | JPEG only; the evaluator re-checks the saved file; no face-quality judgement |
+| Under-18 applicants | Implemented locally | Age choice at sign-up, guardian approval by email, locked processing until approval, waiting page, decline, change of guardian, withdrawal with erasure, 14-day expiry, end at 18 | Guardian identity is control of an email address; legal review open (gate 8) |
+| Name and date-of-birth match | Implemented | Classified comparison across documents, chosen or majority reference, unconfirmed values marked, report concerns name the difference; extraction ignores parents' and schools' names | English OCR; documents inspected earlier keep their earlier extracted values |
+| Upload once, use many times | Implemented | My documents library with uses, Add to…, From my documents picker, independent copies with inspection and confirmed facts | Copies count toward each application's limits |
+
+Sign-in limits now count only failed attempts (30 per 15 minutes per address), with separate limits for email sends (20 per 15 minutes) and new accounts (100 per hour), so a classroom on one network can register while guessing and email flooding stay limited.
+
+Verification: 453 domain/API/worker/benchmark tests, 30 desktop and 28 mobile browser scenarios, TypeScript and the production build pass. Evaluator version 2.1.0.

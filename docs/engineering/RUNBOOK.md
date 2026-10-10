@@ -8,7 +8,7 @@ Requires Node.js 22.12 or newer. Verified locally with Node 22.22.0. The lockfil
 2. Optionally copy `.env.example` to `.env` for the backend origin and private data path. Keep the default ports, or use the shared shell variables below.
 3. Run `npm run dev`.
 4. Open `http://127.0.0.1:5173`.
-5. Choose **Explore the demo** for an isolated fictional workspace, or create an adults-only development account.
+5. Choose **Explore the demo** for an isolated fictional workspace, or create a development account (under-18 applicants need a parent or guardian to approve by email).
 
 The web client listens on port 5173 and proxies API requests to port 3001. To customize development ports, set `WEB_PORT`, `PORT` and the matching `APP_ORIGIN` in the shell so both processes receive them:
 
@@ -30,6 +30,8 @@ Older folders without an explicit mode open with a checklist derived from their 
 
 Uploads continue by themselves after a dropped connection and wait while the browser is offline. If you reload or switch devices mid-upload, **Unfinished uploads** offers **Finish upload** for the same file from where it stopped.
 
+**My documents** lists every original once; add one to another application without uploading it again. In Documents, the crop button on a JPEG fits a photo or signature to the checklist's size limits and saves a new version beside the original.
+
 Batch intake reports each file separately. A rejected file does not stop later files from being attempted or remove accepted files. Duplicate bytes return the existing document without a second copy. A lost first-upload response is recovered into the original folder; retrying the same batch reuses that folder. Retry temporary failures or choose a supported replacement. Intake acceptance and successful inspection are separate states.
 
 The report distinguishes supported technical checks and applicant content confirmation. Changing a profile, file, evidence link, checklist or application details makes an earlier report historical. Changing custom requirements or original instruction notes resets prior content confirmations. A newer evaluator version also marks older snapshots historical. Running a fresh review creates a new snapshot. A retry with unchanged revisions, checklist version and evaluator version reuses the existing run.
@@ -44,7 +46,7 @@ The workspace uses top navigation throughout. On narrow screens, the horizontal 
 
 Use **Quick actions** or **Ctrl/Cmd + .** to search available actions and sections. Arrow keys move through enabled results, Enter chooses an action, and Escape closes the dialog. Creating applications, choosing uploads and saving reviews invoke the same real workflows as the section controls. The per-item checklist strip opens the report; it does not silently save a new review.
 
-In **Settings & privacy**, update your display name, change your password using the current password, or sign out other sessions. Password changes revoke previous sessions and rotate the current session/CSRF token. Email verification and **Forgot password** work when SMTP is configured, or with `MAIL_TRANSPORT=outbox` during development.
+In **Settings & privacy**, update your display name, change your password using the current password, or sign out other sessions. Password changes revoke previous sessions and rotate the current session/CSRF token. Email verification and **Forgot password** work when SMTP is configured, or through the local outbox during development.
 
 ## Document limits
 
@@ -91,7 +93,8 @@ The UCEED 2027 reference checklist is not a reviewed complete official pack. Edi
 
 ## Development email, notifications and support
 
-- `MAIL_TRANSPORT=outbox npm run dev` saves recovery, verification and reminder emails to `.data/outbox`; read them with `npm run outbox` or `npm run outbox -- latest`. Not available in production.
+- Without SMTP settings, `npm run dev` saves recovery, verification, guardian and reminder emails to `.data/outbox`; read them with `npm run outbox` or `npm run outbox -- latest`. `MAIL_TRANSPORT=none` switches email off. Never available in production.
+- Under-18 sign-up: the guardian approves from the emailed link; until then the applicant sees a waiting page and cannot add documents. Accounts not approved in 14 days are erased by the hourly sweep. See [applicant tools](APPLICANT_TOOLS.md).
 - Notifications use VAPID keys generated into `.data/vapid.json` on first start, or `VAPID_PUBLIC_KEY`/`VAPID_PRIVATE_KEY`/`VAPID_SUBJECT` from the environment. Browsers only allow push on `localhost`/`127.0.0.1` or HTTPS.
 - Help → **Contact support** creates a request with a reference such as `JKY-1A2B3C4D`. Applicants choose whether support may see one application for 24 or 72 hours and can revoke it. Operators work from the data directory:
 

@@ -46,6 +46,10 @@ When deleting a document, saved runs for that packet are purged instead of retai
 
 Source-registry/publication tooling, multiple evidence anchors, structured confirmations/correction history, richer deterministic checks, local English OCR, evidence suggestions, in-app reminders and encrypted local recovery are implemented. See [review-engine contracts](REVIEW_ENGINE.md) for exact limits and operator commands. The expanded registration/FAQ/brochure coverage inventory is author-mapped and remains a draft. Completeness decisions and blind benchmark label import now enforce review provenance, but actual independent sign-off remains pending. The synthetic benchmark labels await independent adjudication. Neither extension closes independent rule-pack completeness, held-out benchmark, OS sandbox, automated offsite recovery or public deployment gates.
 
+## Applicant tools (JF-04-06, JF-02-10, JF-06-09, JF-06-11)
+
+Under-18 applicants can register with email approval from a parent or guardian; nothing personal is processed before approval, withdrawal erases the account, unapproved accounts are erased after 14 days, and only the date of turning 18 is stored. Gate 8 still applies: the age boundary, the strength of guardian verification (control of an email address) and child-data restrictions need qualified legal review before public launch. Name and date-of-birth comparison, browser-side photo fitting and reuse of originals across applications are implemented; see [applicant tools](APPLICANT_TOOLS.md). They are aids, not identity or acceptance decisions.
+
 ## Support access (JF-05-04)
 
 Applicants can contact support from Help without attaching documents. Wrong-result and privacy reports are prioritised. Sharing an application with support is opt-in, limited to 24 or 72 hours, revocable, unavailable for demo workspaces and recorded as grant, use, revocation and closure events in the applicant's activity. Operators see a redacted summary only while access is active. Staffing, response targets, operator identity verification and an operator console with role-based access remain open, under gate 7.
