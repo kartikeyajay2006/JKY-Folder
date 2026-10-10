@@ -59,7 +59,11 @@ test('fresh account has useful distinct sections and accessible setup', async ({
     ).toBeVisible();
     await expectAccessible(page);
     await nav(page, 'Activity');
-    await expect(page.getByRole('heading', { name: 'Account created', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Account created', exact: true })).toHaveCount(
+      0,
+    );
+    expect(await (await page.request.get('/api/activity')).json()).toEqual([]);
+    expect(await (await page.request.get('/api/notifications')).json()).toEqual([]);
     await nav(page, 'Overview');
     await page.getByRole('button', { name: 'Create your first application' }).click();
     await expectAccessible(page);

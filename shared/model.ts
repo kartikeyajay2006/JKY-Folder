@@ -31,6 +31,21 @@ export interface Requirement {
   extension: '.pdf' | '.jpg' | 'any';
   optional?: boolean;
   maxBytes?: number;
+  minBytes?: number;
+  minPages?: number;
+  maxPages?: number;
+  minWidth?: number;
+  maxWidth?: number;
+  minHeight?: number;
+  maxHeight?: number;
+  evidenceMode?: 'all' | 'any';
+  evidenceSlots?: string[];
+  dateCheck?: {
+    field: Exclude<FactKind, 'name'>;
+    operation: 'on_or_before' | 'on_or_after';
+    reference: string;
+  };
+  sourceAnchor?: string;
   expectedText?: string;
   sourceSection: string;
   reviewHint: string;
@@ -45,6 +60,66 @@ export interface RulePack {
   assurance: 'reference' | 'user_defined';
   requirements: Requirement[];
   limitations: string[];
+  stage?: string;
+  lifecycle?: 'draft' | 'reviewed' | 'published' | 'retired';
+  sources?: SourceSnapshot[];
+  obligations?: SourceObligation[];
+  authoredBy?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
+}
+export interface SourceSnapshot {
+  id: string;
+  url: string;
+  title: string;
+  retrievedAt: string;
+  sha256: string;
+  content?: string;
+  representation?: 'browser_rendered_text' | 'normalized_html_text';
+}
+export interface SourceObligation {
+  id: string;
+  sourceId: string;
+  anchor: string;
+  instruction: string;
+  disposition: 'implemented' | 'review_only' | 'unsupported';
+  requirementIds: string[];
+  rationale: string;
+}
+export type FactKind = 'name' | 'birth_date' | 'issue_date' | 'expiry_date';
+export interface FactRevision {
+  revision: number;
+  value: string;
+  confirmed: boolean;
+  actor: string;
+  reason: string;
+  createdAt: string;
+}
+export interface DocumentFact {
+  id: string;
+  kind: FactKind;
+  page: number;
+  originalText: string;
+  origin?: 'extracted' | 'manual';
+  value: string;
+  confidence: number;
+  box?: [number, number, number, number];
+  history: FactRevision[];
+}
+export interface TextToken {
+  text: string;
+  box: [number, number, number, number];
+  confidence: number;
+}
+export interface DocumentPage {
+  number: number;
+  text: string;
+  method?: 'native' | 'ocr' | 'unreadable';
+  width?: number;
+  height?: number;
+  confidence?: number;
+  tokens?: TextToken[];
+  warning?: string;
 }
 export interface DocumentRecord {
   id: string;
@@ -55,19 +130,29 @@ export interface DocumentRecord {
   mime: string;
   status: 'processing' | 'ready' | 'error';
   pageCount: number;
-  pages: { number: number; text: string }[];
+  pages: DocumentPage[];
+  facts?: DocumentFact[];
+  extractionVersion?: string;
   width?: number;
   height?: number;
   error?: string;
   createdAt: string;
 }
-export interface EvidenceLink {
+export interface EvidenceAnchor {
   documentId: string;
   pageFrom: number;
   pageTo: number;
   review: 'unreviewed' | 'confirmed' | 'concern';
   note: string;
+  slot?: string;
+  actor?: string;
+  reviewedAt?: string;
 }
+export interface EvidenceLink extends EvidenceAnchor {
+  additional?: EvidenceAnchor[];
+}
+export const evidenceAnchors = (link?: EvidenceLink): EvidenceAnchor[] =>
+  link ? [link, ...(link.additional || [])] : [];
 export interface Packet {
   id: string;
   title: string;
@@ -83,6 +168,7 @@ export interface Packet {
   deadline?: string;
   notes?: string;
   archived?: boolean;
+  packSnapshot?: RulePack;
 }
 export type ApplicationKind = 'college' | 'scholarship' | 'job' | 'custom';
 export type CheckState =
@@ -98,6 +184,23 @@ export interface CheckResult {
   sourceUrl: string;
   sourceSection: string;
   evidence?: { documentId: string; name: string; hash: string; pageFrom: number; pageTo: number };
+  evidenceSet?: {
+    documentId: string;
+    name: string;
+    hash: string;
+    pageFrom: number;
+    pageTo: number;
+    slot?: string;
+    state: CheckState;
+    reason: string;
+  }[];
+  factRevisions?: {
+    documentId: string;
+    factId: string;
+    revision: number;
+    value: string;
+    page: number;
+  }[];
   reviewNote?: string;
   verification: 'none' | 'technical' | 'user';
 }
@@ -113,6 +216,13 @@ export interface EvaluationRun {
   limitations: string[];
   counts: Record<CheckState, number>;
   checklist?: { id: string; title: string; sourceUrl: string; assurance: RulePack['assurance'] };
+  sourceSnapshots?: SourceSnapshot[];
+  sourceObligations?: SourceObligation[];
+  consistencyConcerns?: {
+    kind: 'name' | 'birth_date';
+    facts: { documentId: string; name: string; factId: string; value: string; page: number }[];
+    reason: string;
+  }[];
 }
 export interface PacketDetail {
   packet: Packet;
@@ -123,6 +233,34 @@ export interface PacketDetail {
   /** A live, unsaved evaluation of the current packet revision. */
   live: EvaluationRun;
   evaluatorVersion: string;
+  sourceChanged?: boolean;
+  suggestions?: EvidenceSuggestion[];
+  consistencyConcerns?: {
+    kind: 'name' | 'birth_date';
+    facts: { documentId: string; name: string; factId: string; value: string; page: number }[];
+    reason: string;
+  }[];
+}
+export interface EvidenceSuggestion {
+  requirementId: string;
+  documentId: string;
+  pageFrom: number;
+  pageTo: number;
+  confidence: number;
+  reason: string;
+}
+export interface Reminder {
+  id: string;
+  packetId: string;
+  kind: 'deadline' | 'source_changed';
+  title: string;
+  message: string;
+  createdAt: string;
+  readAt?: string;
+}
+export interface NotificationPreferences {
+  deadlines: boolean;
+  sourceChanges: boolean;
 }
 export interface User {
   id: string;

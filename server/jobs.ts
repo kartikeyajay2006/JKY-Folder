@@ -1,6 +1,7 @@
 import { fork, type ChildProcess } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
+import { extractFacts } from '../shared/facts';
 import type { Store } from './store';
 import type { DocumentRecord, Packet } from '../shared/model';
 export function startJobs(store: Store) {
@@ -53,7 +54,7 @@ export function startJobs(store: Store) {
             ok: false,
             error: 'Inspection reached its time limit. Try a smaller supported file.',
           });
-        }, 15000);
+        }, 45000);
         proc.once('message', (value) => {
           finish(value as Parameters<typeof finish>[0]);
           proc.kill();
@@ -80,6 +81,7 @@ export function startJobs(store: Store) {
           ...(result.result || {}),
           status: result.ok ? 'ready' : 'error',
           error: result.ok ? undefined : result.error,
+          facts: result.ok ? extractFacts(result.result?.pages || []) : [],
         };
         store.db
           .prepare('UPDATE documents SET payload=? WHERE id=?')
@@ -96,9 +98,12 @@ export function startJobs(store: Store) {
     }
   }
   void tick();
-  return () => {
-    stopped = true;
-    clearInterval(timer);
-    child?.kill('SIGKILL');
-  };
+  return Object.assign(
+    () => {
+      stopped = true;
+      clearInterval(timer);
+      child?.kill('SIGKILL');
+    },
+    { isIdle: () => !running },
+  );
 }

@@ -476,6 +476,122 @@ export function RequirementRows({
                 />
               </label>
             </div>
+            <div className="form-columns">
+              {(
+                [
+                  ['minBytes', 'Minimum file size (bytes)', 0, limits.fileBytes],
+                  ['minPages', 'Minimum pages', 1, 20],
+                  ['maxPages', 'Maximum pages', 1, 20],
+                  ['minWidth', 'Minimum image width (px)', 1, 20000],
+                  ['maxWidth', 'Maximum image width (px)', 1, 20000],
+                  ['minHeight', 'Minimum image height (px)', 1, 20000],
+                  ['maxHeight', 'Maximum image height (px)', 1, 20000],
+                ] as const
+              ).map(([field, label, min, max]) => (
+                <label key={field}>
+                  {label}
+                  <input
+                    type="number"
+                    min={min}
+                    max={max}
+                    value={r[field] ?? ''}
+                    onChange={(e) =>
+                      change(i, { [field]: e.target.value ? Number(e.target.value) : undefined })
+                    }
+                  />
+                </label>
+              ))}
+              <label>
+                Evidence combination
+                <select
+                  value={r.evidenceMode || 'all'}
+                  onChange={(e) =>
+                    change(i, {
+                      evidenceMode: e.target.value as 'all' | 'any',
+                      evidenceSlots: e.target.value === 'any' ? [] : r.evidenceSlots,
+                    })
+                  }
+                >
+                  <option value="all">All linked components required</option>
+                  <option value="any">Any accepted alternative</option>
+                </select>
+              </label>
+            </div>
+            {r.evidenceMode !== 'any' && (
+              <label>
+                Required evidence components (comma separated)
+                <input
+                  maxLength={800}
+                  defaultValue={(r.evidenceSlots || []).join(', ')}
+                  onBlur={(e) =>
+                    change(i, {
+                      evidenceSlots: e.target.value
+                        .split(',')
+                        .map((s) => s.trim())
+                        .filter(Boolean),
+                    })
+                  }
+                  placeholder="e.g. Form 1, Form 2"
+                />
+              </label>
+            )}
+            <fieldset>
+              <legend>Date rule from your instructions</legend>
+              <label>
+                Date field
+                <select
+                  value={r.dateCheck?.field || ''}
+                  onChange={(e) =>
+                    change(i, {
+                      dateCheck: e.target.value
+                        ? {
+                            field: e.target.value as 'birth_date' | 'issue_date' | 'expiry_date',
+                            operation: r.dateCheck?.operation || 'on_or_before',
+                            reference: r.dateCheck?.reference || '',
+                          }
+                        : undefined,
+                    })
+                  }
+                >
+                  <option value="">No date rule</option>
+                  <option value="birth_date">Date of birth</option>
+                  <option value="issue_date">Issue date</option>
+                  <option value="expiry_date">Expiry date</option>
+                </select>
+              </label>
+              {r.dateCheck && (
+                <div className="form-columns">
+                  <label>
+                    Comparison
+                    <select
+                      value={r.dateCheck.operation}
+                      onChange={(e) =>
+                        change(i, {
+                          dateCheck: {
+                            ...r.dateCheck!,
+                            operation: e.target.value as 'on_or_before' | 'on_or_after',
+                          },
+                        })
+                      }
+                    >
+                      <option value="on_or_before">On or before</option>
+                      <option value="on_or_after">On or after</option>
+                    </select>
+                  </label>
+                  <label>
+                    Reference date
+                    <input
+                      type="date"
+                      value={r.dateCheck.reference}
+                      onChange={(e) =>
+                        change(i, { dateCheck: { ...r.dateCheck!, reference: e.target.value } })
+                      }
+                      required
+                    />
+                  </label>
+                </div>
+              )}
+            </fieldset>
             <label>
               Phrase expected in the selected pages <span className="optional-label">optional</span>
               <input

@@ -34,23 +34,23 @@ Export JSON for machine-readable provenance, or use **Print / PDF** for a printa
 
 **Download folder** exports a ZIP containing exact inspected originals, the current checklist/review manifest and coverage notes. Processing or failed files are excluded and identified in the manifest. The ZIP is a private export of originals; it does not transform files for a specific institution’s upload portal.
 
-Use **Applications** to search, sort, open, archive or restore your applications. Archive preserves documents and history; deletion removes them. Dates are tracked as local calendar deadlines without email or push notifications. Application URLs preserve your current application and section across refresh and browser navigation; server ownership checks still apply.
+Use **Applications** to search, sort, open, archive or restore your applications. Archive preserves documents and history; deletion removes them. Deadlines have private in-app reminders using Asia/Kolkata calendar dates. Reminder preferences are in Settings & privacy. Email and push delivery are not enabled. Application URLs preserve your current application and section across refresh and browser navigation; server ownership checks still apply.
 
 The workspace uses top navigation throughout. On narrow screens, the horizontal tabs scroll and keep the selected section visible. Help and settings remain available beside the tabs and in the account menu. **Ctrl/Cmd + K** focuses workspace search. The account menu supports arrow keys and Escape; Escape returns focus to its trigger. Dialogs keep keyboard focus inside and make the header/content inactive until dismissed. Operating-system reduced-motion preferences disable decorative animations and transitions. The visible **Pause animations** control also stops motion; this preference persists in the current browser. **Resume animations** restores it unless the system requests reduced motion.
 
-Use **Quick actions** or **Ctrl/Cmd + .** to search available actions and sections. Arrow keys move through enabled results, Enter chooses an action, and Escape closes the dialog. Creating applications, choosing uploads and saving reviews invoke the same real workflows as the section controls. The readiness ring opens the report; it does not silently save a new review.
+Use **Quick actions** or **Ctrl/Cmd + .** to search available actions and sections. Arrow keys move through enabled results, Enter chooses an action, and Escape closes the dialog. Creating applications, choosing uploads and saving reviews invoke the same real workflows as the section controls. The per-item checklist strip opens the report; it does not silently save a new review.
 
 In **Settings & privacy**, update your display name, change your password using the current password, or sign out other sessions. Password changes revoke previous sessions and rotate the current session/CSRF token. Email verification and password-reset email delivery are not included.
 
 ## Document limits
 
-Local engineering limits are 10 MB per file, 10 files and 30 MB per packet, and 20 pages per PDF. These are service limits, not asserted official application limits. JPEG decoding is bounded to 20 million pixels. Files are inspected in a separate Node process with a 192 MB JavaScript heap budget and a 15-second wall-time deadline.
+Local engineering limits are 10 MB per file, 10 files and 30 MB per packet, and 20 pages per PDF. These are service limits, not asserted official application limits. JPEG decoding is bounded to 20 million pixels. Files are inspected in a separate Node process with a 192 MB JavaScript heap budget and a 45-second wall-time deadline.
 
 These process limits are not a full operating-system sandbox and do not prevent arbitrary native-code resource use. Production isolation requires a separately reviewed sandbox and aggregate capacity policy.
 
 Only PDF and JPEG originals are accepted. The actual file content is inspected. `.jpeg` is accepted into the document library, but the reference requirement checks `.jpg` when that extension is specified. Encrypted, damaged or unsupported files remain unavailable for download and evidence linking. Failed inspection can be retried or the file deleted.
 
-Text-based PDF extraction preserves page numbers. Image-only PDFs do not get OCR. Download and inspect the original when extraction is empty or uncertain. Images remain manual-review evidence.
+Text-based PDF extraction preserves page numbers. Image-only PDF pages and JPEGs use bundled local English OCR, capped at eight pages per document. Extraction records coordinates, confidence and uncertainty warnings. Download and inspect the original when extraction is empty or uncertain. OCR is a reading aid; content still requires explicit applicant review. Confirm or correct structured facts in the document viewer, or add a clearly attributed manual fact when a labelled value was not extracted.
 
 ## Data and deletion
 
@@ -58,7 +58,7 @@ Metadata is in `.data/metadata.sqlite` and originals are in `.data/objects`, unl
 
 Deleting a document removes its active original, extraction and evidence links, and purges saved packet reports to remove retained evidence references. Deleting a packet removes all its documents, jobs and reports. Account deletion removes every owned packet and invalidates sessions. Minimal audit events for a document or packet deletion are retained until account deletion. Demo workspaces expire after 24 hours.
 
-The development release has no automated backups. SQLite WAL free pages and external filesystem backups can retain deleted bytes; active-record deletion is not a forensic erasure guarantee. A production retention and backup-expiration policy still needs review.
+The development release has no automated backups. Operator-triggered encrypted backup and restore, including deletion replay, are described in [review-engine contracts](REVIEW_ENGINE.md). SQLite WAL free pages and external filesystem backups can retain deleted bytes; active-record deletion is not a forensic erasure guarantee. A production retention and backup-expiration policy still needs review.
 
 ## Checks
 
@@ -82,4 +82,4 @@ Do not delete the data directory while a server is running. Stop the server befo
 
 ## Current boundaries
 
-The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. OCR, managed authentication recovery, payments, institutional access, native apps and all public launch gates remain tracked work. Hosting is deliberately deferred while the requested runtime is localhost.
+The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. Additional OCR languages, managed authentication recovery, payments, institutional access, native apps and all public launch gates remain tracked work. Hosting is deliberately deferred while the requested runtime is localhost.

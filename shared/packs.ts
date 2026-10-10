@@ -1,3 +1,6 @@
+import referenceSource from './reference-source.json';
+import referenceObligations from './reference-obligations.json';
+import type { SourceSnapshot, SourceObligation } from './model';
 import type { RulePack, Requirement, Predicate } from './model';
 const eq = (field: string, value: string) => ({ op: 'eq', field, value }) as Predicate;
 const oneOf = (field: string, values: string[]) => ({ op: 'in', field, values }) as Predicate;
@@ -22,12 +25,17 @@ const req = (
 });
 export const uceedPack: RulePack = {
   id: 'uceed-2027-reference',
-  version: '2027.reference.1',
+  version: '2027.reference.2',
   title: 'UCEED 2027',
   cycle: '2027',
   assurance: 'reference',
   sourceUrl: 'https://www.uceed.iitb.ac.in/2027/registration.html',
   checkedAt: '2026-10-10',
+  stage: 'examination registration',
+  sources: [referenceSource as SourceSnapshot],
+  obligations: referenceObligations as SourceObligation[],
+  authoredBy: 'kartikeyajay2006',
+  lifecycle: 'draft',
   requirements: [
     req(
       'photo',
@@ -118,8 +126,15 @@ export const uceedPack: RulePack = {
     'Content confirmations are your own review, not machine verification or institutional approval.',
     'Eligibility, issuer authenticity, certificate validity, portrait quality and legal name equivalence are not verified.',
     'Foreign-national exceptions and accommodation-specific medical evidence require separate official review.',
-    'Scanned PDF text needs manual review; OCR and image content recognition are not available in this version.',
+    'English OCR is a reading aid. Uncertain text, unsupported languages and unreadable pages need manual review.',
   ],
 };
+uceedPack.requirements = uceedPack.requirements.map((r) => ({
+  ...r,
+  sourceAnchor: referenceObligations.find((o) => o.requirementIds.includes(r.id))?.anchor,
+  ...(r.id === 'dyslexia'
+    ? { evidenceMode: 'all' as const, evidenceSlots: ['Form 1', 'Form 2'] }
+    : {}),
+}));
 export const packs = [uceedPack];
 export const findPack = (id: string) => packs.find((p) => p.id === id);

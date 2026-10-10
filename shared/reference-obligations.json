@@ -1,0 +1,179 @@
+[
+  {
+    "id": "photo",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:6937:24",
+    "instruction": "Review portrait recency, framing and identity visibility.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "photo"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "signature",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:7293:29",
+    "instruction": "Inspect signature completeness and background.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "signature"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "age",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:7394:12",
+    "instruction": "Confirm accepted age evidence and its recorded date.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "age"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "qualifying",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:7582:34",
+    "instruction": "Confirm the relevant examination year and certificate.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "qualifying"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "principal",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:7808:9",
+    "instruction": "Compare the appearing-candidate form with its prescribed appendix.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "principal"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "name-change",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:8076:20",
+    "instruction": "Review supporting name-change evidence when names differ.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "name-change"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "category",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:8241:7",
+    "instruction": "Review category-specific forms and permitted alternatives.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "category"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "disability",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:3856:4",
+    "instruction": "Review disability evidence against the relevant appendix.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "disability"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "dyslexia",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:8849:21",
+    "instruction": "Review both forms as separate evidence components.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "dyslexia"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "accommodation",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:9269:14",
+    "instruction": "Review the request and additional medical conditions.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "accommodation"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "nationality",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:9579:23",
+    "instruction": "Review the nationality route and accepted identity evidence.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "nationality"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "oci",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:1583:12",
+    "instruction": "Confirm the card route and relevant issuance boundary.",
+    "disposition": "review_only",
+    "requirementIds": [
+      "oci"
+    ],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "eligibility",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:366:20",
+    "instruction": "Eligibility determination is outside the document review scope.",
+    "disposition": "unsupported",
+    "requirementIds": [],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "medical",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:4557:21",
+    "instruction": "Medical entitlement and accommodation adjudication require official review.",
+    "disposition": "unsupported",
+    "requirementIds": [],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "portal",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:155:26",
+    "instruction": "Portal submission and payment are outside this product.",
+    "disposition": "unsupported",
+    "requirementIds": [],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "brochure",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:1189:20",
+    "instruction": "Separate brochure and appendix completeness review remains necessary.",
+    "disposition": "unsupported",
+    "requirementIds": [],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  },
+  {
+    "id": "verification",
+    "sourceId": "uceed-2027-registration",
+    "anchor": "uceed-2027-registration:10025:28",
+    "instruction": "Issuer authenticity and institutional acceptance are outside this product.",
+    "disposition": "unsupported",
+    "requirementIds": [],
+    "rationale": "Author-mapped registration-page scope; independent completeness approval remains open."
+  }
+]

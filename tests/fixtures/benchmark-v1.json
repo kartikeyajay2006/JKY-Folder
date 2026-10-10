@@ -1,0 +1,3751 @@
+{
+  "version": "1",
+  "provenance": "Author-labelled synthetic cases; independent adjudication remains required.",
+  "reviewStatus": "awaiting_independent_review",
+  "cases": [
+    {
+      "id": "negative-size-below-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "minBytes": 1000
+      },
+      "document": {
+        "size": 999
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "maxBytes": 1000
+      },
+      "document": {
+        "size": 1001
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "minPages": 2
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "maxPages": 1
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "minWidth": 1000
+      },
+      "document": {
+        "width": 999
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "maxWidth": 1000
+      },
+      "document": {
+        "width": 1001
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "minHeight": 1000
+      },
+      "document": {
+        "height": 999
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "maxHeight": 1000
+      },
+      "document": {
+        "height": 1001
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "minWidth": 1000
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-1",
+      "template": "synthetic-template-1",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-1",
+      "template": "synthetic-template-1",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-01"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "minBytes": 1100
+      },
+      "document": {
+        "size": 1099
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "maxBytes": 1100
+      },
+      "document": {
+        "size": 1101
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "minPages": 3
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "maxPages": 2
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "minWidth": 1100
+      },
+      "document": {
+        "width": 1099
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "maxWidth": 1100
+      },
+      "document": {
+        "width": 1101
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "minHeight": 1100
+      },
+      "document": {
+        "height": 1099
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "maxHeight": 1100
+      },
+      "document": {
+        "height": 1101
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "minWidth": 1100
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-2",
+      "template": "synthetic-template-2",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-2",
+      "template": "synthetic-template-2",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-02"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "minBytes": 1200
+      },
+      "document": {
+        "size": 1199
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "maxBytes": 1200
+      },
+      "document": {
+        "size": 1201
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "minPages": 4
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "maxPages": 3
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "minWidth": 1200
+      },
+      "document": {
+        "width": 1199
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "maxWidth": 1200
+      },
+      "document": {
+        "width": 1201
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "minHeight": 1200
+      },
+      "document": {
+        "height": 1199
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "maxHeight": 1200
+      },
+      "document": {
+        "height": 1201
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "minWidth": 1200
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-3",
+      "template": "synthetic-template-3",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-3",
+      "template": "synthetic-template-3",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-03"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "minBytes": 1300
+      },
+      "document": {
+        "size": 1299
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "maxBytes": 1300
+      },
+      "document": {
+        "size": 1301
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "minPages": 5
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "maxPages": 4
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "minWidth": 1300
+      },
+      "document": {
+        "width": 1299
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "maxWidth": 1300
+      },
+      "document": {
+        "width": 1301
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "minHeight": 1300
+      },
+      "document": {
+        "height": 1299
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "maxHeight": 1300
+      },
+      "document": {
+        "height": 1301
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "minWidth": 1300
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-4",
+      "template": "synthetic-template-4",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-4",
+      "template": "synthetic-template-4",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-04"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "minBytes": 1400
+      },
+      "document": {
+        "size": 1399
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "maxBytes": 1400
+      },
+      "document": {
+        "size": 1401
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "minPages": 6
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "maxPages": 5
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "minWidth": 1400
+      },
+      "document": {
+        "width": 1399
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "maxWidth": 1400
+      },
+      "document": {
+        "width": 1401
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "minHeight": 1400
+      },
+      "document": {
+        "height": 1399
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "maxHeight": 1400
+      },
+      "document": {
+        "height": 1401
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "minWidth": 1400
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-5",
+      "template": "synthetic-template-5",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-5",
+      "template": "synthetic-template-5",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-05"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "minBytes": 1500
+      },
+      "document": {
+        "size": 1499
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "maxBytes": 1500
+      },
+      "document": {
+        "size": 1501
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "minPages": 2
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "maxPages": 1
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "minWidth": 1500
+      },
+      "document": {
+        "width": 1499
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "maxWidth": 1500
+      },
+      "document": {
+        "width": 1501
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "minHeight": 1500
+      },
+      "document": {
+        "height": 1499
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "maxHeight": 1500
+      },
+      "document": {
+        "height": 1501
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "minWidth": 1500
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-6",
+      "template": "synthetic-template-6",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-6",
+      "template": "synthetic-template-6",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-06"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "minBytes": 1600
+      },
+      "document": {
+        "size": 1599
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "maxBytes": 1600
+      },
+      "document": {
+        "size": 1601
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "minPages": 3
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "maxPages": 2
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "minWidth": 1600
+      },
+      "document": {
+        "width": 1599
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "maxWidth": 1600
+      },
+      "document": {
+        "width": 1601
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "minHeight": 1600
+      },
+      "document": {
+        "height": 1599
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "maxHeight": 1600
+      },
+      "document": {
+        "height": 1601
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "minWidth": 1600
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-7",
+      "template": "synthetic-template-7",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-7",
+      "template": "synthetic-template-7",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-07"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "minBytes": 1700
+      },
+      "document": {
+        "size": 1699
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "maxBytes": 1700
+      },
+      "document": {
+        "size": 1701
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "minPages": 4
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "maxPages": 3
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "minWidth": 1700
+      },
+      "document": {
+        "width": 1699
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "maxWidth": 1700
+      },
+      "document": {
+        "width": 1701
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "minHeight": 1700
+      },
+      "document": {
+        "height": 1699
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "maxHeight": 1700
+      },
+      "document": {
+        "height": 1701
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "minWidth": 1700
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-8",
+      "template": "synthetic-template-8",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-8",
+      "template": "synthetic-template-8",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-08"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "minBytes": 1800
+      },
+      "document": {
+        "size": 1799
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "maxBytes": 1800
+      },
+      "document": {
+        "size": 1801
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "minPages": 5
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "maxPages": 4
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "minWidth": 1800
+      },
+      "document": {
+        "width": 1799
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "maxWidth": 1800
+      },
+      "document": {
+        "width": 1801
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "minHeight": 1800
+      },
+      "document": {
+        "height": 1799
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "maxHeight": 1800
+      },
+      "document": {
+        "height": 1801
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "minWidth": 1800
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-9",
+      "template": "synthetic-template-9",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-9",
+      "template": "synthetic-template-9",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-09"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "minBytes": 1900
+      },
+      "document": {
+        "size": 1899
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "maxBytes": 1900
+      },
+      "document": {
+        "size": 1901
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "minPages": 6
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "maxPages": 5
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "minWidth": 1900
+      },
+      "document": {
+        "width": 1899
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "maxWidth": 1900
+      },
+      "document": {
+        "width": 1901
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "minHeight": 1900
+      },
+      "document": {
+        "height": 1899
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "maxHeight": 1900
+      },
+      "document": {
+        "height": 1901
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "minWidth": 1900
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-10",
+      "template": "synthetic-template-10",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-10",
+      "template": "synthetic-template-10",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-10"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "minBytes": 2000
+      },
+      "document": {
+        "size": 1999
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "maxBytes": 2000
+      },
+      "document": {
+        "size": 2001
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "minPages": 2
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "maxPages": 1
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "minWidth": 2000
+      },
+      "document": {
+        "width": 1999
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "maxWidth": 2000
+      },
+      "document": {
+        "width": 2001
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "minHeight": 2000
+      },
+      "document": {
+        "height": 1999
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "maxHeight": 2000
+      },
+      "document": {
+        "height": 2001
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "minWidth": 2000
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-11",
+      "template": "synthetic-template-11",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-11",
+      "template": "synthetic-template-11",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-11"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "minBytes": 2100
+      },
+      "document": {
+        "size": 2099
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "maxBytes": 2100
+      },
+      "document": {
+        "size": 2101
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "minPages": 3
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "maxPages": 2
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "minWidth": 2100
+      },
+      "document": {
+        "width": 2099
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "maxWidth": 2100
+      },
+      "document": {
+        "width": 2101
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "minHeight": 2100
+      },
+      "document": {
+        "height": 2099
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "maxHeight": 2100
+      },
+      "document": {
+        "height": 2101
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "minWidth": 2100
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-12",
+      "template": "synthetic-template-12",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-12",
+      "template": "synthetic-template-12",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-12"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "minBytes": 2200
+      },
+      "document": {
+        "size": 2199
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "maxBytes": 2200
+      },
+      "document": {
+        "size": 2201
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "minPages": 4
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "maxPages": 3
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "minWidth": 2200
+      },
+      "document": {
+        "width": 2199
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "maxWidth": 2200
+      },
+      "document": {
+        "width": 2201
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "minHeight": 2200
+      },
+      "document": {
+        "height": 2199
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "maxHeight": 2200
+      },
+      "document": {
+        "height": 2201
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "minWidth": 2200
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-13",
+      "template": "synthetic-template-13",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-13",
+      "template": "synthetic-template-13",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-13"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "minBytes": 2300
+      },
+      "document": {
+        "size": 2299
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "maxBytes": 2300
+      },
+      "document": {
+        "size": 2301
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "minPages": 5
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "maxPages": 4
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "minWidth": 2300
+      },
+      "document": {
+        "width": 2299
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "maxWidth": 2300
+      },
+      "document": {
+        "width": 2301
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "minHeight": 2300
+      },
+      "document": {
+        "height": 2299
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "maxHeight": 2300
+      },
+      "document": {
+        "height": 2301
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "minWidth": 2300
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-14",
+      "template": "synthetic-template-14",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-14",
+      "template": "synthetic-template-14",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-14"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "minBytes": 2400
+      },
+      "document": {
+        "size": 2399
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "maxBytes": 2400
+      },
+      "document": {
+        "size": 2401
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "minPages": 6
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "maxPages": 5
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "minWidth": 2400
+      },
+      "document": {
+        "width": 2399
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "maxWidth": 2400
+      },
+      "document": {
+        "width": 2401
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "minHeight": 2400
+      },
+      "document": {
+        "height": 2399
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "maxHeight": 2400
+      },
+      "document": {
+        "height": 2401
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "minWidth": 2400
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-15",
+      "template": "synthetic-template-15",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-15",
+      "template": "synthetic-template-15",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-15"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "minBytes": 2500
+      },
+      "document": {
+        "size": 2499
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "maxBytes": 2500
+      },
+      "document": {
+        "size": 2501
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "minPages": 2
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "maxPages": 1
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "minWidth": 2500
+      },
+      "document": {
+        "width": 2499
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "maxWidth": 2500
+      },
+      "document": {
+        "width": 2501
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "minHeight": 2500
+      },
+      "document": {
+        "height": 2499
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "maxHeight": 2500
+      },
+      "document": {
+        "height": 2501
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "minWidth": 2500
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-16",
+      "template": "synthetic-template-16",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-16",
+      "template": "synthetic-template-16",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-16"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "minBytes": 2600
+      },
+      "document": {
+        "size": 2599
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "maxBytes": 2600
+      },
+      "document": {
+        "size": 2601
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "minPages": 3
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "maxPages": 2
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "minWidth": 2600
+      },
+      "document": {
+        "width": 2599
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "maxWidth": 2600
+      },
+      "document": {
+        "width": 2601
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "minHeight": 2600
+      },
+      "document": {
+        "height": 2599
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "maxHeight": 2600
+      },
+      "document": {
+        "height": 2601
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "minWidth": 2600
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-17",
+      "template": "synthetic-template-17",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-17",
+      "template": "synthetic-template-17",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-17"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "minBytes": 2700
+      },
+      "document": {
+        "size": 2699
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "maxBytes": 2700
+      },
+      "document": {
+        "size": 2701
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "minPages": 4
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "maxPages": 3
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "minWidth": 2700
+      },
+      "document": {
+        "width": 2699
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "maxWidth": 2700
+      },
+      "document": {
+        "width": 2701
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "minHeight": 2700
+      },
+      "document": {
+        "height": 2699
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "maxHeight": 2700
+      },
+      "document": {
+        "height": 2701
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "minWidth": 2700
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-18",
+      "template": "synthetic-template-18",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-18",
+      "template": "synthetic-template-18",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-18"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "minBytes": 2800
+      },
+      "document": {
+        "size": 2799
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "maxBytes": 2800
+      },
+      "document": {
+        "size": 2801
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "minPages": 5
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "maxPages": 4
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "minWidth": 2800
+      },
+      "document": {
+        "width": 2799
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "maxWidth": 2800
+      },
+      "document": {
+        "width": 2801
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "minHeight": 2800
+      },
+      "document": {
+        "height": 2799
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "maxHeight": 2800
+      },
+      "document": {
+        "height": 2801
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "minWidth": 2800
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-19",
+      "template": "synthetic-template-19",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-19",
+      "template": "synthetic-template-19",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-19"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "minBytes": 2900
+      },
+      "document": {
+        "size": 2899
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "maxBytes": 2900
+      },
+      "document": {
+        "size": 2901
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "minPages": 6
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "maxPages": 5
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "minWidth": 2900
+      },
+      "document": {
+        "width": 2899
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "maxWidth": 2900
+      },
+      "document": {
+        "width": 2901
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "minHeight": 2900
+      },
+      "document": {
+        "height": 2899
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "maxHeight": 2900
+      },
+      "document": {
+        "height": 2901
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "minWidth": 2900
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-20",
+      "template": "synthetic-template-20",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-20",
+      "template": "synthetic-template-20",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-20"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "minBytes": 3000
+      },
+      "document": {
+        "size": 2999
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "maxBytes": 3000
+      },
+      "document": {
+        "size": 3001
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "minPages": 2
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "maxPages": 1
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "minWidth": 3000
+      },
+      "document": {
+        "width": 2999
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "maxWidth": 3000
+      },
+      "document": {
+        "width": 3001
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "minHeight": 3000
+      },
+      "document": {
+        "height": 2999
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "maxHeight": 3000
+      },
+      "document": {
+        "height": 3001
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "minWidth": 3000
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-21",
+      "template": "synthetic-template-21",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-21",
+      "template": "synthetic-template-21",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-21"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "minBytes": 3100
+      },
+      "document": {
+        "size": 3099
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "maxBytes": 3100
+      },
+      "document": {
+        "size": 3101
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "minPages": 3
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "maxPages": 2
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "minWidth": 3100
+      },
+      "document": {
+        "width": 3099
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "maxWidth": 3100
+      },
+      "document": {
+        "width": 3101
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "minHeight": 3100
+      },
+      "document": {
+        "height": 3099
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "maxHeight": 3100
+      },
+      "document": {
+        "height": 3101
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "minWidth": 3100
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-22",
+      "template": "synthetic-template-22",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-22",
+      "template": "synthetic-template-22",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-22"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "minBytes": 3200
+      },
+      "document": {
+        "size": 3199
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "maxBytes": 3200
+      },
+      "document": {
+        "size": 3201
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "minPages": 4
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "maxPages": 3
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "minWidth": 3200
+      },
+      "document": {
+        "width": 3199
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "maxWidth": 3200
+      },
+      "document": {
+        "width": 3201
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "minHeight": 3200
+      },
+      "document": {
+        "height": 3199
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "maxHeight": 3200
+      },
+      "document": {
+        "height": 3201
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "minWidth": 3200
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-23",
+      "template": "synthetic-template-23",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-23",
+      "template": "synthetic-template-23",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-23"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "minBytes": 3300
+      },
+      "document": {
+        "size": 3299
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "maxBytes": 3300
+      },
+      "document": {
+        "size": 3301
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "minPages": 5
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "maxPages": 4
+      },
+      "document": {
+        "pageCount": 10
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "minWidth": 3300
+      },
+      "document": {
+        "width": 3299
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "maxWidth": 3300
+      },
+      "document": {
+        "width": 3301
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "minHeight": 3300
+      },
+      "document": {
+        "height": 3299
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "maxHeight": 3300
+      },
+      "document": {
+        "height": 3301
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "minWidth": 3300
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-24",
+      "template": "synthetic-template-24",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-24",
+      "template": "synthetic-template-24",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-24"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "minBytes": 3400
+      },
+      "document": {
+        "size": 3399
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "maxBytes": 3400
+      },
+      "document": {
+        "size": 3401
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "minPages": 6
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "maxPages": 5
+      },
+      "document": {
+        "pageCount": 8
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "minWidth": 3400
+      },
+      "document": {
+        "width": 3399
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "maxWidth": 3400
+      },
+      "document": {
+        "width": 3401
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "minHeight": 3400
+      },
+      "document": {
+        "height": 3399
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "maxHeight": 3400
+      },
+      "document": {
+        "height": 3401
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "minWidth": 3400
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-25",
+      "template": "synthetic-template-25",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-25",
+      "template": "synthetic-template-25",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-25"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-below-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "minBytes": 3500
+      },
+      "document": {
+        "size": 3499
+      },
+      "expected": "fail",
+      "rationale": "size-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-size-above-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "maxBytes": 3500
+      },
+      "document": {
+        "size": 3501
+      },
+      "expected": "fail",
+      "rationale": "size-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-few-pages-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "minPages": 2
+      },
+      "document": {
+        "pageCount": 1
+      },
+      "expected": "fail",
+      "rationale": "too-few-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-too-many-pages-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "maxPages": 1
+      },
+      "document": {
+        "pageCount": 9
+      },
+      "expected": "fail",
+      "rationale": "too-many-pages: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-below-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "minWidth": 3500
+      },
+      "document": {
+        "width": 3499
+      },
+      "expected": "fail",
+      "rationale": "width-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-width-above-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "maxWidth": 3500
+      },
+      "document": {
+        "width": 3501
+      },
+      "expected": "fail",
+      "rationale": "width-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-below-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "minHeight": 3500
+      },
+      "document": {
+        "height": 3499
+      },
+      "expected": "fail",
+      "rationale": "height-below: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-height-above-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "maxHeight": 3500
+      },
+      "document": {
+        "height": 3501
+      },
+      "expected": "fail",
+      "rationale": "height-above: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unavailable-dimension-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "minWidth": 3500
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unavailable-dimension: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-wrong-media-26",
+      "template": "synthetic-template-26",
+      "requirement": {},
+      "document": {
+        "mime": "image/jpeg",
+        "name": "wrong.jpg"
+      },
+      "expected": "fail",
+      "rationale": "wrong-media: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-missing-component-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "evidenceSlots": [
+          "First form",
+          "Second form"
+        ]
+      },
+      "document": {},
+      "expected": "fail",
+      "rationale": "missing-component: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    },
+    {
+      "id": "negative-unconfirmed-date-26",
+      "template": "synthetic-template-26",
+      "requirement": {
+        "dateCheck": {
+          "field": "expiry_date",
+          "operation": "on_or_after",
+          "reference": "2027-01-26"
+        }
+      },
+      "document": {},
+      "expected": "needs_review",
+      "rationale": "unconfirmed-date: missing prerequisites or evidence outside the specified inclusive constraint cannot receive a pass."
+    }
+  ]
+}

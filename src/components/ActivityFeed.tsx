@@ -34,12 +34,14 @@ const labels: Record<string, string> = {
   'account.updated': 'Profile updated',
   'account.password.changed': 'Password changed',
   'account.sessions.revoked': 'Other sessions signed out',
+  'fact.corrected': 'Extracted fact reviewed',
+  'checklist.update.accepted': 'Checklist update accepted',
   'inspection.retried': 'Document inspection retried',
 };
 const filters = [
   { id: 'all', label: 'Everything', pattern: /./ },
   { id: 'packet', label: 'Applications', pattern: /^(packet|checklist|profile|evidence)\./ },
-  { id: 'document', label: 'Documents', pattern: /^(document|inspection)\./ },
+  { id: 'document', label: 'Documents', pattern: /^(document|inspection|fact)\./ },
   { id: 'account', label: 'Account', pattern: /^(account|consent|demo)\./ },
 ] as const;
 const day = (value: string) =>

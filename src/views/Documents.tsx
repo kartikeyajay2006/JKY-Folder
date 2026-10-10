@@ -3,6 +3,7 @@ import { FileGlyph } from '../components/Marks';
 import { Status, date, size, plural } from '../components/Status';
 import { UploadDropzone } from '../components/UploadDropzone';
 import { UploadQueue, type UploadItem } from '../components/UploadQueue';
+import { evidenceAnchors } from '../../shared/model';
 import type { DocumentRecord, PacketDetail } from '../../shared/model';
 
 export function DocumentsView({
@@ -16,6 +17,7 @@ export function DocumentsView({
   onPreview,
   onDelete,
   onRetry,
+  onCancelUpload,
 }: {
   data: PacketDetail;
   search: string;
@@ -27,6 +29,7 @@ export function DocumentsView({
   onPreview: (doc: DocumentRecord) => void;
   onDelete: (doc: DocumentRecord) => void;
   onRetry: (doc: DocumentRecord) => void;
+  onCancelUpload?: () => void;
 }) {
   const { documents, packet, pack } = data;
   const query = search.trim().toLowerCase();
@@ -37,7 +40,7 @@ export function DocumentsView({
   // Which checklist items each original currently supports.
   const usedFor = (doc: DocumentRecord) =>
     Object.entries(packet.links)
-      .filter(([, link]) => link.documentId === doc.id)
+      .filter(([, link]) => evidenceAnchors(link).some((a) => a.documentId === doc.id))
       .map(([id]) => pack.requirements.find((r) => r.id === id)?.title)
       .filter(Boolean) as string[];
   return (
@@ -48,6 +51,7 @@ export function DocumentsView({
           busy={busy === 'upload'}
           onRetry={onUpload}
           onDismiss={onDismissBatch}
+          onCancel={onCancelUpload}
         />
       )}
       <UploadDropzone

@@ -36,14 +36,20 @@ Open **http://127.0.0.1:5173** and choose **Explore the demo**. The demo has fic
 - A versioned UCEED 2027 reference checklist with explicit unknown profile answers.
 - Private PDF/JPEG intake with per-file batch results, bounded asynchronous inspection, retries and duplicate detection.
 - Actual PDF page previews with pagination and zoom, page-text extraction, JPEG previews and private original downloads.
-- Requirement-to-document/page evidence links and clearly labelled personal review notes.
+- Requirement-to-document/page evidence links, multiple reviewed components or accepted alternatives, and clearly labelled personal review notes.
+- Source snapshot hashes, exact obligation anchors, a curator draft/review/publication workflow and visible source-change handling.
+- Structured fact confirmation, manual transcription, immutable correction history and confirmed-value comparison.
+- Requirement-specific size, page, image-dimension and confirmed-date checks.
+- Local English OCR for image-only PDF pages and JPEGs, with coordinates, confidence, uncertainty warnings and conservative evidence suggestions.
+- Actual upload progress, cancellation, safe whole-file retry, private in-app deadline/source reminders and preferences.
+- Encrypted local backups, exact-object integrity checks and post-backup deletion replay on restoration.
 - Conservative technical checks, missing evidence, unknown applicability and review-needed states.
 - Versioned review snapshots, stale-report notices, JSON exports, printable reports and private ZIP folder downloads.
 - Application URLs that retain the selected section on refresh and support browser Back/Forward.
 - Search across requirements and extracted document text, filters, real account activity, help and privacy controls.
-- Deletion of active documents, extracted pages, links, jobs, reports and account sessions.
+- Deletion of active documents, extracted pages, facts, links, jobs, reports and account sessions; recovery replays deletion records.
 
-**A reviewed item is not a guarantee of authenticity, eligibility or institutional acceptance.** Starters are editable organizing suggestions, not official application rules. Instruction import creates one item per nonempty line; you confirm its meaning and conditions. The UCEED pack is a limited reference, not an independently approved complete official checklist. Scanned PDFs require manual review; OCR and automatic certificate judgments are not implemented.
+**A reviewed item is not a guarantee of authenticity, eligibility or institutional acceptance.** Starters are editable organizing suggestions, not official application rules. Instruction import creates one item per nonempty line; you confirm its meaning and conditions. The UCEED pack is a limited reference, not an independently approved complete official checklist. English OCR is a reading aid; uncertain scans and unsupported languages require manual review. Automatic certificate judgments are not implemented.
 
 ## Verify the application
 
@@ -53,7 +59,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The verification suite has **43 domain/API/worker tests** and **28 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, quick actions, real file drops, account-menu interaction, the example folder's keyboard tabs, persistent animation controls, reduced motion, light/dark themes, drop-anywhere intake, palette search, phone-width overflow against the visual viewport, and automated accessibility across core screens and dialogs in both themes. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
+The verification suite has **371 domain/API/worker/benchmark tests** and **32 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus, top navigation, quick actions, real file drops, account-menu interaction, the example folder's keyboard tabs, persistent animation controls, reduced motion, light/dark themes, drop-anywhere intake, palette search, phone-width overflow against the visual viewport, and automated accessibility across core screens and dialogs in both themes. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
 
 GitHub Actions runs the checks on pushes and pull requests and retains browser failure traces for seven days. Application source can be formatted with `npm run format`.
 
@@ -61,7 +67,7 @@ GitHub Actions runs the checks on pushes and pull requests and retains browser f
 
 React + TypeScript + Vite client; Express API; SQLite metadata; private filesystem originals; durable document jobs and a separate inspection process. Data lives in the ignored `.data` directory and is never a public asset. The current runtime is intended for a **local single-instance development release**.
 
-Read the [runbook](docs/engineering/RUNBOOK.md), [implementation status](docs/engineering/IMPLEMENTATION_STATUS.md), [release gates](docs/engineering/RELEASE_GATES.md) and [security notes](SECURITY.md) before operating it. Production hosting, reviewed rule-pack completeness, managed storage, hardened isolation, recovery operations, legal review, paid-demand validation and payment processing remain required startup work.
+Read the [review-engine contracts](docs/engineering/REVIEW_ENGINE.md), [runbook](docs/engineering/RUNBOOK.md), [implementation status](docs/engineering/IMPLEMENTATION_STATUS.md), [release gates](docs/engineering/RELEASE_GATES.md) and [security notes](SECURITY.md) before operating it. Production hosting, independently reviewed rule-pack completeness, managed storage, hardened isolation, automated offsite recovery operations, legal review, paid-demand validation and payment processing remain required startup work. The 312 author-labelled critical-negative cases are internal regression evidence; independent held-out benchmark adjudication remains open.
 
 This implementation has not been publicly deployed or certified as ready for real sensitive applicant documents.
 

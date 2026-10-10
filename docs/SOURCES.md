@@ -46,3 +46,9 @@ Recheck all time-sensitive sources before producing a live rule pack or making a
 [Vite guide](https://vite.dev/guide/), [Express security guidance](https://expressjs.com/en/advanced/best-practice-security/) and [PDF.js API](https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib.html) informed compatibility and implementation review. Installed versions are captured by the lockfile, and actual parsing is tested with generated fixtures.
 
 [Checkout action](https://github.com/actions/checkout) and [setup-node action](https://github.com/actions/setup-node) provide the official usage reference for the read-only CI workflow.
+
+## Evidence review implementation references
+
+[Tesseract.js API](https://github.com/naptha/tesseract.js/blob/master/docs/api.md) documents local worker recognition and TSV coordinate output. [PDF.js page rendering API](https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib-PDFPageProxy.html) documents the rendered-page interface used for scanned originals. Installed versions and bundled English language data are pinned in the lockfile and exercised with synthetic image-only PDF fixtures.
+
+The UCEED registration page was re-inspected for the reference source snapshot and author-mapped obligation inventory. The snapshot representation is browser-extracted text; the hash and character-range anchors identify that representation. Independent brochure/appendix completeness approval remains open.

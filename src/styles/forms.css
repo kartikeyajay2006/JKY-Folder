@@ -520,3 +520,58 @@
     flex: 1;
   }
 }
+
+/* Review controls inherit the existing Gold/Silver tokens and typography. */
+.additional-evidence,
+.fact-row {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-block: 1rem;
+  min-width: 0;
+}
+.additional-evidence label,
+.fact-row label {
+  display: grid;
+  gap: 0.4rem;
+  margin-block: 0.6rem;
+}
+.fact-row blockquote,
+.source-details pre,
+.source-details .data {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.source-details,
+.reminders {
+  margin-bottom: 1.2rem;
+}
+.source-details summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+.source-details p,
+.source-details ul,
+.reminders ul {
+  margin-block: 0.8rem;
+}
+.source-details details {
+  margin-block: 0.75rem;
+}
+.reminders li {
+  margin-block: 0.8rem;
+}
+.reminders .text-link {
+  margin-inline-end: 1rem;
+}
+.evidence-suggestions button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-block: 0.5rem;
+  max-width: 100%;
+}
+.upload-queue progress {
+  accent-color: var(--metal);
+  width: min(100%, 16rem);
+}

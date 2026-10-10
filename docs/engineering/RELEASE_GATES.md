@@ -32,7 +32,7 @@ References indicate partial implementation of the corresponding workstream, not 
 
 ## Intentionally deferred features
 
-Custom instruction drafts and editable college/scholarship/job starters now work locally. They are not reviewed official rule packs. OCR, automatic semantic/AI interpretation, external authenticity verification, transformed upload preparation, institution permissions, partner integrations, automated official-portal submission, independently reviewed scholarship/job packs and international expansion remain deferred. They require their own acceptance evidence and phase gates.
+Custom instruction drafts and editable college/scholarship/job starters now work locally. They are not reviewed official rule packs. Additional OCR languages, automatic semantic/AI interpretation, external authenticity verification, transformed upload preparation, institution permissions, partner integrations, automated official-portal submission, independently reviewed scholarship/job packs and international expansion remain deferred. They require their own acceptance evidence and phase gates.
 
 ## Architecture decisions made
 
@@ -41,3 +41,7 @@ SQLite and local private objects replace the plan’s provisional PostgreSQL/man
 A content-review confirmation can produce a scoped pass, with verification provenance set to `user`. It never becomes an automated issuer or content-authenticity result. Reports carry the selected checklist’s limits. Expected-phrase checks operate only on extracted text in linked pages; missing text remains review-needed, including scanned pages. Checklist or original instruction changes invalidate prior content confirmations.
 
 When deleting a document, saved runs for that packet are purged instead of retaining sensitive evidence references in historical exports. Historical runs remain available for ordinary profile and linking revisions, but never survive an evidence deletion merely to preserve history.
+
+## Evidence review extension
+
+Source-registry/publication tooling, multiple evidence anchors, structured confirmations/correction history, richer deterministic checks, local English OCR, evidence suggestions, in-app reminders and encrypted local recovery are implemented. See [review-engine contracts](REVIEW_ENGINE.md) for exact limits and operator commands. The bundled registration-page obligation inventory is author-mapped and remains a draft. The synthetic benchmark labels await independent adjudication. Neither extension closes independent rule-pack completeness, held-out benchmark, OS sandbox, automated offsite recovery or public deployment gates.

@@ -8,7 +8,7 @@ import { Dialog } from './components/Dialog';
 import { EvidenceDialog } from './components/EvidenceDialog';
 import { ProfileDialog } from './components/ProfileDialog';
 import { size, date } from './components/Status';
-import { api, body, setCsrf, download, ApiError } from './api';
+import { api, body, setCsrf, download, ApiError, uploadOriginal } from './api';
 import { CatalogProvider, uploadRules, type Catalog } from './catalog';
 import { ApplicationWizard, type CreateApplicationInput } from './components/ApplicationWizard';
 import { WorkspaceHome, EmptySection, type PacketCard } from './components/WorkspaceHome';
@@ -24,6 +24,9 @@ import { ChecklistView } from './views/Checklist';
 import { DocumentsView } from './views/Documents';
 import { ReportView } from './views/Report';
 import { HelpView } from './views/Help';
+import { FactEditor } from './components/FactEditor';
+import { SourceDetails } from './components/SourceDetails';
+import { Notifications } from './components/Notifications';
 import { SettingsView } from './views/Settings';
 import {
   readWorkspaceLocation,
@@ -37,6 +40,7 @@ import type {
   EvaluationRun,
   Requirement,
   DocumentRecord,
+  DocumentFact,
 } from '../shared/model';
 type View = WorkspaceView;
 
@@ -59,6 +63,8 @@ export default function App() {
   const [packets, setPackets] = useState<PacketCard[]>([]),
     [activeId, setActiveId] = useState(initialLocation.current.application),
     [data, setData] = useState<PacketDetail | null>(null);
+  const [previewPage, setPreviewPage] = useState(1),
+    [highlightFact, setHighlightFact] = useState<DocumentFact | null>(null);
   const [packetsLoaded, setPacketsLoaded] = useState(false);
   const [createTemplate, setCreateTemplate] = useState('college');
   const [queuedFiles, setQueuedFiles] = useState<File[]>([]);
@@ -86,6 +92,7 @@ export default function App() {
     [preview, setPreview] = useState<DocumentRecord | null>(null),
     [deleteDoc, setDeleteDoc] = useState<DocumentRecord | null>(null),
     [reportId, setReportId] = useState('');
+  const uploadAbort = useRef<AbortController | null>(null);
   const inputRef = useRef<HTMLInputElement>(null),
     searchRef = useRef<HTMLInputElement>(null),
     selectionRef = useRef('');
@@ -169,6 +176,10 @@ export default function App() {
       alive = false;
     };
   }, [user?.id]);
+  useEffect(() => {
+    setPreviewPage(1);
+    setHighlightFact(null);
+  }, [preview?.id]);
   const activeOwned = packets.some((p) => p.packet.id === activeId);
   useEffect(() => {
     setData(null);
@@ -281,7 +292,8 @@ export default function App() {
   const stale =
     !!selectedRun &&
     !!data &&
-    (selectedRun.packetRevision !== data.packet.revision ||
+    (data.sourceChanged ||
+      selectedRun.packetRevision !== data.packet.revision ||
       selectedRun.packVersion !== data.pack.version ||
       selectedRun.evaluatorVersion !== data.evaluatorVersion);
   const required = live?.checks.filter((c) => c.state !== 'not_applicable') || [];
@@ -325,7 +337,21 @@ export default function App() {
     setToastAction(action || null);
   }
   function signedOut() {
+    uploadAbort.current?.abort();
+    ownerRef.current = undefined;
     setUser(null);
+    setPackets([]);
+    setPacketsLoaded(false);
+    setModal(null);
+    setEvidence(null);
+    setPreview(null);
+    setDeleteDoc(null);
+    setReportId('');
+    setSearch('');
+    setToast('');
+    setToastAction(null);
+    setUploadBatch(null);
+    setQueuedFiles([]);
     setData(null);
     setActiveId('');
     setCsrf('');
@@ -341,6 +367,9 @@ export default function App() {
     if (inputRef.current) inputRef.current.value = '';
   }
   async function addFiles(packetId: string, files: File[]) {
+    const controller = new AbortController();
+    uploadAbort.current = controller;
+    const owner = ownerRef.current;
     const items: UploadItem[] = files.map((file) => ({
       id: crypto.randomUUID(),
       file,
@@ -360,26 +389,38 @@ export default function App() {
       duplicates = 0,
       failed = 0;
     for (const item of items) {
-      updateItem(item.id, { status: 'uploading' });
+      if (controller.signal.aborted) {
+        updateItem(item.id, { status: 'cancelled' });
+        continue;
+      }
+      if (owner !== ownerRef.current) return;
+      updateItem(item.id, { status: 'uploading', progress: 0 });
       try {
-        const form = new FormData();
-        form.append('file', item.file);
-        const result = await api<{ duplicate: boolean }>(`/packets/${packetId}/documents`, {
-          method: 'POST',
-          body: form,
-        });
+        const result = await uploadOriginal<{ duplicate: boolean }>(
+          `/packets/${packetId}/documents`,
+          item.file,
+          (progress) => updateItem(item.id, { progress }),
+          controller.signal,
+        );
+        if (owner !== ownerRef.current) return;
         updateItem(item.id, { status: result.duplicate ? 'duplicate' : 'added' });
         if (result.duplicate) duplicates++;
         else added++;
       } catch (e) {
         failed++;
-        updateItem(item.id, { status: 'failed', error: (e as Error).message });
+        if (owner !== ownerRef.current) return;
+        updateItem(item.id, {
+          status: (e as Error).name === 'AbortError' ? 'cancelled' : 'failed',
+          error: (e as Error).message,
+        });
         if (e instanceof ApiError && e.status === 401) {
           signedOut();
           return;
         }
       }
     }
+    if (owner !== ownerRef.current) return;
+    uploadAbort.current = null;
     await refresh().catch((e) => setError(e.message));
     notify(
       `${added} added${duplicates ? `, ${duplicates} already present` : ''}${failed ? `, ${failed} could not upload. See the upload results.` : '. Inspection runs separately.'}`,
@@ -488,8 +529,23 @@ export default function App() {
       <CatalogProvider catalog={catalog}>
         <Auth
           onAuth={(u, id) => {
+            ownerRef.current = u.id;
+            setPackets([]);
+            setData(null);
+            setPacketsLoaded(false);
+            setModal(null);
+            setEvidence(null);
+            setPreview(null);
+            setDeleteDoc(null);
+            setReportId('');
+            setSearch('');
+            setError('');
+            setToast('');
+            setToastAction(null);
+            setUploadBatch(null);
+            setQueuedFiles([]);
+            setActiveId(id || '');
             setUser(u);
-            if (id) setActiveId(id);
             setView('overview');
           }}
         />
@@ -588,6 +644,33 @@ export default function App() {
                   </button>
                 </div>
               )}
+              {(view === 'overview' || view === 'applications') && (
+                <Notifications
+                  key={user.id + ':' + packets.map((p) => p.packet.updatedAt).join(',')}
+                  userId={user.id}
+                  onOpen={(id) => navigate('overview', id)}
+                />
+              )}
+              {data && (view === 'requirements' || view === 'overview') && (
+                <SourceDetails data={data} onUpdated={() => refresh()} />
+              )}
+              {data?.consistencyConcerns?.length ? (
+                <section className="sheet">
+                  <h2>Confirmed values to compare</h2>
+                  {data.consistencyConcerns.map((c) => (
+                    <div key={c.kind}>
+                      <p>{c.reason}</p>
+                      <ul>
+                        {c.facts.map((f) => (
+                          <li key={f.documentId + f.factId}>
+                            {f.name}, page {f.page}: {f.value}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </section>
+              ) : null}
               {showHome && (
                 <WorkspaceHome
                   user={user}
@@ -649,6 +732,7 @@ export default function App() {
                   uploadBatch={uploadBatch?.packetId === activeId ? uploadBatch.items : null}
                   onUpload={(files) => void upload(files)}
                   onChoose={chooseFiles}
+                  onCancelUpload={() => uploadAbort.current?.abort()}
                   onDismissBatch={() => setUploadBatch(null)}
                   onPreview={setPreview}
                   onDelete={setDeleteDoc}
@@ -851,6 +935,7 @@ export default function App() {
             pack={data.pack}
             documents={data.documents}
             existing={data.packet.links[evidence.id]}
+            suggestions={(data.suggestions || []).filter((s) => s.requirementId === evidence.id)}
             packetId={activeId}
             onUpload={() => {
               setEvidence(null);
@@ -884,6 +969,24 @@ export default function App() {
                     <PdfPreview
                       url={`/api/packets/${activeId}/documents/${preview.id}/content`}
                       name={preview.name}
+                      page={previewPage}
+                      onPageChange={(page) => {
+                        setPreviewPage(page);
+                        setHighlightFact(null);
+                      }}
+                      highlights={
+                        highlightFact?.box
+                          ? [
+                              {
+                                box: highlightFact.box,
+                                width:
+                                  preview.pages.find((p) => p.number === previewPage)?.width || 1,
+                                height:
+                                  preview.pages.find((p) => p.number === previewPage)?.height || 1,
+                              },
+                            ]
+                          : undefined
+                      }
                     />
                   )
                 ) : (
@@ -894,6 +997,21 @@ export default function App() {
                   </p>
                 )}
               </div>
+              {preview.status === 'ready' && (
+                <FactEditor
+                  document={preview}
+                  packetId={activeId}
+                  packetRevision={data?.packet.revision || 0}
+                  onInspect={(fact) => {
+                    setPreviewPage(fact.page);
+                    setHighlightFact(fact);
+                  }}
+                  onSaved={async (doc) => {
+                    setPreview(doc);
+                    await refresh();
+                  }}
+                />
+              )}
               {preview.status === 'ready' && preview.mime !== 'image/jpeg' && (
                 <details className="extracted-text-details">
                   <summary>Extracted document text</summary>

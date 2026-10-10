@@ -148,23 +148,24 @@ export function ReportView({
                   {check.reviewNote && <blockquote>{check.reviewNote}</blockquote>}
                 </th>
                 <td>
-                  {check.evidence ? (
-                    <>
-                      <span className="data">{check.evidence.name}</span>
+                  {(check.evidenceSet?.length
+                    ? check.evidenceSet
+                    : check.evidence
+                      ? [check.evidence]
+                      : []
+                  ).map((evidence, i) => (
+                    <div key={evidence.documentId + ':' + i}>
+                      <span className="data">{evidence.name}</span>
                       <span className="report-reason">
-                        page {check.evidence.pageFrom}
-                        {check.evidence.pageTo !== check.evidence.pageFrom
-                          ? `–${check.evidence.pageTo}`
-                          : ''}
-                        ,{' '}
+                        page {evidence.pageFrom}
+                        {evidence.pageTo !== evidence.pageFrom ? `–${evidence.pageTo}` : ''},{' '}
                         {check.verification === 'user'
                           ? 'your content confirmation'
                           : 'technical check only'}
                       </span>
-                    </>
-                  ) : (
-                    <span className="report-reason">None linked</span>
-                  )}
+                    </div>
+                  ))}
+                  {!check.evidence && <span className="report-reason">None linked</span>}
                 </td>
                 <td>
                   <Status state={check.state} missing={!check.evidence} />
@@ -173,6 +174,23 @@ export function ReportView({
             ))}
           </tbody>
         </table>
+        {run.consistencyConcerns?.length ? (
+          <section className="report-limits">
+            <h3>Confirmed values needing comparison</h3>
+            {run.consistencyConcerns.map((c) => (
+              <div key={c.kind}>
+                <p>{c.reason}</p>
+                <ul>
+                  {c.facts.map((f) => (
+                    <li key={f.documentId + f.factId}>
+                      {f.name}, page {f.page}: {f.value}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </section>
+        ) : null}
         <section className="report-limits" aria-labelledby="limits-title">
           <h3 id="limits-title">What this review does not establish</h3>
           <ul>
@@ -192,6 +210,19 @@ export function ReportView({
             </a>
           )}
         </section>
+        {run.sourceSnapshots?.length ? (
+          <section className="report-limits">
+            <h3>Source snapshots used</h3>
+            <ul>
+              {run.sourceSnapshots.map((s) => (
+                <li key={s.id}>
+                  {s.title} · {s.retrievedAt}
+                  <span className="report-reason data">SHA-256 {s.sha256}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
         <footer className="report-footer data">
           <span>Checklist {run.packVersion}</span>
           <span>Evaluator {run.evaluatorVersion}</span>

@@ -2,21 +2,24 @@ import { Check, AlertCircle, Clock, LoaderCircle, X, RefreshCw } from 'lucide-re
 export interface UploadItem {
   id: string;
   file: File;
-  status: 'queued' | 'uploading' | 'added' | 'duplicate' | 'failed';
+  status: 'queued' | 'uploading' | 'added' | 'duplicate' | 'failed' | 'cancelled';
   error?: string;
+  progress?: number;
 }
 export function UploadQueue({
   items,
   busy,
   onRetry,
   onDismiss,
+  onCancel,
 }: {
   items: UploadItem[];
   busy: boolean;
   onRetry: (files: File[]) => void;
   onDismiss: () => void;
+  onCancel?: () => void;
 }) {
-  const failed = items.filter((i) => i.status === 'failed');
+  const failed = items.filter((i) => i.status === 'failed' || i.status === 'cancelled');
   const complete = items.filter((i) => i.status === 'added' || i.status === 'duplicate').length;
   return (
     <section className="sheet upload-queue" aria-label="Upload results">
@@ -51,6 +54,13 @@ export function UploadQueue({
             )}
             <div>
               <strong className="data">{item.file.name}</strong>
+              {item.status === 'uploading' && (
+                <progress
+                  aria-label={`Uploading ${item.file.name}`}
+                  value={item.progress || 0}
+                  max={100}
+                />
+              )}
               <p>
                 {item.error ||
                   {
@@ -59,12 +69,18 @@ export function UploadQueue({
                     added: 'Added. Inspection runs separately.',
                     duplicate: 'Already in this folder. No second copy was created.',
                     failed: 'Could not upload',
+                    cancelled: 'Cancelled. Refresh the folder before retrying.',
                   }[item.status]}
               </p>
             </div>
           </li>
         ))}
       </ul>
+      {busy && onCancel && (
+        <button className="outline" onClick={onCancel}>
+          Cancel remaining uploads
+        </button>
+      )}
       {!!failed.length && (
         <div className="upload-queue-footer">
           <p>

@@ -2,16 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, RefreshCw, AlertCircle, ZoomIn, ZoomOut } from 'lucide-react';
 import type { PDFDocumentProxy, PDFDocumentLoadingTask, RenderTask } from 'pdfjs-dist';
 import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+const noHighlights: { box: [number, number, number, number]; width: number; height: number }[] = [];
 export function PdfPreview({
   url,
   name,
   page: controlledPage,
   onPageChange,
+  highlights = noHighlights,
 }: {
   url: string;
   name: string;
   page?: number;
   onPageChange?: (page: number) => void;
+  highlights?: { box: [number, number, number, number]; width: number; height: number }[];
 }) {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null),
@@ -71,7 +74,20 @@ export function PdfPreview({
       element.style.height = `${viewport.height / ratio}px`;
       task = docPage.render({ canvas: element, viewport });
       await task.promise;
-      if (alive) setBusy(false);
+      if (alive) {
+        const ctx = element.getContext('2d')!;
+        ctx.strokeStyle = '#1262bb';
+        ctx.fillStyle = 'rgba(18,98,187,.12)';
+        ctx.lineWidth = 2 * ratio;
+        for (const h of highlights) {
+          const [x, y, w, height] = h.box;
+          const sx = element.width / h.width,
+            sy = element.height / h.height;
+          ctx.fillRect(x * sx, y * sy, w * sx, height * sy);
+          ctx.strokeRect(x * sx, y * sy, w * sx, height * sy);
+        }
+        setBusy(false);
+      }
     })().catch((e) => {
       if (alive && e?.name !== 'RenderingCancelledException') {
         setError('This page could not be rendered. Download the original to review it.');
@@ -82,7 +98,7 @@ export function PdfPreview({
       alive = false;
       task?.cancel();
     };
-  }, [pdf, currentPage, zoom]);
+  }, [pdf, currentPage, zoom, highlights]);
   function navigate(next: number) {
     if (onPageChange) onPageChange(next);
     else setPage(next);
@@ -135,7 +151,12 @@ export function PdfPreview({
           </button>
         </div>
       </div>
-      <div className="pdf-canvas-area">
+      <div
+        className="pdf-canvas-area"
+        tabIndex={0}
+        role="region"
+        aria-label="Scrollable original document preview"
+      >
         {busy && !error && (
           <p className="pdf-loading" role="status">
             <RefreshCw size={18} className="spin" />

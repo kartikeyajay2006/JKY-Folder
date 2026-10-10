@@ -11,7 +11,14 @@ import {
 import { Dialog } from './Dialog';
 import { PdfPreview } from './PdfPreview';
 import { size } from './Status';
-import type { Requirement, DocumentRecord, EvidenceLink, RulePack } from '../../shared/model';
+import type {
+  EvidenceAnchor,
+  EvidenceSuggestion,
+  Requirement,
+  DocumentRecord,
+  EvidenceLink,
+  RulePack,
+} from '../../shared/model';
 export function EvidenceDialog({
   requirement,
   pack,
@@ -21,6 +28,7 @@ export function EvidenceDialog({
   onClose,
   onSave,
   onUpload,
+  suggestions = [],
 }: {
   requirement: Requirement;
   pack: RulePack;
@@ -30,6 +38,7 @@ export function EvidenceDialog({
   onClose: () => void;
   onSave: (link: EvidenceLink) => Promise<void>;
   onUpload: () => void;
+  suggestions?: EvidenceSuggestion[];
 }) {
   const available = documents.filter((d) => d.status === 'ready');
   const [documentId, setDocumentId] = useState(existing?.documentId || available[0]?.id || '');
@@ -37,7 +46,11 @@ export function EvidenceDialog({
   const [pageTo, setPageTo] = useState(existing?.pageTo || 1);
   const [review, setReview] = useState<EvidenceLink['review']>(existing?.review || 'unreviewed');
   const [note, setNote] = useState(existing?.note || '');
+  const [slot, setSlot] = useState(existing?.slot || requirement.evidenceSlots?.[0] || '');
+  const [additional, setAdditional] = useState<EvidenceAnchor[]>(existing?.additional || []);
   const [busy, setBusy] = useState(false);
+  const changeAdditional = (index: number, patch: Partial<EvidenceAnchor>) =>
+    setAdditional((rows) => rows.map((r, i) => (i === index ? { ...r, ...patch } : r)));
   const [error, setError] = useState('');
   const doc = available.find((d) => d.id === documentId);
   return (
@@ -96,10 +109,16 @@ export function EvidenceDialog({
                         .filter((p) => p.number >= pageFrom && p.number <= pageTo)
                         .map((p) => (
                           <div key={p.number} className="extracted-page">
-                            <span>Page {p.number}</span>
+                            <span>
+                              Page {p.number} ·{' '}
+                              {p.method === 'ocr'
+                                ? `OCR (${Math.round(p.confidence || 0)}% confidence)`
+                                : 'Extracted text'}
+                            </span>
+                            {p.warning && <p className="field-help">{p.warning}</p>}
                             <pre>
                               {p.text ||
-                                'No readable text was extracted. Download the original and review it manually; scanned-page OCR is not available.'}
+                                'No reliable text was extracted. Review the original manually.'}
                             </pre>
                           </div>
                         ))}
@@ -131,7 +150,24 @@ export function EvidenceDialog({
             event.preventDefault();
             setBusy(true);
             setError('');
-            void onSave({ documentId, pageFrom, pageTo, review, note })
+            void onSave({
+              documentId,
+              pageFrom,
+              pageTo,
+              review,
+              note,
+              slot: slot || undefined,
+              additional: additional.map(
+                ({ documentId, pageFrom, pageTo, review, note, slot }) => ({
+                  documentId,
+                  pageFrom,
+                  pageTo,
+                  review,
+                  note,
+                  slot,
+                }),
+              ),
+            })
               .catch((e) => setError(e.message))
               .finally(() => setBusy(false));
           }}
@@ -147,6 +183,49 @@ export function EvidenceDialog({
               <ExternalLink size={14} aria-hidden="true" />
             </a>
           )}
+          <p className="field-help">
+            {requirement.evidenceMode === 'any'
+              ? 'Any accepted alternative can satisfy this item.'
+              : 'Every linked component must be reviewed.'}
+          </p>
+          {!existing && suggestions.length > 0 && (
+            <details className="evidence-suggestions">
+              <summary>Suggested evidence — confirm before linking</summary>
+              {suggestions.map((s) => (
+                <button
+                  className="outline"
+                  type="button"
+                  key={s.documentId + ':' + s.pageFrom}
+                  onClick={() => {
+                    setDocumentId(s.documentId);
+                    setPageFrom(s.pageFrom);
+                    setPageTo(s.pageTo);
+                    setReview('unreviewed');
+                    setNote('');
+                  }}
+                >
+                  {available.find((d) => d.id === s.documentId)?.name}, page {s.pageFrom}
+                  <span className="field-help">{s.reason}</span>
+                </button>
+              ))}
+            </details>
+          )}
+          {requirement.evidenceSlots?.length ? (
+            <label>
+              Evidence component
+              <select
+                value={slot}
+                onChange={(e) => {
+                  setSlot(e.target.value);
+                  setReview('unreviewed');
+                }}
+              >
+                {requirement.evidenceSlots.map((s) => (
+                  <option key={s}>{s}</option>
+                ))}
+              </select>
+            </label>
+          ) : null}
           <div className="divider" />
           <label>
             Supporting document
@@ -236,6 +315,148 @@ export function EvidenceDialog({
               rows={3}
             />
           </label>
+          {additional.map((anchor, i) => {
+            const linked = available.find((d) => d.id === anchor.documentId);
+            return (
+              <fieldset className="additional-evidence" key={i}>
+                <legend>Additional evidence {i + 1}</legend>
+                <label>
+                  Supporting file
+                  <select
+                    required
+                    value={anchor.documentId}
+                    onChange={(e) =>
+                      changeAdditional(i, {
+                        documentId: e.target.value,
+                        pageFrom: 1,
+                        pageTo: 1,
+                        review: 'unreviewed',
+                        note: '',
+                      })
+                    }
+                  >
+                    <option value="">Choose a document</option>
+                    {available.map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {requirement.evidenceSlots?.length ? (
+                  <label>
+                    Component
+                    <select
+                      value={anchor.slot || ''}
+                      required
+                      onChange={(e) =>
+                        changeAdditional(i, { slot: e.target.value, review: 'unreviewed' })
+                      }
+                    >
+                      <option value="">Choose a component</option>
+                      {requirement.evidenceSlots.map((s) => (
+                        <option key={s}>{s}</option>
+                      ))}
+                    </select>
+                  </label>
+                ) : null}
+                <div className="two-fields">
+                  <label>
+                    First page
+                    <input
+                      type="number"
+                      required
+                      min={1}
+                      max={linked?.pageCount || 1}
+                      value={anchor.pageFrom}
+                      onChange={(e) =>
+                        changeAdditional(i, {
+                          pageFrom: Number(e.target.value),
+                          review: 'unreviewed',
+                        })
+                      }
+                    />
+                  </label>
+                  <label>
+                    Last page
+                    <input
+                      type="number"
+                      required
+                      min={anchor.pageFrom}
+                      max={linked?.pageCount || 1}
+                      value={anchor.pageTo}
+                      onChange={(e) =>
+                        changeAdditional(i, {
+                          pageTo: Number(e.target.value),
+                          review: 'unreviewed',
+                        })
+                      }
+                    />
+                  </label>
+                </div>
+                {linked && (
+                  <a
+                    className="inline-link"
+                    href={`/api/packets/${packetId}/documents/${linked.id}/content`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Inspect this original
+                  </a>
+                )}
+                <label>
+                  Content review
+                  <select
+                    value={anchor.review}
+                    onChange={(e) =>
+                      changeAdditional(i, { review: e.target.value as EvidenceAnchor['review'] })
+                    }
+                  >
+                    <option value="unreviewed">I still need to review it</option>
+                    <option value="confirmed">I reviewed the content</option>
+                    <option value="concern">I found something to check</option>
+                  </select>
+                </label>
+                <label>
+                  Review note
+                  <textarea
+                    value={anchor.note}
+                    required={anchor.review !== 'unreviewed'}
+                    minLength={anchor.review !== 'unreviewed' ? 10 : 0}
+                    maxLength={1500}
+                    onChange={(e) => changeAdditional(i, { note: e.target.value })}
+                  />
+                </label>
+                <button
+                  className="text-link"
+                  type="button"
+                  onClick={() => setAdditional((rows) => rows.filter((_, n) => n !== i))}
+                >
+                  Remove this evidence
+                </button>
+              </fieldset>
+            );
+          })}
+          <button
+            type="button"
+            className="outline"
+            disabled={additional.length >= 9 || busy}
+            onClick={() =>
+              setAdditional((rows) => [
+                ...rows,
+                {
+                  documentId: available.find((d) => d.id !== documentId)?.id || documentId,
+                  pageFrom: 1,
+                  pageTo: 1,
+                  review: 'unreviewed',
+                  note: '',
+                  slot: requirement.evidenceSlots?.[rows.length + 1],
+                },
+              ])
+            }
+          >
+            Add another evidence file or page range
+          </button>
           <p className="microcopy">
             Your confirmation records your own review. It does not verify authenticity or
             institutional acceptance.

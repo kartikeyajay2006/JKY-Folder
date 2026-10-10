@@ -1,0 +1,157 @@
+import { createHash } from 'node:crypto';
+import type { Store } from './store';
+import type { Packet, RulePack, SourceSnapshot } from '../shared/model';
+import { packs } from '../shared/packs';
+import { requirementsSchema } from './application-schema';
+export const digest = (content: string | Buffer) =>
+  createHash('sha256').update(content).digest('hex');
+export function availablePacks(store: Store): RulePack[] {
+  const revisions = (
+    store.db
+      .prepare(
+        "SELECT payload FROM pack_revisions WHERE state IN ('published','retired') ORDER BY rowid",
+      )
+      .all() as { payload: string }[]
+  ).map((r) => JSON.parse(r.payload) as RulePack);
+  const latest = new Map(packs.map((p) => [p.id, p]));
+  for (const p of revisions) {
+    if (p.lifecycle === 'retired') latest.delete(p.id);
+    else latest.set(p.id, p);
+  }
+  return [...latest.values()];
+}
+export function resolvePack(store: Store, packet: Packet): RulePack {
+  const result =
+    packet.customPack ||
+    packet.packSnapshot ||
+    availablePacks(store).find((p) => p.id === packet.packId);
+  if (!result) throw Error('The selected checklist is unavailable.');
+  return result;
+}
+export function sourceChanged(store: Store, packet: Packet) {
+  if (packet.customPack) return false;
+  const current = availablePacks(store).find((p) => p.id === packet.packId);
+  const selected = resolvePack(store, packet);
+  if (!current || current.version !== selected.version) return true;
+  return (selected.sources || []).some((s) => {
+    const row = store.db.prepare('SELECT payload FROM source_snapshots WHERE id=?').get(s.id) as
+      { payload: string } | undefined;
+    return !!row && (JSON.parse(row.payload) as SourceSnapshot).sha256 !== s.sha256;
+  });
+}
+export function saveDraft(store: Store, pack: RulePack, actor: string) {
+  if (!actor.trim() || !pack.id || !pack.version || !pack.title || !pack.cycle || !pack.stage)
+    throw Error('Author, pack identity, cycle and stage are required.');
+  requirementsSchema.parse(pack.requirements);
+  const draft = {
+    ...pack,
+    lifecycle: 'draft' as const,
+    authoredBy: actor,
+    reviewedBy: undefined,
+    reviewedAt: undefined,
+  };
+  store.db
+    .prepare('INSERT INTO pack_revisions VALUES(?,?,?,?)')
+    .run(pack.id, pack.version, 'draft', JSON.stringify(draft));
+  return draft;
+}
+export function transitionPack(
+  store: Store,
+  id: string,
+  version: string,
+  action: 'review' | 'publish' | 'retire',
+  actor: string,
+) {
+  const row = store.db
+    .prepare('SELECT state,payload FROM pack_revisions WHERE id=? AND version=?')
+    .get(id, version) as { state: string; payload: string } | undefined;
+  if (!row) throw Error('Pack revision not found.');
+  const p: RulePack = JSON.parse(row.payload);
+  if (action === 'review') {
+    if (row.state !== 'draft' || !actor.trim() || actor === p.authoredBy)
+      throw Error('A draft requires a distinct accountable reviewer.');
+    if (!p.sources?.length || !p.obligations?.length)
+      throw Error('Source snapshots and a complete obligation inventory are required.');
+    const ids = new Set(p.requirements.map((r) => r.id));
+    const sourceIds = new Set(p.sources.map((s) => s.id));
+    for (const s of p.sources) {
+      const stored = store.db
+        .prepare('SELECT payload FROM source_snapshots WHERE id=?')
+        .get(s.id) as { payload: string } | undefined;
+      if (
+        !stored ||
+        (JSON.parse(stored.payload) as SourceSnapshot).sha256 !== s.sha256 ||
+        digest((JSON.parse(stored.payload) as SourceSnapshot).content || '') !== s.sha256 ||
+        !s.url.startsWith('https://') ||
+        Number.isNaN(Date.parse(s.retrievedAt))
+      )
+        throw Error(
+          'Sources must match the current captured snapshots and their content integrity.',
+        );
+    }
+    for (const o of p.obligations) {
+      const sourceRow = store.db
+        .prepare('SELECT payload FROM source_snapshots WHERE id=?')
+        .get(o.sourceId) as { payload: string } | undefined;
+      const source = sourceRow ? (JSON.parse(sourceRow.payload) as SourceSnapshot) : undefined;
+      const parts = o.anchor.split(':');
+      if (
+        parts.length !== 3 ||
+        parts[0] !== o.sourceId ||
+        !/^\d+$/.test(parts[1]) ||
+        !/^\d+$/.test(parts[2]) ||
+        Number(parts[2]) < 1 ||
+        Number(parts[1]) + Number(parts[2]) > (source?.content?.length || 0)
+      )
+        throw Error(
+          'An obligation anchor must identify an exact source snapshot text range: sourceId:start:length.',
+        );
+      if (
+        !sourceIds.has(o.sourceId) ||
+        !o.anchor ||
+        !o.instruction ||
+        !o.rationale ||
+        !['implemented', 'review_only', 'unsupported'].includes(o.disposition) ||
+        o.requirementIds.some((id) => !ids.has(id)) ||
+        (o.disposition !== 'unsupported' && !o.requirementIds.length)
+      )
+        throw Error(
+          'Every obligation needs a valid source anchor, disposition, rationale and mapped requirements.',
+        );
+    }
+    if (
+      p.requirements.some(
+        (r) =>
+          !r.sourceAnchor ||
+          !p.obligations!.some(
+            (o) => o.requirementIds.includes(r.id) && o.anchor === r.sourceAnchor,
+          ),
+      )
+    )
+      throw Error('Every requirement needs an exact source anchor and obligation mapping.');
+    p.lifecycle = 'reviewed';
+    p.reviewedBy = actor;
+    p.reviewedAt = new Date().toISOString();
+  } else if (action === 'publish') {
+    if (row.state !== 'reviewed' || actor !== p.reviewedBy)
+      throw Error('Only the recorded independent reviewer may publish a reviewed revision.');
+    if (
+      p.sources?.some((s) => {
+        const row = store.db
+          .prepare('SELECT payload FROM source_snapshots WHERE id=?')
+          .get(s.id) as { payload: string } | undefined;
+        return !row || JSON.parse(row.payload).sha256 !== s.sha256;
+      })
+    )
+      throw Error('Source changed after review. Create and review a new revision.');
+    p.lifecycle = 'published';
+  } else {
+    if (row.state !== 'published' || actor !== p.reviewedBy)
+      throw Error('Retirement requires the recorded reviewer of a published revision.');
+    p.lifecycle = 'retired';
+  }
+  store.db
+    .prepare('UPDATE pack_revisions SET state=?,payload=? WHERE id=? AND version=?')
+    .run(p.lifecycle, JSON.stringify(p), id, version);
+  return p;
+}

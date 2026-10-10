@@ -26,7 +26,7 @@ import {
   type EvaluationRun,
 } from '../shared/model';
 import { evaluate, EVALUATOR_VERSION } from '../shared/evaluate';
-import { makeCustomPack, packetPack, starterRequirements, templates } from '../shared/templates';
+import { makeCustomPack, starterRequirements, templates } from '../shared/templates';
 import {
   requirementSchema,
   requirementsSchema,
@@ -36,6 +36,10 @@ import {
 } from './application-schema';
 import { zipSync, strToU8 } from 'fflate';
 import { limits } from '../shared/limits';
+import { evidenceAnchors } from '../shared/model';
+import { suggestEvidence, consistencyConcerns } from '../shared/facts';
+import { availablePacks, resolvePack, sourceChanged } from './rule-packs';
+import { preferences, refreshReminders } from './reminders';
 import {
   profileQuestions,
   profileAnswers,
@@ -86,6 +90,7 @@ export function createApp(options: {
   production?: boolean;
 }) {
   const store = createStore(resolve(options.dataDir));
+  const packetPack = (p: Packet) => resolvePack(store, p);
   const app = express();
   const prod = options.production || false;
   const allowedOrigins = new Set([
@@ -265,7 +270,7 @@ export function createApp(options: {
         description: t.description,
         starter: starterRequirements(t.id),
       })),
-      packs: packs.map((p) => ({
+      packs: availablePacks(store).map((p) => ({
         id: p.id,
         version: p.version,
         title: p.title,
@@ -314,13 +319,13 @@ export function createApp(options: {
     res.clearCookie('jky_session', { path: '/' });
     res.json({ ok: true });
   });
-  app.get('/api/packs', (_req, res) => res.json(packs));
+  app.get('/api/packs', (_req, res) => res.json(availablePacks(store)));
   app.get('/api/templates', (_req, res) => res.json(templates));
   app.get('/api/activity', (req, res) => {
     res.json(
       store.db
         .prepare(
-          'SELECT id,action,objectId,createdAt FROM audit WHERE userId=? ORDER BY rowid DESC LIMIT 80',
+          "SELECT id,action,objectId,createdAt FROM audit WHERE userId=? AND action<>'consent.development-review.accepted' ORDER BY rowid DESC LIMIT 80",
         )
         .all(user(req).id),
     );
@@ -374,6 +379,142 @@ export function createApp(options: {
     store.audit(user(req).id, 'account.sessions.revoked', user(req).id);
     res.json({ ok: true });
   });
+  app.get('/api/notifications', (req, res) => res.json(refreshReminders(store, user(req).id)));
+  app.get('/api/notification-preferences', (req, res) =>
+    res.json(preferences(store, user(req).id)),
+  );
+  app.put('/api/notification-preferences', (req, res) => {
+    const prefs = z
+      .object({ deadlines: z.boolean(), sourceChanges: z.boolean() })
+      .strict()
+      .parse(req.body);
+    store.db
+      .prepare(
+        'INSERT INTO notification_preferences VALUES(?,?) ON CONFLICT(userId) DO UPDATE SET payload=excluded.payload',
+      )
+      .run(user(req).id, JSON.stringify(prefs));
+    res.json(prefs);
+  });
+  app.post('/api/notifications/:notificationId/read', (req, res) => {
+    const row = store.db
+      .prepare('SELECT payload FROM reminders WHERE id=? AND userId=?')
+      .get(String(req.params.notificationId), user(req).id) as { payload: string } | undefined;
+    if (!row) throw new HttpError(404, 'Reminder not found.');
+    const reminder = { ...JSON.parse(row.payload), readAt: new Date().toISOString() };
+    store.db
+      .prepare('UPDATE reminders SET payload=? WHERE id=? AND userId=?')
+      .run(JSON.stringify(reminder), String(req.params.notificationId), user(req).id);
+    res.json(reminder);
+  });
+  app.get('/api/packets/:packetId/sources', (req, res) => {
+    const p = owned(req);
+    res.json({ pack: packetPack(p), changed: sourceChanged(store, p) });
+  });
+  app.post('/api/packets/:packetId/accept-checklist-update', (req, res) => {
+    const input = z.object({ expectedRevision: revision }).strict().parse(req.body),
+      p = owned(req);
+    checkRevision(p, input.expectedRevision);
+    if (p.customPack) throw new HttpError(400, 'Edit your custom checklist directly.');
+    const current = availablePacks(store).find((pack) => pack.id === p.packId);
+    if (!current) throw new HttpError(409, 'No current published checklist is available.');
+    // A changed source cannot be accepted until it is incorporated into a new reviewed publication.
+    const selected = { ...p, packSnapshot: current };
+    if (sourceChanged(store, selected))
+      throw new HttpError(409, 'The source change still requires curator review.');
+    p.packSnapshot = structuredClone(current);
+    p.links = {};
+    touch(p);
+    store.audit(user(req).id, 'checklist.update.accepted', p.id);
+    res.json(p);
+  });
+  app.post('/api/packets/:packetId/documents/:documentId/facts', (req, res) => {
+    const input = z
+      .object({
+        expectedRevision: revision,
+        kind: z.enum(['name', 'birth_date', 'issue_date', 'expiry_date']),
+        page: z.number().int().min(1).max(20),
+        value: z.string().trim().min(1).max(160),
+        reason: z.string().trim().min(10).max(1000),
+      })
+      .strict()
+      .parse(req.body);
+    const p = owned(req);
+    checkRevision(p, input.expectedRevision);
+    const doc = store.documents(p.id).find((d) => d.id === req.params.documentId);
+    if (!doc || doc.status !== 'ready' || input.page > doc.pageCount)
+      throw new HttpError(400, 'Choose an inspected document and available page.');
+    if ((doc.facts || []).length >= 100)
+      throw new HttpError(400, 'The document fact limit has been reached.');
+    const fact = {
+      id: randomUUID(),
+      kind: input.kind,
+      page: input.page,
+      value: input.value,
+      originalText: '',
+      origin: 'manual' as const,
+      confidence: 0,
+      history: [
+        {
+          revision: 1,
+          value: input.value,
+          confirmed: true,
+          actor: user(req).id,
+          reason: input.reason,
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    };
+    doc.facts = [...(doc.facts || []), fact];
+    store.db.transaction(() => {
+      store.db
+        .prepare('UPDATE documents SET payload=? WHERE id=? AND packetId=?')
+        .run(JSON.stringify(doc), doc.id, p.id);
+      for (const link of Object.values(p.links))
+        for (const a of evidenceAnchors(link)) if (a.documentId === doc.id) a.review = 'unreviewed';
+      touch(p);
+      store.audit(user(req).id, 'fact.corrected', doc.id);
+    })();
+    res.status(201).json(doc);
+  });
+  app.put('/api/packets/:packetId/documents/:documentId/facts/:factId', (req, res) => {
+    const input = z
+      .object({
+        expectedRevision: revision,
+        expectedFactRevision: z.number().int().nonnegative(),
+        value: z.string().trim().min(1).max(160),
+        confirmed: z.boolean(),
+        reason: z.string().trim().min(10).max(1000),
+      })
+      .strict()
+      .parse(req.body);
+    const p = owned(req);
+    checkRevision(p, input.expectedRevision);
+    const doc = store.documents(p.id).find((d) => d.id === req.params.documentId);
+    const fact = doc?.facts?.find((f) => f.id === req.params.factId);
+    if (!doc || doc.status !== 'ready' || !fact)
+      throw new HttpError(404, 'Inspected fact not found.');
+    if ((fact.history.at(-1)?.revision || 0) !== input.expectedFactRevision)
+      throw new HttpError(409, 'This fact changed. Refresh before confirming it.');
+    fact.value = input.value;
+    fact.history.push({
+      revision: input.expectedFactRevision + 1,
+      value: input.value,
+      confirmed: input.confirmed,
+      reason: input.reason,
+      actor: user(req).id,
+      createdAt: new Date().toISOString(),
+    });
+    store.db.transaction(() => {
+      store.db
+        .prepare('UPDATE documents SET payload=? WHERE id=? AND packetId=?')
+        .run(JSON.stringify(doc), doc.id, p.id);
+      for (const link of Object.values(p.links))
+        for (const a of evidenceAnchors(link)) if (a.documentId === doc.id) a.review = 'unreviewed';
+      touch(p);
+      store.audit(user(req).id, 'fact.corrected', doc.id);
+    })();
+    res.json(doc);
+  });
   app.get('/api/packets', (req, res) => {
     const rows = store.db
       .prepare('SELECT payload FROM packets WHERE userId=? ORDER BY rowid DESC')
@@ -408,7 +549,10 @@ export function createApp(options: {
         deadline: deadlineSchema.optional(),
       })
       .parse(req.body);
-    if (!input.templateId && (!input.packId || !findPack(input.packId)))
+    if (
+      !input.templateId &&
+      (!input.packId || !availablePacks(store).find((p) => p.id === input.packId))
+    )
       throw new HttpError(400, 'Choose a supported checklist or starter.');
     const customRequirements = input.templateId
       ? input.requirements || starterRequirements(input.templateId)
@@ -451,6 +595,8 @@ export function createApp(options: {
       });
       p.packId = p.customPack.id;
     }
+    if (!p.customPack)
+      p.packSnapshot = structuredClone(availablePacks(store).find((pack) => pack.id === p.packId)!);
     store.db
       .prepare('INSERT INTO packets VALUES(?,?,?)')
       .run(p.id, user(req).id, JSON.stringify(p));
@@ -466,8 +612,14 @@ export function createApp(options: {
       documents,
       runs: store.runs(p.id),
       pack,
-      live: evaluate(p, documents, pack, 'live-preview'),
+      live: {
+        ...evaluate(p, documents, pack, 'live-preview'),
+        ...(sourceChanged(store, p) ? { summary: 'review_required' } : {}),
+      },
       evaluatorVersion: EVALUATOR_VERSION,
+      sourceChanged: sourceChanged(store, p),
+      suggestions: suggestEvidence(p, documents, pack),
+      consistencyConcerns: consistencyConcerns(documents),
     });
   });
   app.patch('/api/packets/:packetId', (req, res) => {
@@ -478,7 +630,8 @@ export function createApp(options: {
     const p = owned(req);
     checkRevision(p, input.expectedRevision);
     if (p.customPack && input.details.notes !== undefined && input.details.notes !== p.notes) {
-      for (const link of Object.values(p.links)) link.review = 'unreviewed';
+      for (const link of Object.values(p.links))
+        for (const anchor of evidenceAnchors(link)) anchor.review = 'unreviewed';
       p.customPack.version = `custom.${p.revision + 1}`;
     }
     Object.assign(p, input.details);
@@ -525,7 +678,7 @@ export function createApp(options: {
         p.links[requirement.id] &&
         (sourceChanged || oldRequirements.get(requirement.id) !== JSON.stringify(requirement))
       )
-        p.links[requirement.id].review = 'unreviewed';
+        for (const anchor of evidenceAnchors(p.links[requirement.id])) anchor.review = 'unreviewed';
     touch(p);
     store.audit(user(req).id, 'checklist.updated', p.id);
     res.json(p);
@@ -655,6 +808,22 @@ export function createApp(options: {
         pageTo: z.number().int().min(1).max(20),
         review: z.enum(['unreviewed', 'confirmed', 'concern']),
         note: z.string().trim().max(1500),
+        slot: z.string().trim().max(80).optional(),
+        additional: z
+          .array(
+            z
+              .object({
+                documentId: z.string(),
+                pageFrom: z.number().int().min(1).max(20),
+                pageTo: z.number().int().min(1).max(20),
+                review: z.enum(['unreviewed', 'confirmed', 'concern']),
+                note: z.string().trim().max(1500),
+                slot: z.string().trim().max(80).optional(),
+              })
+              .strict(),
+          )
+          .max(9)
+          .optional(),
       })
       .parse(req.body);
     const p = owned(req);
@@ -662,15 +831,36 @@ export function createApp(options: {
     const pack = packetPack(p);
     if (!pack.requirements.some((r) => r.id === req.params.requirementId))
       throw new HttpError(404, 'Requirement not found.');
-    const doc = store.documents(p.id).find((d) => d.id === input.documentId);
-    if (!doc || doc.status !== 'ready')
-      throw new HttpError(400, 'Choose an inspected document from this packet.');
-    if (input.pageTo < input.pageFrom || input.pageTo > doc.pageCount)
-      throw new HttpError(400, 'Choose an available page range.');
-    if (input.review !== 'unreviewed' && input.note.length < 10)
-      throw new HttpError(400, 'Add a review note with at least 10 characters.');
+    const documents = store.documents(p.id);
+    const requirement = pack.requirements.find((r) => r.id === req.params.requirementId)!;
+    const anchors = [input, ...(input.additional || [])];
+    const keys = new Set<string>();
+    for (const a of anchors) {
+      const doc = documents.find((d) => d.id === a.documentId);
+      if (!doc || doc.status !== 'ready')
+        throw new HttpError(400, 'Choose an inspected document from this packet.');
+      if (a.pageTo < a.pageFrom || a.pageTo > doc.pageCount)
+        throw new HttpError(400, 'Choose an available page range.');
+      if (a.review !== 'unreviewed' && a.note.length < 10)
+        throw new HttpError(400, 'Add a review note with at least 10 characters.');
+      if (a.slot && !requirement.evidenceSlots?.includes(a.slot))
+        throw new HttpError(400, 'Choose a component from this requirement.');
+      const key = `${a.documentId}:${a.pageFrom}:${a.pageTo}:${a.slot || ''}`;
+      if (keys.has(key))
+        throw new HttpError(400, 'The same evidence range and component cannot be linked twice.');
+      keys.add(key);
+    }
     const { expectedRevision, ...link } = input;
-    p.links[String(req.params.requirementId)] = link;
+    p.links[String(req.params.requirementId)] = {
+      ...link,
+      actor: user(req).id,
+      reviewedAt: new Date().toISOString(),
+      additional: input.additional?.map((a) => ({
+        ...a,
+        actor: user(req).id,
+        reviewedAt: new Date().toISOString(),
+      })),
+    };
     touch(p);
     store.audit(user(req).id, 'evidence.linked', p.id);
     res.json(p);
@@ -691,12 +881,14 @@ export function createApp(options: {
       .prepare('SELECT objectKey FROM documents WHERE id=? AND packetId=?')
       .get(String(req.params.documentId), p.id) as { objectKey: string } | undefined;
     if (!row) throw new HttpError(404, 'Document not found.');
+    store.recordDeletion('document', String(req.params.documentId));
     store.db.transaction(() => {
       store.db
         .prepare('DELETE FROM documents WHERE id=? AND packetId=?')
         .run(String(req.params.documentId), p.id);
       for (const [rid, link] of Object.entries(p.links))
-        if (link.documentId === req.params.documentId) delete p.links[rid];
+        if (evidenceAnchors(link).some((a) => a.documentId === req.params.documentId))
+          delete p.links[rid];
       store.db.prepare('DELETE FROM runs WHERE packetId=?').run(p.id);
       touch(p);
       store.audit(user(req).id, 'document.deleted', String(req.params.documentId));
@@ -748,6 +940,11 @@ export function createApp(options: {
     const input = z.object({ expectedRevision: revision }).parse(req.body);
     const p = owned(req);
     checkRevision(p, input.expectedRevision);
+    if (sourceChanged(store, p))
+      throw new HttpError(
+        409,
+        'The source or checklist changed. Review and accept the current checklist before saving a new report.',
+      );
     const prior = store
       .runs(p.id)
       .find(
@@ -778,6 +975,7 @@ export function createApp(options: {
       application: run.checklist?.title || pack.title,
       sourceUrl: run.checklist?.sourceUrl ?? pack.sourceUrl,
       stale:
+        sourceChanged(store, p) ||
         run.packetRevision !== p.revision ||
         run.packVersion !== pack.version ||
         run.evaluatorVersion !== EVALUATOR_VERSION,
@@ -790,6 +988,7 @@ export function createApp(options: {
     const rows = store.db.prepare('SELECT objectKey FROM documents WHERE packetId=?').all(p.id) as {
       objectKey: string;
     }[];
+    store.recordDeletion('packet', p.id);
     store.db.transaction(() => {
       store.db.prepare('DELETE FROM packets WHERE id=? AND userId=?').run(p.id, userId);
       store.audit(userId, 'packet.deleted', p.id);
@@ -813,6 +1012,7 @@ export function createApp(options: {
       payload: string;
     }[];
     for (const row of rows) erasePacket(JSON.parse(row.payload), id);
+    store.recordDeletion('account', id);
     store.db.prepare('DELETE FROM users WHERE id=?').run(id);
     res.clearCookie('jky_session', { path: '/' });
     res.json({ ok: true });
@@ -843,7 +1043,8 @@ export function createApp(options: {
     console.error('api.internal_error');
     res.status(500).json({ error: 'Something went wrong. Please retry or refresh the workspace.' });
   });
-  const stopJobs = options.jobs === false ? () => {} : startJobs(store);
+  const stopJobs =
+    options.jobs === false ? Object.assign(() => {}, { isIdle: () => true }) : startJobs(store);
   function expireDemo() {
     store.db.prepare('DELETE FROM sessions WHERE expiresAt<?').run(Date.now());
     const rows = store.db
@@ -865,6 +1066,7 @@ export function createApp(options: {
   return {
     app,
     store,
+    jobsIdle: stopJobs.isIdle,
     close: () => {
       clearInterval(cleanup);
       stopJobs();

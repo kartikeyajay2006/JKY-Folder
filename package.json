@@ -14,11 +14,16 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "check": "npm run typecheck && npm test && npm run build",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"shared/**/*.ts\" \"server/**/*.{ts,mjs}\" \"tests/**/*.ts\" \"*.ts\" index.html package.json .github/workflows/ci.yml"
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"shared/**/*.ts\" \"server/**/*.{ts,mjs}\" \"tests/**/*.ts\" \"*.ts\" index.html package.json .github/workflows/ci.yml",
+    "rules": "tsx server/curate.ts",
+    "backup": "tsx server/backup.ts",
+    "test:benchmark": "vitest run tests/benchmark.test.ts"
   },
   "dependencies": {
     "@fontsource-variable/bodoni-moda": "^5.3.0",
     "@fontsource-variable/manrope": "^5.3.0",
+    "@napi-rs/canvas": "^1.0.11",
+    "@tesseract.js-data/eng": "^1.0.0",
     "better-sqlite3": "^13.0.3",
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.1",
@@ -31,6 +36,7 @@
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "sharp": "^0.35.5",
+    "tesseract.js": "^7.0.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {

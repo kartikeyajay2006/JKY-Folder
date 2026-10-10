@@ -45,3 +45,62 @@ export async function download(path: string, name: string) {
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+export function uploadOriginal<T>(
+  path: string,
+  file: File,
+  onProgress: (percent: number) => void,
+  signal: AbortSignal,
+): Promise<T> {
+  return new Promise((resolve, reject) => {
+    if (signal.aborted) return reject(new DOMException('Upload cancelled.', 'AbortError'));
+    const xhr = new XMLHttpRequest();
+    const abort = () => xhr.abort();
+    const cleanup = () => signal.removeEventListener('abort', abort);
+    xhr.open('POST', '/api' + path);
+    xhr.withCredentials = true;
+    if (csrf) xhr.setRequestHeader('x-csrf-token', csrf);
+    xhr.timeout = 120000;
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    };
+    xhr.onload = () => {
+      cleanup();
+      let result;
+      try {
+        result = JSON.parse(xhr.responseText);
+      } catch {
+        return reject(
+          new Error('The upload response was unreadable. Refresh the folder before retrying.'),
+        );
+      }
+      if (xhr.status >= 200 && xhr.status < 300) resolve(result);
+      else reject(new ApiError(xhr.status, result.error || 'Upload failed.'));
+    };
+    xhr.onerror = () => {
+      cleanup();
+      reject(
+        new Error(
+          'Connection interrupted. Accepted files stay saved. Reconnect and retry; duplicates are detected.',
+        ),
+      );
+    };
+    xhr.ontimeout = () => {
+      cleanup();
+      reject(new Error('Upload timed out. Refresh the folder before retrying.'));
+    };
+    xhr.onabort = () => {
+      cleanup();
+      reject(
+        new DOMException(
+          'Upload cancelled. A file already accepted by the server may still appear in the folder.',
+          'AbortError',
+        ),
+      );
+    };
+    signal.addEventListener('abort', abort, { once: true });
+    const form = new FormData();
+    form.append('file', file);
+    xhr.send(form);
+  });
+}
