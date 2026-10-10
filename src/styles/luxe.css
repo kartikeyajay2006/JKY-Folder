@@ -833,3 +833,8 @@ html.theme-switching .folder-tab.is-current {
 .catalog-folder.is-reference .catalog-tab {
   color: var(--metal-on-folder);
 }
+/* The folder holds still while someone is pointing at or focused inside it. */
+html[data-motion='on'] .hero-folder.is-settled:hover .hf-stage,
+html[data-motion='on'] .hero-folder.is-settled:focus-within .hf-stage {
+  animation-play-state: paused;
+}
