@@ -6,7 +6,11 @@ async function check(page: import('@playwright/test').Page) {
     await document.fonts.ready;
     const finiteAnimations = document
       .getAnimations()
-      .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity);
+      .filter(
+        (animation) =>
+          animation.playState === 'running' &&
+          animation.effect?.getComputedTiming().iterations !== Infinity,
+      );
     await Promise.all(finiteAnimations.map((animation) => animation.finished.catch(() => {})));
   });
   const result = await new AxeBuilder({ page })

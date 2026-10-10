@@ -137,7 +137,7 @@ export function OverviewView({
               required items reviewed; {summarize(counts)}.
             </p>
           </div>
-          <button className="primary" onClick={onReview} disabled={!!busy}>
+          <button className="gold-button" onClick={onReview} disabled={!!busy}>
             {busy === 'evaluate' ? 'Saving review…' : 'Save a review'}
           </button>
         </div>

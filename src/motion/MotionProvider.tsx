@@ -32,6 +32,10 @@ export function MotionProvider({ children }: { children: ReactNode }) {
     };
   }, [active]);
   useEffect(() => {
+    if (!active) return;
+    return startSurfaceMotion();
+  }, [active]);
+  useEffect(() => {
     // Continuous effects pause while the tab is hidden.
     const visibility = () => {
       document.documentElement.dataset.motionVisibility = document.hidden ? 'hidden' : 'visible';
@@ -83,4 +87,64 @@ export function MotionToggle() {
       {active ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
     </button>
   );
+}
+
+const glareSurfaces = '.folder-card,.starter-tile,.catalog-folder,.template-card';
+
+/**
+ * Scroll reveals for [data-reveal] elements and a metallic glare that follows the pointer
+ * across cards. Returns a cleanup that restores every element to its resting state.
+ */
+function startSurfaceMotion() {
+  const root = document.documentElement;
+  const reveal = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-revealed');
+        reveal.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+  );
+  const watch = (scope: ParentNode) =>
+    scope.querySelectorAll('[data-reveal]:not(.is-revealed)').forEach((el) => reveal.observe(el));
+  watch(document);
+  const mutations = new MutationObserver((records) => {
+    for (const record of records)
+      record.addedNodes.forEach((node) => {
+        if (!(node instanceof Element)) return;
+        if (node.matches('[data-reveal]')) reveal.observe(node);
+        watch(node);
+      });
+  });
+  mutations.observe(document.body, { childList: true, subtree: true });
+  root.dataset.revealArmed = '';
+
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  let frame = 0;
+  let surface: HTMLElement | null = null;
+  let point = { x: 0, y: 0 };
+  const move = (event: PointerEvent) => {
+    if (!fine.matches) return;
+    surface = (event.target as Element).closest<HTMLElement>(glareSurfaces);
+    if (!surface || frame) return;
+    point = { x: event.clientX, y: event.clientY };
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      if (!surface) return;
+      const rect = surface.getBoundingClientRect();
+      surface.style.setProperty('--mx', `${point.x - rect.left}px`);
+      surface.style.setProperty('--my', `${point.y - rect.top}px`);
+    });
+  };
+  document.addEventListener('pointermove', move, { passive: true });
+  return () => {
+    reveal.disconnect();
+    mutations.disconnect();
+    cancelAnimationFrame(frame);
+    document.removeEventListener('pointermove', move);
+    delete root.dataset.revealArmed;
+    document.querySelectorAll('.is-revealed').forEach((el) => el.classList.remove('is-revealed'));
+  };
 }

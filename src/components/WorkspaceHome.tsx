@@ -62,7 +62,7 @@ export function WorkspaceHome({
               Pick a starting checklist, add the originals you plan to submit, and link each
               requirement to the page that supports it.
             </p>
-            <button className="primary" onClick={() => onCreate()}>
+            <button className="gold-button" onClick={() => onCreate()}>
               Create your first application
             </button>
           </div>

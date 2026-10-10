@@ -67,8 +67,8 @@ export function SettingsView({
             {(
               [
                 ['system', 'Match my device'],
-                ['light', 'Light'],
-                ['dark', 'Dark'],
+                ['light', 'Gold (light)'],
+                ['dark', 'Silver (dark)'],
               ] as [ThemePreference, string][]
             ).map(([value, label]) => (
               <label key={value} className={preference === value ? 'selected' : ''}>

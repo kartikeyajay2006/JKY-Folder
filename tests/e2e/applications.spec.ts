@@ -36,7 +36,9 @@ async function checkAccessibility(page: Page) {
     await Promise.all(
       document
         .getAnimations()
-        .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
+        .filter(
+          (a) => a.playState === 'running' && a.effect?.getComputedTiming().iterations !== Infinity,
+        )
         .map((a) => a.finished.catch(() => {})),
     );
   });

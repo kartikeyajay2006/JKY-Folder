@@ -179,7 +179,7 @@ html[data-motion='on'] .mark-pending {
   gap: 2px;
 }
 .cover-facts dt {
-  color: #9fb3ca;
+  color: color-mix(in srgb, var(--on-folder) 62%, transparent);
   font-size: var(--t-xs);
   font-weight: 600;
 }
@@ -199,7 +199,7 @@ html[data-motion='on'] .mark-pending {
   margin-left: 4px;
   padding: 1px 7px;
   border-radius: var(--r-label);
-  background: rgb(0 183 165 / 0.18);
+  background: color-mix(in srgb, var(--metal) 22%, transparent);
   color: var(--tick);
   font-size: var(--t-xs);
 }
@@ -229,11 +229,11 @@ html[data-motion='on'] .mark-pending {
   flex-shrink: 0;
   min-width: 150px;
   padding: 12px 18px;
-  border: 2.5px solid #b9cae0;
-  outline: 1px solid #b9cae0;
+  border: 2.5px solid var(--metal);
+  outline: 1px solid var(--metal);
   outline-offset: 3px;
   border-radius: 8px;
-  color: #dbe6f3;
+  color: var(--on-folder);
   rotate: -4deg;
   text-align: center;
 }
@@ -1370,7 +1370,7 @@ html[data-motion='on'] .folder-grid > li {
   color: var(--folder);
 }
 .first-folder .primary:hover:not(:disabled) {
-  background: #2ccdbc;
+  filter: brightness(1.08);
 }
 .first-folder :focus-visible {
   outline-color: var(--tick);

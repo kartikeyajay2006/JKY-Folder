@@ -44,7 +44,7 @@ export function ReportView({
             Saving a review records every requirement, its evidence and anything unresolved, with
             the date and the version of the checklist used.
           </p>
-          <button className="primary" disabled={!!busy} onClick={onReview}>
+          <button className="gold-button" disabled={!!busy} onClick={onReview}>
             {busy === 'evaluate' ? 'Saving review…' : 'Save my first review'}
           </button>
         </div>

@@ -1,59 +1,89 @@
 /*
-  JKY-Folder visual system.
-  The product is a folder on a desk: a navy cover with index tabs, white sheets on a cool desk,
-  teal ticks for reviewed evidence, red pen for missing items, marigold for things you must check.
+  JKY-Folder visual system. Two themes, three colours each.
+
+  Gold (light):  white paper, royal blue structure, metallic gold for marks and seals.
+  Silver (dark): black lacquer, white type, brushed silver for marks and seals.
+
+  The subject is the application file: certificates, acceptance letters, embossed seals.
 */
 :root {
   color-scheme: light;
 
-  /* Desk, sheets and rules */
-  --desk: #e3e9ef;
-  --desk-deep: #d5dde6;
+  /* Paper */
+  --desk: #f3f5fa;
+  --desk-deep: #e6eaf3;
   --sheet: #ffffff;
-  --sheet-tint: #f5f7fa;
-  --line: #d4dce5;
-  --line-strong: #b4c0cd;
+  --sheet-tint: #f7f8fc;
+  --line: #e0e5ef;
+  --line-strong: #c3cbdc;
 
-  /* Ink (brand navy) */
-  --ink: #0b2341;
-  --ink-2: #34475e;
-  --ink-3: #56677c;
-  --ink-inverse: #f3f6fa;
-  --on-folder: #f3f6fa;
-  --primary-hover: #15365f;
-  --danger-bg: #ae2a23;
-  --danger-hover: #8f1f19;
-  --hover-wash: rgb(11 35 65 / 0.065);
-  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2334475e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  /* Ink: royal blue */
+  --ink: #0c1b45;
+  --ink-2: #36436b;
+  --ink-3: #5b6687;
+  --ink-inverse: #ffffff;
+  --on-folder: #ffffff;
+  --primary-bg: #102a6b;
+  --primary-text: #ffffff;
+  --primary-hover: #1b3a8c;
+  --danger-bg: #b3261e;
+  --danger-hover: #8e1d17;
+  --hover-wash: rgb(16 42 107 / 0.06);
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2336436b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
 
-  /* Folder cover */
-  --folder: #0b2341;
-  --folder-raised: #15365f;
-  --folder-edge: #2a4d78;
-  --folder-text: #c9d6e6;
-  --pocket-back: #0b2341;
-  --pocket-front: #15365f;
+  /* The folder cover */
+  --folder: #102a6b;
+  --folder-raised: #1b3a8c;
+  --folder-edge: #3a589f;
+  --folder-text: #d9e1f5;
+  --pocket-back: #102a6b;
+  --pocket-front: #1b3a8c;
 
-  /* Check states */
-  --tick: #00b7a5;
-  --tick-ink: #00756a;
-  --tick-wash: #dbf4ef;
-  --miss: #d8443d;
-  --miss-ink: #ae2a23;
-  --miss-wash: #fbe5e3;
-  --flag: #f0a202;
-  --flag-ink: #845300;
-  --flag-wash: #fdf0d3;
-  --ask: #4b5bd6;
-  --ask-ink: #3442ad;
-  --ask-wash: #e7eafd;
-  --idle: #8795a6;
-  --idle-ink: #56677c;
-  --idle-wash: #edf1f5;
+  /* Metal: gold leaf */
+  --metal: #c9a13b;
+  --metal-ink: #7e5d10;
+  --metal-text: #241900;
+  --metal-on-folder: #e8c766;
+  --metal-sheen: linear-gradient(
+    115deg,
+    #8c6a1a 0%,
+    #d6b04a 24%,
+    #f8e9ac 44%,
+    #d9b24a 58%,
+    #a67c1f 78%,
+    #e7c868 100%
+  );
+  --metal-line: linear-gradient(
+    90deg,
+    transparent,
+    #d6b04a 20%,
+    #f8e9ac 50%,
+    #d6b04a 80%,
+    transparent
+  );
+
+  /* Check states: gold for reviewed, blue for review, red only for what is missing */
+  --tick: #c9a13b;
+  --tick-ink: #7a5a0e;
+  --tick-wash: #fbf3dc;
+  --flag: #2b55d6;
+  --flag-ink: #1e43b3;
+  --flag-wash: #e9eefd;
+  --ask: #102a6b;
+  --ask-ink: #102a6b;
+  --ask-wash: #eef1f9;
+  --miss: #c93a30;
+  --miss-ink: #a82b22;
+  --miss-wash: #fbeae8;
+  --idle: #8c95ab;
+  --idle-ink: #5b6478;
+  --idle-wash: #f0f2f7;
+  --focus: #2b55d6;
 
   /* Type */
-  --font: 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, sans-serif;
-  --font-data: 'Atkinson Hyperlegible Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+  --font: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  --font-display: 'Bodoni Moda Variable', 'Bodoni Moda', 'Didot', Georgia, serif;
+  --font-data: var(--font);
   --t-xs: 0.78rem;
   --t-sm: 0.875rem;
   --t-base: 1rem;
@@ -61,29 +91,31 @@
   --t-lg: 1.3rem;
   --t-xl: 1.65rem;
   --t-2xl: 2.15rem;
-  --t-3xl: clamp(2.1rem, 3.6vw, 2.9rem);
-  --t-display: clamp(2.6rem, 6.2vw, 5.1rem);
+  --t-3xl: clamp(2.2rem, 3.8vw, 3.1rem);
+  --t-display: clamp(2.8rem, 6.4vw, 5.6rem);
 
-  /* Shape: sheets are softer than controls; labels are nearly square like paper stickers */
-  --r-sheet: 16px;
-  --r-card: 12px;
-  --r-control: 10px;
-  --r-label: 5px;
-  --r-tab: 11px;
+  /* Shape */
+  --r-sheet: 18px;
+  --r-card: 14px;
+  --r-control: 11px;
+  --r-label: 6px;
+  --r-tab: 12px;
 
-  /* Elevation is tinted with the ink, never a neutral grey */
-  --lift-1: 0 1px 0 rgb(11 35 65 / 0.05), 0 1px 3px rgb(11 35 65 / 0.06);
-  --lift-2: 0 1px 0 rgb(11 35 65 / 0.05), 0 10px 26px -14px rgb(11 35 65 / 0.32);
-  --lift-3: 0 2px 0 rgb(11 35 65 / 0.04), 0 26px 60px -24px rgb(11 35 65 / 0.45);
+  /* Elevation, tinted with the ink */
+  --lift-1: 0 1px 0 rgb(12 27 69 / 0.04), 0 1px 3px rgb(12 27 69 / 0.06);
+  --lift-2: 0 1px 0 rgb(12 27 69 / 0.04), 0 14px 32px -16px rgb(12 27 69 / 0.28);
+  --lift-3: 0 2px 0 rgb(12 27 69 / 0.04), 0 30px 70px -26px rgb(12 27 69 / 0.42);
+  --glow: 0 0 0 1px rgb(201 161 59 / 0.35), 0 14px 40px -14px rgb(201 161 59 / 0.55);
 
   /* Rhythm */
   --gutter: clamp(16px, 3.2vw, 32px);
   --page: 1220px;
 
   /* Motion */
-  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
-  --fast: 140ms;
-  --medium: 260ms;
-  --slow: 520ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --fast: 160ms;
+  --medium: 300ms;
+  --slow: 640ms;
 }

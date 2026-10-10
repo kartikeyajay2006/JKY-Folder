@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { MotionProvider } from './motion/MotionProvider';
 import { ThemeProvider } from './theme';
-import '@fontsource-variable/atkinson-hyperlegible-next';
-import '@fontsource-variable/atkinson-hyperlegible-mono';
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/bodoni-moda';
 import './styles/tokens.css';
 import './styles/theme-dark.css';
 import './styles/base.css';
@@ -14,6 +14,7 @@ import './styles/shell.css';
 import './styles/landing.css';
 import './styles/views.css';
 import './styles/forms.css';
+import './styles/luxe.css';
 import './styles/motion.css';
 import './styles/print.css';
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { failed: boolean }> {

@@ -1,0 +1,835 @@
+/*
+  Finish layer: display type, metal details and the motion system.
+  Everything that moves is gated on html[data-motion='on'].
+*/
+
+/* ---------- Display typography ---------- */
+.hero h1,
+.file-cover h1,
+.report-paper > h2,
+.how h2,
+.section-head h2,
+.honesty h2,
+.account-copy h2,
+.first-folder h2,
+.report-empty h2,
+.section-empty h2,
+.upload-copy h2,
+.hf-verdict,
+.drop-card p,
+.boot h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 4.6vw, 4.3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  max-width: none;
+}
+.hero-copy h1 .line > span {
+  white-space: nowrap;
+}
+.how h2,
+.section-head h2,
+.honesty h2,
+.account-copy h2 {
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  line-height: 1.02;
+}
+.sheet-head h2,
+.standing-head h2,
+.help-view h2,
+.settings-side h2 {
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+.how-steps li::before,
+.first-steps li::before,
+.help-steps li::before,
+.stored-list dd,
+.deadline-stamp strong {
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+.how-steps li::before {
+  font-size: 3.4rem;
+  color: var(--metal);
+}
+.wordmark-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0;
+}
+
+/* Gold-leaf text and rules */
+.metal-text {
+  background: var(--metal-sheen);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.metal-rule {
+  display: block;
+  height: 1px;
+  background: var(--metal-line);
+}
+
+/* ---------- Header: the folder cover with a gilded edge ---------- */
+.workspace-header {
+  box-shadow: none;
+}
+.workspace-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--metal-line);
+  opacity: 0.7;
+}
+.workspace-header .brand-mark,
+.landing .brand-mark {
+  filter: drop-shadow(0 1px 0 rgb(0 0 0 / 0.25));
+}
+.folder-tab:not(.is-current)::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--metal-sheen);
+  transform: scaleX(0);
+  transition: transform var(--medium) var(--ease-out);
+}
+.folder-tab:not(.is-current):hover::after {
+  transform: scaleX(1);
+}
+.folder-tab.is-current {
+  box-shadow: inset 0 2px 0 var(--metal);
+}
+.demo-badge {
+  background: var(--metal-sheen);
+  color: var(--metal-text);
+}
+.account-initials {
+  background: var(--metal-sheen);
+  color: var(--metal-text);
+}
+
+/* ---------- Buttons ---------- */
+.primary,
+.gold-button {
+  overflow: hidden;
+  isolation: isolate;
+}
+.primary::before,
+.gold-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgb(255 255 255 / 0.32) 48%,
+    transparent 66%
+  );
+  transform: translateX(-120%);
+}
+html[data-motion='on'] .primary:hover:not(:disabled)::before,
+html[data-motion='on'] .gold-button:hover:not(:disabled)::before {
+  transition: transform 720ms var(--ease-out);
+  transform: translateX(120%);
+}
+.gold-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 20px;
+  border-radius: var(--r-control);
+  background: var(--metal-sheen);
+  background-size: 160% 100%;
+  color: var(--metal-text);
+  font-weight: 750;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.55),
+    inset 0 -1px 0 rgb(0 0 0 / 0.18),
+    var(--glow);
+  transition:
+    background-position var(--slow) var(--ease-out),
+    transform var(--fast) var(--ease-out),
+    box-shadow var(--medium) var(--ease-out);
+}
+.gold-button:hover:not(:disabled) {
+  background-position: 100% 0;
+  transform: translateY(-1px);
+}
+.gold-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.gold-button:disabled {
+  opacity: 0.55;
+}
+.outline {
+  transition:
+    background-color var(--fast) var(--ease-out),
+    border-color var(--fast) var(--ease-out),
+    transform var(--fast) var(--ease-out),
+    box-shadow var(--medium) var(--ease-out);
+}
+.outline:hover:not(:disabled) {
+  border-color: var(--metal);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--metal) 16%, transparent);
+}
+
+/* ---------- Surfaces that answer the pointer ---------- */
+.folder-card,
+.starter-tile,
+.catalog-folder,
+.template-card {
+  --mx: 50%;
+  --my: 0%;
+}
+.folder-card::after,
+.starter-tile::after,
+.catalog-folder::after,
+.template-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--metal) 22%, transparent),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity var(--medium) var(--ease-out);
+}
+.starter-tile,
+.template-card {
+  position: relative;
+}
+.folder-card:hover::after,
+.starter-tile:hover::after,
+.catalog-folder:hover::after,
+.template-card:hover::after {
+  opacity: 1;
+}
+.folder-card:hover,
+.starter-tile:hover,
+.catalog-folder:hover {
+  box-shadow: var(--lift-3);
+}
+.catalog-folder {
+  transition:
+    transform var(--medium) var(--ease-out),
+    box-shadow var(--medium) var(--ease-out);
+}
+.catalog-folder:hover {
+  transform: translateY(-4px);
+}
+.starter-tile:hover,
+.template-card:hover {
+  border-color: var(--metal);
+}
+
+/* ---------- The seal: an embossed metal disc used for reviewed work ---------- */
+.seal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--metal-sheen);
+  background-size: 200% 200%;
+  color: var(--metal-text);
+  box-shadow:
+    inset 0 2px 0 rgb(255 255 255 / 0.55),
+    inset 0 -3px 6px rgb(0 0 0 / 0.25),
+    0 10px 24px -8px rgb(0 0 0 / 0.45);
+}
+.seal::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  border: 1.5px dashed color-mix(in srgb, var(--metal-text) 45%, transparent);
+}
+.seal svg {
+  width: 40%;
+  height: 40%;
+}
+.seal-text {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.seal-text text {
+  fill: var(--metal-text);
+  font-family: var(--font);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 2.6px;
+}
+
+/* ---------- Landing hero ---------- */
+.hero-copy h1 .line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.hero-copy h1 .line > span {
+  display: inline-block;
+}
+html[data-motion='on'] .hero-copy h1 .line > span {
+  animation: line-up 1000ms var(--ease-out) both;
+  animation-delay: calc(120ms + var(--line) * 110ms);
+}
+html[data-motion='on'] .hero-lede,
+html[data-motion='on'] .hero-actions,
+html[data-motion='on'] .hero-note {
+  animation: fade-up 900ms var(--ease-out) both;
+}
+html[data-motion='on'] .hero-lede {
+  animation-delay: 520ms;
+}
+html[data-motion='on'] .hero-actions {
+  animation-delay: 640ms;
+}
+html[data-motion='on'] .hero-note {
+  animation-delay: 760ms;
+}
+.hero-rule {
+  width: 120px;
+  margin: 2px 0 4px;
+}
+html[data-motion='on'] .hero-rule {
+  animation: rule-draw 1200ms var(--ease-out) 420ms both;
+  transform-origin: left;
+}
+@keyframes line-up {
+  from {
+    transform: translateY(108%) rotate(2deg);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+}
+
+/* The hero folder in three dimensions */
+.hero-folder {
+  perspective: 1400px;
+}
+.hf-stage {
+  position: relative;
+  transform-style: preserve-3d;
+}
+.hf-back {
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgb(255 255 255 / 0.1), transparent 60%),
+    linear-gradient(160deg, var(--folder-raised), var(--folder));
+  border: 1px solid var(--folder-edge);
+}
+.hf-back::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  top: 10px;
+  height: 1px;
+  background: var(--metal-line);
+  opacity: 0.6;
+}
+.hf-front {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.12), transparent 40%),
+    linear-gradient(160deg, var(--folder-raised), var(--folder));
+  border-top: 1px solid color-mix(in srgb, var(--metal) 60%, transparent);
+}
+.hf-tab {
+  background: var(--folder-edge);
+  color: #ffffff;
+}
+.hf-tab.is-current {
+  background: var(--folder-raised);
+  box-shadow: inset 0 2px 0 var(--metal);
+}
+.hf-seal {
+  position: absolute;
+  z-index: 3;
+  right: 34px;
+  top: 150px;
+  width: 104px;
+  height: 104px;
+  rotate: -12deg;
+  pointer-events: none;
+}
+.hf-seal .seal {
+  width: 100%;
+  height: 100%;
+}
+.hf-seal-ring {
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid var(--metal);
+  opacity: 0;
+}
+html[data-motion='on'] .hero-folder.is-intro .hf-stage {
+  animation: folder-enter 1100ms var(--ease-out) both;
+}
+html[data-motion='on'] .hero-folder.is-intro .hf-tabs,
+html[data-motion='on'] .hero-folder.is-intro .hf-back,
+html[data-motion='on'] .hero-folder.is-intro .hf-front {
+  animation: none;
+}
+html[data-motion='on'] .hero-folder.is-intro .hf-sheet {
+  animation: sheet-rise 1000ms var(--ease-out) 520ms both;
+}
+html[data-motion='on'] .hf-seal .seal {
+  animation: seal-stamp 700ms var(--ease-spring) both;
+  animation-delay: 300ms;
+}
+html[data-motion='on'] .hero-folder.is-intro .hf-seal .seal {
+  animation-delay: 2600ms;
+}
+html[data-motion='on'] .hf-seal-ring {
+  animation: seal-ring 900ms var(--ease-out) both;
+  animation-delay: 420ms;
+}
+html[data-motion='on'] .hero-folder.is-intro .hf-seal-ring {
+  animation-delay: 2720ms;
+}
+html[data-motion='on'] .hero-folder.is-settled .hf-stage {
+  animation: folder-float 7s var(--ease-in-out) infinite;
+}
+html[data-motion='on'] .hero-folder.is-settled .hf-seal .seal {
+  animation: seal-sheen 5s linear infinite;
+}
+html[data-motion='on'] .hero-folder.is-offscreen *,
+html[data-motion='on'] .hero-folder.is-offscreen .hf-stage {
+  animation-play-state: paused !important;
+}
+@keyframes folder-enter {
+  from {
+    opacity: 0;
+    transform: translateY(60px) rotateX(24deg) rotateZ(-3deg) scale(0.94);
+  }
+}
+@keyframes sheet-rise {
+  from {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+  60% {
+    opacity: 1;
+  }
+}
+@keyframes seal-stamp {
+  0% {
+    opacity: 0;
+    transform: scale(2.6) rotate(40deg);
+    filter: blur(6px);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-4deg);
+    filter: blur(0);
+  }
+  75% {
+    transform: scale(1.04) rotate(1deg);
+  }
+}
+@keyframes seal-ring {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+@keyframes folder-float {
+  0%,
+  100% {
+    transform: translateY(0) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(2deg);
+  }
+}
+@keyframes seal-sheen {
+  0%,
+  70% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Marks drawn in metal */
+.hf-checklist .mark-pass .mark-box,
+.ledger .mark-pass .mark-box {
+  fill: color-mix(in srgb, var(--metal) 18%, transparent);
+}
+
+/* ---------- Scroll reveals (landing) ---------- */
+html[data-motion='on'] [data-reveal] {
+  transition:
+    opacity 900ms var(--ease-out),
+    transform 900ms var(--ease-out),
+    filter 900ms var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 110ms);
+}
+html[data-motion='on'][data-reveal-armed] [data-reveal]:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(42px);
+  filter: blur(4px);
+}
+html[data-motion='on'][data-reveal-armed] [data-reveal='tilt']:not(.is-revealed) {
+  transform: translateY(50px) rotateX(18deg);
+}
+html[data-motion='on'][data-reveal-armed] [data-reveal='side']:not(.is-revealed) {
+  transform: translateX(48px);
+}
+.catalog-folders {
+  perspective: 1200px;
+}
+.how-steps li::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 32px;
+  top: 64px;
+  height: 1px;
+  background: var(--metal-line);
+  transform-origin: left;
+}
+.how-steps li + li::after {
+  left: 32px;
+}
+html[data-motion='on'][data-reveal-armed] .how-steps li:not(.is-revealed)::after {
+  transform: scaleX(0);
+}
+html[data-motion='on'] .how-steps li::after {
+  transition: transform 1200ms var(--ease-out) 300ms;
+}
+
+/* ---------- Workspace motion ---------- */
+@supports (view-transition-name: none) {
+  html[data-motion='on'] .view-transition {
+    animation: none;
+  }
+  .folder-tab.is-current {
+    view-transition-name: current-tab;
+  }
+  .workspace-content {
+    view-transition-name: page;
+  }
+  ::view-transition-group(current-tab) {
+    animation-duration: 460ms;
+    animation-timing-function: var(--ease-out);
+  }
+  ::view-transition-old(page) {
+    animation: page-out 200ms var(--ease-in-out) both;
+  }
+  ::view-transition-new(page) {
+    animation: page-in-vt 520ms var(--ease-out) both;
+  }
+  html.theme-switching::view-transition-old(root),
+  html.theme-switching::view-transition-new(root),
+  html.theme-switching::view-transition-old(page),
+  html.theme-switching::view-transition-new(page),
+  html.theme-switching::view-transition-group(current-tab) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+  html.theme-switching::view-transition-old(root) {
+    z-index: 0;
+  }
+  html.theme-switching::view-transition-new(root) {
+    z-index: 1;
+  }
+}
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+    filter: blur(3px);
+  }
+}
+@keyframes page-in-vt {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+  }
+}
+
+/* Sections inside a view arrive in a short cascade */
+html[data-motion='on'] .overview > *,
+html[data-motion='on'] .documents-view > *,
+html[data-motion='on'] .help-view > *,
+html[data-motion='on'] .settings-view > *,
+html[data-motion='on'] .portfolio > * {
+  animation: rise 640ms var(--ease-out) both;
+}
+html[data-motion='on'] .overview > :nth-child(2),
+html[data-motion='on'] .documents-view > :nth-child(2),
+html[data-motion='on'] .help-view > :nth-child(2),
+html[data-motion='on'] .settings-view > :nth-child(2),
+html[data-motion='on'] .portfolio > :nth-child(2) {
+  animation-delay: 70ms;
+}
+html[data-motion='on'] .overview > :nth-child(3),
+html[data-motion='on'] .documents-view > :nth-child(3),
+html[data-motion='on'] .help-view > :nth-child(3),
+html[data-motion='on'] .portfolio > :nth-child(3) {
+  animation-delay: 140ms;
+}
+html[data-motion='on'] .overview > :nth-child(n + 4),
+html[data-motion='on'] .help-view > :nth-child(n + 4),
+html[data-motion='on'] .portfolio > :nth-child(n + 4) {
+  animation-delay: 210ms;
+}
+html[data-motion='on'] .ledger > li {
+  animation: rise 520ms var(--ease-out) both;
+  animation-delay: calc(var(--row) * 35ms);
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+}
+
+/* The checklist strip fills, then a sheen passes over reviewed cells */
+.cell-pass {
+  background: var(--metal-sheen);
+  background-size: 300% 100%;
+  background-position: 0% 0;
+}
+html[data-motion='on'] .cell-pass {
+  animation:
+    cell-fill 420ms var(--ease-out) both,
+    cell-sheen 1600ms var(--ease-in-out) both;
+  animation-delay: calc(var(--i) * 45ms), calc(500ms + var(--i) * 80ms);
+}
+@keyframes cell-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+/* File cover */
+.file-cover {
+  background:
+    radial-gradient(90% 120% at 100% 0%, rgb(255 255 255 / 0.08), transparent 55%),
+    linear-gradient(150deg, var(--folder-raised), var(--folder));
+  border: 1px solid var(--folder-edge);
+}
+.file-cover::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+  height: 1px;
+  background: var(--metal-line);
+  opacity: 0.5;
+}
+.file-cover-tab {
+  background: var(--folder-raised);
+  color: var(--metal-on-folder);
+  border: 1px solid var(--folder-edge);
+  border-bottom: 0;
+}
+.cover-facts a,
+.cover-destination .text-link {
+  text-decoration-color: var(--metal);
+}
+
+/* Report: an engraved certificate */
+.report-paper {
+  border-top: 3px solid transparent;
+  border-image: var(--metal-line) 1;
+}
+.report-stamp {
+  border-color: var(--metal);
+  color: var(--metal-ink);
+  background: color-mix(in srgb, var(--metal) 8%, transparent);
+}
+.letterhead {
+  border-bottom: 1px solid transparent;
+  border-image: var(--metal-line) 1;
+}
+
+/* Loading: a skeleton sheet instead of a spinner */
+.skeleton-sheet {
+  display: grid;
+  gap: 16px;
+  padding: 28px;
+  border-radius: var(--r-sheet);
+  background: var(--sheet);
+  box-shadow: var(--lift-1);
+}
+.skeleton-sheet span {
+  display: block;
+  height: 14px;
+  border-radius: 7px;
+  background: linear-gradient(
+    90deg,
+    var(--sheet-tint) 0%,
+    color-mix(in srgb, var(--metal) 18%, var(--sheet-tint)) 50%,
+    var(--sheet-tint) 100%
+  );
+  background-size: 200% 100%;
+}
+.skeleton-sheet span:first-child {
+  width: 46%;
+  height: 34px;
+}
+.skeleton-sheet span:nth-child(3) {
+  width: 82%;
+}
+.skeleton-sheet span:nth-child(4) {
+  width: 64%;
+}
+html[data-motion='on'] .skeleton-sheet span {
+  animation: shimmer 1.3s linear infinite;
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Toast: a progress line shows how long it stays */
+.toast {
+  overflow: hidden;
+}
+.toast::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--metal-sheen);
+  transform-origin: left;
+}
+html[data-motion='on'] .toast::after {
+  animation: toast-timer var(--toast-ms, 4500ms) linear both;
+}
+@keyframes toast-timer {
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Dialogs open with depth */
+html[data-motion='on'] .dialog {
+  animation: dialog-in 460ms var(--ease-spring) both;
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+    filter: blur(6px);
+  }
+}
+
+/* Brand mark draws itself on the landing page */
+html[data-motion='on'] .landing-nav .brand-mark path {
+  stroke-dasharray: 200;
+  animation: mark-draw 1600ms var(--ease-out) both;
+}
+html[data-motion='on'] .landing-nav .brand-mark .mark-tick {
+  stroke-dasharray: 40;
+  animation: mark-draw-tick 700ms var(--ease-out) 1000ms both;
+}
+@keyframes mark-draw {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes mark-draw-tick {
+  from {
+    stroke-dashoffset: 40;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.hero-folder {
+  padding-top: 0;
+}
+.hf-stage {
+  padding-top: 46px;
+}
+.hf-label {
+  right: auto;
+  left: 26px;
+}
+.hf-seal {
+  top: auto;
+  bottom: 34px;
+  right: 30px;
+}
+html.theme-switching .workspace-content,
+html.theme-switching .folder-tab.is-current {
+  view-transition-name: none;
+}
+@media (max-width: 520px) {
+  .hf-seal {
+    width: 78px;
+    height: 78px;
+    right: 14px;
+    bottom: 26px;
+  }
+  .hf-label {
+    left: 14px;
+  }
+}
+
+.assurance,
+.catalog-folder.is-reference .catalog-tab {
+  color: var(--metal-on-folder);
+}

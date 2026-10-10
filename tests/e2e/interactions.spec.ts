@@ -17,7 +17,11 @@ async function accessible(page: Page) {
     await Promise.all(
       document
         .getAnimations()
-        .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+        .filter(
+          (animation) =>
+            animation.playState === 'running' &&
+            animation.effect?.getComputedTiming().iterations !== Infinity,
+        )
         .map((animation) => animation.finished.catch(() => {})),
     );
   });
@@ -36,6 +40,8 @@ test('workflow preview supports keyboard selection and motion can be paused pers
   // The folder plays its arrival sequence once: the sheet drops in and the marks are drawn.
   const folder = page.locator('.hero-folder');
   await expect(folder).toHaveClass(/is-intro/);
+  // On small screens the folder starts below the fold and its intro waits until it is seen.
+  await folder.scrollIntoViewIfNeeded();
   await expect
     .poll(() =>
       folder.evaluate((element) =>

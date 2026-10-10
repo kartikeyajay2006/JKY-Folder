@@ -316,8 +316,8 @@
   bottom: 26px;
   padding: 8px 14px;
   border-radius: 4px;
-  background: #f4f1e6;
-  color: #0b2341;
+  background: var(--metal-sheen);
+  color: var(--metal-text);
   font-weight: 700;
   font-size: var(--t-sm);
   rotate: -2deg;

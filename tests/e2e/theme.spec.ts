@@ -7,7 +7,11 @@ async function accessible(page: import('@playwright/test').Page) {
     await Promise.all(
       document
         .getAnimations()
-        .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+        .filter(
+          (animation) =>
+            animation.playState === 'running' &&
+            animation.effect?.getComputedTiming().iterations !== Infinity,
+        )
         .map((animation) => animation.finished.catch(() => {})),
     );
   });
@@ -24,11 +28,11 @@ test('dark theme follows the device, can be chosen explicitly and stays accessib
   await page.goto('/');
   const background = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
   await expect(page.locator('html')).not.toHaveAttribute('data-theme');
-  expect(await background()).toBe('rgb(14, 27, 45)');
+  await expect.poll(background).toBe('rgb(8, 8, 10)');
   await accessible(page);
   await page.getByRole('button', { name: 'Use light theme' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  expect(await background()).toBe('rgb(227, 233, 239)');
+  await expect.poll(background).toBe('rgb(243, 245, 250)');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
   await page.getByRole('button', { name: 'Use dark theme' }).click();

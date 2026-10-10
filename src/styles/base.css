@@ -19,7 +19,9 @@ body {
   min-height: 100vh;
   background: var(--desk);
   font-size: var(--t-base);
-  line-height: 1.55;
+  font-weight: 450;
+  line-height: 1.6;
+  transition: background-color var(--medium) var(--ease-out);
 }
 h1,
 h2,
@@ -45,9 +47,11 @@ h4 {
   text-wrap: balance;
 }
 h1 {
+  font-family: var(--font-display);
   font-size: var(--t-3xl);
-  letter-spacing: -0.03em;
-  font-weight: 750;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
 }
 h2 {
   font-size: var(--t-xl);
@@ -92,10 +96,12 @@ button:disabled {
 }
 pre,
 code,
-kbd,
+kbd {
+  font-family: ui-monospace, 'SFMono-Regular', 'Cascadia Code', monospace;
+  font-size: 0.9em;
+}
 .data {
-  font-family: var(--font-data);
-  font-size: 0.92em;
+  font-variant-numeric: tabular-nums;
 }
 small {
   font-size: var(--t-sm);
@@ -104,11 +110,11 @@ strong {
   font-weight: 700;
 }
 ::selection {
-  background: var(--tick-wash);
+  background: color-mix(in srgb, var(--metal) 35%, transparent);
   color: var(--ink);
 }
 :focus-visible {
-  outline: 3px solid var(--ask);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -136,11 +142,11 @@ strong {
   color: var(--ink);
   border-radius: var(--r-control);
   font-weight: 700;
-  box-shadow: var(--lift-2);
   transition: top var(--fast) var(--ease-out);
 }
 .skip-link:focus {
   top: 12px;
+  box-shadow: var(--lift-2);
 }
 .muted {
   color: var(--ink-3);

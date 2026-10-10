@@ -1,4 +1,6 @@
-import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, type CSSProperties } from 'react';
+import { flushSync } from 'react-dom';
+import { useMotion } from './motion/MotionProvider';
 import { AlertCircle, Check, Download, ShieldCheck, Trash2, X } from 'lucide-react';
 import { Auth } from './components/Auth';
 import { BrandMark } from './components/Brand';
@@ -48,6 +50,7 @@ const headings: Record<Exclude<View, 'overview'>, [string, string]> = {
   settings: ['Settings & privacy', 'Your profile, password, sessions and what stays stored.'],
 };
 export default function App() {
+  const motion = useMotion();
   const initialLocation = useRef(readWorkspaceLocation());
   const [user, setUser] = useState<User | null>(null),
     [catalog, setCatalog] = useState<Catalog | null>(null),
@@ -284,15 +287,22 @@ export default function App() {
   const required = live?.checks.filter((c) => c.state !== 'not_applicable') || [];
   const nextSteps = required.filter((c) => c.state !== 'pass');
   function navigate(next: View, id = activeId) {
-    window.scrollTo({ top: 0, behavior: 'instant' });
     writeWorkspaceLocation(next, id, 'push');
-    if (id !== activeId) {
-      setData(null);
-      setActiveId(id);
-    }
-    setView(next);
-    setSearch('');
-    setError('');
+    const apply = () => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (id !== activeId) {
+        setData(null);
+        setActiveId(id);
+      }
+      setView(next);
+      setSearch('');
+      setError('');
+    };
+    // Within one application, the current tab slides to its new place and the page
+    // crossfades. Switching applications updates immediately so data loading stays ordered.
+    if (motion.active && document.startViewTransition && next !== view && id === activeId)
+      document.startViewTransition(() => flushSync(apply));
+    else apply();
   }
   async function perform(name: string, operation: () => Promise<void>) {
     setBusy(name);
@@ -593,9 +603,11 @@ export default function App() {
                   <EmptySection view={view} onCreate={startCreate} onUpload={chooseFiles} />
                 )}
               {activeId && !data && perApplication && (
-                <div className="loading-card" role="status">
-                  <BrandMark />
-                  Opening your application…
+                <div className="skeleton-sheet" role="status" aria-label="Opening your application">
+                  <span />
+                  <span />
+                  <span />
+                  <span />
                 </div>
               )}
               {data && live && view === 'overview' && (
@@ -709,7 +721,11 @@ export default function App() {
           </main>
         </div>
         {toast && (
-          <div className="toast" role="status">
+          <div
+            className="toast"
+            role="status"
+            style={{ '--toast-ms': `${toastAction ? 7000 : 4500}ms` } as CSSProperties}
+          >
             <Check size={17} aria-hidden="true" />
             <span>{toast}</span>
             {toastAction && (

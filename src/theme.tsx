@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { flushSync } from 'react-dom';
 import { Moon, Sun } from 'lucide-react';
+import { useMotion } from './motion/MotionProvider';
 
 export type ThemePreference = 'system' | 'light' | 'dark';
 const key = 'jky-theme';
@@ -50,17 +52,48 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 }
 export const useTheme = () => useContext(ThemeContext);
 
-/** One-click switch between light and dark. "Match my device" lives in Settings. */
+/** One-click switch between Gold (light) and Silver (dark). "Match my device" lives in Settings. */
 export function ThemeToggle() {
   const { resolved, setPreference } = useTheme();
+  const { active } = useMotion();
   const next = resolved === 'dark' ? 'light' : 'dark';
+  const name = next === 'dark' ? 'Silver' : 'Gold';
+  function change(event: React.MouseEvent<HTMLButtonElement>) {
+    if (!active || !document.startViewTransition) {
+      setPreference(next);
+      return;
+    }
+    // The new theme spreads out from the button in a widening circle.
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const root = document.documentElement;
+    root.classList.add('theme-switching');
+    const transition = document.startViewTransition(() => flushSync(() => setPreference(next)));
+    void transition.ready
+      .then(() =>
+        root.animate(
+          {
+            clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`],
+          },
+          {
+            duration: 700,
+            easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          },
+        ),
+      )
+      .catch(() => {});
+    void transition.finished.finally(() => root.classList.remove('theme-switching'));
+  }
   return (
     <button
       type="button"
       className="theme-toggle"
       aria-label={`Use ${next} theme`}
-      title={`Use ${next} theme`}
-      onClick={() => setPreference(next)}
+      title={`Switch to ${name}`}
+      onClick={change}
     >
       {resolved === 'dark' ? (
         <Sun size={17} aria-hidden="true" />

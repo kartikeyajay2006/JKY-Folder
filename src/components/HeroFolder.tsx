@@ -1,7 +1,8 @@
-import { useId, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { useCatalog } from '../catalog';
 import { BrandMark } from './Brand';
-import { FileGlyph } from './Marks';
+import { FileGlyph, Seal } from './Marks';
+import { useMotion } from '../motion/MotionProvider';
 import { StateMark, Status, stateLabels } from './Status';
 import type { CheckState } from '../../shared/model';
 
@@ -22,6 +23,21 @@ export function HeroFolder() {
   const [tab, setTabState] = useState(0);
   // The orchestrated intro plays once; later tab changes use short, direct transitions.
   const [intro, setIntro] = useState(true);
+  const [settled, setSettled] = useState(false);
+  const [offscreen, setOffscreen] = useState(false);
+  const figure = useRef<HTMLElement>(null);
+  const { active } = useMotion();
+  useEffect(() => {
+    // After the arrival sequence the folder idles gently; it rests while off screen.
+    if (!active) return;
+    const timer = setTimeout(() => setSettled(true), 3600);
+    const observer = new IntersectionObserver(([entry]) => setOffscreen(!entry.isIntersecting));
+    if (figure.current) observer.observe(figure.current);
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [active]);
   const setTab = (next: number) => {
     setIntro(false);
     setTabState(next);
@@ -58,106 +74,115 @@ export function HeroFolder() {
   }
   return (
     <figure
-      className={`hero-folder ${intro ? 'is-intro' : ''}`}
+      ref={figure}
+      className={`hero-folder ${intro ? 'is-intro' : ''} ${settled ? 'is-settled' : ''} ${offscreen ? 'is-offscreen' : ''}`}
       aria-label="An example application folder"
     >
-      <div className="hf-tabs" role="tablist" aria-label="Example folder sections">
-        {tabs.map((label, i) => (
-          <button
-            key={label}
-            ref={(element) => {
-              if (element) buttons.current[i] = element;
-            }}
-            id={`${id}-tab-${i}`}
-            role="tab"
-            aria-selected={tab === i}
-            aria-controls={`${id}-panel`}
-            tabIndex={tab === i ? 0 : -1}
-            className={`hf-tab ${tab === i ? 'is-current' : ''}`}
-            style={{ '--tab': i } as CSSProperties}
-            onClick={() => setTab(i)}
-            onKeyDown={(event) => {
-              const keys: Record<string, number> = {
-                ArrowRight: (i + 1) % tabs.length,
-                ArrowLeft: (i - 1 + tabs.length) % tabs.length,
-                Home: 0,
-                End: tabs.length - 1,
-              };
-              if (event.key in keys) {
-                event.preventDefault();
-                select(keys[event.key]);
-              }
-            }}
+      <div className="hf-stage">
+        <div className="hf-tabs" role="tablist" aria-label="Example folder sections">
+          {tabs.map((label, i) => (
+            <button
+              key={label}
+              ref={(element) => {
+                if (element) buttons.current[i] = element;
+              }}
+              id={`${id}-tab-${i}`}
+              role="tab"
+              aria-selected={tab === i}
+              aria-controls={`${id}-panel`}
+              tabIndex={tab === i ? 0 : -1}
+              className={`hf-tab ${tab === i ? 'is-current' : ''}`}
+              style={{ '--tab': i } as CSSProperties}
+              onClick={() => setTab(i)}
+              onKeyDown={(event) => {
+                const keys: Record<string, number> = {
+                  ArrowRight: (i + 1) % tabs.length,
+                  ArrowLeft: (i - 1 + tabs.length) % tabs.length,
+                  Home: 0,
+                  End: tabs.length - 1,
+                };
+                if (event.key in keys) {
+                  event.preventDefault();
+                  select(keys[event.key]);
+                }
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <div className="hf-back">
+          <div
+            className="hf-sheet"
+            key={tab}
+            role="tabpanel"
+            id={`${id}-panel`}
+            aria-labelledby={`${id}-tab-${tab}`}
+            tabIndex={0}
           >
-            {label}
-          </button>
-        ))}
-      </div>
-      <div className="hf-back">
-        <div
-          className="hf-sheet"
-          key={tab}
-          role="tabpanel"
-          id={`${id}-panel`}
-          aria-labelledby={`${id}-tab-${tab}`}
-          tabIndex={0}
-        >
-          <div className="hf-sheet-head">
-            <span>{pack ? `${pack.title} application` : 'Your application'}</span>
-            <span className="hf-example">Example</span>
-          </div>
-          {tab === 0 && (
-            <ol className="hf-checklist">
-              {rows.map((row, i) => (
-                <li key={row.title} style={{ '--row': i } as CSSProperties}>
-                  <StateMark state={row.state} size={24} />
-                  <span>{row.title}</span>
-                  <span className={`hf-note note-${row.state}`}>
-                    {row.state === 'fail' ? 'Missing' : stateLabels[row.state]}
-                  </span>
-                </li>
-              ))}
-            </ol>
-          )}
-          {tab === 1 && (
-            <ul className="hf-documents">
-              {linked.map((row, i) => (
-                <li key={row.file} style={{ '--row': i } as CSSProperties}>
-                  <FileGlyph mime={row.mime} size={26} />
-                  <span>
-                    <strong className="data">{row.file}</strong>
-                    <small>Linked to {row.title}, page 1</small>
-                  </span>
-                </li>
-              ))}
-              <li className="hf-drop" style={{ '--row': linked.length } as CSSProperties}>
-                Drop the missing original here
-              </li>
-            </ul>
-          )}
-          {tab === 2 && (
-            <div className="hf-report">
-              <div className="hf-letterhead">
-                <BrandMark />
-                <span className="hf-stamp">Saved review</span>
-              </div>
-              <p className="hf-verdict">A few things need your attention.</p>
-              <ul>
-                {(['pass', 'fail', 'needs_review', 'unknown'] as CheckState[]).map((state) => (
-                  <li key={state}>
-                    <Status state={state} missing={state === 'fail'} />
-                    <span className="data">{count(state)}</span>
+            <div className="hf-sheet-head">
+              <span>{pack ? `${pack.title} application` : 'Your application'}</span>
+              <span className="hf-example">Example</span>
+            </div>
+            {tab === 0 && (
+              <ol className="hf-checklist">
+                {rows.map((row, i) => (
+                  <li key={row.title} style={{ '--row': i } as CSSProperties}>
+                    <StateMark state={row.state} size={24} />
+                    <span>{row.title}</span>
+                    <span className={`hf-note note-${row.state}`}>
+                      {row.state === 'fail' ? 'Missing' : stateLabels[row.state]}
+                    </span>
                   </li>
                 ))}
+              </ol>
+            )}
+            {tab === 1 && (
+              <ul className="hf-documents">
+                {linked.map((row, i) => (
+                  <li key={row.file} style={{ '--row': i } as CSSProperties}>
+                    <FileGlyph mime={row.mime} size={26} />
+                    <span>
+                      <strong className="data">{row.file}</strong>
+                      <small>Linked to {row.title}, page 1</small>
+                    </span>
+                  </li>
+                ))}
+                <li className="hf-drop" style={{ '--row': linked.length } as CSSProperties}>
+                  Drop the missing original here
+                </li>
               </ul>
-            </div>
-          )}
+            )}
+            {tab === 2 && (
+              <div className="hf-report">
+                <div className="hf-letterhead">
+                  <BrandMark />
+                  <span className="hf-stamp">Saved review</span>
+                </div>
+                <p className="hf-verdict">A few things need your attention.</p>
+                <ul>
+                  {(['pass', 'fail', 'needs_review', 'unknown'] as CheckState[]).map((state) => (
+                    <li key={state}>
+                      <Status state={state} missing={state === 'fail'} />
+                      <span className="data">{count(state)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="hf-front" aria-hidden="true">
-        <span className="hf-label">
-          {pack ? `${pack.title}, ${pack.requirementCount} items` : 'Application folder'}
-        </span>
+        <div className="hf-front" aria-hidden="true">
+          <span className="hf-label">
+            {pack ? `${pack.title}, ${pack.requirementCount} items` : 'Application folder'}
+          </span>
+        </div>
+        {tab === 0 && (
+          <div className="hf-seal" aria-hidden="true">
+            <span className="hf-seal-ring" />
+            <Seal />
+          </div>
+        )}
       </div>
       <figcaption className="visually-hidden">
         Example only. Requirement names come from the {pack?.title || 'starter'} checklist; the

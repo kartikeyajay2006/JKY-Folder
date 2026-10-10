@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useId, type CSSProperties } from 'react';
 import { CalendarPlus } from 'lucide-react';
 import { deadlineInfo } from '../../shared/templates';
 import type { CheckResult, CheckState } from '../../shared/model';
@@ -97,6 +97,33 @@ export function FileGlyph({
     >
       <span className="glyph-lines" />
       <span className="glyph-label">{label}</span>
+    </span>
+  );
+}
+
+/** An embossed metal seal with engraved circular lettering. Decorative. */
+export function Seal({ text = 'JKY-FOLDER  ✦  REVIEWED  ✦  ' }: { text?: string }) {
+  const id = useId();
+  return (
+    <span className="seal" aria-hidden="true">
+      <svg className="seal-text" viewBox="0 0 100 100">
+        <defs>
+          <path id={id} d="M50 50m-37 0a37 37 0 1 1 74 0a37 37 0 1 1-74 0" />
+        </defs>
+        <text>
+          <textPath href={`#${id}`}>{text}</textPath>
+        </text>
+      </svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m5 12.5 4.5 4.5L19 7.5" />
+      </svg>
     </span>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { api, body, setCsrf } from '../api';
 import { HeroFolder } from './HeroFolder';
@@ -59,13 +59,22 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
       <main id="welcome-content">
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <h1 id="hero-title">Know what your application is missing before you submit.</h1>
+            <h1 id="hero-title">
+              {['Know what your', 'application is', 'missing before', 'you submit.'].map(
+                (line, i) => (
+                  <span className="line" key={line} style={{ '--line': i } as CSSProperties}>
+                    <span>{line}</span>{' '}
+                  </span>
+                ),
+              )}
+            </h1>
+            <span className="metal-rule hero-rule" aria-hidden="true" />
             <p className="hero-lede">
               JKY-Folder turns application instructions into a checklist, keeps your original
               documents together, and links every requirement to the page that proves it.
             </p>
             <div className="hero-actions">
-              <button className="primary hero-button" disabled={busy} onClick={tryDemo}>
+              <button className="gold-button hero-button" disabled={busy} onClick={tryDemo}>
                 {busy ? 'Opening the demo…' : 'Explore the demo'}
                 <ArrowRight size={18} aria-hidden="true" />
               </button>
@@ -85,23 +94,25 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
         </section>
 
         <section className="how" id="how-it-works" aria-labelledby="how-title">
-          <h2 id="how-title">From instructions to a dated review</h2>
+          <h2 id="how-title" data-reveal>
+            From instructions to a dated review
+          </h2>
           <ol className="how-steps">
-            <li>
+            <li data-reveal style={{ '--reveal-i': 0 } as CSSProperties}>
               <h3>Build the checklist</h3>
               <p>
                 Start from a reference checklist, a starter, or paste your own instructions. Each
                 line becomes an item you can edit.
               </p>
             </li>
-            <li>
+            <li data-reveal style={{ '--reveal-i': 1 } as CSSProperties}>
               <h3>Link originals to pages</h3>
               <p>
                 Add {rules.formats} originals, preview them, and connect each requirement to the
                 exact page that supports it.
               </p>
             </li>
-            <li>
+            <li data-reveal style={{ '--reveal-i': 2 } as CSSProperties}>
               <h3>Save a review</h3>
               <p>
                 See what is reviewed, missing or unresolved, then keep a dated report you can print
@@ -112,7 +123,7 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
         </section>
 
         <section className="catalog-section" id="checklists" aria-labelledby="checklists-title">
-          <div className="section-head">
+          <div className="section-head" data-reveal>
             <h2 id="checklists-title">Start from a real checklist, or your own</h2>
             <p>
               Reference checklists keep their source and the date it was checked. Starters are
@@ -120,8 +131,13 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
             </p>
           </div>
           <ul className="catalog-folders">
-            {packs.map((pack) => (
-              <li key={pack.id} className="catalog-folder is-reference">
+            {packs.map((pack, i) => (
+              <li
+                key={pack.id}
+                className="catalog-folder is-reference"
+                data-reveal="tilt"
+                style={{ '--reveal-i': i } as CSSProperties}
+              >
                 <span className="catalog-tab">Reference</span>
                 <h3>{pack.title}</h3>
                 <p>
@@ -139,8 +155,13 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
             ))}
             {templates
               .filter((t) => t.starter.length)
-              .map((t) => (
-                <li key={t.id} className="catalog-folder">
+              .map((t, i) => (
+                <li
+                  key={t.id}
+                  className="catalog-folder"
+                  data-reveal="tilt"
+                  style={{ '--reveal-i': i + packs.length } as CSSProperties}
+                >
                   <span className="catalog-tab">Starter</span>
                   <h3>{t.title}</h3>
                   <p>{t.description}</p>
@@ -151,7 +172,7 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
         </section>
 
         <section className="honesty" id="honest-states" aria-labelledby="honesty-title">
-          <div className="honesty-copy">
+          <div className="honesty-copy" data-reveal>
             <h2 id="honesty-title">Every item gets an honest state</h2>
             <p>
               There is no single readiness score to misread. Each requirement shows exactly where it
@@ -165,8 +186,8 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
             </ul>
           </div>
           <dl className="state-legend">
-            {legend.map((state) => (
-              <div key={state}>
+            {legend.map((state, i) => (
+              <div key={state} data-reveal="side" style={{ '--reveal-i': i } as CSSProperties}>
                 <dt>
                   <StateMark state={state} size={26} />
                   {stateLabels[state]}
@@ -178,7 +199,7 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
         </section>
 
         <section className="account-section" aria-labelledby="account-title">
-          <div className="account-copy">
+          <div className="account-copy" data-reveal>
             <h2 id="account-title">
               {mode === 'register' ? 'Open your own folder.' : 'Welcome back.'}
             </h2>
@@ -192,7 +213,12 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
               reviews are complete.
             </p>
           </div>
-          <div className="auth-card" id="account">
+          <div
+            className="auth-card"
+            id="account"
+            data-reveal
+            style={{ '--reveal-i': 1 } as CSSProperties}
+          >
             <div className="segmented" role="group" aria-label="Account">
               <button
                 aria-pressed={mode === 'register'}
