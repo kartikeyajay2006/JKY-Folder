@@ -139,4 +139,4 @@ See [intake and recovery](INTAKE_AND_RECOVERY.md), [official review and benchmar
 
 Rate limiting now counts requests per signed-in session, with a per-address backstop, so applicants behind one shared network address no longer exhaust each other's allowance.
 
-Verification: 437 domain/API/worker/benchmark tests, 25 desktop and 23 mobile browser scenarios (the reviewer workbooks are desktop-only), TypeScript and the production build pass. Two independent reviews (rule-pack completeness and benchmark labels) remain human evidence gates; the software only enforces and records them.
+Verification: 437 domain/API/worker/benchmark tests, 26 desktop and 24 mobile browser scenarios (the reviewer workbooks are desktop-only), TypeScript and the production build pass. Two independent reviews (rule-pack completeness and benchmark labels) remain human evidence gates; the software only enforces and records them.

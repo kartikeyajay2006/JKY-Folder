@@ -67,6 +67,27 @@ test('workflow preview supports keyboard selection and motion can be paused pers
   ).toBe(true);
 });
 
+test('a folder scrolled away during its arrival still finishes drawing', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  const folder = page.locator('.hero-folder');
+  await folder.scrollIntoViewIfNeeded();
+  await expect(folder).toHaveClass(/is-intro/);
+  // Leave before the arrival ends, as following a link to the sign-in form does.
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await expect(folder).toHaveClass(/is-offscreen/);
+  await expect
+    .poll(() =>
+      folder.evaluate((element) =>
+        element
+          .getAnimations({ subtree: true })
+          .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+          .every((animation) => animation.playState === 'finished'),
+      ),
+    )
+    .toBe(true);
+  await expect(folder.locator('.hf-stage')).toHaveCSS('opacity', '1');
+});
 test('quick actions run real reviews, readiness opens reports and file drops inspect originals', async ({
   page,
 }) => {

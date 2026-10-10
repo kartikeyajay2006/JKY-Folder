@@ -431,8 +431,10 @@ html[data-motion='on'] .hero-folder.is-settled .hf-stage {
 html[data-motion='on'] .hero-folder.is-settled .hf-seal .seal {
   animation: seal-sheen 5s linear infinite;
 }
-html[data-motion='on'] .hero-folder.is-offscreen *,
-html[data-motion='on'] .hero-folder.is-offscreen .hf-stage {
+/* Off screen only the endless idle motion rests. The one-time arrival always finishes, so a
+   folder scrolled away mid-intro is never left half-faded. */
+html[data-motion='on'] .hero-folder.is-offscreen.is-settled .hf-stage,
+html[data-motion='on'] .hero-folder.is-offscreen.is-settled .hf-seal .seal {
   animation-play-state: paused !important;
 }
 @keyframes folder-enter {

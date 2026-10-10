@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 
 /**
  * Waits until the page has stopped moving: fonts loaded, any pending view transition
- * started, and every running finite animation finished. Paused (off-screen) and infinite
+ * started, and every running finite animation finished. Paused (off-screen idle) and infinite
  * animations are ignored because they never finish. Slow CI machines need the repeat.
  */
 export async function settle(page: Page) {
