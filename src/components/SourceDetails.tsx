@@ -65,33 +65,43 @@ export function SourceDetails({
           <li key={limit}>{limit}</li>
         ))}
       </ul>
+      {pack.instructionSource && (
+        <p className="field-help">
+          Checklist confirmed against an uploaded instructions PDF. Original SHA-256:{' '}
+          {pack.instructionSource.sha256}. This records the applicant’s review.
+        </p>
+      )}
       {data.sourceChanged && (
         <div className="soft-notice">
           <p>
             The source or checklist changed. Inspect the new instructions before accepting an
             update. Evidence links will need a fresh review.
           </p>
-          <button
-            className="outline"
-            disabled={busy}
-            onClick={async () => {
-              setBusy(true);
-              setError('');
-              try {
-                await api(`/packets/${data.packet.id}/accept-checklist-update`, {
-                  method: 'POST',
-                  body: body({ expectedRevision: data.packet.revision }),
-                });
-                await onUpdated();
-              } catch (e) {
-                setError((e as Error).message);
-              } finally {
-                setBusy(false);
-              }
-            }}
-          >
-            Accept reviewed checklist update
-          </button>
+          {pack.instructionSource ? (
+            <p>Replace the missing instructions PDF and generate a fresh draft from Checklist.</p>
+          ) : (
+            <button
+              className="outline"
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                setError('');
+                try {
+                  await api(`/packets/${data.packet.id}/accept-checklist-update`, {
+                    method: 'POST',
+                    body: body({ expectedRevision: data.packet.revision }),
+                  });
+                  await onUpdated();
+                } catch (e) {
+                  setError((e as Error).message);
+                } finally {
+                  setBusy(false);
+                }
+              }}
+            >
+              Accept reviewed checklist update
+            </button>
+          )}
         </div>
       )}
       {error && (

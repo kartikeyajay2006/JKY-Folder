@@ -198,7 +198,7 @@ it('exports exact private originals and a readable manifest without leaking cros
     const name = Object.keys(files).find((k) => k.includes(doc.id.slice(0, 8)))!;
     expect(createHash('sha256').update(files[name]).digest('hex')).toBe(doc.hash);
   }
-  expect(JSON.parse(strFromU8(files['checklist-and-review.json'])).review.checks).toHaveLength(12);
+  expect(JSON.parse(strFromU8(files['checklist-and-review.json'])).review.checks).toHaveLength(18);
   expect((await other.agent.get(`/api/packets/${pid}/download`)).status).toBe(404);
   expect((await request(runtime.app).get(`/api/packets/${pid}/download`)).status).toBe(401);
 });

@@ -1,0 +1,1946 @@
+{
+  "id": "uceed-2027-reference",
+  "version": "2027.reference.3",
+  "title": "UCEED 2027",
+  "cycle": "2027",
+  "assurance": "reference",
+  "sourceUrl": "https://www.uceed.iitb.ac.in/2027/registration.html",
+  "checkedAt": "2026-10-10",
+  "stage": "examination registration",
+  "sources": [
+    {
+      "id": "uceed-2027-registration-v3",
+      "url": "https://www.uceed.iitb.ac.in/2027/registration.html",
+      "title": "UCEED 2027 registration",
+      "representation": "normalized_html_text",
+      "sha256": "e5a4a02796824785a620cb4bc6fb6c87baeb5b61afa5868b7cb49d9744a69555",
+      "retrievedAt": "2026-10-10T18:33:46.304Z"
+    },
+    {
+      "id": "uceed-2027-faq-v3",
+      "url": "https://www.uceed.iitb.ac.in/2027/faq.html",
+      "title": "UCEED 2027 FAQ",
+      "representation": "normalized_html_text",
+      "sha256": "516629742ca180baea8acaab19bbc331eee41d2f61056df54c10a56635ff1b78",
+      "retrievedAt": "2026-10-10T18:33:46.307Z"
+    },
+    {
+      "id": "uceed-2027-brochure-v3",
+      "url": "https://www.uceed.iitb.ac.in/2027/assets/downloads/docs/UCEED2027_Information_Brochure.pdf",
+      "title": "UCEED 2027 information brochure",
+      "representation": "normalized_pdf_text",
+      "sha256": "07c32b29d6c5df2ae932ba9e0666719be227f94a780d7d272dd07df974dfc113",
+      "retrievedAt": "2026-10-10T18:33:48.944Z"
+    }
+  ],
+  "obligations": [
+    {
+      "id": "photo",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:7100:164",
+      "instruction": "A recent colour portrait in the required image format.",
+      "requirementIds": ["photo"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "signature",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:7423:131",
+      "instruction": "A clear signature image on a plain white background.",
+      "requirementIds": ["signature"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "age",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:7555:155",
+      "instruction": "An accepted document supporting your date of birth.",
+      "requirementIds": ["age"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "qualifying",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:7711:132",
+      "instruction": "The certificate for the completed qualifying examination.",
+      "requirementIds": ["qualifying"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "name-change",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:8125:226",
+      "instruction": "Supporting evidence when the registration and certificate names differ.",
+      "requirementIds": ["name-change"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "disability",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:8885:182",
+      "instruction": "Supporting documentation for the declared disability category.",
+      "requirementIds": ["disability"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "dyslexia",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:8937:130",
+      "instruction": "Both prescribed forms, with the required category information.",
+      "requirementIds": ["dyslexia"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "accommodation",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:9276:167",
+      "instruction": "The supporting request for examination assistance.",
+      "requirementIds": ["accommodation"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "nationality",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:9694:58",
+      "instruction": "Supporting evidence for the selected foreign-national route.",
+      "requirementIds": ["nationality"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "oci",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:9753:73",
+      "instruction": "Card evidence for the selected foreign-national route.",
+      "requirementIds": ["oci"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "principal",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:7844:280",
+      "instruction": "Appendix 1 certified by the school/college principal or authorised board official for candidates appearing in 2027.",
+      "requirementIds": ["principal"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "nios",
+      "sourceId": "uceed-2027-faq-v3",
+      "anchor": "uceed-2027-faq-v3:4961:31",
+      "instruction": "Official FAQ 17 permits Appendix 1 certified by the nearest NIOS office or the NIOS identity card.",
+      "requirementIds": ["nios"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "category-obc",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:8577:490",
+      "instruction": "Valid OBC-NCL certificate or the competent-authority-certified Appendix 2. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "requirementIds": ["category-obc"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "category-sc",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:8657:410",
+      "instruction": "Valid SC certificate or the competent-authority-certified Appendix 3. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "requirementIds": ["category-sc"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "category-st",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:8732:335",
+      "instruction": "Valid ST certificate or the competent-authority-certified Appendix 3. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "requirementIds": ["category-st"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "category-ews",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:8808:259",
+      "instruction": "Valid EWS certificate or the competent-authority-certified Appendix 4. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "requirementIds": ["category-ews"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "scribe-specified",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:4190:308",
+      "instruction": "For blindness, locomotor disability affecting both arms, or cerebral palsy: a valid UDID card or medical recommendation in Appendix 10. The office decides eligibility.",
+      "requirementIds": ["scribe-specified"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "scribe-other",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:4499:398",
+      "instruction": "Appendix 10 recommendation of writing limitation from the specified government medical authority; office assessment remains required.",
+      "requirementIds": ["scribe-other"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-1",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:0:2",
+      "instruction": "PDF page 1: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-2",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:3:2236",
+      "instruction": "PDF page 2: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-3",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:2240:1048",
+      "instruction": "PDF page 3: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-4",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:3289:1143",
+      "instruction": "PDF page 4: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-5",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:4433:1286",
+      "instruction": "PDF page 5: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-6",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:5720:62",
+      "instruction": "PDF page 6: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-7",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:5783:2042",
+      "instruction": "PDF page 7: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-8",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:7826:2357",
+      "instruction": "PDF page 8: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-9",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:10184:2426",
+      "instruction": "PDF page 9: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-10",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:12611:2342",
+      "instruction": "PDF page 10: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-11",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:14954:1036",
+      "instruction": "PDF page 11: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-12",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:15991:2209",
+      "instruction": "PDF page 12: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-13",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:18201:2872",
+      "instruction": "PDF page 13: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-14",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:21074:2948",
+      "instruction": "PDF page 14: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-15",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:24023:1348",
+      "instruction": "PDF page 15: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-16",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:25372:552",
+      "instruction": "PDF page 16: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-17",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:25925:1356",
+      "instruction": "PDF page 17: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-18",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:27282:960",
+      "instruction": "Inspect every instruction on PDF page 18 (printed 14), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-19",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:28243:2421",
+      "instruction": "Inspect every instruction on PDF page 19 (printed 15), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-20",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:30665:2211",
+      "instruction": "Inspect every instruction on PDF page 20 (printed 16), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-21",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:32877:2430",
+      "instruction": "Inspect every instruction on PDF page 21 (printed 17), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-22",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:35308:2121",
+      "instruction": "Inspect every instruction on PDF page 22 (printed 18), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-23",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:37430:2028",
+      "instruction": "Inspect every instruction on PDF page 23 (printed 19), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-24",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:39459:1656",
+      "instruction": "Inspect every instruction on PDF page 24 (printed 20), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-25",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:41116:2098",
+      "instruction": "Inspect every instruction on PDF page 25 (printed 21), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-26",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:43215:2584",
+      "instruction": "Inspect every instruction on PDF page 26 (printed 22), including appendix fields and exceptions.",
+      "requirementIds": ["accommodation", "scribe-specified", "scribe-other"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-27",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:45800:968",
+      "instruction": "Inspect every instruction on PDF page 27 (printed 23), including appendix fields and exceptions.",
+      "requirementIds": ["accommodation", "scribe-specified", "scribe-other"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-28",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:46769:2069",
+      "instruction": "Inspect every instruction on PDF page 28 (printed 24), including appendix fields and exceptions.",
+      "requirementIds": [
+        "photo",
+        "signature",
+        "age",
+        "qualifying",
+        "name-change",
+        "disability",
+        "dyslexia",
+        "accommodation",
+        "nationality",
+        "oci",
+        "principal",
+        "nios",
+        "category-obc",
+        "category-sc",
+        "category-st",
+        "category-ews",
+        "scribe-specified",
+        "scribe-other"
+      ],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-29",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:48839:1645",
+      "instruction": "Inspect every instruction on PDF page 29 (printed 25), including appendix fields and exceptions.",
+      "requirementIds": [
+        "photo",
+        "signature",
+        "age",
+        "qualifying",
+        "name-change",
+        "disability",
+        "dyslexia",
+        "accommodation",
+        "nationality",
+        "oci",
+        "principal",
+        "nios",
+        "category-obc",
+        "category-sc",
+        "category-st",
+        "category-ews",
+        "scribe-specified",
+        "scribe-other"
+      ],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-30",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:50485:1393",
+      "instruction": "PDF page 30: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-31",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:51879:2626",
+      "instruction": "PDF page 31: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-32",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:54506:1407",
+      "instruction": "PDF page 32: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-33",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:55914:2226",
+      "instruction": "PDF page 33: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-34",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:58141:1605",
+      "instruction": "PDF page 34: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-35",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:59747:162",
+      "instruction": "PDF page 35: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-36",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:59910:1468",
+      "instruction": "PDF page 36: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-37",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:61379:1996",
+      "instruction": "PDF page 37: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-38",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:63376:2242",
+      "instruction": "PDF page 38: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-39",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:65619:1311",
+      "instruction": "PDF page 39: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-40",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:66931:1522",
+      "instruction": "PDF page 40: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-41",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:68454:1420",
+      "instruction": "PDF page 41: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-42",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:69875:1480",
+      "instruction": "PDF page 42: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-43",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:71356:70",
+      "instruction": "PDF page 43: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-44",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:71427:1891",
+      "instruction": "PDF page 44: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-45",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:73319:1699",
+      "instruction": "PDF page 45: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-46",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:75019:1488",
+      "instruction": "PDF page 46: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-47",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:76508:2188",
+      "instruction": "PDF page 47: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-48",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:78697:2254",
+      "instruction": "PDF page 48: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-49",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:80952:2290",
+      "instruction": "PDF page 49: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-50",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:83243:417",
+      "instruction": "PDF page 50: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-51",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:83661:2595",
+      "instruction": "PDF page 51: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-52",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:86257:821",
+      "instruction": "PDF page 52: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-53",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:87079:2289",
+      "instruction": "PDF page 53: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-54",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:89369:2447",
+      "instruction": "PDF page 54: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-55",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:91817:978",
+      "instruction": "PDF page 55: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-56",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:92796:422",
+      "instruction": "PDF page 56: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-57",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:93219:332",
+      "instruction": "PDF page 57: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-58",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:93552:856",
+      "instruction": "Inspect every instruction on PDF page 58 (printed 54), including appendix fields and exceptions.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "brochure-page-59",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:94409:989",
+      "instruction": "Inspect every instruction on PDF page 59 (printed 55), including appendix fields and exceptions.",
+      "requirementIds": ["principal", "nios"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-60",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:95399:3138",
+      "instruction": "Inspect every instruction on PDF page 60 (printed 56), including appendix fields and exceptions.",
+      "requirementIds": ["category-obc"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-61",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:98538:1668",
+      "instruction": "Inspect every instruction on PDF page 61 (printed 57), including appendix fields and exceptions.",
+      "requirementIds": ["category-obc"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-62",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:100207:3758",
+      "instruction": "Inspect every instruction on PDF page 62 (printed 58), including appendix fields and exceptions.",
+      "requirementIds": ["category-obc"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-63",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:103966:973",
+      "instruction": "Inspect every instruction on PDF page 63 (printed 59), including appendix fields and exceptions.",
+      "requirementIds": ["category-sc", "category-st"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-64",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:104940:2479",
+      "instruction": "Inspect every instruction on PDF page 64 (printed 60), including appendix fields and exceptions.",
+      "requirementIds": ["category-ews"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-65",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:107420:1908",
+      "instruction": "Inspect every instruction on PDF page 65 (printed 61), including appendix fields and exceptions.",
+      "requirementIds": ["disability"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-66",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:109329:1884",
+      "instruction": "Inspect every instruction on PDF page 66 (printed 62), including appendix fields and exceptions.",
+      "requirementIds": ["disability"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-67",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:111214:999",
+      "instruction": "Inspect every instruction on PDF page 67 (printed 63), including appendix fields and exceptions.",
+      "requirementIds": ["disability"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-68",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:112214:1898",
+      "instruction": "Inspect every instruction on PDF page 68 (printed 64), including appendix fields and exceptions.",
+      "requirementIds": ["disability"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-69",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:114113:1211",
+      "instruction": "Inspect every instruction on PDF page 69 (printed 65), including appendix fields and exceptions.",
+      "requirementIds": ["disability"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-70",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:115325:1658",
+      "instruction": "Inspect every instruction on PDF page 70 (printed 66), including appendix fields and exceptions.",
+      "requirementIds": ["dyslexia"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-71",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:116984:1255",
+      "instruction": "Inspect every instruction on PDF page 71 (printed 67), including appendix fields and exceptions.",
+      "requirementIds": ["dyslexia"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-72",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:118240:1737",
+      "instruction": "Inspect every instruction on PDF page 72 (printed 68), including appendix fields and exceptions.",
+      "requirementIds": ["scribe-specified", "scribe-other"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-73",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:119978:1848",
+      "instruction": "Inspect every instruction on PDF page 73 (printed 69), including appendix fields and exceptions.",
+      "requirementIds": ["accommodation"],
+      "disposition": "review_only",
+      "rationale": "Review source wording, applicability, alternatives, form fields, signatures, validity and issuer against the original. File formats and evidence combinations are deterministic; legal and medical judgments remain manual."
+    },
+    {
+      "id": "brochure-page-74",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:121827:44",
+      "instruction": "PDF page 74: separate eligibility, exam, admission, seat allocation, fee or contact scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "unsupported-portrait-age",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:0:10835",
+      "instruction": "Portrait date, face coverage and photo quality require inspection; no pixel or byte rules are invented.",
+      "requirementIds": ["photo"],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "unsupported-issuers",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:0:10835",
+      "instruction": "Issuer competence, authenticity, certificate validity and legal name equivalence require official verification.",
+      "requirementIds": [
+        "age",
+        "name-change",
+        "category-obc",
+        "category-sc",
+        "category-st",
+        "category-ews"
+      ],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "unsupported-medical",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:0:10835",
+      "instruction": "Disability severity, writing limitation and medical entitlement require official assessment.",
+      "requirementIds": ["disability", "dyslexia", "scribe-specified", "scribe-other"],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "unsupported-foreign",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:0:10835",
+      "instruction": "Plain foreign-national document exceptions and the exact OCI cutoff boundary need official clarification.",
+      "requirementIds": ["nationality", "oci"],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    },
+    {
+      "id": "unsupported-eligibility",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:0:10835",
+      "instruction": "Eligibility, category entitlement, payment and portal submission are outside this document-check scope.",
+      "requirementIds": [],
+      "disposition": "unsupported",
+      "rationale": "Outside automatic verification; official determination or a separate application stage is required."
+    }
+  ],
+  "authoredBy": "kartikeyajay2006",
+  "lifecycle": "draft",
+  "requirements": [
+    {
+      "id": "photo",
+      "title": "Recent photograph",
+      "description": "A recent colour portrait in the required image format.",
+      "group": "Identity",
+      "condition": {
+        "op": "always"
+      },
+      "mime": "image/jpeg",
+      "extension": ".jpg",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:7100:164"
+    },
+    {
+      "id": "signature",
+      "title": "Signature",
+      "description": "A clear signature image on a plain white background.",
+      "group": "Identity",
+      "condition": {
+        "op": "always"
+      },
+      "mime": "image/jpeg",
+      "extension": ".jpg",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:7423:131"
+    },
+    {
+      "id": "age",
+      "title": "Proof of age",
+      "description": "An accepted document supporting your date of birth.",
+      "group": "Identity",
+      "condition": {
+        "op": "always"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:7555:155"
+    },
+    {
+      "id": "qualifying",
+      "title": "Qualifying examination certificate",
+      "description": "The certificate for the completed qualifying examination.",
+      "group": "Education",
+      "condition": {
+        "op": "eq",
+        "field": "education",
+        "value": "completed"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:7711:132"
+    },
+    {
+      "id": "name-change",
+      "title": "Name-change evidence",
+      "description": "Supporting evidence when the registration and certificate names differ.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "nameChanged",
+        "value": "yes"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:8125:226"
+    },
+    {
+      "id": "disability",
+      "title": "Disability evidence",
+      "description": "Supporting documentation for the declared disability category.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "disability",
+        "value": "pwd"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:8885:182"
+    },
+    {
+      "id": "dyslexia",
+      "title": "Dyslexia forms",
+      "description": "Both prescribed forms, with the required category information.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "disability",
+        "value": "dyslexia"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:8937:130",
+      "evidenceMode": "all",
+      "evidenceSlots": ["Form 1", "Form 2"]
+    },
+    {
+      "id": "accommodation",
+      "title": "Accommodation request",
+      "description": "The supporting request for examination assistance.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "accommodation",
+        "value": "yes"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:9276:167"
+    },
+    {
+      "id": "nationality",
+      "title": "Nationality evidence",
+      "description": "Supporting evidence for the selected foreign-national route.",
+      "group": "Identity",
+      "condition": {
+        "op": "in",
+        "field": "nationality",
+        "values": ["foreign_before", "foreign_after"]
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:9694:58"
+    },
+    {
+      "id": "oci",
+      "title": "OCI / PIO evidence",
+      "description": "Card evidence for the selected foreign-national route.",
+      "group": "Identity",
+      "condition": {
+        "op": "in",
+        "field": "nationality",
+        "values": ["foreign_before", "foreign_after"]
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:9753:73"
+    },
+    {
+      "id": "principal",
+      "title": "Principal / board certificate",
+      "description": "Appendix 1 certified by the school/college principal or authorised board official for candidates appearing in 2027.",
+      "group": "Education",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "field": "education",
+            "value": "appearing"
+          },
+          {
+            "op": "eq",
+            "field": "educationBoard",
+            "value": "other"
+          }
+        ]
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:7844:280"
+    },
+    {
+      "id": "nios",
+      "title": "NIOS appearing-candidate evidence",
+      "description": "Official FAQ 17 permits Appendix 1 certified by the nearest NIOS office or the NIOS identity card.",
+      "group": "Education",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "field": "education",
+            "value": "appearing"
+          },
+          {
+            "op": "eq",
+            "field": "educationBoard",
+            "value": "nios"
+          }
+        ]
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Official FAQ 17",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-faq-v3:4961:31",
+      "evidenceMode": "any",
+      "evidenceSlots": ["NIOS-certified Appendix 1", "NIOS identity card"]
+    },
+    {
+      "id": "category-obc",
+      "title": "OBC-NCL category evidence",
+      "description": "Valid OBC-NCL certificate or the competent-authority-certified Appendix 2. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "category",
+        "value": "obc"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:8577:490",
+      "evidenceMode": "any",
+      "evidenceSlots": ["Valid certificate", "Prescribed appendix"]
+    },
+    {
+      "id": "category-sc",
+      "title": "SC category evidence",
+      "description": "Valid SC certificate or the competent-authority-certified Appendix 3. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "category",
+        "value": "sc"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:8657:410",
+      "evidenceMode": "any",
+      "evidenceSlots": ["Valid certificate", "Prescribed appendix"]
+    },
+    {
+      "id": "category-st",
+      "title": "ST category evidence",
+      "description": "Valid ST certificate or the competent-authority-certified Appendix 3. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "category",
+        "value": "st"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:8732:335",
+      "evidenceMode": "any",
+      "evidenceSlots": ["Valid certificate", "Prescribed appendix"]
+    },
+    {
+      "id": "category-ews",
+      "title": "EWS category evidence",
+      "description": "Valid EWS certificate or the competent-authority-certified Appendix 4. Inspect Central Government format, signatures, seals and the relevant appendix.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "eq",
+        "field": "category",
+        "value": "ews"
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:8808:259",
+      "evidenceMode": "any",
+      "evidenceSlots": ["Valid certificate", "Prescribed appendix"]
+    },
+    {
+      "id": "scribe-specified",
+      "title": "Scribe evidence: specified categories",
+      "description": "For blindness, locomotor disability affecting both arms, or cerebral palsy: a valid UDID card or medical recommendation in Appendix 10. The office decides eligibility.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "field": "accommodation",
+            "value": "yes"
+          },
+          {
+            "op": "eq",
+            "field": "scribe",
+            "value": "yes"
+          },
+          {
+            "op": "eq",
+            "field": "scribeRoute",
+            "value": "specified"
+          }
+        ]
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:4190:308",
+      "evidenceMode": "any",
+      "evidenceSlots": ["Valid UDID", "Appendix 10"]
+    },
+    {
+      "id": "scribe-other",
+      "title": "Scribe medical recommendation",
+      "description": "Appendix 10 recommendation of writing limitation from the specified government medical authority; office assessment remains required.",
+      "group": "Supporting evidence",
+      "condition": {
+        "op": "and",
+        "args": [
+          {
+            "op": "eq",
+            "field": "accommodation",
+            "value": "yes"
+          },
+          {
+            "op": "eq",
+            "field": "scribe",
+            "value": "yes"
+          },
+          {
+            "op": "eq",
+            "field": "scribeRoute",
+            "value": "other"
+          }
+        ]
+      },
+      "mime": "application/pdf",
+      "extension": ".pdf",
+      "sourceSection": "Registration document list and scribe section",
+      "reviewHint": "Inspect the original and compare its content with the linked official instructions. Confirm only what you personally reviewed. Check the appendix requirements, issuer, validity and exceptions; technical checks do not certify these.",
+      "sourceAnchor": "uceed-2027-registration-v3:4499:398"
+    }
+  ],
+  "limitations": [
+    "Source-backed examination-registration document pack; independent completeness sign-off is pending.",
+    "Complete source sections and appendix pages are included in the review dossier. Unsupported legal, medical, eligibility, foreign-national and portal obligations remain explicit.",
+    "Service limits are separate from official requirements. No source-defined file size or pixel limit is asserted.",
+    "Applicant content confirmation does not certify authenticity, eligibility, issuer competence, portrait recency, certificate validity or institutional acceptance.",
+    "English OCR is a reading aid; uncertain and unreadable content requires manual review."
+  ],
+  "coverage": [
+    {
+      "id": "uceed-2027-registration-v3",
+      "sourceId": "uceed-2027-registration-v3",
+      "anchor": "uceed-2027-registration-v3:0:10835",
+      "title": "UCEED 2027 registration (all content reviewed for registration relevance)",
+      "disposition": "in_scope",
+      "obligationIds": [
+        "photo",
+        "signature",
+        "age",
+        "qualifying",
+        "name-change",
+        "disability",
+        "dyslexia",
+        "accommodation",
+        "nationality",
+        "oci",
+        "principal",
+        "category-obc",
+        "category-sc",
+        "category-st",
+        "category-ews",
+        "scribe-specified",
+        "scribe-other",
+        "unsupported-portrait-age",
+        "unsupported-issuers",
+        "unsupported-medical",
+        "unsupported-foreign",
+        "unsupported-eligibility"
+      ]
+    },
+    {
+      "id": "uceed-2027-faq-v3",
+      "sourceId": "uceed-2027-faq-v3",
+      "anchor": "uceed-2027-faq-v3:0:11265",
+      "title": "UCEED 2027 FAQ (all content reviewed for registration relevance)",
+      "disposition": "in_scope",
+      "obligationIds": ["nios"]
+    },
+    {
+      "id": "pdf-page-1",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:0:2",
+      "title": "Brochure PDF page 1 (printed -3)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-1"]
+    },
+    {
+      "id": "pdf-page-2",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:3:2236",
+      "title": "Brochure PDF page 2 (printed -2)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-2"]
+    },
+    {
+      "id": "pdf-page-3",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:2240:1048",
+      "title": "Brochure PDF page 3 (printed -1)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-3"]
+    },
+    {
+      "id": "pdf-page-4",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:3289:1143",
+      "title": "Brochure PDF page 4 (printed 0)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-4"]
+    },
+    {
+      "id": "pdf-page-5",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:4433:1286",
+      "title": "Brochure PDF page 5 (printed 1)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-5"]
+    },
+    {
+      "id": "pdf-page-6",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:5720:62",
+      "title": "Brochure PDF page 6 (printed 2)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-6"]
+    },
+    {
+      "id": "pdf-page-7",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:5783:2042",
+      "title": "Brochure PDF page 7 (printed 3)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-7"]
+    },
+    {
+      "id": "pdf-page-8",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:7826:2357",
+      "title": "Brochure PDF page 8 (printed 4)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-8"]
+    },
+    {
+      "id": "pdf-page-9",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:10184:2426",
+      "title": "Brochure PDF page 9 (printed 5)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-9"]
+    },
+    {
+      "id": "pdf-page-10",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:12611:2342",
+      "title": "Brochure PDF page 10 (printed 6)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-10"]
+    },
+    {
+      "id": "pdf-page-11",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:14954:1036",
+      "title": "Brochure PDF page 11 (printed 7)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-11"]
+    },
+    {
+      "id": "pdf-page-12",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:15991:2209",
+      "title": "Brochure PDF page 12 (printed 8)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-12"]
+    },
+    {
+      "id": "pdf-page-13",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:18201:2872",
+      "title": "Brochure PDF page 13 (printed 9)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-13"]
+    },
+    {
+      "id": "pdf-page-14",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:21074:2948",
+      "title": "Brochure PDF page 14 (printed 10)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-14"]
+    },
+    {
+      "id": "pdf-page-15",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:24023:1348",
+      "title": "Brochure PDF page 15 (printed 11)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-15"]
+    },
+    {
+      "id": "pdf-page-16",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:25372:552",
+      "title": "Brochure PDF page 16 (printed 12)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-16"]
+    },
+    {
+      "id": "pdf-page-17",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:25925:1356",
+      "title": "Brochure PDF page 17 (printed 13)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-17"]
+    },
+    {
+      "id": "pdf-page-18",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:27282:960",
+      "title": "Brochure PDF page 18 (printed 14)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-18"]
+    },
+    {
+      "id": "pdf-page-19",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:28243:2421",
+      "title": "Brochure PDF page 19 (printed 15)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-19"]
+    },
+    {
+      "id": "pdf-page-20",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:30665:2211",
+      "title": "Brochure PDF page 20 (printed 16)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-20"]
+    },
+    {
+      "id": "pdf-page-21",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:32877:2430",
+      "title": "Brochure PDF page 21 (printed 17)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-21"]
+    },
+    {
+      "id": "pdf-page-22",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:35308:2121",
+      "title": "Brochure PDF page 22 (printed 18)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-22"]
+    },
+    {
+      "id": "pdf-page-23",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:37430:2028",
+      "title": "Brochure PDF page 23 (printed 19)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-23"]
+    },
+    {
+      "id": "pdf-page-24",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:39459:1656",
+      "title": "Brochure PDF page 24 (printed 20)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-24"]
+    },
+    {
+      "id": "pdf-page-25",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:41116:2098",
+      "title": "Brochure PDF page 25 (printed 21)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-25"]
+    },
+    {
+      "id": "pdf-page-26",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:43215:2584",
+      "title": "Brochure PDF page 26 (printed 22)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-26"]
+    },
+    {
+      "id": "pdf-page-27",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:45800:968",
+      "title": "Brochure PDF page 27 (printed 23)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-27"]
+    },
+    {
+      "id": "pdf-page-28",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:46769:2069",
+      "title": "Brochure PDF page 28 (printed 24)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-28"]
+    },
+    {
+      "id": "pdf-page-29",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:48839:1645",
+      "title": "Brochure PDF page 29 (printed 25)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-29"]
+    },
+    {
+      "id": "pdf-page-30",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:50485:1393",
+      "title": "Brochure PDF page 30 (printed 26)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-30"]
+    },
+    {
+      "id": "pdf-page-31",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:51879:2626",
+      "title": "Brochure PDF page 31 (printed 27)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-31"]
+    },
+    {
+      "id": "pdf-page-32",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:54506:1407",
+      "title": "Brochure PDF page 32 (printed 28)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-32"]
+    },
+    {
+      "id": "pdf-page-33",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:55914:2226",
+      "title": "Brochure PDF page 33 (printed 29)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-33"]
+    },
+    {
+      "id": "pdf-page-34",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:58141:1605",
+      "title": "Brochure PDF page 34 (printed 30)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-34"]
+    },
+    {
+      "id": "pdf-page-35",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:59747:162",
+      "title": "Brochure PDF page 35 (printed 31)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-35"]
+    },
+    {
+      "id": "pdf-page-36",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:59910:1468",
+      "title": "Brochure PDF page 36 (printed 32)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-36"]
+    },
+    {
+      "id": "pdf-page-37",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:61379:1996",
+      "title": "Brochure PDF page 37 (printed 33)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-37"]
+    },
+    {
+      "id": "pdf-page-38",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:63376:2242",
+      "title": "Brochure PDF page 38 (printed 34)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-38"]
+    },
+    {
+      "id": "pdf-page-39",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:65619:1311",
+      "title": "Brochure PDF page 39 (printed 35)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-39"]
+    },
+    {
+      "id": "pdf-page-40",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:66931:1522",
+      "title": "Brochure PDF page 40 (printed 36)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-40"]
+    },
+    {
+      "id": "pdf-page-41",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:68454:1420",
+      "title": "Brochure PDF page 41 (printed 37)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-41"]
+    },
+    {
+      "id": "pdf-page-42",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:69875:1480",
+      "title": "Brochure PDF page 42 (printed 38)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-42"]
+    },
+    {
+      "id": "pdf-page-43",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:71356:70",
+      "title": "Brochure PDF page 43 (printed 39)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-43"]
+    },
+    {
+      "id": "pdf-page-44",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:71427:1891",
+      "title": "Brochure PDF page 44 (printed 40)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-44"]
+    },
+    {
+      "id": "pdf-page-45",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:73319:1699",
+      "title": "Brochure PDF page 45 (printed 41)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-45"]
+    },
+    {
+      "id": "pdf-page-46",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:75019:1488",
+      "title": "Brochure PDF page 46 (printed 42)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-46"]
+    },
+    {
+      "id": "pdf-page-47",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:76508:2188",
+      "title": "Brochure PDF page 47 (printed 43)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-47"]
+    },
+    {
+      "id": "pdf-page-48",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:78697:2254",
+      "title": "Brochure PDF page 48 (printed 44)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-48"]
+    },
+    {
+      "id": "pdf-page-49",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:80952:2290",
+      "title": "Brochure PDF page 49 (printed 45)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-49"]
+    },
+    {
+      "id": "pdf-page-50",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:83243:417",
+      "title": "Brochure PDF page 50 (printed 46)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-50"]
+    },
+    {
+      "id": "pdf-page-51",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:83661:2595",
+      "title": "Brochure PDF page 51 (printed 47)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-51"]
+    },
+    {
+      "id": "pdf-page-52",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:86257:821",
+      "title": "Brochure PDF page 52 (printed 48)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-52"]
+    },
+    {
+      "id": "pdf-page-53",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:87079:2289",
+      "title": "Brochure PDF page 53 (printed 49)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-53"]
+    },
+    {
+      "id": "pdf-page-54",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:89369:2447",
+      "title": "Brochure PDF page 54 (printed 50)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-54"]
+    },
+    {
+      "id": "pdf-page-55",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:91817:978",
+      "title": "Brochure PDF page 55 (printed 51)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-55"]
+    },
+    {
+      "id": "pdf-page-56",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:92796:422",
+      "title": "Brochure PDF page 56 (printed 52)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-56"]
+    },
+    {
+      "id": "pdf-page-57",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:93219:332",
+      "title": "Brochure PDF page 57 (printed 53)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-57"]
+    },
+    {
+      "id": "pdf-page-58",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:93552:856",
+      "title": "Brochure PDF page 58 (printed 54)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-58"]
+    },
+    {
+      "id": "pdf-page-59",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:94409:989",
+      "title": "Brochure PDF page 59 (printed 55)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-59"]
+    },
+    {
+      "id": "pdf-page-60",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:95399:3138",
+      "title": "Brochure PDF page 60 (printed 56)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-60"]
+    },
+    {
+      "id": "pdf-page-61",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:98538:1668",
+      "title": "Brochure PDF page 61 (printed 57)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-61"]
+    },
+    {
+      "id": "pdf-page-62",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:100207:3758",
+      "title": "Brochure PDF page 62 (printed 58)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-62"]
+    },
+    {
+      "id": "pdf-page-63",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:103966:973",
+      "title": "Brochure PDF page 63 (printed 59)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-63"]
+    },
+    {
+      "id": "pdf-page-64",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:104940:2479",
+      "title": "Brochure PDF page 64 (printed 60)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-64"]
+    },
+    {
+      "id": "pdf-page-65",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:107420:1908",
+      "title": "Brochure PDF page 65 (printed 61)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-65"]
+    },
+    {
+      "id": "pdf-page-66",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:109329:1884",
+      "title": "Brochure PDF page 66 (printed 62)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-66"]
+    },
+    {
+      "id": "pdf-page-67",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:111214:999",
+      "title": "Brochure PDF page 67 (printed 63)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-67"]
+    },
+    {
+      "id": "pdf-page-68",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:112214:1898",
+      "title": "Brochure PDF page 68 (printed 64)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-68"]
+    },
+    {
+      "id": "pdf-page-69",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:114113:1211",
+      "title": "Brochure PDF page 69 (printed 65)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-69"]
+    },
+    {
+      "id": "pdf-page-70",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:115325:1658",
+      "title": "Brochure PDF page 70 (printed 66)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-70"]
+    },
+    {
+      "id": "pdf-page-71",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:116984:1255",
+      "title": "Brochure PDF page 71 (printed 67)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-71"]
+    },
+    {
+      "id": "pdf-page-72",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:118240:1737",
+      "title": "Brochure PDF page 72 (printed 68)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-72"]
+    },
+    {
+      "id": "pdf-page-73",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:119978:1848",
+      "title": "Brochure PDF page 73 (printed 69)",
+      "disposition": "in_scope",
+      "obligationIds": ["brochure-page-73"]
+    },
+    {
+      "id": "pdf-page-74",
+      "sourceId": "uceed-2027-brochure-v3",
+      "anchor": "uceed-2027-brochure-v3:121827:44",
+      "title": "Brochure PDF page 74 (printed 70)",
+      "disposition": "out_of_scope",
+      "obligationIds": ["brochure-page-74"]
+    }
+  ]
+}

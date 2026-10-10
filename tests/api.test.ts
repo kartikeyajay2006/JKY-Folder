@@ -223,7 +223,7 @@ describe('server-owned product catalog', () => {
     expect(job.starter[0]).toMatchObject({ title: 'Resume', mime: 'application/pdf' });
     expect(response.body.packs[0]).toMatchObject({
       id: 'uceed-2027-reference',
-      requirementCount: 12,
+      requirementCount: 18,
       assurance: 'reference',
     });
     expect(response.body.packs[0].requirements).toBeUndefined();
@@ -243,7 +243,7 @@ describe('server-owned product catalog', () => {
     expect(detail.status).toBe(200);
     expect(detail.body.pack.id).toBe('uceed-2027-reference');
     expect(detail.body.live.packetRevision).toBe(p.revision);
-    expect(detail.body.live.checks).toHaveLength(12);
+    expect(detail.body.live.checks).toHaveLength(18);
     expect(detail.body.evaluatorVersion).toMatch(/^\d+\.\d+\.\d+$/);
     const list = await a.agent.get('/api/packets');
     expect(list.body[0].checklist).toEqual({ title: 'UCEED 2027', assurance: 'reference' });

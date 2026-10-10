@@ -1,4 +1,5 @@
 import referenceSource from './reference-source.json';
+import registrationDraft from './uceed-registration-draft.json';
 import referenceObligations from './reference-obligations.json';
 import type { SourceSnapshot, SourceObligation } from './model';
 import type { RulePack, Requirement, Predicate } from './model';
@@ -136,5 +137,7 @@ uceedPack.requirements = uceedPack.requirements.map((r) => ({
     ? { evidenceMode: 'all' as const, evidenceSlots: ['Form 1', 'Form 2'] }
     : {}),
 }));
+export const registrationBaseRequirements = structuredClone(uceedPack.requirements);
+Object.assign(uceedPack, registrationDraft as unknown as RulePack);
 export const packs = [uceedPack];
 export const findPack = (id: string) => packs.find((p) => p.id === id);

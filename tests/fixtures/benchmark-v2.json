@@ -1,0 +1,222 @@
+{
+  "version": "2",
+  "author": "kartikeyajay2006",
+  "reviewStatus": "awaiting_independent_review",
+  "provenance": "Separately specified synthetic answers from the written review contract; evaluator outputs were not used to generate labels. Blind export and external adjudication are required before independent sign-off.",
+  "cases": [
+    {
+      "id": "confirmed-positive",
+      "expected": "pass",
+      "rationale": "An inspected matching original with an adequate content review meets this synthetic contract."
+    },
+    {
+      "id": "missing-original",
+      "omitDocuments": true,
+      "expected": "fail",
+      "rationale": "A link cannot provide evidence when its original is absent."
+    },
+    {
+      "id": "missing-link",
+      "omitLinks": true,
+      "expected": "fail",
+      "rationale": "Unlinked documents cannot meet a mandatory requirement."
+    },
+    {
+      "id": "optional-missing",
+      "omitLinks": true,
+      "requirement": { "optional": true },
+      "expected": "not_applicable",
+      "rationale": "Absent optional evidence is explicitly excluded."
+    },
+    {
+      "id": "conditional-exception",
+      "requirement": { "condition": { "op": "eq", "field": "category", "value": "sc" } },
+      "profile": { "category": "general" },
+      "expected": "not_applicable",
+      "rationale": "Confirmed general category excludes the SC-only requirement."
+    },
+    {
+      "id": "conditional-unknown",
+      "requirement": { "condition": { "op": "eq", "field": "category", "value": "sc" } },
+      "expected": "unknown",
+      "rationale": "An unanswered category never becomes a negative answer."
+    },
+    {
+      "id": "inclusive-byte-min",
+      "requirement": { "minBytes": 1000 },
+      "expected": "pass",
+      "rationale": "The exact minimum is included by the written constraint."
+    },
+    {
+      "id": "byte-below",
+      "requirement": { "minBytes": 1001 },
+      "expected": "fail",
+      "rationale": "One byte below the minimum fails."
+    },
+    {
+      "id": "inclusive-byte-max",
+      "requirement": { "maxBytes": 1000 },
+      "expected": "pass",
+      "rationale": "The exact maximum is included by the written constraint."
+    },
+    {
+      "id": "byte-above",
+      "requirement": { "maxBytes": 999 },
+      "expected": "fail",
+      "rationale": "One byte above the maximum fails."
+    },
+    {
+      "id": "inclusive-page-range",
+      "requirement": { "minPages": 2, "maxPages": 2 },
+      "expected": "pass",
+      "rationale": "Exactly two available pages meets both inclusive bounds."
+    },
+    {
+      "id": "invalid-page-range",
+      "link": { "pageTo": 3 },
+      "expected": "fail",
+      "rationale": "A requested page beyond the original cannot supply evidence."
+    },
+    {
+      "id": "inclusive-dimensions",
+      "requirement": { "minWidth": 600, "maxWidth": 600, "minHeight": 800, "maxHeight": 800 },
+      "document": { "width": 600, "height": 800 },
+      "expected": "pass",
+      "rationale": "Exact inclusive image dimensions meet both boundaries."
+    },
+    {
+      "id": "dimensions-outside",
+      "requirement": { "minWidth": 601 },
+      "document": { "width": 600 },
+      "expected": "fail",
+      "rationale": "An image one pixel below the required width fails."
+    },
+    {
+      "id": "unreviewed",
+      "link": { "review": "unreviewed" },
+      "expected": "needs_review",
+      "rationale": "Technical conformity alone cannot confirm document content."
+    },
+    {
+      "id": "concern",
+      "link": { "review": "concern" },
+      "expected": "needs_review",
+      "rationale": "A recorded content concern remains unresolved."
+    },
+    {
+      "id": "processing",
+      "document": { "status": "processing" },
+      "expected": "pending",
+      "rationale": "Worker inspection has not finished."
+    },
+    {
+      "id": "failed-inspection",
+      "document": { "status": "error", "error": "Synthetic inspection failed" },
+      "expected": "error",
+      "rationale": "Failed inspection cannot become a passing original."
+    },
+    {
+      "id": "wrong-owner",
+      "document": { "packetId": "another-packet" },
+      "expected": "fail",
+      "rationale": "Evidence from another folder cannot satisfy the requirement."
+    },
+    {
+      "id": "all-one-missing",
+      "requirement": { "evidenceMode": "all", "evidenceSlots": ["Form 1", "Form 2"] },
+      "link": { "slot": "Form 1" },
+      "expected": "fail",
+      "rationale": "Both forms are mandatory and only the first is supplied."
+    },
+    {
+      "id": "all-two-present",
+      "requirement": { "evidenceMode": "all", "evidenceSlots": ["Form 1", "Form 2"] },
+      "link": { "slot": "Form 1" },
+      "second": { "slot": "Form 2" },
+      "expected": "pass",
+      "rationale": "Two distinct reviewed originals cover both forms."
+    },
+    {
+      "id": "any-one-present",
+      "requirement": { "evidenceMode": "any", "evidenceSlots": ["Passport", "Birth certificate"] },
+      "link": { "slot": "Passport" },
+      "expected": "pass",
+      "rationale": "One accepted alternative suffices."
+    },
+    {
+      "id": "any-second-valid",
+      "requirement": { "evidenceMode": "any" },
+      "document": { "mime": "image/jpeg" },
+      "second": { "slot": "Alternative" },
+      "expected": "pass",
+      "rationale": "The valid second PDF alternative suffices despite the first format mismatch."
+    },
+    {
+      "id": "uncertain-ocr",
+      "requirement": { "expectedText": "Synthetic evidence" },
+      "document": {
+        "pages": [{ "number": 1, "text": "Synthetic evidence", "method": "ocr", "confidence": 84 }]
+      },
+      "expected": "needs_review",
+      "rationale": "Text below the confidence threshold remains unresolved even when its phrase matches."
+    },
+    {
+      "id": "ocr-boundary",
+      "requirement": { "expectedText": "Synthetic evidence" },
+      "document": {
+        "pages": [{ "number": 1, "text": "Synthetic evidence", "method": "ocr", "confidence": 85 }]
+      },
+      "expected": "pass",
+      "rationale": "At the documented threshold, reviewed matching text satisfies this phrase check."
+    },
+    {
+      "id": "truncated-native",
+      "requirement": { "expectedText": "Synthetic evidence" },
+      "document": {
+        "pages": [
+          { "number": 1, "text": "Synthetic evidence", "method": "native", "warning": "truncated" }
+        ]
+      },
+      "expected": "needs_review",
+      "rationale": "Truncation makes a phrase check incomplete."
+    },
+    {
+      "id": "confirmed-date-boundary",
+      "requirement": {
+        "dateCheck": {
+          "field": "issue_date",
+          "operation": "on_or_before",
+          "reference": "2026-10-10"
+        }
+      },
+      "date": "2026-10-10",
+      "expected": "pass",
+      "rationale": "A reviewed valid calendar date on the inclusive cutoff passes."
+    },
+    {
+      "id": "date-after-boundary",
+      "requirement": {
+        "dateCheck": {
+          "field": "issue_date",
+          "operation": "on_or_before",
+          "reference": "2026-10-10"
+        }
+      },
+      "date": "2026-10-11",
+      "expected": "fail",
+      "rationale": "A date one day after the inclusive cutoff fails."
+    },
+    {
+      "id": "missing-date-confirmation",
+      "requirement": {
+        "dateCheck": {
+          "field": "issue_date",
+          "operation": "on_or_before",
+          "reference": "2026-10-10"
+        }
+      },
+      "expected": "needs_review",
+      "rationale": "A date constraint needs a confirmed structured fact."
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import type { Store } from './store';
 import type { Packet, RulePack, SourceSnapshot } from '../shared/model';
 import { packs } from '../shared/packs';
 import { requirementsSchema } from './application-schema';
+import { z } from 'zod';
 export const digest = (content: string | Buffer) =>
   createHash('sha256').update(content).digest('hex');
 export function availablePacks(store: Store): RulePack[] {
@@ -86,6 +87,7 @@ export function saveDraft(store: Store, pack: RulePack, actor: string) {
   requirementsSchema.parse(pack.requirements);
   const draft = {
     ...pack,
+    reviewRecord: undefined,
     lifecycle: 'draft' as const,
     authoredBy: actor,
     reviewedBy: undefined,
@@ -102,6 +104,7 @@ export function transitionPack(
   version: string,
   action: 'review' | 'publish' | 'retire',
   actor: string,
+  reviewRecord?: RulePack['reviewRecord'],
 ) {
   const row = store.db
     .prepare('SELECT state,payload FROM pack_revisions WHERE id=? AND version=?')
@@ -123,6 +126,7 @@ export function transitionPack(
         !stored ||
         (JSON.parse(stored.payload) as SourceSnapshot).sha256 !== s.sha256 ||
         digest((JSON.parse(stored.payload) as SourceSnapshot).content || '') !== s.sha256 ||
+        (JSON.parse(stored.payload) as SourceSnapshot).url !== s.url ||
         !s.url.startsWith('https://') ||
         Number.isNaN(Date.parse(s.retrievedAt))
       )
@@ -170,6 +174,83 @@ export function transitionPack(
       )
     )
       throw Error('Every requirement needs an exact source anchor and obligation mapping.');
+    if (p.coverage) {
+      reviewRecord = z
+        .object({
+          reviewer: z.string().trim().min(1),
+          scopeHash: z.string().regex(/^[a-f0-9]{64}$/),
+          signedAt: z.string().min(10),
+          independenceAttested: z.literal(true),
+          decisions: z
+            .array(
+              z
+                .object({
+                  sectionId: z.string(),
+                  accepted: z.boolean(),
+                  note: z.string().trim().min(20).max(2000),
+                })
+                .strict(),
+            )
+            .min(1)
+            .max(500),
+        })
+        .strict()
+        .parse(reviewRecord);
+      const hash = packScopeHash(p);
+      if (
+        !reviewRecord ||
+        !reviewRecord.independenceAttested ||
+        reviewRecord.reviewer !== actor ||
+        reviewRecord.scopeHash !== hash ||
+        Number.isNaN(Date.parse(reviewRecord.signedAt))
+      )
+        throw Error(
+          'A signed independent review of the exact source coverage and rules is required.',
+        );
+      if (
+        reviewRecord.decisions.length !== p.coverage.length ||
+        new Set(reviewRecord.decisions.map((d) => d.sectionId)).size !== p.coverage.length ||
+        p.coverage.some(
+          (c) =>
+            !reviewRecord!.decisions.some(
+              (d) => d.sectionId === c.id && d.accepted && d.note.trim().length >= 20,
+            ),
+        )
+      )
+        throw Error(
+          'Every coverage section requires an accepted decision and substantive reviewer note.',
+        );
+      for (const c of p.coverage) {
+        const source = p.sources!.find((s) => s.id === c.sourceId),
+          row =
+            source &&
+            (store.db.prepare('SELECT payload FROM source_snapshots WHERE id=?').get(source.id) as
+              { payload: string } | undefined);
+        const content = row ? (JSON.parse(row.payload) as SourceSnapshot).content || '' : '',
+          parts = c.anchor.split(':');
+        if (
+          parts.length !== 3 ||
+          parts[0] !== c.sourceId ||
+          !/^\d+$/.test(parts[1]) ||
+          !/^\d+$/.test(parts[2]) ||
+          Number(parts[2]) < 1 ||
+          Number(parts[1]) + Number(parts[2]) > content.length ||
+          !c.title ||
+          !['in_scope', 'out_of_scope'].includes(c.disposition) ||
+          !c.obligationIds.length ||
+          c.obligationIds.some(
+            (id) => !p.obligations!.some((o) => o.id === id && o.sourceId === c.sourceId),
+          )
+        )
+          throw Error('Coverage requires exact source ranges and mapped obligation IDs.');
+      }
+      if (
+        new Set(p.coverage.map((c) => c.id)).size !== p.coverage.length ||
+        p.obligations!.some((o) => !p.coverage!.some((c) => c.obligationIds.includes(o.id)))
+      )
+        throw Error('Coverage contains duplicate sections or omitted obligations.');
+      p.reviewRecord = reviewRecord;
+    }
     p.lifecycle = 'reviewed';
     p.reviewedBy = actor;
     p.reviewedAt = new Date().toISOString();
@@ -181,10 +262,16 @@ export function transitionPack(
         const row = store.db
           .prepare('SELECT payload FROM source_snapshots WHERE id=?')
           .get(s.id) as { payload: string } | undefined;
-        return !row || JSON.parse(row.payload).sha256 !== s.sha256;
+        return (
+          !row ||
+          JSON.parse(row.payload).sha256 !== s.sha256 ||
+          digest(JSON.parse(row.payload).content || '') !== s.sha256
+        );
       })
     )
       throw Error('Source changed after review. Create and review a new revision.');
+    if (p.coverage && p.reviewRecord?.scopeHash !== packScopeHash(p))
+      throw Error('Coverage or rules changed after review.');
     p.lifecycle = 'published';
   } else {
     if (row.state !== 'published' || actor !== p.reviewedBy)
@@ -195,4 +282,15 @@ export function transitionPack(
     .prepare('UPDATE pack_revisions SET state=?,payload=? WHERE id=? AND version=?')
     .run(p.lifecycle, JSON.stringify(p), id, version);
   return p;
+}
+
+export function packScopeHash(p: RulePack) {
+  return digest(
+    JSON.stringify({
+      sources: p.sources,
+      requirements: p.requirements,
+      obligations: p.obligations,
+      coverage: p.coverage,
+    }),
+  );
 }
