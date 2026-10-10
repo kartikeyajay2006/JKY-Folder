@@ -27,7 +27,7 @@ The 2027 official registration page was checked on 10 October 2026. Its referenc
 
 Market interviews, paid demand, legal review, production TLS/hosting, independently approved current packs, supplier contracts, payment processing, guardian flows, penetration review and the held-out launch benchmark require real evidence. They remain open startup gates. Real customer documents must not be used to test this development release.
 
-## Delivered development milestone
+## First delivered development milestone
 
 The six-stage implementation now includes a working account and packet API, a versioned reference pack and three-valued applicability, private intake and real PDF/JPEG inspection, page-level evidence assignment, applicant review notes, versioned reports and deletion. The frontend exposes those capabilities through welcome, overview, checklist, document, report, activity, help and privacy views.
 
@@ -36,3 +36,23 @@ Verification: 24 domain/API/actual-worker tests and eight desktop/mobile browser
 Final validation caught a hidden-storage-path defect in original downloads. The API fixtures now use a `.data` directory, verify every demo original's MIME and byte length, and deny anonymous and cross-account reads. The browser journey also verifies that the signature preview decodes and rejects server errors. Originals are served by a database-owned object key under an explicit private root; no private directory is mounted as a public asset.
 
 The complete startup remains subject to the [open release gates](RELEASE_GATES.md). Implemented references in that document explicitly mean partial workstream fulfillment. The historical plan is preserved without retroactively marking its business research or public launch stages complete.
+
+## Workspace and workflow revision
+
+The repeated generic empty screens were replaced with a first-use workspace and distinct document, checklist and report onboarding. The visual system now uses a light navigation rail, indigo accents, clearer typography, responsive layouts and an original folder/check vector mark. Counters reflect actual stored data; starter examples and demo documents are labelled.
+
+Applications can begin with college, scholarship, job or custom starters, as well as the separate UCEED reference option. The three-step setup accepts destination, calendar deadline, source URL and original instructions, then allows the requirement list to be edited before creation. Mechanical import maps each nonempty instruction line to an editable item; automatic semantic interpretation is not claimed.
+
+Custom checklist editing persists required/optional items, supported file formats, simple conditional profile rules, size limits and expected literal phrases. Phrase checks use only linked PDF pages and keep absent extraction unresolved. Changes to custom checklist content, source or original instruction notes invalidate previous content confirmations. Historical report exports retain their saved checklist title/source. Older evaluator versions remain historical; retries reuse only matching input, checklist and evaluator versions.
+
+The application portfolio now has search, sort, actual current review counts, deadlines, archive and restore. Archive preserves evidence and history. Private ZIP downloads contain exact inspected original bytes, a manifest and coverage notes; excluded files are identified. Each application has a URL that restores its section and selection after refresh and supports Back/Forward, with server ownership enforced independently.
+
+The browser renders actual PDF originals with page controls and zoom; page selection connects to evidence ranges. Original-document previews and extraction remain distinct. Batch intake attempts each file independently, keeps valid uploads around a rejected file, identifies duplicate bytes, and offers retry for failed intake. Inspection is a separate asynchronous state.
+
+Display-name changes, current-password-verified password changes, session rotation and sign-out of other sessions work through account settings. The activity view retrieves real private account events with application/document/account filters. Existing document, application and account deletion remain operational.
+
+Current local verification passed **39 domain/API/actual-worker tests and 18 desktop/mobile browser checks**, TypeScript and a production client build. Browser coverage includes fresh accounts with no packets, custom checklist setup/editing, archive/restore, account settings, actual PDF page rendering, mixed valid/invalid batches, duplicates, browser history, password changes and new-session sign-in. Synthetic tests use separate temporary data and ports, preserving the personal local workspace. Automated accessibility checks cover scoped screens, dialogs and upload outcomes; this remains internal assurance rather than certification.
+
+The frontend milestone initially exposed a CI-only mobile test timeout: the test attempted navigation before the authenticated workspace had mounted after reload. The navigation helper now explicitly waits for the workspace. CI retains failure traces/screenshots for seven days to make future failures reviewable.
+
+Hosting is deferred at the owner’s request. The implemented runtime is localhost, with no public deployment, payments, managed recovery emails, OCR, institutional rule-pack certification or claim that the business launch gates have been completed.

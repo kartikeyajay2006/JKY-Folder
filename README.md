@@ -1,8 +1,8 @@
 # JKY-Folder
 
-**Your next chapter. All in one folder.**
+**Application instructions. Supporting documents. A clear next step.**
 
-A working development MVP for reviewing application documents against a scoped requirement checklist. Bring original files together, confirm which requirements apply, link evidence to pages, and save a clear report of missing documents and unresolved checks.
+A working local application for preparing college, scholarship and job document folders. Create an application from an editable starter or your actual instructions, bring original files together, connect evidence to pages, and save a report of missing documents and unresolved checks.
 
 ![JKY-Folder workspace with fictional demo evidence](docs/engineering/screenshots/workspace.png)
 
@@ -19,18 +19,22 @@ Open **http://127.0.0.1:5173** and choose **Explore the demo**. The demo has fic
 
 ## What works
 
-- Account registration, sign-in, private sessions, CSRF protection and account deletion.
-- Separate application packets with persisted profiles and explicit unknown answers.
-- A versioned UCEED 2027 reference checklist with conditional requirements.
-- Private PDF/JPEG uploads, bounded asynchronous inspection, retries and duplicate detection.
-- PDF page-text extraction and original-document downloads after inspection.
+- Account registration, sign-in, display-name updates, password changes, session revocation and account deletion.
+- A redesigned responsive workspace with useful first-use guidance and distinct checklist, document and report sections.
+- An application portfolio with real progress counts, search, sorting, deadlines, archive and restore.
+- College, scholarship, job and custom checklist starters; instruction-line import and editable requirements.
+- Optional items, profile conditions, file formats, custom size limits and literal text checks on linked PDF pages.
+- A versioned UCEED 2027 reference checklist with explicit unknown profile answers.
+- Private PDF/JPEG intake with per-file batch results, bounded asynchronous inspection, retries and duplicate detection.
+- Actual PDF page previews with pagination and zoom, page-text extraction, JPEG previews and private original downloads.
 - Requirement-to-document/page evidence links and clearly labelled personal review notes.
 - Conservative technical checks, missing evidence, unknown applicability and review-needed states.
-- Versioned review snapshots, stale-report notices, JSON exports and printable reports.
-- Responsive desktop/mobile workspace, search, filters, timeline, help and privacy controls.
+- Versioned review snapshots, stale-report notices, JSON exports, printable reports and private ZIP folder downloads.
+- Application URLs that retain the selected section on refresh and support browser Back/Forward.
+- Search across requirements and extracted document text, filters, real account activity, help and privacy controls.
 - Deletion of active documents, extracted pages, links, jobs, reports and account sessions.
 
-**A reviewed item is not a guarantee of authenticity, eligibility or institutional acceptance.** The source pack is a limited reference, not an independently approved complete official checklist. Scanned PDFs require manual review; OCR and automatic certificate judgments are not implemented.
+**A reviewed item is not a guarantee of authenticity, eligibility or institutional acceptance.** Starters are editable organizing suggestions, not official application rules. Instruction import creates one item per nonempty line; you confirm its meaning and conditions. The UCEED pack is a limited reference, not an independently approved complete official checklist. Scanned PDFs require manual review; OCR and automatic certificate judgments are not implemented.
 
 ## Verify the application
 
@@ -40,9 +44,9 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-The milestone has **24 passing domain/API/worker tests** and **eight passing desktop/mobile browser tests**. Browser checks cover real PDF upload/extraction, evidence review, report export, stale reports, deletion, keyboard focus and automated accessibility across core screens and dialogs. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
+The local verification passed **39 domain/API/worker tests** and **18 desktop/mobile browser checks**, plus TypeScript and the client build. It covers real PDF upload/extraction/rendering, mixed upload batches, duplicates, custom instructions and checklist changes, private ZIP bytes, account password/session controls, application navigation, evidence review, historical reports, deletion, keyboard focus and automated accessibility across core screens and dialogs. Browser tests use isolated ports and disposable synthetic accounts, independent of your personal local data. The dependency audit reported no known vulnerabilities at this review; it is a dated check, not a permanent assurance.
 
-GitHub Actions runs the checks on pushes and pull requests. Application source can be formatted with `npm run format`.
+GitHub Actions runs the checks on pushes and pull requests and retains browser failure traces for seven days. Application source can be formatted with `npm run format`.
 
 ## Architecture and boundaries
 
@@ -54,7 +58,7 @@ This implementation has not been publicly deployed or certified as ready for rea
 
 ## Preview and startup plan
 
-[Welcome screen](docs/engineering/screenshots/welcome.png) · [Mobile workspace](docs/engineering/screenshots/mobile.png) · [Original logo concept](docs/brand/jky-folder-logo-concept.png)
+[First-use workspace](docs/engineering/screenshots/welcome.png) · [Application setup](docs/engineering/screenshots/application-setup.png) · [Application portfolio](docs/engineering/screenshots/applications.png) · [PDF preview](docs/engineering/screenshots/pdf-preview.png) · [Mobile workspace](docs/engineering/screenshots/mobile.png) · [Original logo concept](docs/brand/jky-folder-logo-concept.png)
 
 The original **29,354-line startup implementation plan** remains preserved as a dated specification across the [master plan](IMPLEMENTATION_PLAN.md) and six detailed volumes. It contains 96 workstreams, 576 deliverables and 2,304 acceptance situations. Implementation references are mapped in the release-gate document; business and expansion deliverables are not marked complete by the existence of code.
 

@@ -4,10 +4,10 @@
 
 | Plan area | Code / evidence | Scope |
 | --- | --- | --- |
-| JF-01-07 to JF-01-12 | Account entry, profile questions, responsive packet workspace, evidence dialogs and browser checks | Development usability foundation |
-| JF-02-02 to JF-02-05 | Versioned reference pack, three-valued predicates and deterministic checks | One scoped application reference |
+| JF-01-07 to JF-01-12 | Account entry/settings, responsive workspace, first-use flows, application portfolio, deadlines, evidence dialogs and browser checks | Working local usability foundation |
+| JF-02-02 to JF-02-05 | Versioned reference pack, editable starters, instruction-line drafts, three-valued predicates and deterministic checks | One scoped reference plus user-defined checklists |
 | JF-02-06 to JF-02-09 | Private intake, separate inspection worker, PDF page extraction and evidence links | PDF/JPEG, bounded local processing |
-| JF-02-12 to JF-02-14 | Immutable evaluation runs, applicant review notes and snapshot exports | User confirmation is labelled |
+| JF-02-12 to JF-02-14 | Immutable evaluation runs, applicant review notes, private ZIP/JSON exports and evaluator version provenance | User confirmation is labelled |
 | JF-03-02 to JF-03-08 | Accounts, sessions, ownership, SQLite, private originals, durable job records and API contracts | Local single-instance architecture |
 | JF-03-09 to JF-03-11 | Live checklist states, revision conflicts, evidence retrieval and report history | Explicit stale state |
 | JF-04-02, JF-04-03, JF-04-07 | Adversarial intake, cross-owner denials, deletion and retry tests | Internal development assurance |
@@ -32,12 +32,12 @@ References indicate partial implementation of the corresponding workstream, not 
 
 ## Intentionally deferred features
 
-Custom instruction draft authoring, OCR, AI interpretation, external authenticity verification, transformed upload preparation, institution permissions, partner integrations, automated official-portal submission, scholarship/job packs and international expansion are not silently simulated. They require their own acceptance evidence and phase gates.
+Custom instruction drafts and editable college/scholarship/job starters now work locally. They are not reviewed official rule packs. OCR, automatic semantic/AI interpretation, external authenticity verification, transformed upload preparation, institution permissions, partner integrations, automated official-portal submission, independently reviewed scholarship/job packs and international expansion remain deferred. They require their own acceptance evidence and phase gates.
 
 ## Architecture decisions made
 
 SQLite and local private objects replace the plan’s provisional PostgreSQL/managed-storage stack for a reproducible single-instance development release. A durable document-job table allows restart recovery. Processing uses a child process with time and heap budgets, but no claim of a complete security sandbox. These choices need a production adapter and review before externally processing sensitive documents.
 
-A content-review confirmation can produce a scoped pass, with verification provenance set to `user`. It never becomes an automated issuer or content-authenticity result. The report always carries the reference-pack limits.
+A content-review confirmation can produce a scoped pass, with verification provenance set to `user`. It never becomes an automated issuer or content-authenticity result. Reports carry the selected checklist’s limits. Expected-phrase checks operate only on extracted text in linked pages; missing text remains review-needed, including scanned pages. Checklist or original instruction changes invalidate prior content confirmations.
 
 When deleting a document, saved runs for that packet are purged instead of retaining sensitive evidence references in historical exports. Historical runs remain available for ordinary profile and linking revisions, but never survive an evidence deletion merely to preserve history.

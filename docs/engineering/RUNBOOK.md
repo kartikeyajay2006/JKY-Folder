@@ -5,20 +5,38 @@ Requires Node.js 22.12 or newer. Verified locally with Node 22.22.0. The lockfil
 ## First run
 
 1. Run `npm ci` in the repository root.
-2. Optionally copy `.env.example` to `.env` and set the desired local ports, origin and private data path.
+2. Optionally copy `.env.example` to `.env` for the backend origin and private data path. Keep the default ports, or use the shared shell variables below.
 3. Run `npm run dev`.
 4. Open `http://127.0.0.1:5173`.
 5. Choose **Explore the demo** for an isolated fictional workspace, or create an adults-only development account.
 
-The web client listens on port 5173 and proxies API requests to port 3001. If you change the API port, update the Vite proxy to match. The server binds loopback by default. It does not publish a website to the internet.
+The web client listens on port 5173 and proxies API requests to port 3001. To customize development ports, set `WEB_PORT`, `PORT` and the matching `APP_ORIGIN` in the shell so both processes receive them:
+
+```sh
+PORT=3010 WEB_PORT=5183 APP_ORIGIN=http://127.0.0.1:5183 npm run dev
+```
+
+`server/index.ts` loads `.env` for the backend; shared dev-port overrides must be shell variables. The server binds loopback by default. It does not publish a website to the internet.
 
 ## Review a packet
 
-Create a packet and confirm the application details. Unknown answers remain unresolved. Upload PDFs or JPEGs, wait for inspection, then open a requirement and connect a document and page range. Inspect the original, record your own review note, and save the evidence link. Run a review to save a dated snapshot.
+Choose **New application**, select a college, scholarship, job or custom starter, and add its name, destination, deadline and original instructions. The starter checklist is editable before creation. Importing instructions creates one editable item per nonempty line; it does not infer conditional meanings. Confirm required/optional items, formats, conditions and any size or literal phrase checks against your actual instructions. Use **Edit checklist** to revise it later.
 
-The report distinguishes supported technical checks and applicant content confirmation. Changing a profile, adding a file or changing an evidence link makes an earlier report historical. Running a fresh review creates a new snapshot. A retry with unchanged inputs reuses the existing run.
+The separate UCEED 2027 reference option has conditional profile questions. Confirm those answers or leave them unknown when you need to check them. Unknown answers remain unresolved.
+
+Upload PDFs or JPEGs, wait for inspection, then open a requirement and connect a document and page range. The PDF viewer renders the actual selected original page with pagination and zoom. Inspect it, record your own review note, and save the evidence link. Run a review to save a dated snapshot. Uploading first from an empty document section opens setup and attaches those selected files to the newly created application.
+
+Batch intake reports each file separately. A rejected file does not stop later files from being attempted or remove accepted files. Duplicate bytes return the existing document without a second copy. Retry temporary failures or choose a supported replacement. Intake acceptance and successful inspection are separate states.
+
+The report distinguishes supported technical checks and applicant content confirmation. Changing a profile, file, evidence link, checklist or application details makes an earlier report historical. Changing custom requirements or original instruction notes resets prior content confirmations. A newer evaluator version also marks older snapshots historical. Running a fresh review creates a new snapshot. A retry with unchanged revisions, checklist version and evaluator version reuses the existing run.
 
 Export JSON for machine-readable provenance, or use **Print / PDF** for a printable report. The printable report includes source, version and coverage limits. Exports are private authenticated responses.
+
+**Download folder** exports a ZIP containing exact inspected originals, the current checklist/review manifest and coverage notes. Processing or failed files are excluded and identified in the manifest. The ZIP is a private export of originals; it does not transform files for a specific institution’s upload portal.
+
+Use **Applications** to search, sort, open, archive or restore your applications. Archive preserves documents and history; deletion removes them. Dates are tracked as local calendar deadlines without email or push notifications. Application URLs preserve your current application and section across refresh and browser navigation; server ownership checks still apply.
+
+In **Settings & privacy**, update your display name, change your password using the current password, or sign out other sessions. Password changes revoke previous sessions and rotate the current session/CSRF token. Email verification and password-reset email delivery are not included.
 
 ## Document limits
 
@@ -50,6 +68,8 @@ The development release has no automated backups. SQLite WAL free pages and exte
 
 To serve the built client and API together locally, run `npm run build`, set `APP_ORIGIN=http://127.0.0.1:3001`, then run `npm start` and open that URL. For a custom port, use a matching origin. Node environment variables override values in `.env`.
 
+Browser checks start their own API on port 3102 and web client on port 5180, with a separate temporary data directory. Leave these two ports available; they never reuse the personal server on 3001/5173. Failed checks retain local traces in ignored `test-results/`; CI uploads them for seven days. Fixture account cleanup never targets a personal account.
+
 ## Failure recovery
 
 A server restart requeues interrupted inspections. Failed inspection is visible in the document view and can be retried. An upload retry with identical bytes returns the existing document. An evaluation retry with unchanged input revisions returns the existing run. Stale mutations return a conflict and require current packet state.
@@ -58,4 +78,4 @@ Do not delete the data directory while a server is running. Stop the server befo
 
 ## Current boundaries
 
-The UCEED 2027 reference checklist is not a reviewed complete official pack. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. Custom instruction ingestion, OCR, managed authentication recovery, payments, institutional access, native apps and all public launch gates remain tracked work.
+The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. OCR, managed authentication recovery, payments, institutional access, native apps and all public launch gates remain tracked work. Hosting is deliberately deferred while the requested runtime is localhost.
