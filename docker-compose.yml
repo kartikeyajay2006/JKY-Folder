@@ -1,0 +1,42 @@
+# Local or single-server deployment.
+#   docker compose up -d                      app only, on http://127.0.0.1:3001 (set NODE_ENV)
+#   docker compose --profile https up -d      plus Caddy with automatic HTTPS for DOMAIN
+#   docker compose --profile scan up -d       plus ClamAV virus scanning (set CLAMAV_HOST=clamav)
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATA_DIR: /data
+      BACKUP_DIR: /backups
+      TRUST_PROXY: '1'
+    volumes:
+      - jky-data:/data
+      - jky-backups:/backups
+    ports:
+      - '127.0.0.1:3001:3001'
+
+  caddy:
+    image: caddy:2.8
+    profiles: [https]
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN to your site name, for example jkyfolder.in}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on: [app]
+
+  clamav:
+    image: clamav/clamav:1.4
+    profiles: [scan]
+    restart: unless-stopped
+
+volumes:
+  jky-data:
+  jky-backups:
+  caddy-data:

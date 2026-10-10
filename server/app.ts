@@ -20,6 +20,7 @@ import { registerSupport } from './support';
 import { registerLibrary } from './library';
 import { createGuardianService } from './guardian';
 import type { PushSender } from './web-push';
+import type { Scanner } from './scan';
 import type { MailTransport } from './mail';
 import { registerUploads } from './uploads';
 import { registerInstructionDrafts } from './instruction-drafts';
@@ -105,6 +106,10 @@ export function createApp(options: {
   background?: boolean;
   /** Replaces real push delivery, for tests. */
   push?: PushSender;
+  /** Scans every upload before inspection (ClamAV in production). */
+  scan?: Scanner;
+  /** Express "trust proxy" setting when running behind a hosting proxy or load balancer. */
+  trustProxy?: number | string;
 }) {
   const store = createStore(resolve(options.dataDir));
   const pushService = createPushService(store, {
@@ -142,6 +147,8 @@ export function createApp(options: {
     ...(!prod ? ['http://127.0.0.1:5173'] : []),
   ]);
   app.disable('x-powered-by');
+  // Behind a hosting proxy, the client's address comes from X-Forwarded-For; rate limits need it.
+  if (options.trustProxy !== undefined) app.set('trust proxy', options.trustProxy);
   app.use(
     helmet({
       contentSecurityPolicy: {
@@ -254,7 +261,15 @@ export function createApp(options: {
       ...(state ? { guardian: state } : {}),
     };
   }
-  app.get('/api/health', (_req, res) => res.json({ status: 'ok', version: '0.1.0' }));
+  // For load balancers and container health checks: the database must answer.
+  app.get('/api/health', (_req, res) => {
+    try {
+      store.db.prepare('SELECT 1').get();
+      res.json({ status: 'ok', version: '0.1.0' });
+    } catch {
+      res.status(503).json({ status: 'unavailable' });
+    }
+  });
   app.post('/api/auth/register', signupLimit, authLimit, async (req, res) => {
     const input = authSchema
       .extend({
@@ -1458,7 +1473,9 @@ export function createApp(options: {
     res.status(500).json({ error: 'Something went wrong. Please retry or refresh the workspace.' });
   });
   const stopJobs =
-    options.jobs === false ? Object.assign(() => {}, { isIdle: () => true }) : startJobs(store);
+    options.jobs === false
+      ? Object.assign(() => {}, { isIdle: () => true })
+      : startJobs(store, options.scan);
   function expireDemo() {
     sweepUploads();
     guardian.sweep();

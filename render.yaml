@@ -1,0 +1,37 @@
+# Render Blueprint: New > Blueprint, pick this repository, then fill in the secret values.
+services:
+  - type: web
+    name: jky-folder
+    runtime: docker
+    plan: starter
+    region: singapore
+    healthCheckPath: /api/health
+    disk:
+      name: jky-data
+      mountPath: /data
+      sizeGB: 10
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_ORIGIN
+        sync: false # https://your-service.onrender.com or your own domain
+      - key: TRUST_PROXY
+        value: '1'
+      - key: DATA_DIR
+        value: /data
+      - key: BACKUP_DIR
+        value: /data/backups
+      - key: BACKUP_PASSWORD
+        generateValue: true
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: '587'
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: VAPID_SUBJECT
+        sync: false # mailto:you@yourdomain
