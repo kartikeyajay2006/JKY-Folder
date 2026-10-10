@@ -160,7 +160,7 @@ test('multiple evidence components, fact correction and source details work in b
     await cleanup(page).catch(() => {});
   }
 });
-test('a lost upload response retries without duplicates and cancellation preserves existing originals', async ({
+test('a lost upload response recovers without duplicates and cancellation preserves existing originals', async ({
   page,
 }) => {
   const csrf = await signup(page);
@@ -184,9 +184,9 @@ test('a lost upload response retries without duplicates and cancellation preserv
     await page
       .locator('input[type=file]')
       .setInputFiles({ name: 'network.pdf', mimeType: 'application/pdf', buffer });
-    await expect(page.getByText('Connection interrupted.', { exact: false })).toBeVisible();
-    await page.getByRole('button', { name: 'Retry failed uploads' }).click();
+    // The lost response is retried automatically; the saved result is reused, not duplicated.
     await expect(page.getByRole('button', { name: 'Open network.pdf', exact: true })).toBeVisible();
+    await expect(page.getByRole('status').filter({ hasText: '1 added' })).toBeVisible();
     expect((await (await page.request.get(`/api/packets/${pid}`)).json()).documents).toHaveLength(
       2,
     );

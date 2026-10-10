@@ -107,6 +107,9 @@ export function registerUploads(
   });
   app.post('/api/uploads', (req, res) => {
     sweep();
+    const name = typeof req.body?.name === 'string' ? req.body.name : '';
+    if (!/^.+\.(pdf|jpg|jpeg)$/i.test(name) || /[\x00-\x1f\x7f/\\]/.test(name) || name.length > 160)
+      throw fail(400, 'Use a PDF or JPEG file with a simple filename.');
     const input = z
       .object({
         name: z

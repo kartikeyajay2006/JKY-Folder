@@ -57,7 +57,16 @@ const headings: Record<Exclude<View, 'overview'>, [string, string]> = {
   settings: ['Settings & privacy', 'Your profile, password, sessions and what stays stored.'],
 };
 export default function App() {
-  const [accountAction] = useState(readAccountAction);
+  const [accountAction, setAccountAction] = useState(readAccountAction);
+  useEffect(() => {
+    // A reset or verification link opened while the app is already loaded only changes the hash.
+    const follow = () => {
+      const next = readAccountAction();
+      if (next) setAccountAction(next);
+    };
+    window.addEventListener('hashchange', follow);
+    return () => window.removeEventListener('hashchange', follow);
+  }, []);
   const motion = useMotion();
   const initialLocation = useRef(readWorkspaceLocation());
   const [user, setUser] = useState<User | null>(null),
@@ -247,7 +256,7 @@ export default function App() {
     if (!data?.documents.some((d) => d.status === 'processing')) return;
     const timer = setInterval(() => {
       void refresh().catch((e) => setError(e.message));
-    }, 1000);
+    }, 1500);
     return () => clearInterval(timer);
   }, [data?.documents]);
   useEffect(() => {
@@ -579,7 +588,7 @@ export default function App() {
         </button>
       </main>
     );
-  if (accountAction) return <AccountLink action={accountAction} />;
+  if (accountAction) return <AccountLink key={accountAction.token} action={accountAction} />;
   if (!user)
     return (
       <CatalogProvider catalog={catalog}>

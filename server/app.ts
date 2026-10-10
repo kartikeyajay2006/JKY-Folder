@@ -1,6 +1,6 @@
 import express, { type Request, type Response, type NextFunction } from 'express';
 import helmet from 'helmet';
-import { rateLimit } from 'express-rate-limit';
+import { rateLimit, ipKeyGenerator } from 'express-rate-limit';
 import multer from 'multer';
 import { z } from 'zod';
 import {
@@ -152,12 +152,29 @@ export function createApp(options: {
   });
   app.use(
     '/api',
+    // Signed-in requests are limited per session, so students sharing one college or hostel
+    // network address do not exhaust each other's budget. Anonymous traffic is limited per IP.
     rateLimit({
       windowMs: 60000,
       limit: 240,
       standardHeaders: 'draft-8',
       legacyHeaders: false,
+      keyGenerator: (req) => {
+        const token = (req.headers.cookie || '').match(/(?:^|;\s*)jky_session=([a-f0-9]{64})/)?.[1];
+        return token ? 'session:' + hash(token) : 'ip:' + ipKeyGenerator(req.ip || '');
+      },
       message: { error: 'Too many requests. Please wait a minute.' },
+    }),
+  );
+  app.use(
+    '/api',
+    // A wider per-address backstop against automated abuse across many sessions.
+    rateLimit({
+      windowMs: 60000,
+      limit: 2400,
+      standardHeaders: false,
+      legacyHeaders: false,
+      message: { error: 'Too many requests from this network. Please wait a minute.' },
     }),
   );
   app.use(express.json({ limit: '128kb' }));
