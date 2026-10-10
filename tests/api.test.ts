@@ -1,0 +1,40 @@
+import { describe,it,expect,beforeEach,afterEach } from 'vitest';
+import request from 'supertest';
+import { mkdtempSync,rmSync,readdirSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createApp } from '../server/app';
+import { emptyProfile } from '../shared/model';
+let runtime:ReturnType<typeof createApp>,directory:string;
+beforeEach(()=>{directory=mkdtempSync(join(tmpdir(),'jky-test-'));runtime=createApp({dataDir:directory,jobs:false});});
+afterEach(()=>{runtime.close();rmSync(directory,{recursive:true,force:true});});
+async function account(email='one@example.test') {const agent=request.agent(runtime.app);const response=await agent.post('/api/auth/register').send({name:'Test Applicant',email,password:'a-strong-test-password',adult:true,consent:true});expect(response.status).toBe(201);return {agent,csrf:response.body.csrf};}
+async function packet(a:Awaited<ReturnType<typeof account>>){const response=await a.agent.post('/api/packets').set('x-csrf-token',a.csrf).send({title:'Test packet',packId:'uceed-2027-reference'});expect(response.status).toBe(201);return response.body;}
+describe('private API boundary',()=>{
+ it('denies anonymous reads and cross-origin account creation',async()=>{expect((await request(runtime.app).get('/api/packets')).status).toBe(401);expect((await request(runtime.app).post('/api/auth/demo').set('Origin','https://evil.example').send({})).status).toBe(403);});
+ it('requires adult and processing consent during registration',async()=>{expect((await request(runtime.app).post('/api/auth/register').send({name:'Applicant',email:'x@example.test',password:'a-strong-test-password',adult:false,consent:true})).status).toBe(400);});
+ it('requires CSRF and denies every cross-owner packet operation',async()=>{
+  const a=await account(),b=await account('two@example.test'),p=await packet(a);
+  expect((await a.agent.post('/api/packets').send({title:'Bad',packId:p.packId})).status).toBe(403);
+  expect((await b.agent.get(`/api/packets/${p.id}`)).status).toBe(404);
+  expect((await b.agent.delete(`/api/packets/${p.id}`).set('x-csrf-token',b.csrf).send({expectedRevision:1})).status).toBe(404);
+  expect((await b.agent.post(`/api/packets/${p.id}/evaluate`).set('x-csrf-token',b.csrf).send({expectedRevision:1})).status).toBe(404);
+ });
+ it('rejects stale writes and marks previous reports historical',async()=>{
+  const a=await account(),p=await packet(a);const run=await a.agent.post(`/api/packets/${p.id}/evaluate`).set('x-csrf-token',a.csrf).send({expectedRevision:1});expect(run.status).toBe(201);
+  expect((await a.agent.patch(`/api/packets/${p.id}/profile`).set('x-csrf-token',a.csrf).send({expectedRevision:1,profile:{...emptyProfile,nameChanged:'yes'}})).status).toBe(200);
+  expect((await a.agent.patch(`/api/packets/${p.id}/profile`).set('x-csrf-token',a.csrf).send({expectedRevision:1,profile:emptyProfile})).status).toBe(409);
+  const report=await a.agent.get(`/api/packets/${p.id}/reports/${run.body.id}`);expect(report.body.stale).toBe(true);
+ });
+ it('does not create duplicate evaluation runs on retries',async()=>{const a=await account(),p=await packet(a);const first=await a.agent.post(`/api/packets/${p.id}/evaluate`).set('x-csrf-token',a.csrf).send({expectedRevision:1});const second=await a.agent.post(`/api/packets/${p.id}/evaluate`).set('x-csrf-token',a.csrf).send({expectedRevision:1});expect(first.body.id).toBe(second.body.id);});
+ it('rejects disguised content and keeps quarantine private',async()=>{
+  const a=await account(),p=await packet(a);
+  const fake=await a.agent.post(`/api/packets/${p.id}/documents`).set('x-csrf-token',a.csrf).attach('file',Buffer.from('malicious plain text'),'fake.pdf');expect(fake.status).toBe(400);
+  const queued=await a.agent.post(`/api/packets/${p.id}/documents`).set('x-csrf-token',a.csrf).attach('file',Buffer.from('%PDF-1.4\nnot-yet-inspected'),'example.pdf');expect(queued.status).toBe(202);
+  expect((await a.agent.get(`/api/packets/${p.id}/documents/${queued.body.document.id}/content`)).status).toBe(409);
+ });
+ it('deduplicates upload retries within a packet',async()=>{const a=await account(),p=await packet(a);const send=()=>a.agent.post(`/api/packets/${p.id}/documents`).set('x-csrf-token',a.csrf).attach('file',Buffer.from('%PDF-1.4\nfixture'),'same.pdf');const one=await send(),two=await send();expect(two.body.duplicate).toBe(true);expect(two.body.document.id).toBe(one.body.document.id);});
+ it('deletes files, evidence, runs and pending jobs with the packet',async()=>{const a=await account(),p=await packet(a);await a.agent.post(`/api/packets/${p.id}/documents`).set('x-csrf-token',a.csrf).attach('file',Buffer.from('%PDF-1.4\nfixture'),'delete.pdf');const detail=await a.agent.get(`/api/packets/${p.id}`);expect(readdirSync(runtime.store.objects)).toHaveLength(1);const deleted=await a.agent.delete(`/api/packets/${p.id}`).set('x-csrf-token',a.csrf).send({expectedRevision:detail.body.packet.revision});expect(deleted.status).toBe(200);expect(readdirSync(runtime.store.objects)).toHaveLength(0);expect(runtime.store.db.prepare('SELECT * FROM jobs').all()).toHaveLength(0);expect((await a.agent.get(`/api/packets/${p.id}`)).status).toBe(404);});
+ it('creates an isolated synthetic demo with real downloadable fixture files',async()=>{const agent=request.agent(runtime.app);const result=await agent.post('/api/auth/demo').send({});expect(result.status).toBe(201);const detail=await agent.get(`/api/packets/${result.body.packetId}`);expect(detail.body.documents).toHaveLength(4);expect(detail.body.runs[0].counts.fail).toBe(2);const first=detail.body.documents[0];expect((await agent.get(`/api/packets/${result.body.packetId}/documents/${first.id}/content`)).status).toBe(200);});
+ it('erases an account and invalidates the active session',async()=>{const a=await account();await packet(a);expect((await a.agent.delete('/api/account').set('x-csrf-token',a.csrf).send({confirmation:'DELETE'})).status).toBe(200);expect((await a.agent.get('/api/me')).status).toBe(401);expect(runtime.store.db.prepare('SELECT * FROM users').all()).toHaveLength(0);});
+});
