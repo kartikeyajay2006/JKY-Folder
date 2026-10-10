@@ -12,6 +12,7 @@ import {
   HelpCircle,
   ArrowUpRight,
   FileText,
+  Library,
 } from 'lucide-react';
 import { Dialog } from './Dialog';
 import { StateMark, stateLabels } from './Status';
@@ -75,6 +76,7 @@ export function QuickActions({
   }, []);
   const sections: [WorkspaceView, string, string, ComponentType<{ size?: number }>][] = [
     ['applications', 'Your applications', 'Open, archive or restore a folder', FolderOpen],
+    ['library', 'My documents', 'Reuse an original in another application', Library],
     ['requirements', 'Checklist', 'Connect each requirement to supporting evidence', ListChecks],
     ['documents', 'Documents', 'Inspect and download your originals', Files],
     ['report', 'Readiness report', 'Inspect saved findings and export your report', FileCheck2],

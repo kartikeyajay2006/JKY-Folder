@@ -1,6 +1,7 @@
 export const workspaceViews = [
   'overview',
   'applications',
+  'library',
   'requirements',
   'documents',
   'report',

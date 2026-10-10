@@ -14,6 +14,7 @@ import './styles/shell.css';
 import './styles/landing.css';
 import './styles/views.css';
 import './styles/forms.css';
+import './styles/tools.css';
 import './styles/luxe.css';
 import './styles/motion.css';
 import './styles/print.css';

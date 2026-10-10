@@ -5,6 +5,7 @@ import {
   ChevronDown,
   FolderOpen,
   HelpCircle,
+  Library,
   LogOut,
   Search,
   Settings,
@@ -136,7 +137,13 @@ export function WorkspaceHeader({
             ref={searchRef}
             type="search"
             aria-label="Search requirements or documents"
-            placeholder={view === 'applications' ? 'Find an application' : 'Search this folder'}
+            placeholder={
+              view === 'applications'
+                ? 'Find an application'
+                : view === 'library'
+                  ? 'Find a document'
+                  : 'Search this folder'
+            }
             value={search}
             onChange={(event) => onSearch(event.target.value)}
           />
@@ -233,6 +240,16 @@ export function WorkspaceHeader({
               <span className="count" aria-hidden="true">
                 {packets.length}
               </span>
+            </button>
+          )}
+          {packets.length > 0 && (
+            <button
+              className={`folder-tab drawer-tab ${view === 'library' ? 'is-current' : ''}`}
+              aria-current={view === 'library' ? 'page' : undefined}
+              onClick={() => navigate('library')}
+            >
+              <Library size={16} aria-hidden="true" />
+              My documents
             </button>
           )}
           {active && (

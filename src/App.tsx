@@ -2,7 +2,7 @@ import { UploadStart } from './components/UploadStart';
 import { useState, useEffect, useLayoutEffect, useRef, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { useMotion } from './motion/MotionProvider';
-import { AlertCircle, Check, Download, ShieldCheck, Trash2, X } from 'lucide-react';
+import { AlertCircle, Check, Crop, Download, ShieldCheck, Trash2, X } from 'lucide-react';
 import { Auth } from './components/Auth';
 import { BrandMark } from './components/Brand';
 import { Dialog } from './components/Dialog';
@@ -24,11 +24,16 @@ import { OverviewView } from './views/Overview';
 import { ChecklistView } from './views/Checklist';
 import { InstructionPdf } from './components/InstructionPdf';
 import { AccountLink, readAccountAction } from './components/AccountLink';
+import { GuardianWaiting } from './components/GuardianWaiting';
 import { DocumentsView } from './views/Documents';
 import { ReportView } from './views/Report';
 import { HelpView } from './views/Help';
 import { FactEditor } from './components/FactEditor';
 import { SourceDetails } from './components/SourceDetails';
+import { IdentityPanel } from './components/IdentityPanel';
+import { LibraryView } from './views/Library';
+import { AttachDocuments } from './components/AttachDocuments';
+import { PhotoFixer } from './components/PhotoFixer';
 import { Notifications } from './components/Notifications';
 import { SettingsView } from './views/Settings';
 import {
@@ -49,6 +54,10 @@ type View = WorkspaceView;
 
 const headings: Record<Exclude<View, 'overview'>, [string, string]> = {
   applications: ['Your applications', 'Every opportunity you are preparing, with its deadline.'],
+  library: [
+    'My documents',
+    'Every original you have uploaded, once. Add any of them to another application without uploading it again.',
+  ],
   requirements: ['Checklist', 'Connect each requirement to the page that supports it.'],
   documents: ['Documents', 'Your original files, kept privately in this application’s folder.'],
   report: ['Readiness report', 'A dated record of what was checked and what still needs you.'],
@@ -100,8 +109,12 @@ export default function App() {
       | 'quick-actions'
       | 'delete-packet'
       | 'delete-account'
+      | 'attach'
       | null
     >(null),
+    [fixing, setFixing] = useState<{ document: DocumentRecord; requirementId?: string } | null>(
+      null,
+    ),
     [evidence, setEvidence] = useState<Requirement | null>(null),
     [preview, setPreview] = useState<DocumentRecord | null>(null),
     [deleteDoc, setDeleteDoc] = useState<DocumentRecord | null>(null),
@@ -199,9 +212,12 @@ export default function App() {
       alive = false;
     };
   }, [user?.id]);
+  // A document opened from a specific value starts on that value's page, highlighted.
+  const pendingFact = useRef<DocumentFact | null>(null);
   useEffect(() => {
-    setPreviewPage(1);
-    setHighlightFact(null);
+    setPreviewPage(pendingFact.current?.page || 1);
+    setHighlightFact(pendingFact.current);
+    pendingFact.current = null;
   }, [preview?.id]);
   useEffect(() => {
     if (
@@ -615,6 +631,15 @@ export default function App() {
         />
       </CatalogProvider>
     );
+  if (user.guardian && user.guardian.status !== 'approved')
+    return (
+      <GuardianWaiting
+        user={{ ...user, guardian: user.guardian }}
+        onUser={setUser}
+        onLogout={logout}
+        onDeleted={signedOut}
+      />
+    );
   const rules = uploadRules(catalog.limits);
   const perApplication =
     view === 'overview' || view === 'requirements' || view === 'documents' || view === 'report';
@@ -646,7 +671,7 @@ export default function App() {
           onQuickActions={() => setModal('quick-actions')}
           onSearch={(value) => {
             setSearch(value);
-            if (!['requirements', 'documents', 'applications'].includes(view) && value) {
+            if (!['requirements', 'documents', 'applications', 'library'].includes(view) && value) {
               const next = activeId ? 'requirements' : 'applications';
               writeWorkspaceLocation(next, activeId, 'push');
               setView(next);
@@ -720,23 +745,6 @@ export default function App() {
                 (view === 'requirements' || view === 'overview') && (
                   <SourceDetails data={data} onUpdated={() => refresh()} />
                 )}
-              {data?.consistencyConcerns?.length ? (
-                <section className="sheet">
-                  <h2>Confirmed values to compare</h2>
-                  {data.consistencyConcerns.map((c) => (
-                    <div key={c.kind}>
-                      <p>{c.reason}</p>
-                      <ul>
-                        {c.facts.map((f) => (
-                          <li key={f.documentId + f.factId}>
-                            {f.name}, page {f.page}: {f.value}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </section>
-              ) : null}
               {!activeId && (perApplication || view === 'applications') && (
                 <UploadStart
                   busy={busy}
@@ -797,6 +805,10 @@ export default function App() {
                   onInstructionPdf={() => setModal('instruction-pdf')}
                   onProfile={() => setModal('profile')}
                   onReview={() => void checkPacket()}
+                  onFixPhoto={(requirementId, documentId) => {
+                    const doc = data.documents.find((d) => d.id === documentId);
+                    if (doc) setFixing({ document: doc, requirementId });
+                  }}
                 />
               )}
               {data && view === 'documents' && (
@@ -811,6 +823,8 @@ export default function App() {
                   onDismissBatch={() => setUploadBatch(null)}
                   onPreview={setPreview}
                   onDelete={setDeleteDoc}
+                  onAttach={() => setModal('attach')}
+                  onFix={(doc) => setFixing({ document: doc })}
                   onRetry={(doc) =>
                     void perform('retry', async () => {
                       await api(`/packets/${activeId}/documents/${doc.id}/retry`, {
@@ -820,6 +834,16 @@ export default function App() {
                       await refresh();
                     })
                   }
+                />
+              )}
+              {data && (view === 'overview' || view === 'documents') && (
+                <IdentityPanel
+                  data={data}
+                  onOpen={(doc, factId) => {
+                    pendingFact.current = doc.facts?.find((f) => f.id === factId) || null;
+                    setPreview(doc);
+                  }}
+                  onChanged={(identity) => setData({ ...data, identity })}
                 />
               )}
               {data && view === 'report' && (
@@ -844,6 +868,17 @@ export default function App() {
                       setToast('Report downloaded.');
                     })
                   }
+                />
+              )}
+              {view === 'library' && (
+                <LibraryView
+                  packets={packets}
+                  search={search}
+                  onOpenApplication={(id) => navigate('documents', id)}
+                  onAdded={async (message) => {
+                    await refresh();
+                    setToast(message);
+                  }}
                 />
               )}
               {view === 'activity' && <ActivityFeed packets={packets} />}
@@ -1019,6 +1054,38 @@ export default function App() {
             }}
           />
         )}
+        {modal === 'attach' && data && (
+          <AttachDocuments
+            data={data}
+            onClose={() => setModal(null)}
+            onAdded={async (count) => {
+              await refresh();
+              setModal(null);
+              setToast(
+                count
+                  ? `Added ${count === 1 ? 'a document' : `${count} documents`} from your library.`
+                  : 'Those documents are already here.',
+              );
+            }}
+          />
+        )}
+        {fixing && data && (
+          <PhotoFixer
+            packetId={activeId}
+            packetRevision={data.packet.revision}
+            document={fixing.document}
+            requirements={data.pack.requirements}
+            initialRequirementId={fixing.requirementId}
+            onClose={() => setFixing(null)}
+            onSaved={async (saved, replaced) => {
+              await refresh();
+              setFixing(null);
+              setToast(
+                `Saved ${saved.name}${replaced ? ` for ${replaced}` : ''}. The original is kept.`,
+              );
+            }}
+          />
+        )}
         {evidence && data && (
           <EvidenceDialog
             requirement={evidence}
@@ -1122,6 +1189,18 @@ export default function App() {
                   {date(preview.createdAt)}. Extracted text is a reading aid; always compare it with
                   the original.
                 </p>
+                {preview.status === 'ready' && preview.mime === 'image/jpeg' && data && (
+                  <button
+                    className="outline"
+                    onClick={() => {
+                      setFixing({ document: preview });
+                      setPreview(null);
+                    }}
+                  >
+                    <Crop size={16} aria-hidden="true" />
+                    Fit to size limits
+                  </button>
+                )}
                 {preview.status === 'ready' && (
                   <a
                     className="primary"

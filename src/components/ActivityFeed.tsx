@@ -44,12 +44,18 @@ const labels: Record<string, string> = {
   'fact.corrected': 'Extracted fact reviewed',
   'checklist.update.accepted': 'Checklist update accepted',
   'inspection.retried': 'Document inspection retried',
+  'document.attached': 'Document added from My documents',
+  'document.version.created': 'Photo or signature fitted as a new version',
+  'guardian.requested': 'Approval requested from a parent or guardian',
+  'guardian.approved': 'A parent or guardian approved the account',
+  'guardian.declined': 'A parent or guardian did not approve the account',
+  'guardian.ended.adult': 'You turned 18; the account is now fully yours',
 };
 const filters = [
   { id: 'all', label: 'Everything', pattern: /./ },
   { id: 'packet', label: 'Applications', pattern: /^(packet|checklist|profile|evidence)\./ },
   { id: 'document', label: 'Documents', pattern: /^(document|inspection|fact)\./ },
-  { id: 'account', label: 'Account', pattern: /^(account|consent|demo|push|support)\./ },
+  { id: 'account', label: 'Account', pattern: /^(account|consent|demo|push|support|guardian)\./ },
 ] as const;
 const day = (value: string) =>
   new Intl.DateTimeFormat('en-IN', { weekday: 'long', day: 'numeric', month: 'long' }).format(

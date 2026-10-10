@@ -10,6 +10,20 @@ import { uploadRules, useCatalog } from '../catalog';
 import type { CheckState, User } from '../../shared/model';
 
 const legend: CheckState[] = ['pass', 'fail', 'needs_review', 'unknown', 'not_applicable'];
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => void }) {
   const { limits, packs, templates } = useCatalog();
@@ -18,6 +32,8 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [age, setAge] = useState<'adult' | 'minor' | ''>('');
+  const thisYear = new Date().getFullYear();
   async function recover(email: unknown) {
     setBusy(true);
     setError('');
@@ -271,8 +287,14 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
                   ...(mode === 'register'
                     ? {
                         name: data.get('name'),
-                        adult: data.get('adult') === 'on',
+                        adult: age === 'adult',
                         consent: data.get('consent') === 'on',
+                        ...(age === 'minor'
+                          ? {
+                              birthMonth: `${data.get('birthYear')}-${data.get('birthMonth')}`,
+                              guardianEmail: data.get('guardianEmail'),
+                            }
+                          : {}),
                       }
                     : {}),
                 });
@@ -331,10 +353,80 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
               {message && <p role="status">{message}</p>}
               {mode === 'register' && (
                 <>
-                  <label className="checkbox-line">
-                    <input name="adult" type="checkbox" required />
-                    <span>I am 18 or older.</span>
-                  </label>
+                  <fieldset className="age-choice">
+                    <legend>Your age</legend>
+                    <label className="checkbox-line">
+                      <input
+                        name="age"
+                        type="radio"
+                        required
+                        checked={age === 'adult'}
+                        onChange={() => setAge('adult')}
+                      />
+                      <span>I am 18 or older.</span>
+                    </label>
+                    <label className="checkbox-line">
+                      <input
+                        name="age"
+                        type="radio"
+                        required
+                        checked={age === 'minor'}
+                        onChange={() => setAge('minor')}
+                      />
+                      <span>I am under 18.</span>
+                    </label>
+                  </fieldset>
+                  {age === 'minor' && (
+                    <div className="guardian-fields">
+                      <p className="field-help">
+                        A parent or guardian approves your account by email. You can sign in
+                        straight away; documents can be added once they approve. Accounts nobody
+                        approves within 14 days are deleted.
+                      </p>
+                      <div className="two-fields">
+                        <label>
+                          Month of birth
+                          <select name="birthMonth" required defaultValue="">
+                            <option value="" disabled>
+                              Month
+                            </option>
+                            {months.map((month, i) => (
+                              <option key={month} value={String(i + 1).padStart(2, '0')}>
+                                {month}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label>
+                          Year of birth
+                          <select name="birthYear" required defaultValue="">
+                            <option value="" disabled>
+                              Year
+                            </option>
+                            {Array.from({ length: 7 }, (_, i) => thisYear - 12 - i).map((y) => (
+                              <option key={y} value={y}>
+                                {y}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                      </div>
+                      <label>
+                        Parent’s or guardian’s email
+                        <input
+                          name="guardianEmail"
+                          type="email"
+                          autoComplete="off"
+                          placeholder="parent@example.com"
+                          required
+                        />
+                      </label>
+                      <p className="field-help">
+                        Only the month and year are used, to know when you turn 18. They are not
+                        stored.
+                      </p>
+                    </div>
+                  )}
                   <label className="checkbox-line">
                     <input name="consent" type="checkbox" required />
                     <span>

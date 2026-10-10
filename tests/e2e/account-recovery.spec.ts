@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { expectAccessible } from './support';
-test('forgot password explains disabled delivery; token forms remove fragments and validate input', async ({
+test('forgot password explains local delivery; token forms remove fragments and validate input', async ({
   page,
 }) => {
   await page.goto('/');
@@ -8,7 +8,8 @@ test('forgot password explains disabled delivery; token forms remove fragments a
   await page.getByLabel('Email address').fill('synthetic@example.test');
   await expect(page.getByLabel('Password', { exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: 'Send reset link' }).click();
-  await expect(page.getByRole('alert')).toContainText('Email recovery is unavailable');
+  // The development server writes account email to its local outbox.
+  await expect(page.getByText(/saved to this server’s outbox/)).toBeVisible();
   await expectAccessible(page);
   await page.goto('/#reset=' + 'a'.repeat(64));
   await expect(page.getByRole('heading', { name: 'Choose a new password' })).toBeVisible();

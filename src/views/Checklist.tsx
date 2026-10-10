@@ -1,5 +1,14 @@
 import { useState, type CSSProperties } from 'react';
-import { ExternalLink, Info, Link2, ListChecks, PencilLine, SlidersHorizontal } from 'lucide-react';
+import {
+  Crop,
+  ExternalLink,
+  Info,
+  Link2,
+  ListChecks,
+  PencilLine,
+  SlidersHorizontal,
+} from 'lucide-react';
+import { fittable } from '../components/PhotoFixer';
 import { useCatalog } from '../catalog';
 import { applicabilityNote } from '../../shared/profile';
 import { Status, StateMark, plural } from '../components/Status';
@@ -32,6 +41,7 @@ export function ChecklistView({
   onReview,
   onInstructions,
   onInstructionPdf,
+  onFixPhoto,
 }: {
   data: PacketDetail;
   live: EvaluationRun;
@@ -43,6 +53,7 @@ export function ChecklistView({
   onReview: () => void;
   onInstructions?: () => void;
   onInstructionPdf?: () => void;
+  onFixPhoto?: (requirementId: string, documentId: string) => void;
 }) {
   const { questions } = useCatalog();
   const [filter, setFilter] = useState<(typeof filters)[number]['id']>('all');
@@ -173,6 +184,23 @@ export function ChecklistView({
                     </div>
                     <div className="requirement-actions">
                       <Status state={check.state} missing={!check.evidence} />
+                      {onFixPhoto &&
+                        check.fileState === 'fail' &&
+                        check.evidence &&
+                        requirement &&
+                        fittable(requirement) &&
+                        data.documents.find((d) => d.id === check.evidence!.documentId)?.mime ===
+                          'image/jpeg' && (
+                          <button
+                            className="primary small-button"
+                            onClick={() =>
+                              onFixPhoto(check.requirementId, check.evidence!.documentId)
+                            }
+                          >
+                            <Crop size={14} aria-hidden="true" />
+                            Fix to fit
+                          </button>
+                        )}
                       {(check.state !== 'not_applicable' || requirement?.optional) && (
                         <button
                           className={

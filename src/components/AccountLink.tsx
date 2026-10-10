@@ -2,15 +2,28 @@ import { useEffect, useState } from 'react';
 import { api, body } from '../api';
 import { limits } from '../../shared/limits';
 import { Wordmark } from './Brand';
+import { GuardianConsent } from './GuardianConsent';
 export interface AccountAction {
-  kind: 'reset' | 'verify';
+  kind: 'reset' | 'verify' | 'guardian' | 'guardian-manage';
   token: string;
 }
 export function readAccountAction(): AccountAction | null {
-  const match = window.location.hash.match(/^#(reset|verify)=([a-f0-9]{64})$/);
+  const match = window.location.hash.match(
+    /^#(reset|verify|guardian|guardian-manage)=([a-f0-9]{64})$/,
+  );
   return match ? { kind: match[1] as AccountAction['kind'], token: match[2] } : null;
 }
 export function AccountLink({ action }: { action: AccountAction }) {
+  if (action.kind === 'guardian' || action.kind === 'guardian-manage')
+    return (
+      <GuardianConsent
+        token={action.token}
+        purpose={action.kind === 'guardian' ? 'approve' : 'manage'}
+      />
+    );
+  return <PasswordOrEmailLink action={action} />;
+}
+function PasswordOrEmailLink({ action }: { action: AccountAction }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
     [message, setMessage] = useState('');

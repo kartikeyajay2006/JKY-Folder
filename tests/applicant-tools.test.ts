@@ -9,6 +9,7 @@ import { createApp } from '../server/app';
 import { certainlyAged } from '../server/guardian';
 import { compareDates, compareIdentity, compareNames, parseDate } from '../shared/identity';
 import { extractFacts } from '../shared/facts';
+import { describeLimits, largest, outputSize, ratioFor } from '../src/photo-fit';
 import type { MailMessage } from '../server/mail';
 import type { DocumentRecord, LibraryDocument, PacketDetail } from '../shared/model';
 
@@ -162,6 +163,31 @@ describe('name and date of birth matching', () => {
     const chosen = compareIdentity(docs, 'category')[0];
     expect(chosen.reference).toMatchObject({ documentId: 'category', chosen: true });
     expect(chosen.differences).toBe(2);
+  });
+});
+
+describe('fitting a photo to checklist limits', () => {
+  it('shrinks to the maximums and keeps the frame’s shape', () => {
+    const target = { maxWidth: 200, maxHeight: 230, maxBytes: 50 * 1024 };
+    const frame = largest(900, 1100, ratioFor('limit', target));
+    expect(frame.w / frame.h).toBeCloseTo(200 / 230);
+    expect(outputSize(frame, target)).toEqual({ w: 200, h: 230 });
+    expect(describeLimits(target)).toBe(
+      'width at most 200 px, height at most 230 px, file at most 50 KB',
+    );
+  });
+  it('never stretches a frame of the wrong shape to meet exact sizes', () => {
+    const exact = { minWidth: 200, maxWidth: 200, minHeight: 230, maxHeight: 230 };
+    const { w, h } = outputSize({ x: 0, y: 0, w: 900, h: 1100 }, exact);
+    expect(w / h).toBeCloseTo(900 / 1100, 2);
+    expect(w === 200 && h === 230).toBe(false);
+  });
+  it('enlarges only as far as a minimum requires', () => {
+    expect(outputSize({ x: 0, y: 0, w: 100, h: 100 }, { minWidth: 150 })).toEqual({
+      w: 150,
+      h: 150,
+    });
+    expect(outputSize({ x: 0, y: 0, w: 5000, h: 4000 }, {})).toEqual({ w: 4096, h: 3277 });
   });
 });
 

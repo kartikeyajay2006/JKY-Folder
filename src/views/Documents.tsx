@@ -1,4 +1,4 @@
-import { RefreshCw, ShieldCheck, Trash2 } from 'lucide-react';
+import { Crop, Library, RefreshCw, ShieldCheck, Trash2 } from 'lucide-react';
 import { FileGlyph } from '../components/Marks';
 import { Status, date, size, plural } from '../components/Status';
 import { UploadDropzone } from '../components/UploadDropzone';
@@ -19,6 +19,8 @@ export function DocumentsView({
   onDelete,
   onRetry,
   onCancelUpload,
+  onAttach,
+  onFix,
 }: {
   data: PacketDetail;
   search: string;
@@ -31,6 +33,9 @@ export function DocumentsView({
   onDelete: (doc: DocumentRecord) => void;
   onRetry: (doc: DocumentRecord) => void;
   onCancelUpload?: () => void;
+  onAttach?: () => void;
+  /** Opens the photo and signature fitter for an inspected JPEG. */
+  onFix?: (doc: DocumentRecord) => void;
 }) {
   const { documents, packet, pack } = data;
   const query = search.trim().toLowerCase();
@@ -71,9 +76,17 @@ export function DocumentsView({
           <h2 id="originals-title">
             Originals <span className="count">{documents.length}</span>
           </h2>
-          <span className="private-label">
-            <ShieldCheck size={15} aria-hidden="true" />
-            Private to your account
+          <span className="documents-head-actions">
+            {onAttach && (
+              <button className="outline small-button" disabled={!!busy} onClick={onAttach}>
+                <Library size={14} aria-hidden="true" />
+                From my documents
+              </button>
+            )}
+            <span className="private-label">
+              <ShieldCheck size={15} aria-hidden="true" />
+              Private to your account
+            </span>
           </span>
         </div>
         {shown.length > 0 && (
@@ -92,9 +105,16 @@ export function DocumentsView({
                       <strong className="data">{doc.name}</strong>
                       <small>
                         {size(doc.size)}
-                        {doc.status === 'ready' && `, ${plural(doc.pageCount, 'page')}`}, added{' '}
-                        {date(doc.createdAt)}
+                        {doc.status === 'ready' &&
+                          (doc.mime === 'image/jpeg' && doc.width && doc.height
+                            ? `, ${doc.width} × ${doc.height} px`
+                            : `, ${plural(doc.pageCount, 'page')}`)}
+                        , added {date(doc.createdAt)}
                       </small>
+                      {doc.derivedFrom && (
+                        <small className="lineage">Made from {doc.derivedFrom.name}</small>
+                      )}
+                      {doc.copiedFrom && <small className="lineage">Added from My documents</small>}
                     </span>
                   </button>
                   <span className="document-uses">
@@ -130,6 +150,19 @@ export function DocumentsView({
                       </>
                     )}
                   </span>
+                  {onFix && doc.status === 'ready' && doc.mime === 'image/jpeg' ? (
+                    <button
+                      className="icon-button"
+                      aria-label={`Fit ${doc.name} to size limits`}
+                      title="Fit to size limits"
+                      onClick={() => onFix(doc)}
+                      disabled={!!busy}
+                    >
+                      <Crop size={17} />
+                    </button>
+                  ) : (
+                    <span aria-hidden="true" />
+                  )}
                   <button
                     className="icon-button delete-button"
                     aria-label={`Delete ${doc.name}`}

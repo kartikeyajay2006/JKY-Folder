@@ -56,6 +56,23 @@ export function SettingsView({
               ? `This is an isolated, fictional demo workspace. It is deleted after ${limits.sessionHours} hours.`
               : `Signed in as ${user.email}. Sessions last ${limits.sessionHours} hours.`}
           </p>
+          {user.guardian?.status === 'approved' && (
+            <p className="guardian-note">
+              {user.guardian.guardianName}, your{' '}
+              {user.guardian.relationship === 'guardian' ? 'guardian' : 'parent'}, approved this
+              account
+              {user.guardian.decidedAt
+                ? ` on ${new Date(user.guardian.decidedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}`
+                : ''}
+              . Until{' '}
+              {new Date(user.guardian.adultOn).toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}{' '}
+              they can withdraw that approval, which deletes the account.
+            </p>
+          )}
           <button className="outline" disabled={busy} onClick={onLogout}>
             <LogOut size={16} aria-hidden="true" />
             Sign out
