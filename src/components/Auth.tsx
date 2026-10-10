@@ -5,6 +5,7 @@ import { HeroFolder } from './HeroFolder';
 import { BrandMark, Wordmark } from './Brand';
 import { StateMark, stateLabels, stateMeaning, plural } from './Status';
 import { MotionToggle } from '../motion/MotionProvider';
+import { ThemeToggle } from '../theme';
 import { uploadRules, useCatalog } from '../catalog';
 import type { CheckState, User } from '../../shared/model';
 
@@ -48,6 +49,7 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
           <a href="#honest-states">What a review means</a>
         </nav>
         <div className="landing-nav-tools">
+          <ThemeToggle />
           <MotionToggle />
           <a className="outline small-button" href="#account" onClick={() => setMode('login')}>
             Sign in

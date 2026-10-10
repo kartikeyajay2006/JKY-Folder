@@ -1,4 +1,6 @@
 import { LogOut } from 'lucide-react';
+import { useTheme, type ThemePreference } from '../theme';
+import { useMotion } from '../motion/MotionProvider';
 import { AccountSettings } from '../components/AccountSettings';
 import { useCatalog } from '../catalog';
 import { plural } from '../components/Status';
@@ -25,6 +27,8 @@ export function SettingsView({
   onDeleteAccount: () => void;
 }) {
   const { limits } = useCatalog();
+  const { preference, setPreference } = useTheme();
+  const motion = useMotion();
   const documents = packets.reduce((n, p) => n + p.documentCount, 0);
   return (
     <div className="settings-view">
@@ -55,6 +59,46 @@ export function SettingsView({
             <LogOut size={16} aria-hidden="true" />
             Sign out
           </button>
+        </section>
+        <section className="sheet appearance" aria-labelledby="appearance-title">
+          <h2 id="appearance-title">Appearance</h2>
+          <fieldset className="choice-row">
+            <legend>Theme</legend>
+            {(
+              [
+                ['system', 'Match my device'],
+                ['light', 'Light'],
+                ['dark', 'Dark'],
+              ] as [ThemePreference, string][]
+            ).map(([value, label]) => (
+              <label key={value} className={preference === value ? 'selected' : ''}>
+                <input
+                  type="radio"
+                  name="theme"
+                  value={value}
+                  checked={preference === value}
+                  onChange={() => setPreference(value)}
+                />
+                {label}
+              </label>
+            ))}
+          </fieldset>
+          <label className="checkbox-line">
+            <input
+              type="checkbox"
+              checked={motion.enabled && !motion.reduced}
+              disabled={motion.reduced}
+              onChange={motion.toggle}
+            />
+            <span>
+              Play interface animations
+              <span className="field-help">
+                {motion.reduced
+                  ? ' Your device asks for reduced motion, so animations stay off.'
+                  : ' Ticks drawing, folders opening and pages arriving.'}
+              </span>
+            </span>
+          </label>
         </section>
         <section className="sheet danger-zone" aria-labelledby="danger-title">
           <h2 id="danger-title">Delete data</h2>

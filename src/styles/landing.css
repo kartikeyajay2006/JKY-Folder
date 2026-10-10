@@ -45,18 +45,20 @@
 }
 .landing-nav nav a:hover {
   color: var(--ink);
-  background: rgb(11 35 65 / 0.06);
+  background: var(--hover-wash);
 }
 .landing-nav-tools {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.landing .motion-toggle {
+.landing .motion-toggle,
+.landing .theme-toggle {
   color: var(--ink-2);
 }
-.landing .motion-toggle:hover:not(:disabled) {
-  background: rgb(11 35 65 / 0.07);
+.landing .motion-toggle:hover:not(:disabled),
+.landing .theme-toggle:hover {
+  background: var(--hover-wash);
   color: var(--ink);
 }
 
@@ -220,7 +222,7 @@
 }
 .note-fail {
   color: #fff;
-  background: var(--miss-ink);
+  background: #ae2a23;
   padding: 3px 8px;
   border-radius: var(--r-label);
   rotate: -3deg;
@@ -315,7 +317,7 @@
   padding: 8px 14px;
   border-radius: 4px;
   background: #f4f1e6;
-  color: var(--ink);
+  color: #0b2341;
   font-weight: 700;
   font-size: var(--t-sm);
   rotate: -2deg;
@@ -503,7 +505,7 @@ html[data-motion='on'] .hf-stamp {
 }
 .catalog-folder.is-reference {
   background: var(--folder);
-  color: var(--ink-inverse);
+  color: var(--on-folder);
 }
 .catalog-folder.is-reference .catalog-tab {
   background: var(--folder);
@@ -533,7 +535,7 @@ html[data-motion='on'] .hf-stamp {
   max-width: none;
   padding: 88px max(var(--gutter), calc((100vw - var(--page)) / 2));
   background: var(--folder);
-  color: var(--ink-inverse);
+  color: var(--on-folder);
 }
 .honesty-copy {
   display: grid;

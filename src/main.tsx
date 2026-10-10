@@ -2,9 +2,11 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { MotionProvider } from './motion/MotionProvider';
+import { ThemeProvider } from './theme';
 import '@fontsource-variable/atkinson-hyperlegible-next';
 import '@fontsource-variable/atkinson-hyperlegible-mono';
 import './styles/tokens.css';
+import './styles/theme-dark.css';
 import './styles/base.css';
 import './styles/controls.css';
 import './styles/dialog.css';
@@ -36,9 +38,11 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { fai
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <MotionProvider>
-        <App />
-      </MotionProvider>
+      <ThemeProvider>
+        <MotionProvider>
+          <App />
+        </MotionProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 );

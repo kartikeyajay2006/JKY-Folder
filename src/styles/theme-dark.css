@@ -1,0 +1,91 @@
+/* Night desk: the same folder, sheets and marks with the lights down. */
+@media screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --desk: #0e1b2d;
+    --desk-deep: #0a1525;
+    --sheet: #15253b;
+    --sheet-tint: #1a2d46;
+    --line: #273c58;
+    --line-strong: #3a5274;
+    --ink: #e9eff7;
+    --ink-2: #c3cfdf;
+    --ink-3: #98a9bf;
+    --ink-inverse: #0b2341;
+    --on-folder: #f3f6fa;
+    --primary-hover: #ffffff;
+    --danger-bg: #c4372f;
+    --danger-hover: #d8443d;
+    --hover-wash: rgb(233 239 247 / 0.08);
+    --folder: #071223;
+    --folder-raised: #12243d;
+    --folder-edge: #2b4567;
+    --folder-text: #c3d1e2;
+    --pocket-back: #2b4567;
+    --pocket-front: #3a5a84;
+    --tick: #2fd3c1;
+    --tick-ink: #67e3d5;
+    --tick-wash: rgb(0 183 165 / 0.16);
+    --miss: #ff6f66;
+    --miss-ink: #ffa39c;
+    --miss-wash: rgb(216 68 61 / 0.2);
+    --flag: #f6b93f;
+    --flag-ink: #ffd37f;
+    --flag-wash: rgb(240 162 2 / 0.16);
+    --ask: #8d9aff;
+    --ask-ink: #b1b9ff;
+    --ask-wash: rgb(75 91 214 / 0.24);
+    --idle: #7f91a8;
+    --idle-ink: #a9b7c9;
+    --idle-wash: rgb(135 149 166 / 0.16);
+    --lift-1: 0 1px 0 rgb(0 0 0 / 0.25), 0 1px 3px rgb(0 0 0 / 0.3);
+    --lift-2: 0 1px 0 rgb(0 0 0 / 0.3), 0 12px 28px -14px rgb(0 0 0 / 0.7);
+    --lift-3: 0 2px 0 rgb(0 0 0 / 0.3), 0 28px 60px -24px rgb(0 0 0 / 0.85);
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23c3cfdf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  }
+}
+@media screen {
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+    --desk: #0e1b2d;
+    --desk-deep: #0a1525;
+    --sheet: #15253b;
+    --sheet-tint: #1a2d46;
+    --line: #273c58;
+    --line-strong: #3a5274;
+    --ink: #e9eff7;
+    --ink-2: #c3cfdf;
+    --ink-3: #98a9bf;
+    --ink-inverse: #0b2341;
+    --on-folder: #f3f6fa;
+    --primary-hover: #ffffff;
+    --danger-bg: #c4372f;
+    --danger-hover: #d8443d;
+    --hover-wash: rgb(233 239 247 / 0.08);
+    --folder: #071223;
+    --folder-raised: #12243d;
+    --folder-edge: #2b4567;
+    --folder-text: #c3d1e2;
+    --pocket-back: #2b4567;
+    --pocket-front: #3a5a84;
+    --tick: #2fd3c1;
+    --tick-ink: #67e3d5;
+    --tick-wash: rgb(0 183 165 / 0.16);
+    --miss: #ff6f66;
+    --miss-ink: #ffa39c;
+    --miss-wash: rgb(216 68 61 / 0.2);
+    --flag: #f6b93f;
+    --flag-ink: #ffd37f;
+    --flag-wash: rgb(240 162 2 / 0.16);
+    --ask: #8d9aff;
+    --ask-ink: #b1b9ff;
+    --ask-wash: rgb(75 91 214 / 0.24);
+    --idle: #7f91a8;
+    --idle-ink: #a9b7c9;
+    --idle-wash: rgb(135 149 166 / 0.16);
+    --lift-1: 0 1px 0 rgb(0 0 0 / 0.25), 0 1px 3px rgb(0 0 0 / 0.3);
+    --lift-2: 0 1px 0 rgb(0 0 0 / 0.3), 0 12px 28px -14px rgb(0 0 0 / 0.7);
+    --lift-3: 0 2px 0 rgb(0 0 0 / 0.3), 0 28px 60px -24px rgb(0 0 0 / 0.85);
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23c3cfdf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  }
+}

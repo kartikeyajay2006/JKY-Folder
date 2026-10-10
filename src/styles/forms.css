@@ -42,7 +42,7 @@
 .wizard-steps li.current > span {
   background: var(--ink);
   border-color: var(--ink);
-  color: #fff;
+  color: var(--ink-inverse);
 }
 .wizard-steps li.complete {
   color: var(--tick-ink);
@@ -100,7 +100,7 @@
 }
 .template-card.selected .template-icon {
   background: var(--ink);
-  color: #fff;
+  color: var(--ink-inverse);
 }
 .template-card p {
   color: var(--ink-2);

@@ -12,6 +12,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { MotionToggle } from '../motion/MotionProvider';
+import { ThemeToggle } from '../theme';
 import { Wordmark } from './Brand';
 import type { User } from '../../shared/model';
 import type { WorkspaceView } from '../workspace-location';
@@ -158,6 +159,7 @@ export function WorkspaceHeader({
             <Zap size={17} aria-hidden="true" />
             <span>Quick actions</span>
           </button>
+          <ThemeToggle />
           <MotionToggle />
           <div
             className="account-menu"
