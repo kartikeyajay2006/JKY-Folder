@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+import { expectAccessible } from './support';
 import { PDFDocument } from 'pdf-lib';
-import AxeBuilder from '@axe-core/playwright';
 async function cleanup(page: Page) {
   const me = await page.request.get('/api/me');
   if (me.ok()) {
@@ -11,26 +11,6 @@ async function cleanup(page: Page) {
     });
   }
 }
-async function accessible(page: Page) {
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    await Promise.all(
-      document
-        .getAnimations()
-        .filter(
-          (animation) =>
-            animation.playState === 'running' &&
-            animation.effect?.getComputedTiming().iterations !== Infinity,
-        )
-        .map((animation) => animation.finished.catch(() => {})),
-    );
-  });
-  const scan = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-  expect(scan.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) }))).toEqual(
-    [],
-  );
-}
-
 test('workflow preview supports keyboard selection and motion can be paused persistently', async ({
   page,
 }) => {
@@ -39,9 +19,9 @@ test('workflow preview supports keyboard selection and motion can be paused pers
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'on');
   // The folder plays its arrival sequence once: the sheet drops in and the marks are drawn.
   const folder = page.locator('.hero-folder');
-  await expect(folder).toHaveClass(/is-intro/);
   // On small screens the folder starts below the fold and its intro waits until it is seen.
   await folder.scrollIntoViewIfNeeded();
+  await expect(folder).toHaveClass(/is-intro/);
   await expect
     .poll(() =>
       folder.evaluate((element) =>
@@ -78,7 +58,7 @@ test('workflow preview supports keyboard selection and motion can be paused pers
   await expect(
     page.getByRole('button', { name: 'System reduced motion is enabled' }),
   ).toBeDisabled();
-  await accessible(page);
+  await expectAccessible(page);
   await page.setViewportSize({ width: 320, height: 800 });
   expect(
     await page.evaluate(
@@ -149,9 +129,9 @@ test('quick actions run real reviews, readiness opens reports and file drops ins
     await expect(
       page.locator('.document-row').filter({ hasText: 'interactive-drop.pdf' }),
     ).toContainText('Inspected', { timeout: 25000 });
-    await accessible(page);
+    await expectAccessible(page);
     await page.getByRole('button', { name: 'Quick actions', exact: true }).click();
-    await accessible(page);
+    await expectAccessible(page);
     await page.getByLabel('Search quick actions').fill('create an application');
     await dialog.getByRole('button', { name: /Create an application/ }).click();
     await expect(

@@ -25,19 +25,25 @@ export function HeroFolder() {
   const [intro, setIntro] = useState(true);
   const [settled, setSettled] = useState(false);
   const [offscreen, setOffscreen] = useState(false);
+  // The intro waits, fully drawn and still, until the folder is first on screen.
+  const [seen, setSeen] = useState(false);
   const figure = useRef<HTMLElement>(null);
   const { active } = useMotion();
   useEffect(() => {
-    // After the arrival sequence the folder idles gently; it rests while off screen.
     if (!active) return;
-    const timer = setTimeout(() => setSettled(true), 3600);
-    const observer = new IntersectionObserver(([entry]) => setOffscreen(!entry.isIntersecting));
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) setSeen(true);
+      setOffscreen(!entry.isIntersecting);
+    });
     if (figure.current) observer.observe(figure.current);
-    return () => {
-      clearTimeout(timer);
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [active]);
+  useEffect(() => {
+    // After the arrival sequence the folder idles gently; it rests while off screen.
+    if (!active || !seen) return;
+    const timer = setTimeout(() => setSettled(true), 3600);
+    return () => clearTimeout(timer);
+  }, [active, seen]);
   const setTab = (next: number) => {
     setIntro(false);
     setTabState(next);
@@ -75,7 +81,7 @@ export function HeroFolder() {
   return (
     <figure
       ref={figure}
-      className={`hero-folder ${intro ? 'is-intro' : ''} ${settled ? 'is-settled' : ''} ${offscreen ? 'is-offscreen' : ''}`}
+      className={`hero-folder ${seen ? '' : 'is-waiting'} ${intro && seen ? 'is-intro' : ''} ${settled ? 'is-settled' : ''} ${offscreen ? 'is-offscreen' : ''}`}
       aria-label="An example application folder"
     >
       <div className="hf-stage">

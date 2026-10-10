@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import AxeBuilder from '@axe-core/playwright';
+import { expectAccessible } from './support';
 
 test('top navigation and account menu work with keyboard, search and reduced motion', async ({
   page,
@@ -25,12 +25,7 @@ test('top navigation and account menu work with keyboard, search and reduced mot
     await expect(menu.getByRole('menuitem', { name: 'Settings & privacy' })).toBeFocused();
     await page.keyboard.press('ArrowDown');
     await expect(menu.getByRole('menuitem', { name: 'Help & guidance' })).toBeFocused();
-    const result = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
-      .analyze();
-    expect(
-      result.violations.map((v) => ({ id: v.id, targets: v.nodes.map((n) => n.target) })),
-    ).toEqual([]);
+    await expectAccessible(page);
     await page.keyboard.press('Escape');
     await expect(menu).not.toBeVisible();
     await expect(trigger).toBeFocused();
