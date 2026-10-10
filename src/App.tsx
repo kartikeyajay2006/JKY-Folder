@@ -22,6 +22,7 @@ import { WorkspaceHeader } from './components/WorkspaceHeader';
 import { QuickActions } from './components/QuickActions';
 import { OverviewView } from './views/Overview';
 import { ChecklistView } from './views/Checklist';
+import { InstructionPdf } from './components/InstructionPdf';
 import { DocumentsView } from './views/Documents';
 import { ReportView } from './views/Report';
 import { HelpView } from './views/Help';
@@ -83,6 +84,7 @@ export default function App() {
       | 'create'
       | 'profile'
       | 'details'
+      | 'instruction-pdf'
       | 'checklist'
       | 'quick-actions'
       | 'delete-packet'
@@ -420,6 +422,7 @@ export default function App() {
           (progress) => updateItem(item.id, { progress }),
           controller.signal,
           targetId ? undefined : intakeId,
+          owner,
         );
         if (owner !== ownerRef.current) return;
         if (!targetId) {
@@ -778,6 +781,7 @@ export default function App() {
                   onOpenRequirement={openRequirement}
                   onEditChecklist={() => setModal('checklist')}
                   onInstructions={startInstructions}
+                  onInstructionPdf={() => setModal('instruction-pdf')}
                   onProfile={() => setModal('profile')}
                   onReview={() => void checkPacket()}
                 />
@@ -933,6 +937,17 @@ export default function App() {
             initialTitle={data?.packet.title || ''}
             onClose={() => setModal(null)}
             onCreate={createApplication}
+          />
+        )}
+        {modal === 'instruction-pdf' && data && (
+          <InstructionPdf
+            data={data}
+            onClose={() => setModal(null)}
+            onSaved={async () => {
+              await refresh();
+              setModal(null);
+              setToast('Instructions checklist confirmed.');
+            }}
           />
         )}
         {modal === 'details' && data && (

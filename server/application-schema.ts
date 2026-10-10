@@ -24,6 +24,9 @@ export const deadlineSchema = z.union([
 ]);
 const fields = z.enum([
   'education',
+  'educationBoard',
+  'scribe',
+  'scribeRoute',
   'category',
   'nameChanged',
   'disability',

@@ -20,6 +20,13 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
       ...(csrf ? { 'x-csrf-token': csrf } : {}),
       ...options.headers,
     },
+  }).catch((error: Error) => {
+    if (error.name === 'AbortError') throw error;
+    throw new Error(
+      path.startsWith('/uploads/')
+        ? 'Connection interrupted. Select the same file to resume within 24 hours.'
+        : 'Connection interrupted. Reconnect and retry.',
+    );
   });
   const data = await response
     .json()
@@ -46,63 +53,150 @@ export async function download(path: string, name: string) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export function uploadOriginal<T>(
+interface UploadSession {
+  id: string;
+  offset: number;
+  size: number;
+  expiresAt: number;
+  result?: unknown;
+}
+export async function uploadOriginal<T>(
   path: string,
   file: File,
   onProgress: (percent: number) => void,
   signal: AbortSignal,
   intakeId?: string,
+  owner = 'session',
 ): Promise<T> {
+  signal.throwIfAborted();
+  const bytes = await file.arrayBuffer();
+  const digest = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), (b) =>
+    b.toString(16).padStart(2, '0'),
+  ).join('');
+  const packetId = path.match(/^\/packets\/([^/]+)\/documents$/)?.[1];
+  // Cache contains only an opaque session reference; file bytes stay on the server.
+  const key = `jky-upload:${owner}:${packetId || 'intake'}:${digest}:${file.name}`;
+  let saved: { id: string; intakeId?: string } | undefined;
+  try {
+    saved = JSON.parse(localStorage.getItem(key) || 'null') || undefined;
+  } catch {
+    /* storage unavailable */
+  }
+  let session: UploadSession | undefined;
+  if (saved) {
+    try {
+      session = await api<UploadSession>(`/uploads/${saved.id}`, { signal });
+    } catch (e) {
+      if (!(e instanceof ApiError && e.status === 404)) throw e;
+    }
+  }
+  if (!session) {
+    session = await api<UploadSession>('/uploads', {
+      method: 'POST',
+      signal,
+      body: body({
+        name: file.name,
+        size: file.size,
+        sha256: digest,
+        ...(packetId
+          ? { packetId }
+          : { intakeId: saved?.intakeId || intakeId || crypto.randomUUID() }),
+      }),
+    });
+    try {
+      localStorage.setItem(
+        key,
+        JSON.stringify({ id: session.id, intakeId: saved?.intakeId || intakeId }),
+      );
+    } catch {
+      /* session still usable within this upload */
+    }
+  }
+  if (session.result) {
+    try {
+      localStorage.removeItem(key);
+    } catch {}
+    return session.result as T;
+  }
+  onProgress(Math.floor((session.offset / file.size) * 100));
+  while (session.offset < file.size) {
+    signal.throwIfAborted();
+    const offset = session.offset,
+      chunk = file.slice(offset, offset + 512 * 1024);
+    try {
+      session = await sendChunk(session.id, offset, chunk, file.size, onProgress, signal);
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 409) {
+        session = await api<UploadSession>(`/uploads/${session.id}`, { signal });
+        if (session.result) break;
+      } else throw e;
+    }
+  }
+  const result =
+    (session.result as T) ||
+    (await api<T>(`/uploads/${session.id}/complete`, { method: 'POST', body: body({}), signal }));
+  try {
+    localStorage.removeItem(key);
+  } catch {}
+  onProgress(100);
+  return result;
+}
+function sendChunk(
+  id: string,
+  offset: number,
+  chunk: Blob,
+  total: number,
+  onProgress: (percent: number) => void,
+  signal: AbortSignal,
+): Promise<UploadSession> {
   return new Promise((resolve, reject) => {
-    if (signal.aborted) return reject(new DOMException('Upload cancelled.', 'AbortError'));
-    const xhr = new XMLHttpRequest();
-    const abort = () => xhr.abort();
-    const cleanup = () => signal.removeEventListener('abort', abort);
-    xhr.open('POST', '/api' + path);
+    if (signal.aborted)
+      return reject(
+        new DOMException(
+          'Upload paused. Select the same file to resume within 24 hours.',
+          'AbortError',
+        ),
+      );
+    const xhr = new XMLHttpRequest(),
+      abort = () => xhr.abort(),
+      cleanup = () => signal.removeEventListener('abort', abort);
+    xhr.open('PUT', `/api/uploads/${id}`);
     xhr.withCredentials = true;
+    xhr.timeout = 60000;
+    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+    xhr.setRequestHeader('upload-offset', String(offset));
     if (csrf) xhr.setRequestHeader('x-csrf-token', csrf);
-    if (intakeId) xhr.setRequestHeader('x-intake-id', intakeId);
-    xhr.timeout = 120000;
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) onProgress(Math.round((event.loaded / event.total) * 100));
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) onProgress(Math.floor(((offset + e.loaded) / total) * 100));
     };
     xhr.onload = () => {
       cleanup();
-      let result;
       try {
-        result = JSON.parse(xhr.responseText);
+        const data = JSON.parse(xhr.responseText);
+        if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+        else reject(new ApiError(xhr.status, data.error || 'Upload failed.'));
       } catch {
-        return reject(
-          new Error('The upload response was unreadable. Refresh the folder before retrying.'),
-        );
+        reject(new Error('Upload response unavailable. Select the same file to resume.'));
       }
-      if (xhr.status >= 200 && xhr.status < 300) resolve(result);
-      else reject(new ApiError(xhr.status, result.error || 'Upload failed.'));
     };
-    xhr.onerror = () => {
+    xhr.onerror = xhr.ontimeout = () => {
       cleanup();
       reject(
         new Error(
-          'Connection interrupted. Accepted files stay saved. Reconnect and retry; duplicates are detected.',
+          'Connection interrupted. Select the same file to resume from its saved chunk within 24 hours.',
         ),
       );
-    };
-    xhr.ontimeout = () => {
-      cleanup();
-      reject(new Error('Upload timed out. Refresh the folder before retrying.'));
     };
     xhr.onabort = () => {
       cleanup();
       reject(
         new DOMException(
-          'Upload cancelled. A file already accepted by the server may still appear in the folder.',
+          'Upload paused. Select the same file to resume within 24 hours.',
           'AbortError',
         ),
       );
     };
     signal.addEventListener('abort', abort, { once: true });
-    const form = new FormData();
-    form.append('file', file);
-    xhr.send(form);
+    xhr.send(chunk);
   });
 }

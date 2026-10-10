@@ -10,6 +10,45 @@ export interface ProfileQuestion {
 // The questions that decide conditional requirements. "unknown" is always kept as an explicit answer.
 export const profileQuestions: ProfileQuestion[] = [
   {
+    field: 'educationBoard',
+    label: 'Qualifying examination board',
+    help: 'NIOS appearing candidates can use the exception in official FAQ 17.',
+    options: [
+      { value: 'unknown', label: 'I’m not sure yet' },
+      { value: 'nios', label: 'NIOS', condition: 'When appearing through NIOS' },
+      { value: 'other', label: 'Another board', condition: 'When using another board' },
+    ],
+  },
+  {
+    field: 'scribe',
+    label: 'Requesting a scribe?',
+    help: 'This distinguishes a scribe request from compensatory time alone.',
+    options: [
+      { value: 'unknown', label: 'I’m not sure yet' },
+      { value: 'yes', label: 'Yes', condition: 'When requesting a scribe' },
+      { value: 'no', label: 'No' },
+    ],
+  },
+  {
+    field: 'scribeRoute',
+    label: 'Scribe supporting medical evidence route',
+    help: 'Official section 11.2 permits a valid UDID or Appendix 10 for blindness, locomotor disability affecting both arms, or cerebral palsy. Other scribe routes require the specified medical recommendation. Confirm the applicable route with the UCEED office.',
+    options: [
+      { value: 'unknown', label: 'I need official clarification' },
+      {
+        value: 'specified',
+        label: 'One of the three specified categories',
+        condition: 'When using the specified scribe categories',
+      },
+      {
+        value: 'other',
+        label: 'Another disability route',
+        condition: 'When using another scribe route',
+      },
+    ],
+  },
+
+  {
     field: 'education',
     label: 'Qualifying examination',
     help: 'Choose the route that applies to this application cycle.',
@@ -141,7 +180,7 @@ export function applicabilityNote(
   if (!fields.length) return '';
   return fields
     .map(({ field }) => {
-      const { question, answer } = answerLabel(questions, field, profile[field]);
+      const { question, answer } = answerLabel(questions, field, profile[field] || 'unknown');
       return `You answered “${answer}” to “${question}”`;
     })
     .join('; ');

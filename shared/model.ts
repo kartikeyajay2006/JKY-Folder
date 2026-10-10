@@ -1,6 +1,9 @@
 export type Answer = 'yes' | 'no' | 'unknown';
 export interface Profile {
   education: 'completed' | 'appearing' | 'unknown';
+  educationBoard?: 'nios' | 'other' | 'unknown';
+  scribe?: Answer;
+  scribeRoute?: 'specified' | 'other' | 'unknown';
   category: 'general' | 'ews' | 'obc' | 'sc' | 'st' | 'unknown';
   nameChanged: Answer;
   disability: 'none' | 'pwd' | 'dyslexia' | 'unknown';
@@ -9,6 +12,9 @@ export interface Profile {
 }
 export const emptyProfile: Profile = {
   education: 'unknown',
+  educationBoard: 'unknown',
+  scribe: 'unknown',
+  scribeRoute: 'unknown',
   category: 'unknown',
   nameChanged: 'unknown',
   disability: 'unknown',
@@ -51,6 +57,9 @@ export interface Requirement {
   reviewHint: string;
 }
 export interface RulePack {
+  coverage?: SourceCoverage[];
+  reviewRecord?: PackReviewRecord;
+  instructionSource?: { documentId: string; sha256: string; draftId: string };
   id: string;
   version: string;
   title: string;
@@ -68,6 +77,21 @@ export interface RulePack {
   reviewedBy?: string;
   reviewedAt?: string;
 }
+export interface SourceCoverage {
+  id: string;
+  sourceId: string;
+  anchor: string;
+  title: string;
+  disposition: 'in_scope' | 'out_of_scope';
+  obligationIds: string[];
+}
+export interface PackReviewRecord {
+  reviewer: string;
+  scopeHash: string;
+  signedAt: string;
+  decisions: { sectionId: string; accepted: boolean; note: string }[];
+  independenceAttested: boolean;
+}
 export interface SourceSnapshot {
   id: string;
   url: string;
@@ -75,7 +99,7 @@ export interface SourceSnapshot {
   retrievedAt: string;
   sha256: string;
   content?: string;
-  representation?: 'browser_rendered_text' | 'normalized_html_text';
+  representation?: 'browser_rendered_text' | 'normalized_html_text' | 'normalized_pdf_text';
 }
 export interface SourceObligation {
   id: string;

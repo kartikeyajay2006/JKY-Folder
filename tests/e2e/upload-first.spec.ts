@@ -105,7 +105,7 @@ test('a lost first-upload response recovers its folder and retries without anoth
   try {
     const pdf = await PDFDocument.create();
     pdf.addPage().drawText('Synthetic first upload retry.');
-    await page.route('**/api/intake', async (route) => {
+    await page.route('**/api/uploads/*/complete', async (route) => {
       await route.fetch();
       await route.abort('failed');
     });
@@ -116,7 +116,7 @@ test('a lost first-upload response recovers its folder and retries without anoth
     });
     await expect(page.getByRole('button', { name: 'Open first.pdf', exact: true })).toBeVisible();
     await expect(page.getByText('Connection interrupted.', { exact: false })).toBeVisible();
-    await page.unroute('**/api/intake');
+    await page.unroute('**/api/uploads/*/complete');
     await page.getByRole('button', { name: 'Retry failed uploads' }).click();
     await expect(
       page.getByText('Already in this folder. No second copy was created.'),
@@ -124,6 +124,60 @@ test('a lost first-upload response recovers its folder and retries without anoth
     const rows = await (await page.request.get('/api/packets')).json();
     expect(rows).toHaveLength(1);
     expect(rows[0].documentCount).toBe(1);
+  } finally {
+    await cleanup(page).catch(() => {});
+  }
+});
+test('resumes from a durable chunk after reload and confirms a PDF checklist with source decisions', async ({
+  page,
+}) => {
+  await signup(page);
+  try {
+    const pdf = await PDFDocument.create();
+    pdf.addPage().drawText('Submit passport as PDF.');
+    const bytes = Buffer.concat([Buffer.from(await pdf.save()), Buffer.alloc(700000, 32)]);
+    let chunks = 0;
+    await page.route('**/api/uploads/*', async (route) => {
+      if (route.request().method() === 'PUT' && ++chunks === 2) await route.abort('failed');
+      else await route.continue();
+    });
+    await page
+      .getByLabel('Choose documents to upload')
+      .setInputFiles({ name: 'instructions.pdf', mimeType: 'application/pdf', buffer: bytes });
+    await expect(page.getByText('Connection interrupted.', { exact: false })).toBeVisible();
+    expect(await (await page.request.get('/api/packets')).json()).toEqual([]);
+    await page.unroute('**/api/uploads/*');
+    await page.reload();
+    const offsets: string[] = [];
+    await page.route('**/api/uploads/*', async (route) => {
+      if (route.request().method() === 'PUT')
+        offsets.push(route.request().headers()['upload-offset']);
+      await route.continue();
+    });
+    await page
+      .getByLabel('Choose documents to upload')
+      .setInputFiles({ name: 'instructions.pdf', mimeType: 'application/pdf', buffer: bytes });
+    await expect(page.getByText('Inspected', { exact: true })).toBeVisible({ timeout: 20000 });
+    expect(offsets).toEqual(['524288']);
+    await page
+      .locator('#workspace-navigation')
+      .getByRole('button', { name: /Checklist/ })
+      .click();
+    await page.getByRole('button', { name: 'Draft from instructions PDF' }).click();
+    await page.getByRole('button', { name: 'Generate draft' }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog.getByLabel('Requirement 1 name')).toHaveValue('Submit passport as PDF.');
+    await dialog.getByText('Source page 1: Submit passport as PDF.', { exact: true }).click();
+    await dialog
+      .getByLabel('Acceptance reason')
+      .fill('Checked source page 1 and confirmed the passport format.');
+    await dialog.getByLabel(/I read every source page/).check();
+    await expectAccessible(page);
+    await dialog.getByRole('button', { name: 'Confirm and activate checklist' }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(
+      page.getByRole('heading', { name: 'Submit passport as PDF.', exact: true }),
+    ).toBeVisible();
   } finally {
     await cleanup(page).catch(() => {});
   }

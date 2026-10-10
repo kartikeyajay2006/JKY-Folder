@@ -31,6 +31,7 @@ export function ChecklistView({
   onProfile,
   onReview,
   onInstructions,
+  onInstructionPdf,
 }: {
   data: PacketDetail;
   live: EvaluationRun;
@@ -41,6 +42,7 @@ export function ChecklistView({
   onProfile: () => void;
   onReview: () => void;
   onInstructions?: () => void;
+  onInstructionPdf?: () => void;
 }) {
   const { questions } = useCatalog();
   const [filter, setFilter] = useState<(typeof filters)[number]['id']>('all');
@@ -89,6 +91,11 @@ export function ChecklistView({
           </p>
         </div>
         <div className="button-row">
+          {onInstructionPdf && (
+            <button className="outline" onClick={onInstructionPdf}>
+              Draft from instructions PDF
+            </button>
+          )}
           {packet.mode !== 'instructions' && onInstructions && (
             <button className="outline" onClick={onInstructions}>
               Add application instructions

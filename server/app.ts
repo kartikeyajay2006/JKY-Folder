@@ -14,6 +14,8 @@ import { promisify } from 'node:util';
 import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createStore } from './store';
+import { registerUploads } from './uploads';
+import { registerInstructionDrafts } from './instruction-drafts';
 import { startJobs } from './jobs';
 import { seedDemo } from './demo';
 import { packs, findPack } from '../shared/packs';
@@ -51,11 +53,14 @@ const hash = (value: string | Buffer) => createHash('sha256').update(value).dige
 const answer = <F extends keyof Profile>(field: F) =>
   z
     .string()
-    .refine((value) => profileAnswers[field].includes(value), 'Choose a supported answer.')
+    .refine((value) => profileAnswers[field]!.includes(value), 'Choose a supported answer.')
     .transform((value) => value as Profile[F]);
 const profileSchema = z
   .object({
     education: answer('education'),
+    educationBoard: answer('educationBoard').optional().default('unknown'),
+    scribe: answer('scribe').optional().default('unknown'),
+    scribeRoute: answer('scribeRoute').optional().default('unknown'),
     category: answer('category'),
     nameChanged: answer('nameChanged'),
     disability: answer('disability'),
@@ -328,6 +333,14 @@ export function createApp(options: {
     p.updatedAt = new Date().toISOString();
     store.savePacket(p);
   }
+  registerInstructionDrafts(
+    app,
+    store,
+    owned,
+    (req) => user(req).id,
+    touch,
+    (status, message) => new HttpError(status, message),
+  );
   app.get('/api/me', (req, res) => res.json({ user: user(req), csrf: (req as AuthRequest).csrf }));
   app.post('/api/auth/logout', (req, res) => {
     const token = (req.headers.cookie || '')
@@ -860,18 +873,13 @@ export function createApp(options: {
     }
     return { document: doc, duplicate: false, packetId: p.id };
   }
-  app.post('/api/intake', upload.single('file'), (req, res) => {
-    if (!req.file) throw new HttpError(400, 'Choose one PDF or JPEG file.');
-    const intakeId = z.string().uuid().optional().parse(req.get('x-intake-id'));
+  function intakeOriginal(req: Request, file: Express.Multer.File, intakeId?: string) {
     if (intakeId) {
       const existing = store.db
         .prepare("SELECT id FROM packets WHERE userId=? AND json_extract(payload, '$.intakeId')=?")
         .get(user(req).id, intakeId) as { id: string } | undefined;
       if (existing) {
-        res
-          .status(202)
-          .json(acceptDocument(req, store.packet(existing.id, user(req).id)!, req.file));
-        return;
+        return acceptDocument(req, store.packet(existing.id, user(req).id)!, file);
       }
     }
     const count = store.db
@@ -885,7 +893,7 @@ export function createApp(options: {
       id: randomUUID(),
       mode: 'uploads',
       intakeId,
-      title: req.file.originalname.replace(/\.[^.]+$/, '').slice(0, 100) || 'Uploaded documents',
+      title: file.originalname.replace(/\.[^.]+$/, '').slice(0, 100) || 'Uploaded documents',
       packId: 'uploads',
       revision: 1,
       profile: { ...emptyProfile },
@@ -899,12 +907,32 @@ export function createApp(options: {
       store.db
         .prepare('INSERT INTO packets VALUES(?,?,?)')
         .run(p.id, user(req).id, JSON.stringify(p));
-      const result = acceptDocument(req, p, req.file!);
+      const result = acceptDocument(req, p, file);
       store.audit(user(req).id, 'packet.created', p.id);
       return result;
     })();
-    res.status(202).json(result);
+    return result;
+  }
+  app.post('/api/intake', upload.single('file'), (req, res) => {
+    if (!req.file) throw new HttpError(400, 'Choose one PDF or JPEG file.');
+    res
+      .status(202)
+      .json(
+        intakeOriginal(req, req.file, z.string().uuid().optional().parse(req.get('x-intake-id'))),
+      );
   });
+  const sweepUploads = registerUploads(
+    app,
+    store,
+    (req) => user(req).id,
+    (req, file, packetId, intakeId) => {
+      if (!packetId) return intakeOriginal(req, file, intakeId);
+      const p = store.packet(packetId, user(req).id);
+      if (!p) throw new HttpError(404, 'Packet not found.');
+      return acceptDocument(req, p, file);
+    },
+    (status, message) => new HttpError(status, message),
+  );
   app.post(
     '/api/packets/:packetId/documents',
     (req, res, next) => {
@@ -1160,12 +1188,15 @@ export function createApp(options: {
     if (error instanceof HttpError) return res.status(error.status).json({ error: error.message });
     if (error instanceof SyntaxError)
       return res.status(400).json({ error: 'The request body is not valid JSON.' });
+    if ((error as { type?: string })?.type === 'entity.too.large')
+      return res.status(413).json({ error: 'Request exceeds the supported size.' });
     console.error('api.internal_error');
     res.status(500).json({ error: 'Something went wrong. Please retry or refresh the workspace.' });
   });
   const stopJobs =
     options.jobs === false ? Object.assign(() => {}, { isIdle: () => true }) : startJobs(store);
   function expireDemo() {
+    sweepUploads();
     store.db.prepare('DELETE FROM sessions WHERE expiresAt<?').run(Date.now());
     const rows = store.db
       .prepare('SELECT id FROM users WHERE demo=1 AND createdAt<?')

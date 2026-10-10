@@ -61,7 +61,16 @@ export function resolvePack(store: Store, packet: Packet): RulePack {
   return result;
 }
 export function sourceChanged(store: Store, packet: Packet) {
-  if (isUploadPacket(packet) || packet.customPack) return false;
+  if (isUploadPacket(packet)) return false;
+  if (packet.customPack) {
+    const source = packet.customPack.instructionSource;
+    return (
+      !!source &&
+      !store
+        .documents(packet.id)
+        .some((d) => d.id === source.documentId && d.hash === source.sha256 && d.status === 'ready')
+    );
+  }
   const current = availablePacks(store).find((p) => p.id === packet.packId);
   const selected = resolvePack(store, packet);
   if (!current || current.version !== selected.version) return true;
