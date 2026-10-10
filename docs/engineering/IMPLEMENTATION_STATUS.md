@@ -26,3 +26,11 @@ The 2027 official registration page was checked on 10 October 2026. Its referenc
 ## Beyond this implementation milestone
 
 Market interviews, paid demand, legal review, production TLS/hosting, independently approved current packs, supplier contracts, payment processing, guardian flows, penetration review and the held-out launch benchmark require real evidence. They remain open startup gates. Real customer documents must not be used to test this development release.
+
+## Delivered development milestone
+
+The six-stage implementation now includes a working account and packet API, a versioned reference pack and three-valued applicability, private intake and real PDF/JPEG inspection, page-level evidence assignment, applicant review notes, versioned reports and deletion. The frontend exposes those capabilities through welcome, overview, checklist, document, report, activity, help and privacy views.
+
+Verification: 24 domain/API/actual-worker tests and eight desktop/mobile browser tests passed. Browser coverage includes automated accessibility scans of the welcome page, overview, checklist, profile dialog, evidence dialog, document list and report. This is scoped internal evidence, not a complete accessibility or security certification. Build and TypeScript checks passed. The dependency audit reported zero known vulnerabilities at review time.
+
+The complete startup remains subject to the [open release gates](RELEASE_GATES.md). Implemented references in that document explicitly mean partial workstream fulfillment. The historical plan is preserved without retroactively marking its business research or public launch stages complete.

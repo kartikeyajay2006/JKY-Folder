@@ -38,3 +38,11 @@ Planning assumption: a budget, schedule, price, threshold or conversion scenario
 Deferred review: legal applicability, procurement quotes, production stack versions or trademark clearance to perform at the appropriate implementation gate.
 
 Recheck all time-sensitive sources before producing a live rule pack or making a public product claim.
+
+## Implementation references checked on 10 October 2026
+
+[UCEED 2027 official registration](https://www.uceed.iitb.ac.in/2027/registration.html) supplies the current-cycle reference for the development checklist. Coverage is explicitly limited; this implementation does not declare full independent curation approval.
+
+[Vite guide](https://vite.dev/guide/), [Express security guidance](https://expressjs.com/en/advanced/best-practice-security/) and [PDF.js API](https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib.html) informed compatibility and implementation review. Installed versions are captured by the lockfile, and actual parsing is tested with generated fixtures.
+
+[Checkout action](https://github.com/actions/checkout) and [setup-node action](https://github.com/actions/setup-node) provide the official usage reference for the read-only CI workflow.

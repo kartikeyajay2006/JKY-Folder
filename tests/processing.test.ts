@@ -1,10 +1,110 @@
-import { it,expect } from 'vitest';
-import { mkdtempSync,rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';import { join } from 'node:path';
-import { PDFDocument,StandardFonts } from 'pdf-lib';
-import request from 'supertest';import { createApp } from '../server/app';
-async function setup(){const directory=mkdtempSync(join(tmpdir(),'jky-worker-'));const runtime=createApp({dataDir:directory});const agent=request.agent(runtime.app);const auth=await agent.post('/api/auth/register').send({name:'Worker Test',email:'worker@example.test',password:'a-strong-test-password',adult:true,consent:true});const csrf=auth.body.csrf;const created=await agent.post('/api/packets').set('x-csrf-token',csrf).send({title:'Worker test',packId:'uceed-2027-reference'});return {runtime,agent,csrf,pid:created.body.id,close:()=>{runtime.close();rmSync(directory,{recursive:true,force:true});}};}
-async function waitForDocument(env:Awaited<ReturnType<typeof setup>>){for(let i=0;i<80;i++){const result=await env.agent.get(`/api/packets/${env.pid}`);const doc=result.body.documents[0];if(doc&&doc.status!=='processing')return doc;await new Promise(resolve=>setTimeout(resolve,100));}throw Error('Worker did not complete within the test budget');}
-it('inspects a real multi-page PDF and preserves original page text',async()=>{const env=await setup();try{const pdf=await PDFDocument.create();const font=await pdf.embedFont(StandardFonts.Helvetica);pdf.addPage().drawText('First synthetic evidence page',{x:40,y:700,font,size:12});pdf.addPage().drawText('Second synthetic evidence page',{x:40,y:700,font,size:12});const upload=await env.agent.post(`/api/packets/${env.pid}/documents`).set('x-csrf-token',env.csrf).attach('file',Buffer.from(await pdf.save()),'two-pages.pdf');expect(upload.status).toBe(202);const doc=await waitForDocument(env);expect(doc.status).toBe('ready');expect(doc.pageCount).toBe(2);expect(doc.pages[1].text).toContain('Second synthetic evidence page');expect((await env.agent.get(`/api/packets/${env.pid}/documents/${doc.id}/content`)).status).toBe(200);}finally{env.close();}});
-it('rejects malformed PDF inspection and denies original download',async()=>{const env=await setup();try{await env.agent.post(`/api/packets/${env.pid}/documents`).set('x-csrf-token',env.csrf).attach('file',Buffer.from('%PDF-1.4\nmalformed fixture'),'broken.pdf');const doc=await waitForDocument(env);expect(doc.status).toBe('error');expect((await env.agent.get(`/api/packets/${env.pid}/documents/${doc.id}/content`)).status).toBe(409);const detail=await env.agent.get(`/api/packets/${env.pid}`);expect((await env.agent.post(`/api/packets/${env.pid}/documents/${doc.id}/retry`).set('x-csrf-token',env.csrf).send({expectedRevision:detail.body.packet.revision})).status).toBe(202);expect((await waitForDocument(env)).status).toBe('error');}finally{env.close();}});
-it('bounds the number of extracted PDF pages',async()=>{const env=await setup();try{const pdf=await PDFDocument.create();for(let i=0;i<21;i++)pdf.addPage();await env.agent.post(`/api/packets/${env.pid}/documents`).set('x-csrf-token',env.csrf).attach('file',Buffer.from(await pdf.save()),'too-many-pages.pdf');const doc=await waitForDocument(env);expect(doc.status).toBe('error');expect(doc.error).toContain('20 pages');}finally{env.close();}});
+import { it, expect } from 'vitest';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { PDFDocument, StandardFonts } from 'pdf-lib';
+import request from 'supertest';
+import { createApp } from '../server/app';
+async function setup() {
+  const directory = mkdtempSync(join(tmpdir(), 'jky-worker-'));
+  const runtime = createApp({ dataDir: directory });
+  const agent = request.agent(runtime.app);
+  const auth = await agent
+    .post('/api/auth/register')
+    .send({
+      name: 'Worker Test',
+      email: 'worker@example.test',
+      password: 'a-strong-test-password',
+      adult: true,
+      consent: true,
+    });
+  const csrf = auth.body.csrf;
+  const created = await agent
+    .post('/api/packets')
+    .set('x-csrf-token', csrf)
+    .send({ title: 'Worker test', packId: 'uceed-2027-reference' });
+  return {
+    runtime,
+    agent,
+    csrf,
+    pid: created.body.id,
+    close: () => {
+      runtime.close();
+      rmSync(directory, { recursive: true, force: true });
+    },
+  };
+}
+async function waitForDocument(env: Awaited<ReturnType<typeof setup>>) {
+  for (let i = 0; i < 80; i++) {
+    const result = await env.agent.get(`/api/packets/${env.pid}`);
+    const doc = result.body.documents[0];
+    if (doc && doc.status !== 'processing') return doc;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw Error('Worker did not complete within the test budget');
+}
+it('inspects a real multi-page PDF and preserves original page text', async () => {
+  const env = await setup();
+  try {
+    const pdf = await PDFDocument.create();
+    const font = await pdf.embedFont(StandardFonts.Helvetica);
+    pdf.addPage().drawText('First synthetic evidence page', { x: 40, y: 700, font, size: 12 });
+    pdf.addPage().drawText('Second synthetic evidence page', { x: 40, y: 700, font, size: 12 });
+    const upload = await env.agent
+      .post(`/api/packets/${env.pid}/documents`)
+      .set('x-csrf-token', env.csrf)
+      .attach('file', Buffer.from(await pdf.save()), 'two-pages.pdf');
+    expect(upload.status).toBe(202);
+    const doc = await waitForDocument(env);
+    expect(doc.status).toBe('ready');
+    expect(doc.pageCount).toBe(2);
+    expect(doc.pages[1].text).toContain('Second synthetic evidence page');
+    expect(
+      (await env.agent.get(`/api/packets/${env.pid}/documents/${doc.id}/content`)).status,
+    ).toBe(200);
+  } finally {
+    env.close();
+  }
+});
+it('rejects malformed PDF inspection and denies original download', async () => {
+  const env = await setup();
+  try {
+    await env.agent
+      .post(`/api/packets/${env.pid}/documents`)
+      .set('x-csrf-token', env.csrf)
+      .attach('file', Buffer.from('%PDF-1.4\nmalformed fixture'), 'broken.pdf');
+    const doc = await waitForDocument(env);
+    expect(doc.status).toBe('error');
+    expect(
+      (await env.agent.get(`/api/packets/${env.pid}/documents/${doc.id}/content`)).status,
+    ).toBe(409);
+    const detail = await env.agent.get(`/api/packets/${env.pid}`);
+    expect(
+      (
+        await env.agent
+          .post(`/api/packets/${env.pid}/documents/${doc.id}/retry`)
+          .set('x-csrf-token', env.csrf)
+          .send({ expectedRevision: detail.body.packet.revision })
+      ).status,
+    ).toBe(202);
+    expect((await waitForDocument(env)).status).toBe('error');
+  } finally {
+    env.close();
+  }
+});
+it('bounds the number of extracted PDF pages', async () => {
+  const env = await setup();
+  try {
+    const pdf = await PDFDocument.create();
+    for (let i = 0; i < 21; i++) pdf.addPage();
+    await env.agent
+      .post(`/api/packets/${env.pid}/documents`)
+      .set('x-csrf-token', env.csrf)
+      .attach('file', Buffer.from(await pdf.save()), 'too-many-pages.pdf');
+    const doc = await waitForDocument(env);
+    expect(doc.status).toBe('error');
+    expect(doc.error).toContain('20 pages');
+  } finally {
+    env.close();
+  }
+});
