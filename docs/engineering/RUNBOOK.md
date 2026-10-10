@@ -28,6 +28,8 @@ To check an institution’s required documents, open **Checklist → Add applica
 
 Older folders without an explicit mode open with a checklist derived from their actual uploaded files. Their prior reference/custom instructions, profile and reports remain stored; nothing is erased by this display change. The isolated demo explicitly uses instructions mode.
 
+Uploads continue by themselves after a dropped connection and wait while the browser is offline. If you reload or switch devices mid-upload, **Unfinished uploads** offers **Finish upload** for the same file from where it stopped.
+
 Batch intake reports each file separately. A rejected file does not stop later files from being attempted or remove accepted files. Duplicate bytes return the existing document without a second copy. A lost first-upload response is recovered into the original folder; retrying the same batch reuses that folder. Retry temporary failures or choose a supported replacement. Intake acceptance and successful inspection are separate states.
 
 The report distinguishes supported technical checks and applicant content confirmation. Changing a profile, file, evidence link, checklist or application details makes an earlier report historical. Changing custom requirements or original instruction notes resets prior content confirmations. A newer evaluator version also marks older snapshots historical. Running a fresh review creates a new snapshot. A retry with unchanged revisions, checklist version and evaluator version reuses the existing run.
@@ -36,13 +38,13 @@ Export JSON for machine-readable provenance, or use **Print / PDF** for a printa
 
 **Download folder** exports a ZIP containing exact inspected originals, the current checklist/review manifest and coverage notes. Processing or failed files are excluded and identified in the manifest. The ZIP is a private export of originals; it does not transform files for a specific institution’s upload portal.
 
-Use **Applications** to search, sort, open, archive or restore your applications. Archive preserves documents and history; deletion removes them. Deadlines have private in-app reminders using Asia/Kolkata calendar dates. Reminder preferences are in Settings & privacy. Email and push delivery are not enabled. Application URLs preserve your current application and section across refresh and browser navigation; server ownership checks still apply.
+Use **Applications** to search, sort, open, archive or restore your applications. Archive preserves documents and history; deletion removes them. Deadlines have private in-app reminders using Asia/Kolkata calendar dates. Reminder preferences are in Settings & privacy. Verified addresses can opt in to email reminders, and each browser can turn on notifications that arrive while JKY-Folder is closed; see [account email operations](ACCOUNT_EMAIL.md). Application URLs preserve your current application and section across refresh and browser navigation; server ownership checks still apply.
 
 The workspace uses top navigation throughout. On narrow screens, the horizontal tabs scroll and keep the selected section visible. Help and settings remain available beside the tabs and in the account menu. **Ctrl/Cmd + K** focuses workspace search. The account menu supports arrow keys and Escape; Escape returns focus to its trigger. Dialogs keep keyboard focus inside and make the header/content inactive until dismissed. Operating-system reduced-motion preferences disable decorative animations and transitions. The visible **Pause animations** control also stops motion; this preference persists in the current browser. **Resume animations** restores it unless the system requests reduced motion.
 
 Use **Quick actions** or **Ctrl/Cmd + .** to search available actions and sections. Arrow keys move through enabled results, Enter chooses an action, and Escape closes the dialog. Creating applications, choosing uploads and saving reviews invoke the same real workflows as the section controls. The per-item checklist strip opens the report; it does not silently save a new review.
 
-In **Settings & privacy**, update your display name, change your password using the current password, or sign out other sessions. Password changes revoke previous sessions and rotate the current session/CSRF token. Email verification and password-reset email delivery are not included.
+In **Settings & privacy**, update your display name, change your password using the current password, or sign out other sessions. Password changes revoke previous sessions and rotate the current session/CSRF token. Email verification and **Forgot password** work when SMTP is configured, or with `MAIL_TRANSPORT=outbox` during development.
 
 ## Document limits
 
@@ -78,17 +80,31 @@ Browser checks start their own API on port 3102 and web client on port 5180, wit
 
 ## Failure recovery
 
-A server restart requeues interrupted inspections. Failed inspection is visible in the document view and can be retried. An upload retry with identical bytes returns the existing document. An evaluation retry with unchanged input revisions returns the existing run. Stale mutations return a conflict and require current packet state.
+A server restart requeues interrupted inspections and keeps saved upload chunks; open uploads resume from their last saved chunk. Failed inspection is visible in the document view and can be retried. An upload retry with identical bytes returns the existing document. An evaluation retry with unchanged input revisions returns the existing run. Stale mutations return a conflict and require current packet state.
 
 Do not delete the data directory while a server is running. Stop the server before moving or backing up local data. For test cleanup, stop the server and remove only the deliberately disposable test data directory. The application never automatically resets a personal workspace at startup.
 
 ## Current boundaries
 
-The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. Additional OCR languages, verified production email delivery, payments, institutional access, native apps and all public launch gates remain tracked work. Instructions-PDF drafting, resumable intake, password recovery, email verification and background reminder generation are implemented; see the operational contracts below. Hosting is deliberately deferred while the requested runtime is localhost.
+The UCEED 2027 reference checklist is not a reviewed complete official pack. Editable starters and mechanical instruction-line import are implemented; automatic semantic rule interpretation is not. No automated authenticity, eligibility, category entitlement, legal identity, portrait-quality or certificate-validity decision exists. Additional OCR languages, verified production email delivery, payments, institutional access, native apps and all public launch gates remain tracked work. Instructions-PDF drafting, resumable intake, password recovery, email verification, background reminders by email and Web Push, and consented support access are implemented; see the operational contracts below. Hosting is deliberately deferred while the requested runtime is localhost.
 
+
+## Development email, notifications and support
+
+- `MAIL_TRANSPORT=outbox npm run dev` saves recovery, verification and reminder emails to `.data/outbox`; read them with `npm run outbox` or `npm run outbox -- latest`. Not available in production.
+- Notifications use VAPID keys generated into `.data/vapid.json` on first start, or `VAPID_PUBLIC_KEY`/`VAPID_PRIVATE_KEY`/`VAPID_SUBJECT` from the environment. Browsers only allow push on `localhost`/`127.0.0.1` or HTTPS.
+- Help → **Contact support** creates a request with a reference such as `JKY-1A2B3C4D`. Applicants choose whether support may see one application for 24 or 72 hours and can revoke it. Operators work from the data directory:
+
+```sh
+npm run support -- list
+npm run support -- view JKY-1A2B3C4D --operator "Your name"
+npm run support -- close JKY-1A2B3C4D --operator "Your name"
+```
+
+`view` prints the request and, only while access is granted, a redacted summary: checklist states, file names and sizes, and the latest report summary. It never prints document contents, extracted text, notes or facts, and each view is recorded in the applicant's activity. Closing a request ends any access still open.
 
 ## PDF intake and email operations
 
-[Durable intake and instruction review](INTAKE_AND_RECOVERY.md) describes chunk expiry, resume after reload, applicant confirmation and deleted-source invalidation. [Official source review](OFFICIAL_REVIEW_AND_BENCHMARK.md) describes the current UCEED scope and blind correctness adjudication. [Account email operations](ACCOUNT_EMAIL.md) lists SMTP settings, verification and opt-in, retry behavior and live-delivery validation.
+[Durable intake and instruction review](INTAKE_AND_RECOVERY.md) describes chunk expiry, resume after reload, applicant confirmation and deleted-source invalidation. [Official source review](OFFICIAL_REVIEW_AND_BENCHMARK.md) describes the current UCEED scope and blind correctness adjudication. [Account email operations](ACCOUNT_EMAIL.md) lists SMTP settings, verification and opt-in, retry behavior, Web Push and live-delivery validation. Reviewers of the UCEED pack and the benchmark labels can work from offline workbooks: `npm run rules -- review-sheet --dossier <dossier.json> --out <review.html>` and `npm run benchmark:review -- sheet <blind.json> <labels.html>`.
 
 A stopped server cannot generate or send reminders; closing the browser is supported. If delivery fails, inspect queue statuses and transport configuration without logging tokens, SMTP credentials or email bodies. Correct the provider configuration before retrying failed rows through a reviewed operator recovery process; expired account requests need a fresh link request. Restore into a new directory with the current deletion ledger. Recovery clears active sessions and account-link tokens; applicants must sign in again.

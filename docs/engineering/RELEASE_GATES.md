@@ -17,15 +17,15 @@ References indicate partial implementation of the corresponding workstream, not 
 
 ## Must remain open before real public applicants
 
-1. Independently reviewed complete current rule pack, including source omissions and conditional exceptions.
+1. Independently reviewed complete current rule pack, including source omissions and conditional exceptions. The review workbook and signed-review gate exist; the review itself must be done by a person who did not author the pack.
 2. Applicant research and paid-demand validation, with consented outcome records.
 3. Production database/object store, storage encryption and approved retention/backup lifecycle.
-4. HTTPS deployment, verified secure-cookie origin and real SMTP/inbox validation for the implemented account recovery/email verification.
+4. HTTPS deployment, verified secure-cookie origin, real SMTP/inbox validation for the implemented account recovery/email verification, and Web Push delivery checked on real Chrome, Firefox and Safari devices.
 5. Parser isolation with operating-system/container restrictions, malware controls and measured resource limits.
 6. Multi-instance queue leases, atomic cross-instance mutation controls, backup restoration and deletion replay.
 7. Independent penetration and access-control review, operational incident staffing and monitored recovery targets.
 8. Qualified legal review, processing notices, processor contracts and an approved age/guardian policy.
-9. Held-out correctness benchmark, source completeness review and the plan’s critical false-pass threshold.
+9. Held-out correctness benchmark, source completeness review and the plan’s critical false-pass threshold. Blind export, an offline labelling workbook and adjudication exist; the labels must come from an independent reviewer.
 10. Payment, refund and contribution-margin validation before charging for a service.
 11. Assistive-technology usability studies and full accessibility audit before claiming WCAG conformance.
 12. Trademark clearance and final vector brand production.
@@ -45,3 +45,7 @@ When deleting a document, saved runs for that packet are purged instead of retai
 ## Evidence review extension
 
 Source-registry/publication tooling, multiple evidence anchors, structured confirmations/correction history, richer deterministic checks, local English OCR, evidence suggestions, in-app reminders and encrypted local recovery are implemented. See [review-engine contracts](REVIEW_ENGINE.md) for exact limits and operator commands. The expanded registration/FAQ/brochure coverage inventory is author-mapped and remains a draft. Completeness decisions and blind benchmark label import now enforce review provenance, but actual independent sign-off remains pending. The synthetic benchmark labels await independent adjudication. Neither extension closes independent rule-pack completeness, held-out benchmark, OS sandbox, automated offsite recovery or public deployment gates.
+
+## Support access (JF-05-04)
+
+Applicants can contact support from Help without attaching documents. Wrong-result and privacy reports are prioritised. Sharing an application with support is opt-in, limited to 24 or 72 hours, revocable, unavailable for demo workspaces and recorded as grant, use, revocation and closure events in the applicant's activity. Operators see a redacted summary only while access is active. Staffing, response targets, operator identity verification and an operator console with role-based access remain open, under gate 7.

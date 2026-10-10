@@ -125,3 +125,18 @@ Instructions-PDF proposals now retain exact original hashes, source pages and ch
 Password reset and email verification use expiring single-use links and revoke prior sessions after reset. Background reminder generation and a leased SMTP outbox operate without an open browser; real delivery requires configured SMTP credentials and a running server. Email is opt-in after address verification. Restores clear sessions and account links while preserving durable upload chunks. The theme and fresh-account upload-first behavior are retained.
 
 See [intake and recovery](INTAKE_AND_RECOVERY.md), [official review and benchmark](OFFICIAL_REVIEW_AND_BENCHMARK.md) and [account email operations](ACCOUNT_EMAIL.md). These later contracts supersede earlier historical statements that instruction PDF intake, resumability or email recovery were unavailable. Independently reviewed completeness, real inbox delivery, production deployment and launch approval are separate evidence gates.
+
+## Recovery, drafting and support revision (11 October 2026)
+
+| Request | State | What exists | What still needs people or infrastructure |
+| --- | --- | --- | --- |
+| Instructions PDF to draft checklist | Implemented | Page-anchored proposals with joined wrapped lines, heading lists, cross-page merging, limits read from the wording, suggested conditions, side-by-side page preview, per-item decisions, completeness acknowledgement | Applicant judgement on every proposal; no claim of complete extraction |
+| Complete official rule packs | Tooling complete, review pending | UCEED draft with 18 requirements, 97 obligations and 76 coverage sections; private dossier; offline review workbook; signed-review gate that rejects self-review, gaps and stale scope | An independent reviewer must read the sources and sign |
+| Independent correctness testing | Tooling complete, labels pending | Version 2 corpus, blind export without answers, offline labelling workbook, adjudication that keeps disagreements | Labels from a person who did not write the expected answers |
+| Resumable uploads | Implemented | Chunk rows with compare-and-set offsets, sliding expiry, automatic retry and offline waiting, unfinished-uploads list, finish from another tab or device | Production storage durability (gate 3) |
+| Password recovery and background reminders | Implemented | Reset and verification links, minute worker, opt-in email, Web Push to closed browsers with generic text, development outbox | SMTP credentials and real-device push checks (gate 4) |
+| Support access (plan JF-05-04) | Implemented locally | Help → Contact support, priority categories, time-limited revocable grants, redacted operator view, audited use | Staffing, response targets and an operator console |
+
+Rate limiting now counts requests per signed-in session, with a per-address backstop, so applicants behind one shared network address no longer exhaust each other's allowance.
+
+Verification: 437 domain/API/worker/benchmark tests, 25 desktop and 23 mobile browser scenarios (the reviewer workbooks are desktop-only), TypeScript and the production build pass. Two independent reviews (rule-pack completeness and benchmark labels) remain human evidence gates; the software only enforces and records them.

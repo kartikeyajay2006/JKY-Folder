@@ -41,9 +41,9 @@ OCR below 85% confidence or truncated/uncertain selected text cannot produce a l
 
 ## Uploads and reminders
 
-Uploads show actual transport progress, per-file outcomes, cancellation and actionable timeout/offline recovery. Cancelling stops the current request and remaining queued files; accepted server-side bytes may still appear after refresh. Retrying the same bytes reuses the existing document. This is whole-file retry, not resumable chunk transfer.
+Uploads show actual transport progress, per-file outcomes, cancellation and actionable timeout/offline recovery. Cancelling stops the current request and remaining queued files; accepted server-side bytes may still appear after refresh. Retrying the same bytes reuses the existing document. Originals travel as resumable 512 KiB chunks; see [intake and recovery](INTAKE_AND_RECOVERY.md) for automatic retry, offline waiting and the unfinished-uploads list.
 
-Private in-app reminders are generated from actual application deadlines and source changes, deduplicated, ownership checked and individually dismissible. Preferences control deadline/source notices. Empty accounts have no reminders. Deadlines use Asia/Kolkata calendar dates. Notices refresh when the relevant workspace/notification view loads; email, push delivery and a background notification daemon remain outside this localhost milestone.
+Private in-app reminders are generated from actual application deadlines and source changes, deduplicated, ownership checked and individually dismissible. Preferences control deadline/source notices. Empty accounts have no reminders. Deadlines use Asia/Kolkata calendar dates. Notices refresh when the relevant workspace/notification view loads. A server worker also generates them every minute and delivers them by opt-in email and Web Push while the browser is closed; see [account email operations](ACCOUNT_EMAIL.md).
 
 ## Recovery and evaluation
 
