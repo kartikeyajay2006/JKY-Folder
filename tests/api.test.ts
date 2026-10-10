@@ -208,3 +208,48 @@ describe('private API boundary', () => {
     expect(runtime.store.db.prepare('SELECT * FROM users').all()).toHaveLength(0);
   });
 });
+describe('server-owned product catalog', () => {
+  it('serves limits, questions, conditions, starters and packs without a session', async () => {
+    const response = await request(runtime.app).get('/api/catalog');
+    expect(response.status).toBe(200);
+    expect(response.body.limits).toMatchObject({ packetFiles: 10, fileBytes: 10 * 1024 * 1024 });
+    expect(response.body.questions.map((q: { field: string }) => q.field)).toContain('category');
+    expect(response.body.conditions[0]).toEqual({ value: 'always', label: 'Always required' });
+    expect(response.body.conditions).toContainEqual({
+      value: 'nameChanged:yes',
+      label: 'When names differ',
+    });
+    const job = response.body.templates.find((t: { id: string }) => t.id === 'job');
+    expect(job.starter[0]).toMatchObject({ title: 'Resume', mime: 'application/pdf' });
+    expect(response.body.packs[0]).toMatchObject({
+      id: 'uceed-2027-reference',
+      requirementCount: 12,
+      assurance: 'reference',
+    });
+    expect(response.body.packs[0].requirements).toBeUndefined();
+  });
+  it('returns the resolved checklist and a live evaluation with packet details', async () => {
+    const a = await account();
+    const p = await packet(a);
+    const detail = await a.agent.get(`/api/packets/${p.id}`);
+    expect(detail.status).toBe(200);
+    expect(detail.body.pack.id).toBe('uceed-2027-reference');
+    expect(detail.body.live.packetRevision).toBe(p.revision);
+    expect(detail.body.live.checks).toHaveLength(12);
+    expect(detail.body.evaluatorVersion).toMatch(/^\d+\.\d+\.\d+$/);
+    const list = await a.agent.get('/api/packets');
+    expect(list.body[0].checklist).toEqual({ title: 'UCEED 2027', assurance: 'reference' });
+  });
+  it('rejects profile answers that the catalog does not offer', async () => {
+    const a = await account();
+    const p = await packet(a);
+    const response = await a.agent
+      .patch(`/api/packets/${p.id}/profile`)
+      .set('x-csrf-token', a.csrf)
+      .send({
+        expectedRevision: p.revision,
+        profile: { ...emptyProfile, category: 'not-a-category' },
+      });
+    expect(response.status).toBe(400);
+  });
+});

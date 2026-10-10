@@ -20,7 +20,8 @@ import {
 } from 'lucide-react';
 import { PacketVisual } from './PacketVisual';
 import { AnimatedNumber } from './AnimatedNumber';
-import { templates, deadlineInfo } from '../../shared/templates';
+import { deadlineInfo } from '../../shared/templates';
+import { useCatalog } from '../catalog';
 import type { CheckState, EvaluationRun, Packet, User } from '../../shared/model';
 export interface PacketCard {
   packet: Packet;
@@ -28,6 +29,7 @@ export interface PacketCard {
   latestRun: EvaluationRun | null;
   currentCounts?: Record<CheckState, number>;
   requirementCount?: number;
+  checklist?: { title: string; assurance: 'reference' | 'user_defined' };
 }
 export function WorkspaceHome({
   user,
@@ -46,6 +48,7 @@ export function WorkspaceHome({
   onArchive: (packet: Packet) => void;
   onNavigate: (view: 'documents' | 'requirements' | 'report') => void;
 }) {
+  const { templates } = useCatalog();
   const [filter, setFilter] = useState('active'),
     [sort, setSort] = useState('recent');
   const docs = packets.reduce((n, p) => n + p.documentCount, 0),
@@ -222,7 +225,14 @@ export function WorkspaceHome({
           </div>
           <div className="application-grid">
             {displayed.map(
-              ({ packet: p, documentCount, currentCounts, requirementCount, latestRun }) => {
+              ({
+                packet: p,
+                documentCount,
+                currentCounts,
+                requirementCount,
+                latestRun,
+                checklist,
+              }) => {
                 const Icon = icons[p.kind || 'college'];
                 const due = deadlineInfo(p.deadline);
                 const counts = currentCounts || latestRun?.counts;
@@ -247,7 +257,9 @@ export function WorkspaceHome({
                       <h3>{p.title}</h3>
                       <p>
                         {p.destination ||
-                          (p.customPack ? 'Custom application checklist' : 'UCEED 2027 reference')}
+                          (checklist?.assurance === 'reference'
+                            ? `${checklist.title} reference`
+                            : 'Custom application checklist')}
                       </p>
                     </button>
                     <div className="application-progress">
@@ -326,7 +338,7 @@ export function WorkspaceHome({
                 <span>
                   {t.id === 'custom'
                     ? 'Use your own instructions'
-                    : `${t.requirements.length} editable starter items`}
+                    : `${t.starter.length} editable starter items`}
                   <ArrowRight size={16} />
                 </span>
               </button>

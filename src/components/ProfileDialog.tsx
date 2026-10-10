@@ -2,78 +2,7 @@ import { useState } from 'react';
 import { Check, HelpCircle } from 'lucide-react';
 import { Dialog } from './Dialog';
 import type { Profile } from '../../shared/model';
-const questions: {
-  field: keyof Profile;
-  label: string;
-  help: string;
-  options: [string, string][];
-}[] = [
-  {
-    field: 'education',
-    label: 'Qualifying examination',
-    help: 'Select the route that applies to the 2027 cycle.',
-    options: [
-      ['unknown', 'I’m not sure yet'],
-      ['completed', 'Completed in 2026'],
-      ['appearing', 'Appearing in 2027'],
-    ],
-  },
-  {
-    field: 'category',
-    label: 'Application category',
-    help: 'A selected category may need supporting evidence.',
-    options: [
-      ['unknown', 'I’m not sure yet'],
-      ['general', 'General'],
-      ['ews', 'EWS'],
-      ['obc', 'OBC-NCL'],
-      ['sc', 'SC'],
-      ['st', 'ST'],
-    ],
-  },
-  {
-    field: 'nameChanged',
-    label: 'Do your registration and certificate names differ?',
-    help: 'Confirm this yourself. We do not infer legal identity from spelling differences.',
-    options: [
-      ['unknown', 'I need to compare them'],
-      ['no', 'No — they match'],
-      ['yes', 'Yes — they differ'],
-    ],
-  },
-  {
-    field: 'disability',
-    label: 'Disability evidence route',
-    help: 'This only controls the reference checklist; it does not judge entitlement.',
-    options: [
-      ['unknown', 'I’m not sure yet'],
-      ['none', 'Not applying under this route'],
-      ['pwd', 'PwD'],
-      ['dyslexia', 'Dyslexia'],
-    ],
-  },
-  {
-    field: 'accommodation',
-    label: 'Requesting a scribe or compensatory time?',
-    help: 'Additional medical and category-specific evidence needs official review.',
-    options: [
-      ['unknown', 'I’m not sure yet'],
-      ['no', 'No'],
-      ['yes', 'Yes'],
-    ],
-  },
-  {
-    field: 'nationality',
-    label: 'Nationality route',
-    help: 'Foreign-national exceptions are outside our complete-check coverage.',
-    options: [
-      ['unknown', 'I’m not sure yet'],
-      ['indian', 'Indian national'],
-      ['foreign_before', 'Foreign / OCI or PIO before the official cutoff'],
-      ['foreign_after', 'Foreign / OCI or PIO after the official cutoff'],
-    ],
-  },
-];
+import { useCatalog } from '../catalog';
 export function ProfileDialog({
   profile,
   onClose,
@@ -83,6 +12,7 @@ export function ProfileDialog({
   onClose: () => void;
   onSave: (profile: Profile) => Promise<void>;
 }) {
+  const { questions } = useCatalog();
   const [values, setValues] = useState(profile);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -119,7 +49,7 @@ export function ProfileDialog({
               value={values[q.field]}
               onChange={(e) => setValues({ ...values, [q.field]: e.target.value })}
             >
-              {q.options.map(([value, label]) => (
+              {q.options.map(({ value, label }) => (
                 <option key={value} value={value}>
                   {label}
                 </option>

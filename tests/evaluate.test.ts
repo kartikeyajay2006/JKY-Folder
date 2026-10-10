@@ -212,3 +212,18 @@ describe('conservative evidence evaluation', () => {
     expect(run(p).checks.find((c) => c.requirementId === 'name-change')?.state).toBe('unknown');
   });
 });
+describe('applicability notes', () => {
+  it('explains a conditional requirement from confirmed answers only', async () => {
+    const { applicabilityNote, conditionOptions } = await import('../shared/profile');
+    const { emptyProfile } = await import('../shared/model');
+    const requirement = { condition: { op: 'eq', field: 'nameChanged', value: 'yes' } as const };
+    expect(applicabilityNote(requirement, emptyProfile)).toBe('');
+    expect(applicabilityNote(requirement, { ...emptyProfile, nameChanged: 'yes' })).toBe(
+      'You answered “Yes, they differ” to “Do your registration and certificate names differ?”',
+    );
+    expect(applicabilityNote({ condition: { op: 'always' } }, emptyProfile)).toBe('');
+    expect(conditionOptions().every((c) => c.value === 'always' || c.value.includes(':'))).toBe(
+      true,
+    );
+  });
+});

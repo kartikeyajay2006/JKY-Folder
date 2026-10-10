@@ -118,6 +118,11 @@ export interface PacketDetail {
   packet: Packet;
   documents: DocumentRecord[];
   runs: EvaluationRun[];
+  /** The checklist this packet is evaluated against, resolved by the server. */
+  pack: RulePack;
+  /** A live, unsaved evaluation of the current packet revision. */
+  live: EvaluationRun;
+  evaluatorVersion: string;
 }
 export interface User {
   id: string;

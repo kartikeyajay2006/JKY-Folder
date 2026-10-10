@@ -14,14 +14,9 @@ import {
   FileText,
 } from 'lucide-react';
 import { Dialog } from './Dialog';
-import {
-  templates,
-  starterRequirements,
-  importInstructionLines,
-  templateRequirement,
-} from '../../shared/templates';
-import { uceedPack } from '../../shared/packs';
+import { importInstructionLines, templateRequirement } from '../../shared/templates';
 import type { Requirement } from '../../shared/model';
+import { useCatalog } from '../catalog';
 export interface CreateApplicationInput {
   title: string;
   templateId?: 'college' | 'scholarship' | 'job' | 'custom';
@@ -47,6 +42,9 @@ export function ApplicationWizard({
   onClose: () => void;
   onCreate: (input: CreateApplicationInput) => Promise<void>;
 }) {
+  const { templates, packs, limits } = useCatalog();
+  const starterRequirements = (id: string) =>
+    templates.find((t) => t.id === id)?.starter.map((r) => ({ ...r })) || [];
   const [selected, setSelected] = useState(initialTemplate),
     [step, setStep] = useState(0),
     [title, setTitle] = useState(''),
@@ -57,7 +55,8 @@ export function ApplicationWizard({
     [rows, setRows] = useState<Requirement[]>(starterRequirements(initialTemplate)),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false);
-  const reference = selected === 'uceed';
+  const referencePack = packs.find((p) => p.id === selected);
+  const reference = !!referencePack;
   function choose(id: string) {
     setSelected(id);
     setRows(starterRequirements(id));
@@ -74,7 +73,7 @@ export function ApplicationWizard({
         sourceUrl,
         instructionText: instructions,
         ...(reference
-          ? { packId: uceedPack.id }
+          ? { packId: referencePack.id }
           : { templateId: selected as CreateApplicationInput['templateId'], requirements: rows }),
       });
     } catch (e) {
@@ -126,8 +125,8 @@ export function ApplicationWizard({
                     <strong>{t.title}</strong>
                     <p>{t.description}</p>
                     <span className="template-foot">
-                      {t.requirements.length
-                        ? t.requirements.length + ' starter items'
+                      {t.starter.length
+                        ? t.starter.length + ' starter items'
                         : 'Your instructions, your checklist'}
                       {selected === t.id ? <Check size={16} /> : <ArrowRight size={16} />}
                     </span>
@@ -135,19 +134,25 @@ export function ApplicationWizard({
                 );
               })}
             </div>
-            <button
-              type="button"
-              className={`reference-choice ${reference ? 'selected' : ''}`}
-              aria-pressed={reference}
-              onClick={() => choose('uceed')}
-            >
-              <GraduationCap size={21} />
-              <span>
-                <strong>UCEED 2027</strong>
-                <small>Versioned reference checklist · conditional profile questions</small>
-              </span>
-              {reference ? <Check size={18} /> : <ArrowRight size={18} />}
-            </button>
+            {packs.map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                className={`reference-choice ${selected === p.id ? 'selected' : ''}`}
+                aria-pressed={selected === p.id}
+                onClick={() => choose(p.id)}
+              >
+                <GraduationCap size={21} />
+                <span>
+                  <strong>{p.title}</strong>
+                  <small>
+                    Versioned reference checklist · {p.requirementCount} items, {p.conditionalCount}{' '}
+                    depend on your answers
+                  </small>
+                </span>
+                {selected === p.id ? <Check size={18} /> : <ArrowRight size={18} />}
+              </button>
+            ))}
             <p className="wizard-disclosure">
               Starter templates help you organize. Confirm the required items with your institution
               or employer.
@@ -216,7 +221,7 @@ export function ApplicationWizard({
                   Paste your document instructions <span className="optional-label">optional</span>
                   <textarea
                     rows={4}
-                    maxLength={20000}
+                    maxLength={limits.instructionChars}
                     value={instructions}
                     onChange={(e) => setInstructions(e.target.value)}
                     placeholder={
@@ -255,20 +260,20 @@ export function ApplicationWizard({
               </h3>
               <p>
                 {reference
-                  ? 'UCEED includes conditional evidence. You’ll confirm your profile after creating the application.'
+                  ? `${referencePack.title} includes conditional evidence. You’ll confirm your answers after creating the application.`
                   : 'Change formats, mark optional items, and remove anything that doesn’t apply.'}
               </p>
             </div>
             {reference ? (
               <div className="reference-preview">
-                <strong>{uceedPack.requirements.length} versioned requirements</strong>
+                <strong>{referencePack.requirementCount} versioned requirements</strong>
                 <p>
-                  Identity, education and supporting evidence. This is a limited reference; compare
-                  it to the official instructions.
+                  {referencePack.groups.join(', ')}. This is a limited reference; compare it to the
+                  official instructions.
                 </p>
                 <a
                   className="source-link"
-                  href={uceedPack.sourceUrl}
+                  href={referencePack.sourceUrl}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -290,7 +295,7 @@ export function ApplicationWizard({
                       },
                     ])
                   }
-                  disabled={rows.length >= 50}
+                  disabled={rows.length >= limits.requirements}
                 >
                   <Plus size={16} />
                   Add requirement
@@ -355,21 +360,10 @@ export function RequirementRows({
   rows: Requirement[];
   onChange: (rows: Requirement[]) => void;
 }) {
+  const { conditions, limits } = useCatalog();
   function change(index: number, patch: Partial<Requirement>) {
     onChange(rows.map((r, i) => (i === index ? { ...r, ...patch } : r)));
   }
-  const conditions = [
-    ['always', 'Always required'],
-    ['nameChanged:yes', 'When names differ'],
-    ['education:appearing', 'When qualifying results are pending'],
-    ['category:ews', 'When applying as EWS'],
-    ['category:obc', 'When applying as OBC'],
-    ['category:sc', 'When applying as SC'],
-    ['category:st', 'When applying as ST'],
-    ['disability:pwd', 'When declaring a disability'],
-    ['disability:dyslexia', 'When declaring dyslexia'],
-    ['accommodation:yes', 'When requesting accommodation'],
-  ];
   return (
     <div className="editable-requirements">
       {rows.map((r, i) => (
@@ -455,7 +449,7 @@ export function RequirementRows({
                     });
                   }}
                 >
-                  {conditions.map(([value, label]) => (
+                  {conditions.map(({ value, label }) => (
                     <option key={value} value={value}>
                       {label}
                     </option>
@@ -468,7 +462,7 @@ export function RequirementRows({
                   aria-label={`Requirement ${i + 1} size limit`}
                   type="number"
                   min={1}
-                  max={10240}
+                  max={limits.fileBytes / 1024}
                   step="any"
                   placeholder="No checklist limit"
                   value={r.maxBytes ? r.maxBytes / 1024 : ''}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Save } from 'lucide-react';
 import { Dialog } from './Dialog';
 import type { Packet } from '../../shared/model';
+import { useCatalog } from '../catalog';
 export function ApplicationDetails({
   packet,
   onClose,
@@ -16,6 +17,7 @@ export function ApplicationDetails({
     notes: string;
   }) => Promise<void>;
 }) {
+  const { limits } = useCatalog();
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
   return (
@@ -60,7 +62,12 @@ export function ApplicationDetails({
         </label>
         <label>
           Notes & original instructions
-          <textarea name="notes" rows={5} defaultValue={packet.notes || ''} maxLength={20000} />
+          <textarea
+            name="notes"
+            rows={5}
+            defaultValue={packet.notes || ''}
+            maxLength={limits.instructionChars}
+          />
         </label>
         {error && (
           <p className="form-error" role="alert">

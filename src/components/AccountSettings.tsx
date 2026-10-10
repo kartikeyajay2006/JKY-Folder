@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { Save, KeyRound, Monitor, Check, ShieldCheck } from 'lucide-react';
 import { api, body, setCsrf } from '../api';
 import type { User } from '../../shared/model';
+import { useCatalog } from '../catalog';
 export function AccountSettings({ user, onUser }: { user: User; onUser: (user: User) => void }) {
+  const { limits } = useCatalog();
   const [busy, setBusy] = useState(''),
     [error, setError] = useState(''),
     [success, setSuccess] = useState('');
@@ -90,7 +92,7 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
               type="password"
               autoComplete="current-password"
               required
-              maxLength={128}
+              maxLength={limits.passwordMax}
             />
           </label>
           <div className="form-columns">
@@ -101,8 +103,8 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
                 type="password"
                 autoComplete="new-password"
                 required
-                minLength={12}
-                maxLength={128}
+                minLength={limits.passwordMin}
+                maxLength={limits.passwordMax}
               />
             </label>
             <label>
@@ -112,8 +114,8 @@ export function AccountSettings({ user, onUser }: { user: User; onUser: (user: U
                 type="password"
                 autoComplete="new-password"
                 required
-                minLength={12}
-                maxLength={128}
+                minLength={limits.passwordMin}
+                maxLength={limits.passwordMax}
               />
             </label>
           </div>

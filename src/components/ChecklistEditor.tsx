@@ -4,6 +4,7 @@ import { Dialog } from './Dialog';
 import { RequirementRows } from './ApplicationWizard';
 import { templateRequirement } from '../../shared/templates';
 import type { Requirement, RulePack } from '../../shared/model';
+import { useCatalog } from '../catalog';
 export function ChecklistEditor({
   pack,
   notes,
@@ -19,6 +20,7 @@ export function ChecklistEditor({
     notes: string;
   }) => Promise<void>;
 }) {
+  const { limits } = useCatalog();
   const [rows, setRows] = useState(pack.requirements),
     [url, setUrl] = useState(pack.sourceUrl),
     [instructions, setInstructions] = useState(notes),
@@ -55,7 +57,7 @@ export function ChecklistEditor({
         <button
           className="outline"
           type="button"
-          disabled={rows.length >= 50}
+          disabled={rows.length >= limits.requirements}
           onClick={() =>
             setRows([
               ...rows,
@@ -77,7 +79,7 @@ export function ChecklistEditor({
           Original instructions & notes
           <textarea
             rows={4}
-            maxLength={20000}
+            maxLength={limits.instructionChars}
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
           />

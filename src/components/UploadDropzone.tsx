@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Plus, Upload } from 'lucide-react';
+import { uploadRules, useCatalog } from '../catalog';
 export function UploadDropzone({
   busy,
   uploading,
@@ -11,6 +12,7 @@ export function UploadDropzone({
   onChoose: () => void;
   onFiles: (files: FileList) => void;
 }) {
+  const rules = uploadRules(useCatalog().limits);
   const [dragging, setDragging] = useState(false);
   const depth = useRef(0);
   return (
@@ -58,7 +60,9 @@ export function UploadDropzone({
         <Plus size={16} />
         Choose documents
       </button>
-      <small>PDF or JPEG · Up to 10 MB per file · 10 files per packet</small>
+      <small>
+        {rules.formats} · Up to {rules.perFile} per file · {rules.files} files per packet
+      </small>
     </section>
   );
 }

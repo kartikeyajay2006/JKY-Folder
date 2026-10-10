@@ -1,12 +1,6 @@
 import { z } from 'zod';
-const answers = {
-  education: ['completed', 'appearing', 'unknown'],
-  category: ['general', 'ews', 'obc', 'sc', 'st', 'unknown'],
-  nameChanged: ['yes', 'no', 'unknown'],
-  disability: ['none', 'pwd', 'dyslexia', 'unknown'],
-  accommodation: ['yes', 'no', 'unknown'],
-  nationality: ['indian', 'foreign_before', 'foreign_after', 'unknown'],
-};
+import { limits } from '../shared/limits';
+import { profileAnswers as answers } from '../shared/profile';
 export const sourceUrlSchema = z.union([
   z.literal(''),
   z
@@ -59,12 +53,7 @@ export const requirementSchema = z
     mime: z.enum(['application/pdf', 'image/jpeg', 'any']),
     extension: z.enum(['.pdf', '.jpg', 'any']),
     optional: z.boolean().optional(),
-    maxBytes: z
-      .number()
-      .int()
-      .positive()
-      .max(10 * 1024 * 1024)
-      .optional(),
+    maxBytes: z.number().int().positive().max(limits.fileBytes).optional(),
     expectedText: z.string().trim().max(150).optional(),
     sourceSection: z.string().max(300),
     reviewHint: z.string().max(1200),
@@ -80,7 +69,7 @@ export const requirementSchema = z
 export const requirementsSchema = z
   .array(requirementSchema)
   .min(1)
-  .max(50)
+  .max(limits.requirements)
   .refine(
     (rows) => new Set(rows.map((r) => r.id)).size === rows.length,
     'Requirement identifiers must be unique.',
@@ -91,7 +80,7 @@ export const applicationMetaSchema = z
     kind: z.enum(['college', 'scholarship', 'job', 'custom']).optional(),
     destination: z.string().trim().max(160).optional(),
     deadline: deadlineSchema.optional(),
-    notes: z.string().trim().max(20000).optional(),
+    notes: z.string().trim().max(limits.instructionChars).optional(),
     archived: z.boolean().optional(),
   })
   .strict();

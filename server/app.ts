@@ -19,6 +19,7 @@ import { seedDemo } from './demo';
 import { packs, findPack } from '../shared/packs';
 import {
   emptyProfile,
+  type Profile,
   type Packet,
   type DocumentRecord,
   type User,
@@ -34,16 +35,23 @@ import {
   applicationMetaSchema,
 } from './application-schema';
 import { zipSync, strToU8 } from 'fflate';
+import { limits } from '../shared/limits';
+import { profileQuestions, profileAnswers, conditionOptions } from '../shared/profile';
 const scrypt = promisify(rawScrypt);
 const hash = (value: string | Buffer) => createHash('sha256').update(value).digest('hex');
+const answer = <F extends keyof Profile>(field: F) =>
+  z
+    .string()
+    .refine((value) => profileAnswers[field].includes(value), 'Choose a supported answer.')
+    .transform((value) => value as Profile[F]);
 const profileSchema = z
   .object({
-    education: z.enum(['completed', 'appearing', 'unknown']),
-    category: z.enum(['general', 'ews', 'obc', 'sc', 'st', 'unknown']),
-    nameChanged: z.enum(['yes', 'no', 'unknown']),
-    disability: z.enum(['none', 'pwd', 'dyslexia', 'unknown']),
-    accommodation: z.enum(['yes', 'no', 'unknown']),
-    nationality: z.enum(['indian', 'foreign_before', 'foreign_after', 'unknown']),
+    education: answer('education'),
+    category: answer('category'),
+    nameChanged: answer('nameChanged'),
+    disability: answer('disability'),
+    accommodation: answer('accommodation'),
+    nationality: answer('nationality'),
   })
   .strict();
 const revision = z.number().int().positive();
@@ -52,7 +60,7 @@ const authSchema = z.object({
     .email()
     .max(254)
     .transform((s) => s.toLowerCase().trim()),
-  password: z.string().min(12).max(128),
+  password: z.string().min(limits.passwordMin).max(limits.passwordMax),
 });
 class HttpError extends Error {
   constructor(
@@ -129,12 +137,12 @@ export function createApp(options: {
       csrf = randomBytes(32).toString('hex');
     store.db
       .prepare('INSERT INTO sessions VALUES(?,?,?,?)')
-      .run(hash(token), userId, csrf, Date.now() + 24 * 60 * 60000);
+      .run(hash(token), userId, csrf, Date.now() + limits.sessionHours * 60 * 60000);
     res.cookie('jky_session', token, {
       httpOnly: true,
       secure: prod,
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60000,
+      maxAge: limits.sessionHours * 60 * 60000,
       path: '/',
     });
     return csrf;
@@ -237,6 +245,34 @@ export function createApp(options: {
         .json({ error: 'The request could not be verified. Refresh and try again.' });
     next();
   }
+  // Public, non-personal product catalog: the client renders checklists, questions and limits from it.
+  app.get('/api/catalog', (_req, res) =>
+    res.json({
+      limits,
+      evaluatorVersion: EVALUATOR_VERSION,
+      questions: profileQuestions,
+      conditions: conditionOptions(),
+      templates: templates.map((t) => ({
+        id: t.id,
+        kind: t.kind,
+        title: t.title,
+        description: t.description,
+        starter: starterRequirements(t.id),
+      })),
+      packs: packs.map((p) => ({
+        id: p.id,
+        version: p.version,
+        title: p.title,
+        cycle: p.cycle,
+        sourceUrl: p.sourceUrl,
+        checkedAt: p.checkedAt,
+        assurance: p.assurance,
+        requirementCount: p.requirements.length,
+        conditionalCount: p.requirements.filter((r) => r.condition.op !== 'always').length,
+        groups: [...new Set(p.requirements.map((r) => r.group))],
+      })),
+    }),
+  );
   app.use('/api', authenticated);
   const user = (req: Request) => (req as AuthRequest).user;
   function owned(req: Request): Packet {
@@ -290,7 +326,7 @@ export function createApp(options: {
     const input = z
       .object({
         currentPassword: z.string().min(1).max(128),
-        password: z.string().min(12).max(128),
+        password: z.string().min(limits.passwordMin).max(limits.passwordMax),
       })
       .strict()
       .parse(req.body);
@@ -337,6 +373,10 @@ export function createApp(options: {
           latestRun: store.runs(p.id)[0] || null,
           currentCounts: evaluate(p, store.documents(p.id), packetPack(p), 'summary').counts,
           requirementCount: packetPack(p).requirements.length,
+          checklist: {
+            title: packetPack(p).title,
+            assurance: packetPack(p).assurance,
+          },
         };
       }),
     );
@@ -349,7 +389,7 @@ export function createApp(options: {
         templateId: z.enum(['college', 'scholarship', 'job', 'custom']).optional(),
         requirements: requirementsSchema.optional(),
         sourceUrl: sourceUrlSchema.optional(),
-        instructionText: z.string().max(20000).optional(),
+        instructionText: z.string().max(limits.instructionChars).optional(),
         destination: z.string().trim().max(160).optional(),
         deadline: deadlineSchema.optional(),
       })
@@ -366,9 +406,12 @@ export function createApp(options: {
         store.db.prepare('SELECT COUNT(*) AS n FROM packets WHERE userId=?').get(user(req).id) as {
           n: number;
         }
-      ).n >= 20
+      ).n >= limits.packets
     )
-      throw new HttpError(400, 'This release supports up to 20 packets per workspace.');
+      throw new HttpError(
+        400,
+        `This release supports up to ${limits.packets} packets per workspace.`,
+      );
     const now = new Date().toISOString();
     const p: Packet = {
       id: randomUUID(),
@@ -402,7 +445,16 @@ export function createApp(options: {
   });
   app.get('/api/packets/:packetId', (req, res) => {
     const p = owned(req);
-    res.json({ packet: p, documents: store.documents(p.id), runs: store.runs(p.id) });
+    const documents = store.documents(p.id);
+    const pack = packetPack(p);
+    res.json({
+      packet: p,
+      documents,
+      runs: store.runs(p.id),
+      pack,
+      live: evaluate(p, documents, pack, 'live-preview'),
+      evaluatorVersion: EVALUATOR_VERSION,
+    });
   });
   app.patch('/api/packets/:packetId', (req, res) => {
     const input = z
@@ -427,7 +479,7 @@ export function createApp(options: {
         expectedRevision: revision,
         requirements: requirementsSchema,
         sourceUrl: sourceUrlSchema,
-        notes: z.string().max(20000).optional(),
+        notes: z.string().max(limits.instructionChars).optional(),
       })
       .strict()
       .parse(req.body);
@@ -513,7 +565,7 @@ export function createApp(options: {
   });
   const upload = multer({
     storage: multer.memoryStorage(),
-    limits: { fileSize: 10 * 1024 * 1024, files: 1, fields: 0, parts: 1 },
+    limits: { fileSize: limits.fileBytes, files: 1, fields: 0, parts: 1 },
   });
   app.post(
     '/api/packets/:packetId/documents',
@@ -541,8 +593,14 @@ export function createApp(options: {
         digest = hash(file.buffer);
       const duplicate = docs.find((d) => d.hash === digest);
       if (duplicate) return res.json({ document: duplicate, duplicate: true });
-      if (docs.length >= 10 || docs.reduce((n, d) => n + d.size, 0) + file.size > 30 * 1024 * 1024)
-        throw new HttpError(400, 'Packet limit reached: 10 files or 30 MB.');
+      if (
+        docs.length >= limits.packetFiles ||
+        docs.reduce((n, d) => n + d.size, 0) + file.size > limits.packetBytes
+      )
+        throw new HttpError(
+          400,
+          `Packet limit reached: ${limits.packetFiles} files or ${limits.packetBytes / 1024 / 1024} MB.`,
+        );
       const id = randomUUID(),
         key = randomUUID();
       writeFileSync(join(store.objects, key), file.buffer, { mode: 0o600 });
@@ -762,7 +820,7 @@ export function createApp(options: {
       return res.status(400).json({
         error:
           error.code === 'LIMIT_FILE_SIZE'
-            ? 'This release supports files up to 10 MB.'
+            ? `This release supports files up to ${limits.fileBytes / 1024 / 1024} MB.`
             : 'Upload exactly one file at a time.',
       });
     if (error instanceof HttpError) return res.status(error.status).json({ error: error.message });
@@ -776,7 +834,9 @@ export function createApp(options: {
     store.db.prepare('DELETE FROM sessions WHERE expiresAt<?').run(Date.now());
     const rows = store.db
       .prepare('SELECT id FROM users WHERE demo=1 AND createdAt<?')
-      .all(new Date(Date.now() - 24 * 60 * 60000).toISOString()) as { id: string }[];
+      .all(new Date(Date.now() - limits.sessionHours * 60 * 60000).toISOString()) as {
+      id: string;
+    }[];
     for (const row of rows) {
       const ps = store.db.prepare('SELECT payload FROM packets WHERE userId=?').all(row.id) as {
         payload: string;

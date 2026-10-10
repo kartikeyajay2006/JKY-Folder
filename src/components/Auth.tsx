@@ -19,7 +19,9 @@ import { PacketVisual } from './PacketVisual';
 import { WorkflowPreview } from './WorkflowPreview';
 import { MotionToggle } from '../motion/MotionProvider';
 import type { User } from '../../shared/model';
+import { useCatalog } from '../catalog';
 export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => void }) {
+  const { limits } = useCatalog();
   const [mode, setMode] = useState<'login' | 'register'>('register');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -275,9 +277,9 @@ export function Auth({ onAuth }: { onAuth: (user: User, packetId?: string) => vo
                   name="password"
                   type="password"
                   autoComplete={mode === 'register' ? 'new-password' : 'current-password'}
-                  minLength={12}
-                  maxLength={128}
-                  placeholder="At least 12 characters"
+                  minLength={limits.passwordMin}
+                  maxLength={limits.passwordMax}
+                  placeholder={`At least ${limits.passwordMin} characters`}
                   required
                 />
               </label>
