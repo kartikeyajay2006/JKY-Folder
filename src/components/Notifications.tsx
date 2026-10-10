@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, body } from '../api';
 import type { NotificationPreferences, Reminder } from '../../shared/model';
+import { PushSettings } from './PushSettings';
 export function Notifications({
   userId,
   preferences = false,
@@ -16,6 +17,7 @@ export function Notifications({
     [busy, setBusy] = useState(false),
     [delivery, setDelivery] = useState<{
       configured: boolean;
+      delivery?: 'smtp' | 'outbox' | null;
       verified: boolean;
       failed: number;
     } | null>(null),
@@ -88,15 +90,18 @@ export function Notifications({
           </p>
         </fieldset>
       )}
+      {preferences && prefs && <PushSettings />}
       {preferences && prefs && delivery && (
         <fieldset>
           <legend>Background email reminders</legend>
           <p className="field-help">
-            {!delivery.configured
-              ? 'Email delivery needs administrator configuration.'
-              : delivery.verified
-                ? 'Your email is verified.'
-                : 'Verify your email address before enabling delivery.'}
+            {delivery.delivery === 'outbox'
+              ? 'Development mode: emails are saved to this server’s local outbox instead of being sent. Read them with npm run outbox.'
+              : !delivery.configured
+                ? 'Email delivery needs administrator configuration.'
+                : delivery.verified
+                  ? 'Your email is verified.'
+                  : 'Verify your email address before enabling delivery.'}
           </p>
           {delivery.configured && !delivery.verified && (
             <button

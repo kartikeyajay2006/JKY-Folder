@@ -230,7 +230,9 @@ export function createMailService(
     limit: RequestHandler,
     fail: (s: number, m: string) => Error,
   ) {
-    app.get('/api/auth/recovery-status', (_req, res) => res.json({ enabled: !!transport }));
+    app.get('/api/auth/recovery-status', (_req, res) =>
+      res.json({ enabled: !!transport, delivery: transport?.label || null }),
+    );
     app.post('/api/auth/forgot-password', limit, (req, res) => {
       const { email } = z
         .object({
@@ -252,7 +254,9 @@ export function createMailService(
       res.json({
         ok: true,
         message:
-          'If that account exists, a password reset link will arrive shortly. Check your inbox and spam folder.',
+          transport.label === 'outbox'
+            ? 'Development mode: if that account exists, its reset link was saved to this server’s outbox. Run npm run outbox -- latest to read it.'
+            : 'If that account exists, a password reset link will arrive shortly. Check your inbox and spam folder.',
       });
     });
     app.post('/api/auth/reset-password', limit, async (req, res) => {
@@ -330,6 +334,7 @@ export function createMailService(
     app.get('/api/account/email-status', (req, res) =>
       res.json({
         configured: !!transport,
+        delivery: transport?.label || null,
         verified: verified(owner(req)),
         failed: (
           store.db

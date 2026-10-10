@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { loadEnvFile } from 'node:process';
 import { createApp } from './app';
-import { smtpTransport } from './mail';
+import { outboxTransport, smtpTransport } from './mail';
 if (existsSync('.env')) loadEnvFile('.env');
 if (process.env.NODE_ENV === 'production' && !process.env.APP_ORIGIN?.startsWith('https://'))
   throw new Error(
@@ -9,11 +9,12 @@ if (process.env.NODE_ENV === 'production' && !process.env.APP_ORIGIN?.startsWith
   );
 const port = Number(process.env.PORT || 3001);
 const host = process.env.HOST || '127.0.0.1';
+const dataDir = process.env.DATA_DIR || '.data';
 const runtime = createApp({
-  dataDir: process.env.DATA_DIR || '.data',
+  dataDir,
   origin: process.env.APP_ORIGIN || 'http://localhost:5173',
   production: process.env.NODE_ENV === 'production',
-  mail: smtpTransport(),
+  mail: process.env.MAIL_TRANSPORT === 'outbox' ? outboxTransport(dataDir) : smtpTransport(),
 });
 const server = runtime.app.listen(port, host, () =>
   console.log(`JKY-Folder API: http://${host}:${port}`),

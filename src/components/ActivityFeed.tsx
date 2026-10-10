@@ -21,6 +21,8 @@ interface AuditEvent {
 const labels: Record<string, string> = {
   'consent.development-review.accepted': 'Account created',
   'demo.created': 'Demo workspace prepared',
+  'push.subscribed': 'Notifications turned on in a browser',
+  'push.unsubscribed': 'Notifications turned off in a browser',
   'packet.created': 'Application created',
   'packet.updated': 'Application details updated',
   'checklist.updated': 'Checklist updated',
@@ -42,7 +44,7 @@ const filters = [
   { id: 'all', label: 'Everything', pattern: /./ },
   { id: 'packet', label: 'Applications', pattern: /^(packet|checklist|profile|evidence)\./ },
   { id: 'document', label: 'Documents', pattern: /^(document|inspection|fact)\./ },
-  { id: 'account', label: 'Account', pattern: /^(account|consent|demo)\./ },
+  { id: 'account', label: 'Account', pattern: /^(account|consent|demo|push)\./ },
 ] as const;
 const day = (value: string) =>
   new Intl.DateTimeFormat('en-IN', { weekday: 'long', day: 'numeric', month: 'long' }).format(

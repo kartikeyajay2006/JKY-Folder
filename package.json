@@ -18,7 +18,8 @@
     "rules": "tsx server/curate.ts",
     "backup": "tsx server/backup.ts",
     "test:benchmark": "vitest run tests/benchmark.test.ts tests/benchmark-v2.test.ts",
-    "benchmark:review": "tsx server/benchmark-review.ts"
+    "benchmark:review": "tsx server/benchmark-review.ts",
+    "outbox": "tsx server/outbox.ts"
   },
   "dependencies": {
     "@fontsource-variable/bodoni-moda": "^5.3.0",

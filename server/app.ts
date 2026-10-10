@@ -15,6 +15,8 @@ import { existsSync, writeFileSync, unlinkSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { createStore } from './store';
 import { createMailService } from './mail-service';
+import { createPushService } from './push';
+import type { PushSender } from './web-push';
 import type { MailTransport } from './mail';
 import { registerUploads } from './uploads';
 import { registerInstructionDrafts } from './instruction-drafts';
@@ -97,8 +99,15 @@ export function createApp(options: {
   production?: boolean;
   mail?: MailTransport;
   background?: boolean;
+  /** Replaces real push delivery, for tests. */
+  push?: PushSender;
 }) {
   const store = createStore(resolve(options.dataDir));
+  const pushService = createPushService(store, {
+    dataDir: resolve(options.dataDir),
+    background: options.background !== false,
+    send: options.push,
+  });
   const packetPack = (p: Packet) => {
     if (isUploadPacket(p))
       for (const doc of store.documents(p.id))
@@ -325,6 +334,12 @@ export function createApp(options: {
     app,
     (req) => user(req).id,
     authLimit,
+    (status, message) => new HttpError(status, message),
+  );
+  pushService.routes(
+    app,
+    user,
+    (userId, action, objectId) => store.audit(userId, action, objectId),
     (status, message) => new HttpError(status, message),
   );
   function owned(req: Request): Packet {
@@ -1246,10 +1261,12 @@ export function createApp(options: {
     store,
     jobsIdle: stopJobs.isIdle,
     mail: mailService,
+    push: pushService,
     close: () => {
       clearInterval(cleanup);
       stopJobs();
       mailService.stop();
+      pushService.stop();
       store.db.close();
     },
   };
