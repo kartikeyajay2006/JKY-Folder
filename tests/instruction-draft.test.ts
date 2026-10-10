@@ -72,9 +72,7 @@ describe('instruction PDF drafts', () => {
       values: ['sc', 'st'],
     });
     expect(caste.requirement.condition).toEqual({ op: 'always' });
-    expect(byTitle(d, 'Gazette notification')!.suggestedCondition?.label).toBe(
-      'When names differ',
-    );
+    expect(byTitle(d, 'Gazette notification')!.suggestedCondition?.label).toBe('When names differ');
     expect(byTitle(d, 'Disability certificate')!.suggestedCondition?.label).toBe(
       'When declaring a disability',
     );

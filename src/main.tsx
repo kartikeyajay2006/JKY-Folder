@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { MotionProvider } from './motion/MotionProvider';
 import { ThemeProvider } from './theme';
+import { watchInstall } from './install';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/bodoni-moda';
 import './styles/tokens.css';
@@ -18,6 +19,7 @@ import './styles/tools.css';
 import './styles/luxe.css';
 import './styles/motion.css';
 import './styles/print.css';
+watchInstall();
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() {

@@ -179,6 +179,8 @@ export interface LibraryDocument {
   createdAt: string;
   source: { packetId: string; documentId: string };
   uses: { packetId: string; packetTitle: string; documentId: string; archived: boolean }[];
+  /** What the document appears to be, from its own wording, name and shape. */
+  guess?: { id: string; label: string };
 }
 export interface EvidenceAnchor {
   documentId: string;

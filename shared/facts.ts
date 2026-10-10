@@ -8,6 +8,7 @@ import type {
   EvidenceSuggestion,
 } from './model';
 import { confirmedConcerns } from './identity';
+import { classifyDocument, typeForRequirement } from './classify';
 // Dates as printed on Indian documents: 12/03/2006, 12-03-2006, 2006-03-12, 12 March 2006,
 // 12th Mar, 2006 and March 12, 2006.
 const DATE =
@@ -102,9 +103,34 @@ export function suggestEvidence(
   documents: DocumentRecord[],
   pack: RulePack,
 ): EvidenceSuggestion[] {
+  const guesses = new Map(documents.map((d) => [d.id, classifyDocument(d)]));
   return pack.requirements
     .filter((r) => !packet.links[r.id])
     .flatMap((r) => {
+      const usable = documents.filter(
+        (d) => d.status === 'ready' && (r.mime === 'any' || d.mime === r.mime),
+      );
+      // A document that looks like the kind this item asks for, for example an Aadhaar card.
+      const wanted = typeForRequirement(r.title, r.description);
+      const byType: EvidenceSuggestion[] = wanted
+        ? usable.flatMap((doc) => {
+            const guess = guesses.get(doc.id);
+            // Uncertain scans never produce suggestions, whatever their file name says.
+            const uncertain = doc.pages.some((p) => p.method === 'ocr' && (p.confidence || 0) < 85);
+            return guess?.id === wanted.id && !uncertain
+              ? [
+                  {
+                    requirementId: r.id,
+                    documentId: doc.id,
+                    pageFrom: 1,
+                    pageTo: Math.max(1, doc.pageCount),
+                    confidence: Math.max(0.6, guess.confidence),
+                    reason: `Looks like: ${guess.label} (${guess.reasons.join(', ')}). This is a suggestion; inspect and confirm the evidence.`,
+                  },
+                ]
+              : [];
+          })
+        : [];
       const words = r.title
         .toLowerCase()
         .split(/[^a-z]+/)
@@ -113,27 +139,34 @@ export function suggestEvidence(
             w.length > 3 &&
             !['document', 'evidence', 'certificate', 'required', 'recent'].includes(w),
         );
-      if (!words.length) return [];
-      return documents
-        .filter((d) => d.status === 'ready' && (r.mime === 'any' || d.mime === r.mime))
-        .flatMap((doc) =>
-          doc.pages.flatMap((page) => {
-            const haystack = ((page.number === 1 ? doc.name : '') + ' ' + page.text).toLowerCase();
-            const hits = words.filter((w) => haystack.includes(w));
-            if (!hits.length || (page.method === 'ocr' && (page.confidence || 0) < 85)) return [];
-            return [
-              {
-                requirementId: r.id,
-                documentId: doc.id,
-                pageFrom: page.number,
-                pageTo: page.number,
-                confidence: Math.min(0.85, 0.4 + hits.length * 0.15),
-                reason: `Matching terms: ${hits.join(', ')}. This is a suggestion; inspect and confirm the evidence.`,
-              },
-            ];
-          }),
-        )
-        .sort((a, b) => b.confidence - a.confidence)
-        .slice(0, 3);
+      const byWords: EvidenceSuggestion[] = !words.length
+        ? []
+        : usable.flatMap((doc) =>
+            doc.pages.flatMap((page) => {
+              const haystack = (
+                (page.number === 1 ? doc.name : '') +
+                ' ' +
+                page.text
+              ).toLowerCase();
+              const hits = words.filter((w) => haystack.includes(w));
+              if (!hits.length || (page.method === 'ocr' && (page.confidence || 0) < 85)) return [];
+              return [
+                {
+                  requirementId: r.id,
+                  documentId: doc.id,
+                  pageFrom: page.number,
+                  pageTo: page.number,
+                  confidence: Math.min(0.85, 0.4 + hits.length * 0.15),
+                  reason: `Matching terms: ${hits.join(', ')}. This is a suggestion; inspect and confirm the evidence.`,
+                },
+              ];
+            }),
+          );
+      // One suggestion per document: the stronger reason wins.
+      const best = new Map<string, EvidenceSuggestion>();
+      for (const s of [...byType, ...byWords])
+        if (!best.has(s.documentId) || best.get(s.documentId)!.confidence < s.confidence)
+          best.set(s.documentId, s);
+      return [...best.values()].sort((a, b) => b.confidence - a.confidence).slice(0, 3);
     });
 }

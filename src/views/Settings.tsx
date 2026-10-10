@@ -3,6 +3,7 @@ import { useTheme, type ThemePreference } from '../theme';
 import { useMotion } from '../motion/MotionProvider';
 import { Notifications } from '../components/Notifications';
 import { AccountSettings } from '../components/AccountSettings';
+import { InstallApp } from '../components/InstallApp';
 import { useCatalog } from '../catalog';
 import { plural } from '../components/Status';
 import type { Packet, User } from '../../shared/model';
@@ -79,6 +80,7 @@ export function SettingsView({
           </button>
         </section>
         <Notifications userId={user.id} preferences />
+        <InstallApp />
         <section className="sheet appearance" aria-labelledby="appearance-title">
           <h2 id="appearance-title">Appearance</h2>
           <fieldset className="choice-row">

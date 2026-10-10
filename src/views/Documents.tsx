@@ -5,6 +5,7 @@ import { UploadDropzone } from '../components/UploadDropzone';
 import { UploadQueue, type UploadItem } from '../components/UploadQueue';
 import { PendingUploads } from '../components/PendingUploads';
 import { evidenceAnchors } from '../../shared/model';
+import { classifyDocument } from '../../shared/classify';
 import type { DocumentRecord, PacketDetail } from '../../shared/model';
 
 export function DocumentsView({
@@ -111,6 +112,12 @@ export function DocumentsView({
                             : `, ${plural(doc.pageCount, 'page')}`)}
                         , added {date(doc.createdAt)}
                       </small>
+                      {(() => {
+                        const guess = classifyDocument(doc);
+                        return guess ? (
+                          <small className="doc-type">Looks like: {guess.label}</small>
+                        ) : null;
+                      })()}
                       {doc.derivedFrom && (
                         <small className="lineage">Made from {doc.derivedFrom.name}</small>
                       )}

@@ -125,6 +125,7 @@ export function LibraryView({
                   <span>
                     <strong className="data">{doc.name}</strong>
                     <small>{describe(doc)}</small>
+                    {doc.guess && <small className="doc-type">Looks like: {doc.guess.label}</small>}
                   </span>
                 </span>
                 <span className="library-uses">

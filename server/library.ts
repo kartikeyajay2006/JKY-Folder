@@ -5,6 +5,7 @@ import { z } from 'zod';
 import type { Express, Request } from 'express';
 import type { Store } from './store';
 import { limits } from '../shared/limits';
+import { classifyDocument } from '../shared/classify';
 import type { DocumentRecord, LibraryDocument, Packet } from '../shared/model';
 
 interface Owned {
@@ -58,6 +59,7 @@ export function registerLibrary(
       .map((items) => {
         // The inspected copy speaks for the group; the oldest name is the one the applicant chose.
         const source = items.find((i) => i.doc.status === 'ready') || items[0];
+        const guess = classifyDocument(source.doc);
         return {
           hash: source.doc.hash,
           name: items[0].doc.name,
@@ -69,6 +71,7 @@ export function registerLibrary(
           status: source.doc.status,
           createdAt: items[0].doc.createdAt,
           source: { packetId: source.packetId, documentId: source.doc.id },
+          ...(guess ? { guess: { id: guess.id, label: guess.label } } : {}),
           uses: items.map((i) => ({
             packetId: i.packetId,
             packetTitle: i.packetTitle,

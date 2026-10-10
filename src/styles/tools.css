@@ -542,3 +542,25 @@
     width: 100%;
   }
 }
+
+/* Install on this device */
+.install-app {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+.install-app h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--t-lg);
+}
+.install-app h2 svg {
+  color: var(--tick-ink);
+}
+
+/* What a document appears to be */
+.doc-type {
+  color: var(--flag-ink) !important;
+  font-weight: 650;
+}
