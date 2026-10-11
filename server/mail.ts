@@ -12,6 +12,8 @@ export interface MailTransport {
   close?: () => void;
   /** How messages leave the server: a real provider, or the local development outbox. */
   label?: 'smtp' | 'outbox';
+  /** Connect/authenticate without sending a message; inbox delivery is a separate check. */
+  verify?: () => Promise<void>;
 }
 
 /**
@@ -45,14 +47,14 @@ export function outboxTransport(dataDir: string): MailTransport {
     },
   };
 }
-export function smtpTransport(): MailTransport | undefined {
-  const { SMTP_HOST, SMTP_USER, SMTP_PASSWORD, MAIL_FROM } = process.env;
+export function smtpTransport(env: NodeJS.ProcessEnv = process.env): MailTransport | undefined {
+  const { SMTP_HOST, SMTP_USER, SMTP_PASSWORD, MAIL_FROM } = env;
   if (!SMTP_HOST && !MAIL_FROM) return undefined;
   if (!SMTP_HOST || !MAIL_FROM || !/^([^<>\s]+@[^<>\s]+)$/.test(MAIL_FROM))
     throw Error('SMTP_HOST and a plain MAIL_FROM address are required.');
   if ((SMTP_USER && !SMTP_PASSWORD) || (!SMTP_USER && SMTP_PASSWORD))
     throw Error('SMTP credentials must be configured together.');
-  const port = Number(process.env.SMTP_PORT || 587);
+  const port = Number(env.SMTP_PORT || 587);
   if (!Number.isInteger(port) || port < 1 || port > 65535) throw Error('Invalid SMTP_PORT.');
   const transport = nodemailer.createTransport({
     host: SMTP_HOST,
@@ -71,6 +73,9 @@ export function smtpTransport(): MailTransport | undefined {
   });
   return {
     label: 'smtp',
+    verify: async () => {
+      await transport.verify();
+    },
     send: async (message) => {
       await transport.sendMail({ ...message, from: MAIL_FROM });
     },

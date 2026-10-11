@@ -11,7 +11,7 @@ const operator = (() => {
   const i = process.argv.indexOf('--operator');
   return i < 0 ? '' : process.argv[i + 1] || '';
 })();
-const store = createStore(process.env.DATA_DIR || '.data');
+const store = createStore(process.env.DATA_DIR || '.data', { reconcile: false });
 try {
   if (command === 'list') console.log(JSON.stringify(supportQueue(store), null, 2));
   else if (command === 'view' && reference)

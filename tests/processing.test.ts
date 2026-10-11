@@ -5,6 +5,59 @@ import { join } from 'node:path';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 import request from 'supertest';
 import { createApp } from '../server/app';
+it('bounds crash recovery attempts and lets an explicit retry inspect the original again', async () => {
+  const directory = mkdtempSync(join(tmpdir(), 'jky-crash-recovery-'));
+  let runtime = createApp({ dataDir: directory, jobs: false, background: false });
+  try {
+    let agent = request.agent(runtime.app);
+    const auth = await agent
+      .post('/api/auth/register')
+      .send({
+        name: 'Synthetic recovery',
+        email: 'recovery@example.test',
+        password: 'synthetic-strong-password',
+        adult: true,
+        consent: true,
+      });
+    const cookie = auth.headers['set-cookie'];
+    const pdf = await PDFDocument.create(),
+      font = await pdf.embedFont(StandardFonts.Helvetica);
+    pdf.addPage().drawText('Synthetic restart evidence', { font, x: 40, y: 700 });
+    const intake = await agent
+      .post('/api/intake')
+      .set('x-csrf-token', auth.body.csrf)
+      .attach('file', Buffer.from(await pdf.save()), 'restart.pdf');
+    const id = intake.body.document.id,
+      packetId = intake.body.packetId;
+    runtime.store.db.prepare('INSERT INTO job_attempts VALUES(?,3)').run(id);
+    runtime.store.db.prepare("UPDATE jobs SET status='processing' WHERE id=?").run(id);
+    runtime.close();
+    runtime = createApp({ dataDir: directory, background: false });
+    agent = request.agent(runtime.app);
+    const detail = await agent.get(`/api/packets/${packetId}`).set('Cookie', cookie);
+    expect(detail.body.documents[0].status).toBe('error');
+    expect(detail.body.documents[0].error).toContain('interrupted repeatedly');
+    const retry = await agent
+      .post(`/api/packets/${packetId}/documents/${id}/retry`)
+      .set('Cookie', cookie)
+      .set('x-csrf-token', auth.body.csrf)
+      .send({ expectedRevision: detail.body.packet.revision });
+    expect(retry.status).toBe(202);
+    let ready = false;
+    for (let i = 0; i < 80; i++) {
+      const result = await agent.get(`/api/packets/${packetId}`).set('Cookie', cookie);
+      if (result.body.documents[0].status === 'ready') {
+        ready = true;
+        break;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    expect(ready).toBe(true);
+  } finally {
+    runtime.close();
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
 async function setup() {
   const directory = mkdtempSync(join(tmpdir(), 'jky-worker-'));
   const runtime = createApp({ dataDir: directory });

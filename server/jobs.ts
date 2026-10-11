@@ -53,6 +53,21 @@ export function startJobs(store: Store, scan?: Scanner, mode: InspectionMode = '
         } else if (verdict.status === 'error')
           screened = { ok: false, error: 'The virus scanner could not check this file.' };
       }
+      // A scanner wait may overlap deletion; do not launch or recreate an erased job.
+      if (!store.db.prepare('SELECT id FROM jobs WHERE id=?').get(row.id)) return;
+      if (!screened) {
+        const attempt = store.db
+          .prepare(
+            'INSERT INTO job_attempts(id,attempts) VALUES(?,1) ON CONFLICT(id) DO UPDATE SET attempts=attempts+1 RETURNING attempts',
+          )
+          .get(row.id) as { attempts: number };
+        if (attempt.attempts > 3)
+          screened = {
+            ok: false,
+            error:
+              'Inspection was interrupted repeatedly. Review the file and explicitly retry, or upload a smaller supported copy.',
+          };
+      }
       const result =
         screened ||
         (await inspectFile(file, {

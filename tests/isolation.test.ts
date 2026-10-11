@@ -28,7 +28,16 @@ it('rejects a second runtime, then releases the kernel workspace lock cleanly', 
   const second = await acquireInstanceLock(directory, () => {
     throw Error('Lock lost');
   });
+  const waiting = acquireInstanceLock(
+    directory,
+    () => {
+      throw Error('Lock lost');
+    },
+    { waitSeconds: 1 },
+  );
   await second();
+  const next = await waiting;
+  await next();
 });
 it('refuses production without isolation, scanning, recovery email and encrypted backups', () => {
   const env = {

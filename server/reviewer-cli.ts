@@ -61,7 +61,7 @@ if (command === 'keygen' && args.length === 3) {
     }),
   );
 } else {
-  const store = createStore(process.env.DATA_DIR || '.data');
+  const store = createStore(process.env.DATA_DIR || '.data', { reconcile: false });
   try {
     if (command === 'register' && args.length === 3)
       console.log(JSON.stringify(registerReviewer(store, json(args[0]), args[1], args[2])));

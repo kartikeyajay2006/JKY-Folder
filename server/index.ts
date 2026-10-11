@@ -14,10 +14,14 @@ if (mode === 'bubblewrap') await verifySandbox();
 const port = Number(process.env.PORT || 3001);
 const host = process.env.HOST || '127.0.0.1';
 const dataDir = process.env.DATA_DIR || '.data';
-const releaseLock = await acquireInstanceLock(dataDir, () => {
-  console.error('runtime.lock_lost');
-  process.exit(1);
-});
+const releaseLock = await acquireInstanceLock(
+  dataDir,
+  () => {
+    console.error('runtime.lock_lost');
+    process.exit(1);
+  },
+  { waitSeconds: process.env.NODE_ENV === 'production' ? 0 : 3 },
+);
 // SMTP when configured. In development without SMTP, emails go to the local outbox
 // (npm run outbox) so password reset and guardian approval work out of the box.
 function mailTransport() {

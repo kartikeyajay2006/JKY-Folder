@@ -3,7 +3,11 @@ import { mkdirSync, openSync, closeSync, chmodSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 /** Kernel lock, automatically released after a crash; the SQLite runtime has one owner. */
-export async function acquireInstanceLock(directory: string, lost: () => void) {
+export async function acquireInstanceLock(
+  directory: string,
+  lost: () => void,
+  options: { waitSeconds?: number } = {},
+) {
   if (process.platform !== 'linux')
     throw Error('The supported server runtime requires Linux and flock.');
   mkdirSync(directory, { recursive: true, mode: 0o700 });
@@ -14,7 +18,7 @@ export async function acquireInstanceLock(directory: string, lost: () => void) {
     'flock',
     [
       '--exclusive',
-      '--nonblock',
+      ...(options.waitSeconds ? ['--wait', String(options.waitSeconds)] : ['--nonblock']),
       '--conflict-exit-code',
       '73',
       file,

@@ -1337,6 +1337,7 @@ export function createApp(options: {
         .prepare('UPDATE documents SET payload=? WHERE id=? AND packetId=?')
         .run(JSON.stringify(doc), doc.id, p.id);
       store.db.prepare("UPDATE jobs SET status='queued' WHERE id=?").run(doc.id);
+      store.db.prepare('DELETE FROM job_attempts WHERE id=?').run(doc.id);
       touch(p);
       store.audit(user(req).id, 'inspection.retried', doc.id);
     })();

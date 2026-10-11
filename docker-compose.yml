@@ -13,6 +13,7 @@ services:
       - seccomp=./deploy/parser-host-seccomp.json
     pids_limit: 256
     mem_limit: 2g
+    memswap_limit: 2g
     cpus: 2
     tmpfs:
       - /tmp:size=512m,mode=1777

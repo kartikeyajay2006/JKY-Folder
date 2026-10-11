@@ -6,6 +6,31 @@ on:
 permissions:
   contents: read
 jobs:
+  isolated-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Load confined namespace host policy
+        run: sudo apparmor_parser -r -W deploy/jky-parser-host.apparmor
+      - name: Build production image
+        run: docker build -t jky-folder:verification .
+      - name: Exercise sandbox, repository recovery and production intake
+        run: >-
+          docker run --rm --read-only --cap-drop ALL
+          --security-opt no-new-privileges:true
+          --security-opt seccomp=deploy/parser-host-seccomp.json
+          --security-opt apparmor=jky-parser-host
+          --tmpfs /tmp:size=512m,mode=1777
+          --pids-limit 256 --memory 2g --memory-swap 2g --cpus 2
+          -e XDG_DATA_HOME=/tmp/.local/share
+          -e TEST_OS_SANDBOX=1 -e TEST_DEPLOYMENT_SMOKE=1
+          -e TEST_RESTIC_BINARY=/usr/bin/restic
+          --entrypoint node jky-folder:verification
+          node_modules/vitest/vitest.mjs run --configLoader runner --fsModuleCachePath /tmp/vitest-cache
+          tests/isolation.test.ts tests/offsite.test.ts tests/deployment.test.ts tests/recovery.test.ts
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15

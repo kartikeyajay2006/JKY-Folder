@@ -22,7 +22,9 @@
     "benchmark:run": "tsx server/benchmark-runner.ts",
     "review:approve": "tsx server/reviewer-cli.ts",
     "outbox": "tsx server/outbox.ts",
-    "support": "tsx server/support-cli.ts"
+    "support": "tsx server/support-cli.ts",
+    "backup:offsite": "tsx server/offsite-backup.ts",
+    "readiness": "tsx server/readiness.ts"
   },
   "dependencies": {
     "@fontsource-variable/bodoni-moda": "^5.3.0",

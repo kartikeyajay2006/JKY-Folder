@@ -10,7 +10,7 @@ const flag = (name: string) => {
   const i = args.indexOf('--' + name);
   return i < 0 ? '' : args[i + 1] || '';
 };
-const store = createStore(process.env.DATA_DIR || '.data');
+const store = createStore(process.env.DATA_DIR || '.data', { reconcile: false });
 try {
   if (command === 'prepare-uceed') {
     if (!flag('file')) throw Error('A private dossier output path is required.');
