@@ -92,3 +92,9 @@ it.runIf(!!process.env.TEST_RESTIC_BINARY)(
   },
   300000,
 );
+it('binds repository acknowledgements to the exact configuration', async () => {
+  const { repositoryHash } = await import('../server/offsite-backup');
+  expect(repositoryHash('rest:https://first.example.test')).not.toBe(
+    repositoryHash('rest:https://second.example.test'),
+  );
+});

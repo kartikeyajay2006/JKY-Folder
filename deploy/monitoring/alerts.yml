@@ -65,3 +65,11 @@ groups:
         for: 2m
         labels: { severity: critical }
         annotations: { summary: 'Configured repository has no current acknowledged archive.' }
+      - alert: JkyErasureMirrorPending
+        expr: jky_offsite_enabled == 1 and jky_erasure_ledger_present == 1 and jky_ledger_unmirrored == 1
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          {
+            summary: 'Current erasures have no matching repository acknowledgement; establish the recovery boundary before reopening data.',
+          }

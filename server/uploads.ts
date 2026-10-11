@@ -2,6 +2,7 @@ import express, { type Express, type Request } from 'express';
 import { randomUUID, createHash } from 'node:crypto';
 import { z } from 'zod';
 import type { Store } from './store';
+import { requireStorageCapacity } from './storage-capacity';
 import { limits } from '../shared/limits';
 
 export const CHUNK_BYTES = 512 * 1024;
@@ -161,6 +162,7 @@ export function registerUploads(
         offset + req.body.length > row.meta.size
       )
         throw fail(400, 'Invalid upload chunk.');
+      requireStorageCapacity(store.directory, req.body.length);
       const next = offset + req.body.length;
       // Compare-and-set on the acknowledged offset keeps concurrent retries from duplicating bytes.
       const saved = store.db.transaction(() => {

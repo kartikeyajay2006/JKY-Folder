@@ -44,7 +44,7 @@ jobs:
           -e TEST_RESTIC_BINARY=/usr/bin/restic
           --entrypoint node jky-folder:verification
           node_modules/vitest/vitest.mjs run --configLoader runner --fsModuleCachePath /tmp/vitest-cache
-          tests/isolation.test.ts tests/offsite.test.ts tests/deployment.test.ts tests/recovery.test.ts tests/capacity.test.ts
+          tests/isolation.test.ts tests/offsite.test.ts tests/deployment.test.ts tests/recovery.test.ts tests/capacity.test.ts tests/recovery-rehearsal.test.ts
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15

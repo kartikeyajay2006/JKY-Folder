@@ -30,9 +30,19 @@ export function clamavScanner(host: string, port = 3310, timeoutMs = 60000): Sca
       const finish = (result: ScanResult) => {
         if (done) return;
         done = true;
+        clearTimeout(deadline);
         socket.destroy();
         resolve(result);
       };
+      const deadline = setTimeout(
+        () =>
+          finish({
+            status: 'unavailable',
+            reason: 'The virus scanner exceeded its total time budget.',
+          }),
+        timeoutMs,
+      );
+      let replyBytes = 0;
       const read = () => {
         const text = reply.replace(/\0/g, '').trim();
         if (!text) return;
@@ -49,6 +59,11 @@ export function clamavScanner(host: string, port = 3310, timeoutMs = 60000): Sca
       );
       socket.on('error', (error) => finish({ status: 'unavailable', reason: error.message }));
       socket.on('data', (data) => {
+        replyBytes += data.length;
+        if (replyBytes > 4096) {
+          finish({ status: 'error', reason: 'The virus scanner returned an oversized response.' });
+          return;
+        }
         reply += data.toString();
         if (reply.includes('\0') || reply.includes('\n')) read();
       });

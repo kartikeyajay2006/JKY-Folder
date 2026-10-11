@@ -7,8 +7,32 @@ import Database from 'better-sqlite3';
 import { PDFDocument, StandardFonts } from 'pdf-lib';
 import { validateProductionConfig, verifySandbox } from './runtime-config';
 import { smtpTransport, type MailTransport } from './mail';
-import { remoteRepository, runRestic } from './offsite-backup';
+import { remoteRepository, runRestic, repositoryHash } from './offsite-backup';
 
+export function validArchiveAcknowledgement(
+  receipt: unknown,
+  env: NodeJS.ProcessEnv,
+  now = Date.now(),
+) {
+  if (!receipt || typeof receipt !== 'object') return false;
+  const value = receipt as {
+    repositoryHash?: string;
+    archive?: { completedAt?: string; snapshot?: string };
+  };
+  const age = now - Date.parse(value.archive?.completedAt || '');
+  const interval = Number(env.BACKUP_INTERVAL_HOURS || 24);
+  return (
+    !!env.RESTIC_REPOSITORY &&
+    value.repositoryHash === repositoryHash(env.RESTIC_REPOSITORY) &&
+    /^[a-f0-9]{8,64}$/.test(value.archive?.snapshot || '') &&
+    Number.isFinite(interval) &&
+    interval >= 1 &&
+    interval <= 168 &&
+    Number.isFinite(age) &&
+    age >= -300000 &&
+    age <= interval * 7200000
+  );
+}
 type Check = { id: string; status: 'passed' | 'failed' | 'pending'; detail: string };
 export async function preflight(
   env: NodeJS.ProcessEnv,
@@ -94,15 +118,13 @@ export async function preflight(
   }
   try {
     const receipt = JSON.parse(readFileSync(join(directory, 'offsite-status.json'), 'utf8'));
-    const age = Date.now() - Date.parse(receipt.archive?.completedAt || '');
-    const interval = Number(env.BACKUP_INTERVAL_HOURS || 24);
-    const fresh = Number.isFinite(age) && age >= -300000 && age <= interval * 7200000;
+    const fresh = validArchiveAcknowledgement(receipt, env);
     checks.push({
       id: 'acknowledged_archive',
       status: fresh ? 'passed' : 'failed',
       detail: fresh
         ? 'Repository acknowledgement is within twice the configured backup interval.'
-        : 'The acknowledged archive is stale or its timestamp is invalid.',
+        : 'The acknowledgement is stale, belongs to another repository or has an invalid snapshot/timestamp.',
     });
   } catch {
     checks.push({

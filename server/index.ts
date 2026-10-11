@@ -45,6 +45,7 @@ const runtime = createApp({
     backupDir: process.env.BACKUP_DIR,
     backupHours: Number(process.env.BACKUP_INTERVAL_HOURS || 24),
     offsite: !!process.env.RESTIC_REPOSITORY,
+    repository: process.env.RESTIC_REPOSITORY,
   },
 });
 /** TRUST_PROXY: a hop count such as 1 (most hosts), or an Express value such as "loopback". */

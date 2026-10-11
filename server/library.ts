@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { z } from 'zod';
 import type { Express, Request } from 'express';
 import type { Store } from './store';
+import { requireStorageCapacity } from './storage-capacity';
 import { limits } from '../shared/limits';
 import { classifyDocument } from '../shared/classify';
 import type { DocumentRecord, LibraryDocument, Packet } from '../shared/model';
@@ -131,6 +132,10 @@ export function registerLibrary(
       delete doc.derivedFrom;
       attached.push({ doc, key: randomUUID(), from: source.objectKey });
     }
+    requireStorageCapacity(
+      store.directory,
+      attached.reduce((sum, item) => sum + item.doc.size, 0),
+    );
     // Everything is validated before any bytes are copied.
     try {
       for (const { key, from } of attached)

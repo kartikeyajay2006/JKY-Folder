@@ -4,14 +4,16 @@ import {
   mkdirSync,
   readFileSync,
   writeFileSync,
-  renameSync,
   statSync,
   openSync,
   readSync,
   closeSync,
 } from 'node:fs';
 import { join, resolve } from 'node:path';
-import { randomUUID } from 'node:crypto';
+import { createHash } from 'node:crypto';
+import { writeOperationalState } from './operational-state';
+export const repositoryHash = (repository: string) =>
+  createHash('sha256').update(repository).digest('hex');
 import { fileURLToPath } from 'node:url';
 import { loadEnvFile } from 'node:process';
 
@@ -86,20 +88,20 @@ export function createOffsiteBackup(dataDir: string, env: NodeJS.ProcessEnv = pr
   let busy = false,
     mirroredStamp = '',
     stopped = false;
-  function receipt(kind: 'archive' | 'ledger', snapshot: string) {
+  function receipt(
+    kind: 'archive' | 'ledger',
+    snapshot: string,
+    details: Record<string, unknown> = {},
+  ) {
     const file = join(directory, 'offsite-status.json');
-    const previous = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
-    const temp = file + '.' + randomUUID();
-    writeFileSync(
-      temp,
-      JSON.stringify({
-        ...previous,
-        [kind]: { snapshot, completedAt: new Date().toISOString() },
-        remote: remoteRepository(env.RESTIC_REPOSITORY!),
-      }),
-      { mode: 0o600, flag: 'wx' },
-    );
-    renameSync(temp, file);
+    const stored = existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : {};
+    const previous = stored.repositoryHash === repositoryHash(env.RESTIC_REPOSITORY!) ? stored : {};
+    writeOperationalState(file, {
+      ...previous,
+      [kind]: { snapshot, completedAt: new Date().toISOString(), ...details },
+      repositoryHash: repositoryHash(env.RESTIC_REPOSITORY!),
+      remote: remoteRepository(env.RESTIC_REPOSITORY!),
+    });
   }
   async function snapshot(files: string[], tag: string) {
     const output = await runRestic(
@@ -115,15 +117,28 @@ export function createOffsiteBackup(dataDir: string, env: NodeJS.ProcessEnv = pr
       throw Error('Off-site backup returned no verifiable snapshot identifier.');
     return summary.snapshot_id as string;
   }
-  async function mirrorLedger() {
-    if (busy || stopped || !existsSync(ledger)) return;
+  let chain = Promise.resolve();
+  function serial<T>(action: () => Promise<T>) {
+    const run = chain.then(action);
+    chain = run.then(
+      () => {},
+      () => {},
+    );
+    return run;
+  }
+  async function mirrorLedger(): Promise<void> {
+    if (stopped || !existsSync(ledger)) return;
+    if (busy) return chain.then(() => mirrorLedger());
     const stat = statSync(ledger),
       stamp = `${stat.size}:${stat.mtimeMs}`;
     if (stamp === mirroredStamp) return;
     busy = true;
     try {
-      const id = await snapshot([ledger], 'jky-erasure-ledger');
-      receipt('ledger', id);
+      await serial(async () => {
+        if (stopped) return;
+        const id = await snapshot([ledger], 'jky-erasure-ledger');
+        receipt('ledger', id, { stamp });
+      });
       mirroredStamp = stamp;
     } finally {
       busy = false;
@@ -143,12 +158,15 @@ export function createOffsiteBackup(dataDir: string, env: NodeJS.ProcessEnv = pr
       } finally {
         closeSync(descriptor);
       }
-      const id = await snapshot(
-        [resolve(file), ...(existsSync(ledger) ? [ledger] : [])],
-        'jky-archive',
-      );
-      receipt('archive', id);
-      return id;
+      return serial(async () => {
+        if (stopped) throw Error('Repository service stopped.');
+        const id = await snapshot(
+          [resolve(file), ...(existsSync(ledger) ? [ledger] : [])],
+          'jky-archive',
+        );
+        receipt('archive', id, { archivePath: resolve(file) });
+        return id;
+      });
     },
     mirrorLedger,
     stop() {

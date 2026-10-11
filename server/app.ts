@@ -26,6 +26,7 @@ import { registerUploads } from './uploads';
 import { registerInstructionDrafts } from './instruction-drafts';
 import { startJobs } from './jobs';
 import { createMonitoring } from './monitoring';
+import { requireStorageCapacity, StorageCapacityError } from './storage-capacity';
 import type { InspectionMode } from './inspection';
 import { seedDemo } from './demo';
 import { packs, findPack } from '../shared/packs';
@@ -111,7 +112,13 @@ export function createApp(options: {
   /** Scans every upload before inspection (ClamAV in production). */
   scan?: Scanner;
   inspectionMode?: InspectionMode;
-  monitoring?: { token?: string; backupDir?: string; backupHours?: number; offsite?: boolean };
+  monitoring?: {
+    token?: string;
+    backupDir?: string;
+    backupHours?: number;
+    offsite?: boolean;
+    repository?: string;
+  };
   /** Express "trust proxy" setting when running behind a hosting proxy or load balancer. */
   trustProxy?: number | string;
 }) {
@@ -1047,6 +1054,7 @@ export function createApp(options: {
       );
     const id = randomUUID(),
       key = randomUUID();
+    requireStorageCapacity(store.directory, file.size);
     writeFileSync(join(store.objects, key), file.buffer, { mode: 0o600 });
     const doc: DocumentRecord = {
       id,
@@ -1474,6 +1482,11 @@ export function createApp(options: {
             ? `This release supports files up to ${limits.fileBytes / 1024 / 1024} MB.`
             : 'Upload exactly one file at a time.',
       });
+    if (
+      error instanceof StorageCapacityError ||
+      ['ENOSPC', 'SQLITE_FULL'].includes((error as { code?: string }).code || '')
+    )
+      return res.status(507).json({ error: new StorageCapacityError().message });
     if (error instanceof HttpError) return res.status(error.status).json({ error: error.message });
     if (error instanceof SyntaxError)
       return res.status(400).json({ error: 'The request body is not valid JSON.' });

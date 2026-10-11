@@ -26,7 +26,8 @@
     "backup:offsite": "tsx server/offsite-backup.ts",
     "readiness": "tsx server/readiness.ts",
     "capacity": "tsx server/capacity.ts",
-    "launch:evidence": "tsx server/launch-evidence.ts"
+    "launch:evidence": "tsx server/launch-evidence.ts",
+    "recovery:rehearse": "tsx server/recovery-rehearsal.ts"
   },
   "dependencies": {
     "@fontsource-variable/bodoni-moda": "^5.3.0",

@@ -78,3 +78,29 @@ it('distinguishes missing, successful, stale and failed recovery evidence', () =
   expect(metrics).toContain('jky_inspection_duration_seconds_count{method="ocr"} 1');
   expect(metrics).toContain('event="scan_unavailable"} 1');
 });
+it('alerts on unmirrored erasures but does not treat an unchanged old ledger as a new failure', async () => {
+  const runtime = fixture(),
+    directory = runtime.store.directory;
+  runtime.store.recordDeletion('account', 'synthetic-absent');
+  const { statSync } = await import('node:fs');
+  const stat = statSync(join(directory, 'deletions.jsonl'));
+  const { repositoryHash } = await import('../server/offsite-backup');
+  const repository = 'rest:https://synthetic.example.test';
+  const monitor = createMonitoring(runtime.store, {
+    offsite: true,
+    repository,
+    sampleProcess: false,
+  });
+  close.push(monitor.stop);
+  expect(monitor.render()).toContain('jky_ledger_unmirrored 1');
+  writeFileSync(
+    join(directory, 'offsite-status.json'),
+    JSON.stringify({
+      repositoryHash: repositoryHash(repository),
+      ledger: { stamp: `${stat.size}:${stat.mtimeMs}`, completedAt: '2020-01-01T00:00:00Z' },
+    }),
+  );
+  expect(monitor.render()).toContain('jky_ledger_unmirrored 0');
+  runtime.store.recordDeletion('account', 'synthetic-new-erasure');
+  expect(monitor.render()).toContain('jky_ledger_unmirrored 1');
+});

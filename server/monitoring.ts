@@ -5,6 +5,8 @@ import { monitorEventLoopDelay } from 'node:perf_hooks';
 import type { Express, RequestHandler } from 'express';
 import type { Store } from './store';
 import { rateLimit } from 'express-rate-limit';
+import { statSync } from 'node:fs';
+import { repositoryHash } from './offsite-backup';
 
 export type OperationalEvent =
   | 'scan_clean'
@@ -70,6 +72,7 @@ export function createMonitoring(
     backupDir?: string;
     backupHours?: number;
     offsite?: boolean;
+    repository?: string;
     scanner?: boolean;
     sampleProcess?: boolean;
   } = {},
@@ -226,12 +229,14 @@ export function createMonitoring(
       }),
     );
     let backup: Record<string, unknown> = {},
-      offsite: Record<string, { completedAt?: string }> = {};
+      offsite: Record<string, { completedAt?: string; stamp?: string }> = {};
     try {
       backup = JSON.parse(readFileSync(join(store.directory, 'backup-status.json'), 'utf8'));
     } catch {}
     try {
-      offsite = JSON.parse(readFileSync(join(store.directory, 'offsite-status.json'), 'utf8'));
+      const stored = JSON.parse(readFileSync(join(store.directory, 'offsite-status.json'), 'utf8'));
+      if (options.repository && stored.repositoryHash === repositoryHash(options.repository))
+        offsite = stored;
     } catch {}
     metric('jky_backup_enabled', 'Whether scheduled backups are configured.', [
       ['', options.backupDir ? 1 : 0],
@@ -262,6 +267,16 @@ export function createMonitoring(
       'Age of last ledger acknowledgement; -1 means missing.',
       [['', age(offsite.ledger?.completedAt, now)]],
     );
+    let ledgerPending = 0;
+    try {
+      const stat = statSync(join(store.directory, 'deletions.jsonl'));
+      ledgerPending = offsite.ledger?.stamp === `${stat.size}:${stat.mtimeMs}` ? 0 : 1;
+    } catch {}
+    metric(
+      'jky_ledger_unmirrored',
+      'Whether current erasures lack a matching repository acknowledgement.',
+      [['', ledgerPending]],
+    );
     metric('jky_erasure_ledger_present', 'Whether a local erasure ledger exists.', [
       ['', existsSync(join(store.directory, 'deletions.jsonl')) ? 1 : 0],
     ]);
@@ -273,7 +288,7 @@ export function createMonitoring(
   function routes(app: Express) {
     app.get(
       '/api/ops/metrics',
-      rateLimit({ windowMs: 60000, limit: 30, standardHeaders: false, legacyHeaders: false }),
+      rateLimit({ windowMs: 60000, limit: 120, standardHeaders: false, legacyHeaders: false }),
       (req, res) => {
         if (!options.token) {
           res.status(404).end();
