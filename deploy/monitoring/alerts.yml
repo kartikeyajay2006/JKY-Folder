@@ -1,0 +1,67 @@
+groups:
+  - name: jky-service
+    rules:
+      - alert: JkyRuntimeUnavailable
+        expr: up{job="jky-folder"} == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          {
+            summary: 'JKY runtime or authenticated metrics unavailable; check API and scrape credentials.',
+          }
+      - alert: JkyApiErrors
+        expr: sum(rate(jky_http_requests_total{status="5xx"}[5m])) > 0.02
+        for: 3m
+        labels: { severity: critical }
+        annotations: { summary: 'JKY API repeatedly returns server errors.' }
+      - alert: JkyScannerUnavailable
+        expr: increase(jky_operations_total{event="scan_unavailable"}[5m]) > 0
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: 'Virus scanner unavailable; uploads remain queued.' }
+      - alert: JkyInspectionFailures
+        expr: increase(jky_operations_total{event=~"inspection_error|inspection_exception"}[10m]) > 3
+        labels: { severity: warning }
+        annotations: { summary: 'Repeated inspection failures; check bounded worker outcomes.' }
+      - alert: JkyInspectionBacklog
+        expr: jky_inspections{status="queued"} > 20
+        for: 5m
+        labels: { severity: warning }
+        annotations: { summary: 'Inspection backlog exceeds the initial single-worker threshold.' }
+      - alert: JkyMailFailure
+        expr: jky_mail_queue{status="failed"} > 0 or jky_mail_overdue_seconds > 600
+        for: 2m
+        labels: { severity: warning }
+        annotations:
+          { summary: 'Email delivery failed or is overdue; inspect transport and queue privately.' }
+      - alert: JkyPushFailures
+        expr: increase(jky_operations_total{event="push_failed"}[10m]) > 3
+        labels: { severity: warning }
+        annotations:
+          { summary: 'Repeated push provider failures; real-device receipt is separate evidence.' }
+      - alert: JkyDiskLow
+        expr: jky_disk_available_bytes < 1073741824
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: 'Service storage is unavailable or has less than 1 GiB free.' }
+      - alert: JkyEventLoopStalled
+        expr: jky_event_loop_p99_seconds > 0.5
+        for: 3m
+        labels: { severity: warning }
+        annotations: { summary: 'API event loop delay exceeds the initial latency budget.' }
+      - alert: JkyBackupFailed
+        expr: jky_backup_enabled == 1 and jky_backup_last_attempt_failed == 1
+        for: 1m
+        labels: { severity: critical }
+        annotations:
+          { summary: 'Scheduled backup or repository upload failed; local archives are retained.' }
+      - alert: JkyBackupStale
+        expr: (jky_backup_enabled == 1 and jky_backup_success_age_seconds < 0 and jky_uptime_seconds > 300) or (jky_backup_enabled == 1 and jky_backup_success_age_seconds > 2 * jky_backup_interval_seconds)
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: 'No current successful scheduled backup acknowledgement.' }
+      - alert: JkyRepositoryStale
+        expr: (jky_offsite_enabled == 1 and jky_offsite_archive_age_seconds < 0 and jky_uptime_seconds > 300) or (jky_offsite_enabled == 1 and jky_offsite_archive_age_seconds > 2 * jky_backup_interval_seconds)
+        for: 2m
+        labels: { severity: critical }
+        annotations: { summary: 'Configured repository has no current acknowledged archive.' }

@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import type { Express, Request } from 'express';
 import type { Store } from './store';
+import type { OperationalObserver } from './monitoring';
 import { refreshReminders } from './reminders';
 import type { Reminder } from '../shared/model';
 import {
@@ -48,7 +49,12 @@ export function pushMessage(reminder: Pick<Reminder, 'kind' | 'packetId' | 'id'>
 
 export function createPushService(
   store: Store,
-  options: { dataDir: string; background?: boolean; send?: PushSender },
+  options: {
+    dataDir: string;
+    background?: boolean;
+    send?: PushSender;
+    observe?: OperationalObserver;
+  },
 ) {
   store.db
     .exec(`CREATE TABLE IF NOT EXISTS push_subscriptions(id TEXT PRIMARY KEY,userId TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,endpoint TEXT NOT NULL UNIQUE,p256dh TEXT NOT NULL,auth TEXT NOT NULL,createdAt TEXT NOT NULL,failures INTEGER NOT NULL DEFAULT 0);
@@ -73,14 +79,17 @@ export function createPushService(
       status = 0;
     }
     if (status === 404 || status === 410) {
+      options.observe?.('push_revoked');
       // The browser revoked this subscription; forget it.
       store.db.prepare('DELETE FROM push_subscriptions WHERE id=?').run(device.id);
       return false;
     }
     if (status >= 200 && status < 300) {
+      options.observe?.('push_sent');
       store.db.prepare('UPDATE push_subscriptions SET failures=0 WHERE id=?').run(device.id);
       return true;
     }
+    options.observe?.('push_failed');
     const failures = device.failures + 1;
     if (failures >= 5) store.db.prepare('DELETE FROM push_subscriptions WHERE id=?').run(device.id);
     else

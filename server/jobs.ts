@@ -5,6 +5,7 @@ import { existsSync, unlinkSync } from 'node:fs';
 import { extractFacts } from '../shared/facts';
 import type { Store } from './store';
 import type { Scanner } from './scan';
+import type { OperationalObserver } from './monitoring';
 import type { DocumentRecord, Packet } from '../shared/model';
 type Outcome = InspectionOutcome;
 /**
@@ -12,7 +13,12 @@ type Outcome = InspectionOutcome;
  * scanned first: infected files are deleted unopened, and while the scanner is unreachable
  * files wait in the queue rather than reaching a parser unscanned.
  */
-export function startJobs(store: Store, scan?: Scanner, mode: InspectionMode = 'process') {
+export function startJobs(
+  store: Store,
+  scan?: Scanner,
+  mode: InspectionMode = 'process',
+  observe?: OperationalObserver,
+) {
   let running = false,
     stopped = false,
     pausedUntil = 0,
@@ -28,6 +34,7 @@ export function startJobs(store: Store, scan?: Scanner, mode: InspectionMode = '
       )
       .get() as { id: string; packetId: string; objectKey: string; payload: string } | undefined;
     if (!row) return;
+    const begin = performance.now();
     running = true;
     store.db.prepare("UPDATE jobs SET status='processing' WHERE id=?").run(row.id);
     try {
@@ -37,6 +44,7 @@ export function startJobs(store: Store, scan?: Scanner, mode: InspectionMode = '
         screened = { ok: false, error: 'The stored file is missing. Delete it and upload again.' };
       else if (scan) {
         const verdict = await scan(file);
+        observe?.(`scan_${verdict.status}`);
         if (stopped) return;
         if (verdict.status === 'unavailable') {
           console.error('scan.unavailable');
@@ -77,6 +85,11 @@ export function startJobs(store: Store, scan?: Scanner, mode: InspectionMode = '
           },
         }));
       if (stopped) return;
+      observe?.(
+        result.ok ? 'inspection_ready' : 'inspection_error',
+        (performance.now() - begin) / 1000,
+        result.result?.pages?.some((p) => p.method === 'ocr'),
+      );
       store.db.transaction(() => {
         const current = store.db
           .prepare('SELECT payload FROM documents WHERE id=? AND packetId=?')
@@ -107,6 +120,7 @@ export function startJobs(store: Store, scan?: Scanner, mode: InspectionMode = '
       })();
     } catch {
       if (!stopped) {
+        observe?.('inspection_exception');
         console.error('inspection.failed');
         store.db.prepare("UPDATE jobs SET status='queued' WHERE id=?").run(row.id);
         pausedUntil = Date.now() + 30000;

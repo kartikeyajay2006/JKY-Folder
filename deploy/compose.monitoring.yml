@@ -1,0 +1,41 @@
+# Use with the base Compose and the actual host security override when needed.
+services:
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 512m
+    pids_limit: 64
+    command:
+      [
+        '--config.file=/etc/prometheus/prometheus.yml',
+        '--storage.tsdb.path=/prometheus',
+        '--storage.tsdb.retention.time=7d',
+        '--storage.tsdb.retention.size=512MB',
+      ]
+    volumes:
+      - ./deploy/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./deploy/monitoring/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - jky-metrics:/prometheus
+    secrets: [monitor_token]
+    ports: ['127.0.0.1:9090:9090']
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    pids_limit: 32
+    volumes:
+      - ./deploy/monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - jky-alerts:/alertmanager
+    ports: ['127.0.0.1:9093:9093']
+secrets:
+  monitor_token:
+    file: ${MONITOR_TOKEN_FILE:?Set MONITOR_TOKEN_FILE to a private token file}
+volumes:
+  jky-metrics:
+  jky-alerts:

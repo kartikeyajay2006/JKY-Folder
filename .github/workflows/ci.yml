@@ -15,6 +15,10 @@ jobs:
           persist-credentials: false
       - name: Load confined namespace host policy
         run: sudo apparmor_parser -r -W deploy/jky-parser-host.apparmor
+      - name: Validate monitoring rules and failure cases
+        run: |
+          docker run --rm --network none --entrypoint promtool -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 check rules /etc/prometheus/alerts.yml
+          docker run --rm --network none --entrypoint promtool -w /etc/prometheus -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 test rules alerts.test.yml
       - name: Build production image
         run: docker build -t jky-folder:verification .
       - name: Exercise sandbox, repository recovery and production intake

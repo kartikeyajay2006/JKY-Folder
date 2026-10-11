@@ -25,6 +25,7 @@ import type { MailTransport } from './mail';
 import { registerUploads } from './uploads';
 import { registerInstructionDrafts } from './instruction-drafts';
 import { startJobs } from './jobs';
+import { createMonitoring } from './monitoring';
 import type { InspectionMode } from './inspection';
 import { seedDemo } from './demo';
 import { packs, findPack } from '../shared/packs';
@@ -110,11 +111,14 @@ export function createApp(options: {
   /** Scans every upload before inspection (ClamAV in production). */
   scan?: Scanner;
   inspectionMode?: InspectionMode;
+  monitoring?: { token?: string; backupDir?: string; backupHours?: number; offsite?: boolean };
   /** Express "trust proxy" setting when running behind a hosting proxy or load balancer. */
   trustProxy?: number | string;
 }) {
   const store = createStore(resolve(options.dataDir));
+  const monitoring = createMonitoring(store, { ...options.monitoring, scanner: !!options.scan });
   const pushService = createPushService(store, {
+    observe: monitoring.event,
     dataDir: resolve(options.dataDir),
     background: options.background !== false,
     send: options.push,
@@ -136,6 +140,7 @@ export function createApp(options: {
     options.mail,
     options.origin || 'http://localhost:5173',
     options.background !== false,
+    monitoring.event,
   );
   const guardian = createGuardianService(store, {
     origin: options.origin || 'http://localhost:5173',
@@ -168,6 +173,8 @@ export function createApp(options: {
     res.setHeader('Cache-Control', 'no-store');
     next();
   });
+  app.use(monitoring.middleware);
+  monitoring.routes(app);
   app.use(
     '/api',
     // Signed-in requests are limited per session, so students sharing one college or hostel
@@ -1478,7 +1485,7 @@ export function createApp(options: {
   const stopJobs =
     options.jobs === false
       ? Object.assign(() => {}, { isIdle: () => true })
-      : startJobs(store, options.scan, options.inspectionMode);
+      : startJobs(store, options.scan, options.inspectionMode, monitoring.event);
   function expireDemo() {
     sweepUploads();
     guardian.sweep();
@@ -1508,6 +1515,7 @@ export function createApp(options: {
     guardian,
     close: () => {
       clearInterval(cleanup);
+      monitoring.stop();
       stopJobs();
       mailService.stop();
       pushService.stop();

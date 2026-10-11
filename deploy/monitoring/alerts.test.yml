@@ -1,0 +1,52 @@
+rule_files: [alerts.yml]
+evaluation_interval: 1m
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'up{job="jky-folder"}'
+        values: '0+0x5'
+    alert_rule_test:
+      - eval_time: 3m
+        alertname: JkyRuntimeUnavailable
+        exp_alerts:
+          - exp_labels: { job: jky-folder, severity: critical }
+            exp_annotations:
+              {
+                summary: 'JKY runtime or authenticated metrics unavailable; check API and scrape credentials.',
+              }
+  - interval: 1m
+    input_series:
+      - series: jky_backup_enabled
+        values: '1+0x9'
+      - series: jky_backup_success_age_seconds
+        values: '-1+0x9'
+      - series: jky_uptime_seconds
+        values: '0+60x9'
+    alert_rule_test:
+      - eval_time: 4m
+        alertname: JkyBackupStale
+        exp_alerts: []
+      - eval_time: 8m
+        alertname: JkyBackupStale
+        exp_alerts:
+          - exp_labels: { severity: critical }
+            exp_annotations: { summary: 'No current successful scheduled backup acknowledgement.' }
+  - interval: 1m
+    input_series:
+      - series: 'up{job="jky-folder"}'
+        values: '1+0x10'
+      - series: jky_backup_enabled
+        values: '1+0x10'
+      - series: jky_backup_success_age_seconds
+        values: '60+60x10'
+      - series: jky_backup_interval_seconds
+        values: '3600+0x10'
+      - series: jky_uptime_seconds
+        values: '0+60x10'
+    alert_rule_test:
+      - eval_time: 10m
+        alertname: JkyRuntimeUnavailable
+        exp_alerts: []
+      - eval_time: 10m
+        alertname: JkyBackupStale
+        exp_alerts: []

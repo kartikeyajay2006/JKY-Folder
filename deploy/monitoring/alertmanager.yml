@@ -1,0 +1,10 @@
+# Local evidence only. Configure and test an accountable on-call receiver before launch.
+# The empty receiver deliberately sends no mail or external webhook.
+route:
+  receiver: local-review
+  group_by: [alertname]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+receivers:
+  - name: local-review

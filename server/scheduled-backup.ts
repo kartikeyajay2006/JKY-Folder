@@ -1,7 +1,8 @@
-import { mkdirSync, readdirSync, unlinkSync } from 'node:fs';
+import { mkdirSync, readdirSync, unlinkSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { backup } from './backup';
 import { createOffsiteBackup } from './offsite-backup';
+import { writeOperationalState } from './operational-state';
 
 const NAME = /^jky-\d{8}-\d{6}\.jkyback$/;
 export const backupName = (now = new Date()) =>
@@ -53,9 +54,24 @@ export function startScheduledBackups(options: {
       await backup(options.dataDir, archive, options.password);
       await offsite?.upload(archive);
       pruneBackups(options.directory, options.keep);
+      writeOperationalState(join(options.dataDir, 'backup-status.json'), {
+        status: 'completed',
+        completedAt: new Date().toISOString(),
+      });
       console.log('backup.completed');
     } catch {
       // A document deleted mid-backup fails the integrity check; the next run retries.
+      try {
+        let previous: { completedAt?: string } = {};
+        try {
+          previous = JSON.parse(readFileSync(join(options.dataDir, 'backup-status.json'), 'utf8'));
+        } catch {}
+        writeOperationalState(join(options.dataDir, 'backup-status.json'), {
+          status: 'failed',
+          completedAt: previous.completedAt,
+          failedAt: new Date().toISOString(),
+        });
+      } catch {}
       console.error('backup.failed');
     } finally {
       busy = false;

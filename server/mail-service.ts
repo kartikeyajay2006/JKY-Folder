@@ -4,6 +4,7 @@ import { z } from 'zod';
 import type { Express, Request, RequestHandler } from 'express';
 import type { Store } from './store';
 import type { MailTransport } from './mail';
+import type { OperationalObserver } from './monitoring';
 import { preferences, refreshReminders } from './reminders';
 import { limits } from '../shared/limits';
 import type { Packet, Reminder } from '../shared/model';
@@ -31,6 +32,7 @@ export function createMailService(
   transport: MailTransport | undefined,
   origin: string,
   background = true,
+  observe?: OperationalObserver,
 ) {
   const url = new URL(origin);
   if (
@@ -221,6 +223,7 @@ export function createMailService(
             messageId: `<jky-${hash(row.id)}-${row.attempts + 1}@${url.hostname}>`,
           });
           if (stopped) return;
+          observe?.('mail_sent');
           store.db
             .prepare("UPDATE mail_queue SET status='sent',payload=?,leaseUntil=0 WHERE id=?")
             .run(
@@ -232,6 +235,7 @@ export function createMailService(
             );
         } catch {
           if (stopped) return;
+          observe?.('mail_failed');
           // A retry uses a new link. Never persist raw bearer tokens or message bodies.
           if (tokenHash) store.db.prepare('DELETE FROM account_tokens WHERE hash=?').run(tokenHash);
           const attempts = row.attempts + 1;
