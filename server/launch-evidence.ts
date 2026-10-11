@@ -138,13 +138,14 @@ const publicFingerprint = (key: ReturnType<typeof createPublicKey>) =>
 const message = (hash: string) => Buffer.from('JKY external launch assessment v1\n' + hash);
 export function softwareHash(directory = root) {
   const files: string[] = [];
-  for (const folder of ['server', 'shared', 'src', 'deploy']) {
+  for (const folder of ['server', 'shared', 'src', 'deploy', 'public', 'dist']) {
     const scan = (path: string) => {
       for (const e of readdirSync(path, { withFileTypes: true })) {
         const full = join(path, e.name);
         if (e.isDirectory()) scan(full);
-        else if (e.isFile() && /\.(ts|tsx|mjs|js|css|json|ya?ml|apparmor)$/.test(e.name))
-          files.push(full);
+        else if (e.isFile()) files.push(full);
+        else if (e.isSymbolicLink())
+          throw Error('Symbolic links are unsupported in the frozen software tree.');
       }
     };
     scan(join(directory, folder));
@@ -155,6 +156,8 @@ export function softwareHash(directory = root) {
     'Dockerfile',
     'docker-compose.yml',
     'index.html',
+    'vite.config.ts',
+    'tsconfig.json',
   ])
     files.push(join(directory, file));
   const hash = createHash('sha256');
@@ -180,6 +183,7 @@ const environmentSchema = z
       );
     }, 'Use an HTTPS origin without credentials or paths.'),
     hostPolicyHash: HASH,
+    imageDigest: HASH,
     storageDescription: z.string().trim().min(20).max(1000),
     repositoryDescription: z.string().trim().min(20).max(1000),
     scannerVersion: z.string().trim().min(2).max(120),

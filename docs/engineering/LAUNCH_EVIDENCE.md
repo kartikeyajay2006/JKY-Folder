@@ -4,13 +4,13 @@ The current application does not claim public readiness from automated test succ
 
 ## Freeze the scope
 
-Create a private, non-secret environment JSON with these exact fields: `deploymentId`, HTTPS `origin`, `hostPolicyHash` (SHA-256 of the actual reviewed host policy), `storageDescription`, `repositoryDescription`, `scannerVersion`, `smtpProvider`, and `pushBrowsers` (browser/OS descriptions). Descriptions must identify the environment, not contain credentials. No password/token fields are accepted. Use the actual release checkout:
+Create a private, non-secret environment JSON with these exact fields: `deploymentId`, HTTPS `origin`, `imageDigest` (SHA-256 of the deployed image), `hostPolicyHash` (SHA-256 of the actual reviewed host policy), `storageDescription`, `repositoryDescription`, `scannerVersion`, `smtpProvider`, and `pushBrowsers` (browser/OS descriptions). Descriptions must identify the environment, not contain credentials. No password/token fields are accepted. Build the frontend (`npm run build`) and use the actual release checkout:
 
 ```sh
 npm run launch:evidence -- target /private/environment.json /private/target.json
 ```
 
-The target binds the Git commit, a content hash of software/dependency/deployment files, and the non-secret environment hash. The report CLI checks the current software hash. Changes to software or environment invalidate older assessment scopes; obtain a new review rather than editing signed evidence. For a Docker checkout without Git metadata, set `RELEASE_COMMIT` to the actual image build commit. This value identifies the release; content hashes independently bind the files.
+The target binds the Git commit, a content hash of software/dependency/deployment files, public assets and the built frontend, and the non-secret environment hash. The report CLI checks the current software hash. Changes to software or environment invalidate older assessment scopes; obtain a new review rather than editing signed evidence. For a Docker checkout without Git metadata, set `RELEASE_COMMIT` to the actual image build commit. This value identifies the release; content hashes independently bind the files.
 
 ## Outside assessment records
 

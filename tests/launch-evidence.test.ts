@@ -172,3 +172,30 @@ it('keeps launch pending even when one external gate has an independently signed
     launchReport(f.store, f.target, { packId: 'x', packVersion: 'x', assessments: [{}] }),
   ).toThrow('Malformed');
 });
+it('binds public cache policy, compiled frontend and extensionless host configuration bytes', async () => {
+  const { softwareHash } = await import('../server/launch-evidence');
+  const { mkdirSync } = await import('node:fs');
+  const dir = mkdtempSync(join(tmpdir(), 'jky-software-scope-'));
+  dirs.push(dir);
+  for (const folder of ['server', 'shared', 'src', 'deploy', 'public', 'dist'])
+    mkdirSync(join(dir, folder));
+  for (const file of [
+    'package.json',
+    'package-lock.json',
+    'Dockerfile',
+    'docker-compose.yml',
+    'index.html',
+    'vite.config.ts',
+    'tsconfig.json',
+  ])
+    writeFileSync(join(dir, file), 'synthetic fixture');
+  for (const file of ['public/sw.js', 'dist/index.js', 'deploy/Caddyfile'])
+    writeFileSync(join(dir, file), 'original');
+  let previous = softwareHash(dir);
+  for (const file of ['public/sw.js', 'dist/index.js', 'deploy/Caddyfile']) {
+    writeFileSync(join(dir, file), 'changed');
+    const next = softwareHash(dir);
+    expect(next).not.toBe(previous);
+    previous = next;
+  }
+});

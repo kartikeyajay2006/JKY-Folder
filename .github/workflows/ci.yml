@@ -17,8 +17,8 @@ jobs:
         run: sudo apparmor_parser -r -W deploy/jky-parser-host.apparmor
       - name: Validate monitoring rules and failure cases
         run: |
-          docker run --rm --network none --entrypoint promtool -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 check rules /etc/prometheus/alerts.yml
-          docker run --rm --network none --entrypoint promtool -w /etc/prometheus -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 test rules alerts.test.yml
+          docker run --rm --network none --entrypoint promtool -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e check rules /etc/prometheus/alerts.yml
+          docker run --rm --network none --entrypoint promtool -w /etc/prometheus -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e test rules alerts.test.yml
       - name: Build production image
         run: docker build -t jky-folder:verification .
       - name: Measure concurrent PDF and OCR capacity
@@ -59,6 +59,11 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npx playwright install --with-deps chromium
+      - name: Exercise local alert firing and recovery delivery
+        run: |
+          docker pull prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
+          docker pull prom/alertmanager:v0.34.1@sha256:e9733bafb1bdef9b00e25a21f8f99dc26a22224bf16641ad754d1649f4c3357a
+          npm run monitoring:drill
       - run: npm run test:e2e
       - name: Save browser failure evidence
         if: failure()

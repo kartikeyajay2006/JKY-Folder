@@ -1,7 +1,7 @@
 # Use with the base Compose and the actual host security override when needed.
 services:
   prometheus:
-    image: prom/prometheus:v3.5.0
+    image: prom/prometheus:v3.15.0@sha256:efd719c99d83b060d9daefdcf00360461adf279f45ef5391f8d111892118753e
     restart: unless-stopped
     read_only: true
     cap_drop: [ALL]
@@ -22,7 +22,7 @@ services:
     secrets: [monitor_token]
     ports: ['127.0.0.1:9090:9090']
   alertmanager:
-    image: prom/alertmanager:v0.28.1
+    image: prom/alertmanager:v0.34.1@sha256:e9733bafb1bdef9b00e25a21f8f99dc26a22224bf16641ad754d1649f4c3357a
     restart: unless-stopped
     read_only: true
     cap_drop: [ALL]

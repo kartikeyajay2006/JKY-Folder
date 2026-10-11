@@ -12,10 +12,10 @@ Validate rules locally with the pinned tooling used in CI:
 
 ```sh
 docker run --rm --network none --entrypoint promtool \
-  -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 \
+  -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.15.0 \
   check rules /etc/prometheus/alerts.yml
 docker run --rm --network none --entrypoint promtool -w /etc/prometheus \
-  -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 \
+  -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.15.0 \
   test rules alerts.test.yml
 ```
 
@@ -26,3 +26,11 @@ docker run --rm --network none --entrypoint promtool -w /etc/prometheus \
 Reports include upload response and queued inspection latency by document kind (p50/p95/max), documents per minute, observed API and process-tree RSS, workspace bytes, free space and enclosing cgroup CPU/memory ceilings. RSS sampling runs every 50 ms and can miss short peaks; summing process RSS double-counts shared pages. Host RAM/CPU information is context, not a claim about container limits. Synthetic OCR and a scanner protocol fixture do not measure representative uploads or the real ClamAV engine.
 
 Run the same command inside the restricted production image, with the [sandbox limits](../../deploy/SANDBOX.md), as `node_modules/tsx/dist/cli.mjs server/capacity.ts --sandbox --concurrency 3 --rounds 3 --out /tmp/capacity.json`. Capture the report privately before removing the container. For each actual deployment, agree acceptable upload/inspection p95, maximum queue delay and recovery targets first. Repeat at rising concurrency with consented synthetic equivalents of realistic page counts/file sizes; record the exact release and host policy. Saturation must produce queued or explicit error states rather than successful checks. Do not extrapolate this small baseline to unlimited traffic or multiple runtimes.
+
+## Actual local alert-delivery drill
+
+With Docker available, pull the pinned `prom/prometheus:v3.15.0` and `prom/alertmanager:v0.34.1` images, then run `npm run monitoring:drill -- --out /private/alert-drill.json`. The tool creates a disposable app, metrics credential, private configuration and two named monitoring containers. Containers use host networking solely to reach loopback fixtures; their web listeners and the webhook receiver bind loopback, clustering is disabled, capabilities are dropped and the root filesystem is read-only. Production Compose keeps its separate network configuration.
+
+The drill stops/restarts the real HTTP listener, injects backup failure state and queues a real synthetic original against an unavailable scanner fixture. It requires firing and resolved notifications for all three faults through actual Prometheus → Alertmanager → local webhook delivery. Only disposable drill timings/lookback windows are shortened; production rules and their full-duration rule tests remain unchanged. Containers and synthetic storage are removed after completion. SIGINT/SIGTERM request cleanup during a run; after a hard kill, remove only the matching `jky-drill-*` containers and the deliberately disposable `jky-alert-drill-*` directory.
+
+This proves the local notification mechanism. It does not prove a real on-call recipient received an alert, an actual backup provider failed, or the ClamAV engine was exercised. Those observations belong in the signed operations/hosting assessment. Private metrics rate limits accommodate the accelerated one-second scrape while remaining bounded.
