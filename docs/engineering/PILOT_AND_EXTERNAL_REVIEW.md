@@ -1,6 +1,6 @@
 # Private pilot and external review packet
 
-Use synthetic documents until source/correctness approval, hosting verification and the relevant external reviews are complete. This packet prepares the work; it is not a record that students or qualified reviewers have performed it. Keep completed findings outside Git in an owner-only directory.
+Use synthetic documents until source/correctness approval, hosting verification and the relevant external reviews are complete. This packet prepares the work; it is not a record that students or qualified reviewers have performed it. Keep completed findings outside Git in an owner-only directory. Use the [signed launch-evidence workflow](LAUNCH_EVIDENCE.md) to bind actual findings to the exact release/environment and prevent stale or invented completion.
 
 ## Evidence to collect
 

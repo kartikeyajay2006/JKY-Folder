@@ -93,7 +93,10 @@ docker run --rm --read-only --cap-drop ALL \
   node_modules/vitest/vitest.mjs run --configLoader runner \
   --fsModuleCachePath /tmp/vitest-cache \
   tests/isolation.test.ts tests/offsite.test.ts \
-  tests/deployment.test.ts tests/recovery.test.ts
+  tests/deployment.test.ts tests/recovery.test.ts \
+  tests/capacity.test.ts tests/recovery-rehearsal.test.ts
 ```
 
 On AppArmor hosts, first load the supplied policy and also add `--security-opt apparmor=jky-parser-host`. CI exercises this policy on Ubuntu 24.04. Local repository fixtures verify exact recovery mechanics; they do not establish separate off-site durability, actual ClamAV feed availability, inbox delivery or public HTTPS. The repository integrity rehearsal allows five minutes for encryption and checksum work under the container CPU budget.
+
+Operational setup and actual alert-delivery/capacity drills are documented in [monitoring and capacity](MONITORING_AND_CAPACITY.md). Use [launch evidence](LAUNCH_EVIDENCE.md) to evaluate real scoped approvals. Local fixture reports do not replace outside or public-provider observations.
