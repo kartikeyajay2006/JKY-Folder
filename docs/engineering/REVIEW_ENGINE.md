@@ -12,12 +12,16 @@ Capture permits only the official HTTPS UCEED host, refuses redirects, bounds th
 npm run rules -- capture --id uceed-2027-registration --url https://www.uceed.iitb.ac.in/2027/registration.html --title 'UCEED 2027 registration instructions'
 npm run rules -- import-source --file /private/path/verified-source.snapshot.json
 npm run rules -- draft --file /private/path/pack.json --actor author-identity
-npm run rules -- review --id pack-id --version revision-id --actor independent-reviewer
+npm run rules -- review --id pack-id --version revision-id --actor independent-reviewer --file /private/path/signed-review.json
 npm run rules -- publish --id pack-id --version revision-id --actor independent-reviewer
 npm run rules -- inspect
 ```
 
 A source anchor is `sourceId:start:length`, measured in JavaScript string positions in that snapshot representation. Every obligation needs a valid anchored range, disposition (`implemented`, `review_only`, `unsupported`), rationale and requirement mapping where applicable. Review verifies source integrity, current hashes, requirement constraints and source mappings. Self-review, incomplete mappings and duplicate pack versions are rejected. Publication requires the recorded distinct reviewer and unchanged sources. Published revisions cannot be edited; changes require a new version. Retirement removes a pack from new selection.
+
+Every revision now requires a coverage inventory and a dated review file; omitting coverage cannot bypass approval. Coverage ranges must include all non-whitespace text of every pinned source, and every obligation must be represented, including unsupported items. Duplicate source, obligation and section identifiers are rejected. The scope hash binds the pack identity, author, cycle, application stage, applicant-facing limitations and executable rules. Publication revalidates the exact scope, source bytes and accepted section decisions. Reviewer identities are normalized to reject case/spacing variants of self-review; attribution alone still does not establish a person's independence.
+
+Validate a private dossier with `npm run rules -- validate --dossier /private/path/dossier.json` and create its workbook with `npm run rules -- review-sheet --dossier /private/path/dossier.json --out /private/path/review.html`. The workbook refuses missing/tampered source text or stale hashes and exposes each mapped rule's full conditions, formats, combinations and constraints beside the original excerpt. Structural validation is not a completeness sign-off.
 
 Application creation pins the selected pack. Captured-source or published-pack changes make reports historical and block saving a fresh report until the new reviewed version is accepted. Acceptance clears old evidence confirmations/links and preserves historical report provenance. Source-only changes cannot be accepted while curator review remains open. The source panel lists hashes, anchors, dispositions and unsupported obligations.
 

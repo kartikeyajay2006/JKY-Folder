@@ -13,6 +13,7 @@ import {
   transitionPack,
   digest,
   sourceChanged,
+  packScopeHash,
 } from '../server/rule-packs';
 import { refreshReminders } from '../server/reminders';
 const dirs: string[] = [];
@@ -210,9 +211,32 @@ describe('curator lifecycle and source changes', () => {
           rationale: 'Explicit instruction.',
         },
       ];
-      saveDraft(store, rules, 'author');
+      rules.coverage = [
+        {
+          id: 'full',
+          sourceId: 's',
+          anchor: 's:0:' + source.content.length,
+          title: 'Full source',
+          disposition: 'in_scope',
+          obligationIds: ['o'],
+        },
+      ];
+      const saved = saveDraft(store, rules, 'author');
+      const review = {
+        reviewer: 'reviewer',
+        scopeHash: packScopeHash(saved),
+        signedAt: new Date().toISOString(),
+        independenceAttested: true,
+        decisions: [
+          {
+            sectionId: 'full',
+            accepted: true,
+            note: 'Read the full source and checked every instruction.',
+          },
+        ],
+      };
       expect(() => transitionPack(store, 'pack', '1', 'review', 'author')).toThrow();
-      transitionPack(store, 'pack', '1', 'review', 'reviewer');
+      transitionPack(store, 'pack', '1', 'review', 'reviewer', review);
       transitionPack(store, 'pack', '1', 'publish', 'reviewer');
       const p = { ...packet(), packSnapshot: availablePacks(store).find((p) => p.id === 'pack')! };
       expect(sourceChanged(store, p)).toBe(false);

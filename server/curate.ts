@@ -4,6 +4,7 @@ import { createStore } from './store';
 import { saveDraft, transitionPack, digest } from './rule-packs';
 import { packWorkbook } from './review-workbook';
 import type { RulePack, SourceSnapshot } from '../shared/model';
+import { validatePackSources } from './pack-validation';
 const [command, ...args] = process.argv.slice(2);
 const flag = (name: string) => {
   const i = args.indexOf('--' + name);
@@ -116,6 +117,18 @@ try {
         representation: snapshot.representation,
       }),
     );
+  } else if (command === 'validate') {
+    const dossier = JSON.parse(readFileSync(flag('dossier'), 'utf8'));
+    const result = validatePackSources(dossier.pack, dossier.snapshots);
+    if (result.scopeHash !== dossier.scopeHash) throw Error('The dossier scope hash is stale.');
+    console.log(
+      JSON.stringify({
+        ...result,
+        status: 'structurally_valid',
+        independentApproval:
+          dossier.pack.lifecycle === 'published' ? 'check_registered_revision' : 'pending',
+      }),
+    );
   } else if (command === 'review-sheet') {
     // An offline HTML workbook for the independent reviewer; it produces the signed review file.
     if (!flag('dossier') || !flag('out'))
@@ -154,7 +167,7 @@ try {
     );
   } else
     throw Error(
-      'Use capture --id --url --title; prepare-uceed; review-sheet --dossier --out; draft --file --actor; review/publish/retire --id --version --actor; or inspect.',
+      'Use capture --id --url --title; prepare-uceed; validate --dossier; review-sheet --dossier --out; draft --file --actor; review/publish/retire --id --version --actor; or inspect.',
     );
 } finally {
   store.db.close();

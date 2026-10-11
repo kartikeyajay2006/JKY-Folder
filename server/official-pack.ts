@@ -10,6 +10,7 @@ import type {
 } from '../shared/model';
 import { uceedPack, registrationBaseRequirements } from '../shared/packs';
 import { digest } from './rule-packs';
+import { validatePackSources } from './pack-validation';
 
 const eq = (field: string, value: string) => ({ op: 'eq', field, value }) as Predicate;
 const and = (...args: Predicate[]): Predicate => ({ op: 'and', args });
@@ -336,13 +337,6 @@ export async function prepareOfficialPack(
     pack,
     snapshots,
     pages: pages.map(({ text, ...p }) => ({ ...p, length: text.length })),
-    scopeHash: digest(
-      JSON.stringify({
-        sources: pack.sources,
-        requirements: pack.requirements,
-        obligations: pack.obligations,
-        coverage: pack.coverage,
-      }),
-    ),
+    scopeHash: validatePackSources(pack, snapshots).scopeHash,
   };
 }

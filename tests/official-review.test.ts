@@ -58,10 +58,10 @@ it('requires complete independent coverage decisions and rejects stale hashes an
       ],
       limitations: [],
     };
-    saveDraft(store, pack, 'author');
+    const saved = saveDraft(store, pack, 'author');
     const review = {
       reviewer: 'reviewer',
-      scopeHash: packScopeHash(pack),
+      scopeHash: packScopeHash(saved),
       signedAt: '2026-10-11',
       independenceAttested: true,
       decisions: [

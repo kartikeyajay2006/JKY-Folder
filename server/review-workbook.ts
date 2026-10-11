@@ -1,4 +1,5 @@
 import type { RulePack, SourceSnapshot } from '../shared/model';
+import { validatePackSources } from './pack-validation';
 
 /**
  * Offline review workbooks for people outside the product: one self-contained HTML file that
@@ -94,6 +95,8 @@ ${body}
 /** Workbook for an independent completeness review of a pack's source coverage. */
 export function packWorkbook(dossier: PackDossier) {
   const { pack } = dossier;
+  const checked = validatePackSources(pack, dossier.snapshots);
+  if (checked.scopeHash !== dossier.scopeHash) throw Error('The dossier scope hash is stale.');
   const snapshot = (id: string) => dossier.snapshots.find((s) => s.id === id);
   const sections = (pack.coverage || []).map((c) => {
     const [, start, length] = c.anchor.split(':').map(Number);
@@ -112,8 +115,8 @@ export function packWorkbook(dossier: PackDossier) {
           instruction: o?.instruction || '',
           disposition: o?.disposition || '',
           rationale: o?.rationale || '',
-          requirements: (o?.requirementIds || []).map(
-            (r) => pack.requirements.find((x) => x.id === r)?.title || r,
+          requirements: (o?.requirementIds || []).map((r) =>
+            pack.requirements.find((x) => x.id === r),
           ),
         };
       }),
@@ -125,6 +128,9 @@ export function packWorkbook(dossier: PackDossier) {
     version: pack.version,
     title: pack.title,
     author: pack.authoredBy || '',
+    cycle: pack.cycle,
+    stage: pack.stage,
+    limitations: pack.limitations,
     scopeHash: dossier.scopeHash,
     sections,
   };
@@ -209,6 +215,10 @@ const WORKBOOK_SCRIPT = String.raw`
       for (const [name, meaning] of Object.entries(data.states))
         contract.lastChild.append(el('li', { textContent: name + ': ' + meaning }));
       main.append(intro, contract);
+    } else {
+      const scope = el('article', {}, el('h2', { textContent: 'Application scope and limits' }), el('p', { textContent: 'Cycle: ' + data.cycle + ' · Stage: ' + data.stage }), el('ul'));
+      for (const limitation of data.limitations) scope.lastChild.append(el('li', { textContent: limitation }));
+      main.append(scope);
     }
     list.forEach((entry, index) => {
       const item = (state.items[entry.id] = state.items[entry.id] || {});
@@ -221,8 +231,16 @@ const WORKBOOK_SCRIPT = String.raw`
           el('blockquote', { textContent: entry.excerpt || '(Source text unavailable in this dossier.)' }),
         );
         const obligations = el('ul');
-        for (const o of entry.obligations)
-          obligations.append(el('li', { textContent: o.instruction + ' [' + o.disposition + (o.requirements.length ? '; checklist: ' + o.requirements.join(', ') : '') + '] ' + o.rationale }));
+        for (const o of entry.obligations) {
+          const item = el('li', { textContent: o.instruction + ' [' + o.disposition + '] ' + o.rationale });
+          for (const requirement of o.requirements) {
+            const details = el('details', {}, el('summary', { textContent: 'Executable rule: ' + requirement.title }), el('pre', { textContent: JSON.stringify(requirement, null, 2) }));
+            details.style.whiteSpace = 'pre-wrap';
+            details.style.overflowWrap = 'anywhere';
+            item.append(details);
+          }
+          obligations.append(item);
+        }
         card.append(el('p', { className: 'meta', textContent: 'Mapped obligations' }), obligations);
       } else {
         const changes = el('ul');
