@@ -18,3 +18,11 @@ docker run --rm --network none --entrypoint promtool -w /etc/prometheus \
   -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 \
   test rules alerts.test.yml
 ```
+
+## Reproducible capacity measurements
+
+`npm run capacity -- --concurrency 3 --rounds 3 --out /private/capacity.json` starts one disposable loopback runtime and creates synthetic adult accounts. Concurrent clients upload actual native PDFs, scanned PDFs and JPEGs, wait for extraction, verify downloaded original bytes and erase their accounts. No existing URL or personal `DATA_DIR` is used. Bounds are 1–8 clients, 1–10 documents per client and a finite total time budget. `--sandbox` requires the actual OS boundary.
+
+Reports include upload response and queued inspection latency by document kind (p50/p95/max), documents per minute, observed API and process-tree RSS, workspace bytes, free space and enclosing cgroup CPU/memory ceilings. RSS sampling runs every 50 ms and can miss short peaks; summing process RSS double-counts shared pages. Host RAM/CPU information is context, not a claim about container limits. Synthetic OCR and a scanner protocol fixture do not measure representative uploads or the real ClamAV engine.
+
+Run the same command inside the restricted production image, with the [sandbox limits](../../deploy/SANDBOX.md), as `node_modules/tsx/dist/cli.mjs server/capacity.ts --sandbox --concurrency 3 --rounds 3 --out /tmp/capacity.json`. Capture the report privately before removing the container. For each actual deployment, agree acceptable upload/inspection p95, maximum queue delay and recovery targets first. Repeat at rising concurrency with consented synthetic equivalents of realistic page counts/file sizes; record the exact release and host policy. Saturation must produce queued or explicit error states rather than successful checks. Do not extrapolate this small baseline to unlimited traffic or multiple runtimes.

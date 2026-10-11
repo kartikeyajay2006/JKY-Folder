@@ -21,6 +21,16 @@ jobs:
           docker run --rm --network none --entrypoint promtool -w /etc/prometheus -v "$PWD/deploy/monitoring:/etc/prometheus:ro" prom/prometheus:v3.5.0 test rules alerts.test.yml
       - name: Build production image
         run: docker build -t jky-folder:verification .
+      - name: Measure concurrent PDF and OCR capacity
+        run: >-
+          docker run --rm --read-only --cap-drop ALL
+          --security-opt no-new-privileges:true
+          --security-opt seccomp=deploy/parser-host-seccomp.json
+          --security-opt apparmor=jky-parser-host
+          --tmpfs /tmp:size=512m,mode=1777
+          --pids-limit 256 --memory 2g --memory-swap 2g --cpus 2
+          --entrypoint node jky-folder:verification
+          node_modules/tsx/dist/cli.mjs server/capacity.ts --sandbox --concurrency 3 --rounds 3
       - name: Exercise sandbox, repository recovery and production intake
         run: >-
           docker run --rm --read-only --cap-drop ALL
@@ -34,7 +44,7 @@ jobs:
           -e TEST_RESTIC_BINARY=/usr/bin/restic
           --entrypoint node jky-folder:verification
           node_modules/vitest/vitest.mjs run --configLoader runner --fsModuleCachePath /tmp/vitest-cache
-          tests/isolation.test.ts tests/offsite.test.ts tests/deployment.test.ts tests/recovery.test.ts
+          tests/isolation.test.ts tests/offsite.test.ts tests/deployment.test.ts tests/recovery.test.ts tests/capacity.test.ts
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15

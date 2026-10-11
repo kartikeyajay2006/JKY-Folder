@@ -24,7 +24,9 @@
     "outbox": "tsx server/outbox.ts",
     "support": "tsx server/support-cli.ts",
     "backup:offsite": "tsx server/offsite-backup.ts",
-    "readiness": "tsx server/readiness.ts"
+    "readiness": "tsx server/readiness.ts",
+    "capacity": "tsx server/capacity.ts",
+    "launch:evidence": "tsx server/launch-evidence.ts"
   },
   "dependencies": {
     "@fontsource-variable/bodoni-moda": "^5.3.0",

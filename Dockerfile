@@ -16,7 +16,7 @@ ENV NODE_ENV=production \
   PORT=3001 \
   DATA_DIR=/data \
   INSPECTION_MODE=bubblewrap
-RUN apt-get update && apt-get install -y --no-install-recommends bubblewrap util-linux restic ca-certificates \
+RUN apt-get update && apt-get install -y --no-install-recommends bubblewrap util-linux restic ca-certificates fonts-dejavu-core \
   && rm -rf /var/lib/apt/lists/* \
   && useradd --system --uid 10001 --home /app jky \
   && mkdir -p /data /backups && chown jky /data /backups
