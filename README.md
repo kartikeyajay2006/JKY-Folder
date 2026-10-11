@@ -7,7 +7,7 @@
   <img alt="Node 22" src="https://img.shields.io/badge/Node-22.12%2B-102a6b?logo=nodedotjs&logoColor=white" />
   <img alt="React 19" src="https://img.shields.io/badge/React-19-102a6b?logo=react&logoColor=white" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-102a6b?logo=typescript&logoColor=white" />
-  <img alt="Tests" src="https://img.shields.io/badge/tests-527%20domain%20%C2%B7%2061%20browser-c9a13b" />
+  <img alt="Tests" src="https://img.shields.io/badge/tests-528%20domain%20%C2%B7%2061%20browser-c9a13b" />
   <img alt="Accessibility" src="https://img.shields.io/badge/WCAG-AA%20checked-c9a13b" />
 </p>
 
@@ -123,11 +123,11 @@ Use a compatible Linux Docker host with the supplied seccomp and, where required
 ## Quality
 
 ```sh
-npm run check        # TypeScript, 521 passing tests + 6 host checks, production build
+npm run check        # TypeScript, 522 passing tests + 6 host checks, production build
 npm run test:e2e     # 61 desktop and mobile browser journeys with accessibility scans
 ```
 
-Every push runs both and a separate restricted Docker job in GitHub Actions. The complete domain/API/worker suite contains 527 tests; six need the Docker integration environment. Browser tests cover real uploads and OCR, interrupted uploads, the photo fixer, guardian approval through the outbox, both themes, keyboard use, phone widths and automated WCAG 2.1 AA scans.
+Every push runs both and a separate restricted Docker job in GitHub Actions. The complete domain/API/worker suite contains 528 tests; six need the Docker integration environment. Browser tests cover real uploads and OCR, interrupted uploads, the photo fixer, guardian approval through the outbox, both themes, keyboard use, phone widths and automated WCAG 2.1 AA scans.
 
 ## Project map
 

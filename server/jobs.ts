@@ -23,6 +23,19 @@ export function startJobs(
     stopped = false,
     pausedUntil = 0,
     child: ChildProcess | undefined;
+  const guardianship = !!store.db
+    .prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='guardianship'")
+    .get();
+  const today = () => new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+  const consentJoin = guardianship ? ' LEFT JOIN guardianship g ON g.userId=p.userId' : '';
+  const consentWhere = guardianship
+    ? " AND (g.userId IS NULL OR g.status='approved' OR json_extract(g.payload,'$.adultOn')<=?)"
+    : '';
+  function allowed(packetId: string) {
+    return !!store.db
+      .prepare('SELECT 1 FROM packets p' + consentJoin + ' WHERE p.id=?' + consentWhere)
+      .get(...[packetId, ...(guardianship ? [today()] : [])]);
+  }
   store.db.prepare("UPDATE jobs SET status='queued' WHERE status='processing'").run();
   const timer = setInterval(() => void tick(), 300);
   timer.unref();
@@ -30,9 +43,14 @@ export function startJobs(
     if (running || stopped || Date.now() < pausedUntil) return;
     const row = store.db
       .prepare(
-        "SELECT j.id,j.packetId,d.objectKey,d.payload FROM jobs j JOIN documents d ON d.id=j.id WHERE j.status='queued' ORDER BY j.rowid LIMIT 1",
+        'SELECT j.id,j.packetId,d.objectKey,d.payload FROM jobs j JOIN documents d ON d.id=j.id JOIN packets p ON p.id=j.packetId' +
+          consentJoin +
+          " WHERE j.status='queued'" +
+          consentWhere +
+          ' ORDER BY j.rowid LIMIT 1',
       )
-      .get() as { id: string; packetId: string; objectKey: string; payload: string } | undefined;
+      .get(...(guardianship ? [today()] : [])) as
+      { id: string; packetId: string; objectKey: string; payload: string } | undefined;
     if (!row) return;
     const begin = performance.now();
     running = true;
@@ -46,6 +64,10 @@ export function startJobs(
         const verdict = await scan(file);
         observe?.(`scan_${verdict.status}`);
         if (stopped) return;
+        if (!allowed(row.packetId)) {
+          store.db.prepare("UPDATE jobs SET status='queued' WHERE id=?").run(row.id);
+          return;
+        }
         if (verdict.status === 'unavailable') {
           console.error('scan.unavailable');
           store.db.prepare("UPDATE jobs SET status='queued' WHERE id=?").run(row.id);
@@ -85,6 +107,10 @@ export function startJobs(
           },
         }));
       if (stopped) return;
+      if (!allowed(row.packetId)) {
+        store.db.prepare("UPDATE jobs SET status='queued' WHERE id=?").run(row.id);
+        return;
+      }
       observe?.(
         result.ok ? 'inspection_ready' : 'inspection_error',
         (performance.now() - begin) / 1000,
