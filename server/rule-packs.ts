@@ -3,13 +3,10 @@ import type { Store } from './store';
 import type { Packet, RulePack, SourceSnapshot } from '../shared/model';
 import { packs } from '../shared/packs';
 import { requirementsSchema } from './application-schema';
-import {
-  packScopeHash,
-  reviewerIdentity,
-  validatePackSources,
-  validatePackReview,
-} from './pack-validation';
+import { reviewerIdentity, validatePackSources, validatePackReview } from './pack-validation';
 export { packScopeHash } from './pack-validation';
+import { hasSignedReview, verifyReview } from './reviewer-identity';
+import { evidenceHash } from './review-integrity';
 export const digest = (content: string | Buffer) =>
   createHash('sha256').update(content).digest('hex');
 export function availablePacks(store: Store): RulePack[] {
@@ -23,7 +20,17 @@ export function availablePacks(store: Store): RulePack[] {
   const latest = new Map(packs.map((p) => [p.id, p]));
   for (const p of revisions) {
     if (p.lifecycle === 'retired') latest.delete(p.id);
-    else latest.set(p.id, p);
+    else {
+      try {
+        if (!p.reviewSignature || !p.reviewRecord) throw Error('Unverified approval.');
+        verifyReview(store, { ...p.reviewSignature, payload: p.reviewRecord }, 'pack');
+        validatePackReview(p, p.reviewedBy || '', p.reviewRecord);
+        validatePackSources(p, capturedSources(store, p));
+        latest.set(p.id, p);
+      } catch {
+        latest.delete(p.id);
+      }
+    }
   }
   return [...latest.values()];
 }
@@ -94,6 +101,7 @@ export function saveDraft(store: Store, pack: RulePack, actor: string) {
   const draft = {
     ...pack,
     reviewRecord: undefined,
+    reviewSignature: undefined,
     lifecycle: 'draft' as const,
     authoredBy: actor,
     reviewedBy: undefined,
@@ -110,7 +118,19 @@ export function transitionPack(
   version: string,
   action: 'review' | 'publish' | 'retire',
   actor: string,
-  reviewRecord?: RulePack['reviewRecord'],
+  reviewRecord?: unknown,
+) {
+  return store.db.transaction(() =>
+    transitionInTransaction(store, id, version, action, actor, reviewRecord),
+  )();
+}
+function transitionInTransaction(
+  store: Store,
+  id: string,
+  version: string,
+  action: 'review' | 'publish' | 'retire',
+  actor: string,
+  reviewRecord?: unknown,
 ) {
   const row = store.db
     .prepare('SELECT state,payload FROM pack_revisions WHERE id=? AND version=?')
@@ -120,7 +140,13 @@ export function transitionPack(
   if (action === 'review') {
     if (row.state !== 'draft') throw Error('Only a draft can enter review.');
     validatePackSources(p, capturedSources(store, p));
-    p.reviewRecord = validatePackReview(p, actor, reviewRecord);
+    const signed = hasSignedReview(reviewRecord)
+      ? verifyReview(store, reviewRecord, 'pack')
+      : undefined;
+    p.reviewRecord = validatePackReview(p, actor, signed ? signed.payload : reviewRecord);
+    if (signed && evidenceHash(p.reviewRecord) !== signed.proof.payloadHash)
+      throw Error('Sign normalized review fields without changing their contents.');
+    p.reviewSignature = signed?.proof;
     p.lifecycle = 'reviewed';
     p.reviewedBy = actor;
     p.reviewedAt = new Date().toISOString();
@@ -132,6 +158,9 @@ export function transitionPack(
       throw Error('Only the recorded independent reviewer may publish a reviewed revision.');
     validatePackSources(p, capturedSources(store, p));
     validatePackReview(p, actor, p.reviewRecord);
+    if (!p.reviewSignature)
+      throw Error('Publication requires a verified reviewer signature, not a typed name.');
+    verifyReview(store, { ...p.reviewSignature, payload: p.reviewRecord }, 'pack');
     p.lifecycle = 'published';
   } else {
     if (

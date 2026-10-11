@@ -78,6 +78,7 @@ export function validatePackSources(pack: RulePack, snapshots: SourceSnapshot[])
       !actual?.content?.trim() ||
       actual.sha256 !== pinned.sha256 ||
       actual.url !== pinned.url ||
+      (pinned.content !== undefined && pinned.content !== actual.content) ||
       url.protocol !== 'https:' ||
       url.username ||
       url.password ||

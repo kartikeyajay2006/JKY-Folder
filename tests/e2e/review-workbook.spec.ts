@@ -20,7 +20,7 @@ import {
 
 test.skip(({ isMobile }) => isMobile, 'The offline workbooks are desktop tools for reviewers.');
 
-test('a reviewer completes the pack workbook and its signed file passes the review gate', async ({
+test('a reviewer completes the pack workbook but typed attribution cannot authorize publication', async ({
   page,
 }) => {
   const dir = mkdtempSync(join(tmpdir(), 'jky-workbook-'));
@@ -79,7 +79,7 @@ test('a reviewer completes the pack workbook and its signed file passes the revi
     await page.goto(pathToFileURL(file).href);
     await expect(page.locator('blockquote')).toHaveText(content);
     await expect(page.getByText('Birth certificate PDF', { exact: false })).toBeVisible();
-    const download = page.getByRole('button', { name: 'Download signed review' });
+    const download = page.getByRole('button', { name: 'Download review JSON' });
     await page.getByLabel('Reviewer name').fill('author');
     await page.getByLabel(/did not author this pack/).check();
     await expect(page.getByRole('status')).toHaveText('The author cannot review their own work.');
@@ -102,6 +102,9 @@ test('a reviewer completes the pack workbook and its signed file passes the revi
       saveDraft(store, pack, 'author');
       const reviewed = transitionPack(store, 'review', '1', 'review', 'reviewer', signed);
       expect(reviewed.lifecycle).toBe('reviewed');
+      expect(() => transitionPack(store, 'review', '1', 'publish', 'reviewer')).toThrow(
+        /signature/,
+      );
     } finally {
       store.db.close();
     }

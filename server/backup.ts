@@ -106,6 +106,8 @@ export function restore(
   try {
     // Restoring an older snapshot must never resurrect sessions or used account links.
     store.db.prepare('DELETE FROM sessions').run();
+    // Recheck reviewer identities after disaster recovery; an old backup may predate a revocation.
+    store.db.prepare('DELETE FROM reviewer_keys').run();
     const tables = new Set(
       (
         store.db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all() as {

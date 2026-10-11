@@ -64,7 +64,7 @@ Metadata is in `.data/metadata.sqlite` and originals are in `.data/objects`, unl
 
 Deleting a document removes its active original, extraction and evidence links, and purges saved packet reports to remove retained evidence references. Deleting a packet removes all its documents, jobs and reports. Account deletion removes every owned packet and invalidates sessions. Minimal audit events for a document or packet deletion are retained until account deletion. Demo workspaces expire after 24 hours.
 
-The development release has no automated backups. Operator-triggered encrypted backup and restore, including deletion replay, are described in [review-engine contracts](REVIEW_ENGINE.md). SQLite WAL free pages and external filesystem backups can retain deleted bytes; active-record deletion is not a forensic erasure guarantee. A production retention and backup-expiration policy still needs review.
+Scheduled encrypted backups run when configured; operator-triggered backup and restore, including deletion replay, are described in [review-engine contracts](REVIEW_ENGINE.md) and the [deployment guide](DEPLOY.md). SQLite WAL free pages and external filesystem backups can retain deleted bytes; active-record deletion is not a forensic erasure guarantee. Off-site copies and the production retention policy still need review. Restore clears reviewer registrations in addition to sessions and account links; reverify reviewer identities so older backups cannot reactivate revoked approvals.
 
 ## Checks
 
@@ -113,5 +113,7 @@ npm run support -- close JKY-1A2B3C4D --operator "Your name"
 ## PDF intake and email operations
 
 [Durable intake and instruction review](INTAKE_AND_RECOVERY.md) describes chunk expiry, resume after reload, applicant confirmation and deleted-source invalidation. [Official source review](OFFICIAL_REVIEW_AND_BENCHMARK.md) describes the current UCEED scope and blind correctness adjudication. [Account email operations](ACCOUNT_EMAIL.md) lists SMTP settings, verification and opt-in, retry behavior, Web Push and live-delivery validation. Reviewers of the UCEED pack and the benchmark labels can work from offline workbooks: `npm run rules -- review-sheet --dossier <dossier.json> --out <review.html>` and `npm run benchmark:review -- sheet <blind.json> <labels.html>`.
+
+Use the [version-3 independent review workflow](INDEPENDENT_REVIEW.md) for new approvals: complete the offline workbook, sign with the reviewer's own key, verify the registered identity and execute the imported labels. Typed attribution alone cannot publish a pack. Official scope approval also requires the exact source pack's profile/evidence benchmark; generic regression success is insufficient.
 
 A stopped server cannot generate or send reminders; closing the browser is supported. If delivery fails, inspect queue statuses and transport configuration without logging tokens, SMTP credentials or email bodies. Correct the provider configuration before retrying failed rows through a reviewed operator recovery process; expired account requests need a fresh link request. Restore into a new directory with the current deletion ledger. Recovery clears active sessions and account-link tokens; applicants must sign in again.

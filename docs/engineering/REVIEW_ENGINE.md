@@ -4,7 +4,7 @@ The Gold/Silver visual system, typography, theme initialization and motion contr
 
 ## Sources and publication
 
-`npm run rules -- <command>` operates a private source registry and immutable pack revisions in `DATA_DIR` (default `.data`). This is an operator command requiring filesystem access, not a public curator endpoint. Named author/reviewer records are operational attribution; independent reviewer qualification and identity must still be verified outside this local tool.
+`npm run rules -- <command>` operates a private source registry and immutable pack revisions in `DATA_DIR` (default `.data`). This is an operator command requiring filesystem access, not a public curator endpoint. Named author/reviewer records are attribution; publication additionally verifies an Ed25519 signature against the operator-checked reviewer registry. The operator must verify the actual person, qualification and independence outside this tool; key possession alone cannot establish those facts. See [independent review](INDEPENDENT_REVIEW.md).
 
 Capture permits only the official HTTPS UCEED host, refuses redirects, bounds the response to one MB and uses a timeout. It stores a SHA-256 hash, capture date, URL, title, representation and source text. Unsupported hosts are rejected instead of fetching user-supplied URLs. Source refresh is an explicit curator operation; a scheduled remote monitor is not enabled.
 

@@ -166,3 +166,16 @@ Verification: 453 domain/API/worker/benchmark tests, 30 desktop and 28 mobile br
 | Hindi, payments, more official checklists | Not started | Need translation, pricing and Razorpay keys, and official sources with independent review |
 
 Verification: 462 domain/API/worker/benchmark tests, 31 desktop and 29 mobile browser scenarios, TypeScript and the production build pass.
+
+
+## Verified review and exact-pack correctness workflow (11 October 2026)
+
+Official publication now requires all-source coverage, unique mapped obligations, a dated decision for every section and an Ed25519 signature from an operator-verified, independently registered reviewer. Scope hashes include identity, author, cycle, stage, limitations and executable constraints. Missing coverage, altered inline source text, stale scope, unsigned names, invalid signatures, source changes and revoked keys block approval. Publication runs inside a transaction. Source refresh accepts a new immutable revision version and refuses changed brochure layouts rather than silently reusing fixed page mappings. Dossier writes are reserved before registry mutation. The offline workbook shows actual conditions and constraints, and refuses corrupted dossiers.
+
+Version 3 materializes all evaluator inputs with opaque IDs, removes duplicate scenarios and adds positive/inclusive-boundary checks. The general export has 284 distinct scenarios; it remains public, author-maintained regression material. Private, separately authored manifests can be frozen for held-out review. Imported independent labels drive actual evaluation, with per-case results, confusion counts, critical false passes and evaluator source/version hashes. Failures cannot be waived. A third registered reviewer signs any author/reviewer adjudication, and the original reviewer findings remain in the approval record.
+
+The UCEED dossier also generates 252 answer-free scenarios for every declared profile combination across its 18 requirements, with present, missing and incomplete combination evidence. Scope approval requires the exact published pack and complete rule/profile coverage, rather than success on the generic corpus. All real review-ready artifacts remain private, outside Git; no fictional reviewer is registered, no source pack is falsely published and no benchmark is falsely declared independently approved. The actual review and labels still require people.
+
+A real CLI workflow test exercises key generation/registration, signed source review, publication, exact-pack export, independently signed synthetic test labels, scope approval and revocation. These test identities exist only in disposable test storage. Backup restoration clears reviewer registrations so previously revoked approvals cannot be silently revived. Existing frontend theme assets and upload-first empty accounts remain unchanged.
+
+Verification: 488 domain/API/worker/benchmark tests, 32 desktop and 29 mobile browser scenarios, TypeScript and production build. See [independent review operations](INDEPENDENT_REVIEW.md). This verifies the software workflow, not real human sign-off or the other public-launch gates.

@@ -165,6 +165,14 @@ it('shows actual conditions and constraints and refuses a corrupted dossier', ()
     packWorkbook({ ...dossier, snapshots: [{ ...source, content: 'Replaced' }] }),
   ).toThrow(/integrity/);
 });
+
+it('rejects corrupted inline source text even if the captured registry snapshot is valid', () => {
+  const { source, pack } = fixture();
+  pack.sources = [
+    { ...source, content: 'Different source content masquerading under the original hash.' },
+  ];
+  expect(() => validatePackSources(pack, [source])).toThrow(/integrity/);
+});
 it('revalidates the scope at publication instead of trusting an earlier reviewed state', () => {
   const dir = mkdtempSync(join(tmpdir(), 'jky-pack-gate-'));
   const store = createStore(dir);

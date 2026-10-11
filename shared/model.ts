@@ -59,6 +59,7 @@ export interface Requirement {
 export interface RulePack {
   coverage?: SourceCoverage[];
   reviewRecord?: PackReviewRecord;
+  reviewSignature?: ReviewSignature;
   instructionSource?: { documentId: string; sha256: string; draftId: string };
   id: string;
   version: string;
@@ -76,6 +77,14 @@ export interface RulePack {
   authoredBy?: string;
   reviewedBy?: string;
   reviewedAt?: string;
+}
+export interface ReviewSignature {
+  version: 1;
+  purpose: 'pack' | 'benchmark' | 'adjudication';
+  reviewer: string;
+  keyFingerprint: string;
+  payloadHash: string;
+  signature: string;
 }
 export interface SourceCoverage {
   id: string;

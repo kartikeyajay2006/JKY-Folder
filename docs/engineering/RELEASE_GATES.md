@@ -17,7 +17,7 @@ References indicate partial implementation of the corresponding workstream, not 
 
 ## Must remain open before real public applicants
 
-1. Independently reviewed complete current rule pack, including source omissions and conditional exceptions. The review workbook and signed-review gate exist; the review itself must be done by a person who did not author the pack.
+1. Independently reviewed complete current rule pack, including source omissions and conditional exceptions. Full-source coverage, scope-bound workbooks and registered Ed25519 reviewer signatures are enforced; a real person who did not author the pack must perform and sign the review.
 2. Applicant research and paid-demand validation, with consented outcome records.
 3. Production database/object store, storage encryption and approved retention/backup lifecycle. Scheduled encrypted backups with retention exist for single-server deployments; off-site copies and a managed database remain open.
 4. HTTPS deployment, verified secure-cookie origin, real SMTP/inbox validation for the implemented account recovery/email verification, and Web Push delivery checked on real Chrome, Firefox and Safari devices.
@@ -25,7 +25,7 @@ References indicate partial implementation of the corresponding workstream, not 
 6. Multi-instance queue leases, atomic cross-instance mutation controls, backup restoration and deletion replay.
 7. Independent penetration and access-control review, operational incident staffing and monitored recovery targets.
 8. Qualified legal review, processing notices, processor contracts and an approved age/guardian policy.
-9. Held-out correctness benchmark, source completeness review and the plan’s critical false-pass threshold. Blind export, an offline labelling workbook and adjudication exist; the labels must come from an independent reviewer.
+9. Held-out correctness benchmark, source completeness review and the plan’s critical false-pass threshold. Frozen private manifests, independent-label execution, signed third-reviewer adjudication, zero-mismatch/false-pass checks and exact official-pack branch coverage exist. Actual independent labels and identity verification are still required; passing author-labelled regression cannot close this gate.
 10. Payment, refund and contribution-margin validation before charging for a service.
 11. Assistive-technology usability studies and full accessibility audit before claiming WCAG conformance.
 12. Trademark clearance and final vector brand production.
@@ -45,6 +45,8 @@ When deleting a document, saved runs for that packet are purged instead of retai
 ## Evidence review extension
 
 Source-registry/publication tooling, multiple evidence anchors, structured confirmations/correction history, richer deterministic checks, local English OCR, evidence suggestions, in-app reminders and encrypted local recovery are implemented. See [review-engine contracts](REVIEW_ENGINE.md) for exact limits and operator commands. The expanded registration/FAQ/brochure coverage inventory is author-mapped and remains a draft. Completeness decisions and blind benchmark label import now enforce review provenance, but actual independent sign-off remains pending. The synthetic benchmark labels await independent adjudication. Neither extension closes independent rule-pack completeness, held-out benchmark, OS sandbox, automated offsite recovery or public deployment gates.
+
+The [independent review workflow](INDEPENDENT_REVIEW.md) now verifies purpose-bound signatures against an operator-checked reviewer registry. Publication is transactional and rejects unsigned or revoked approvals. Version 3 has 284 distinct general evaluator scenarios and a separately generated 252-case UCEED rule projection; outputs remain private and no fictional reviewers are registered in the real application. Review keys require re-verification after recovery. These mechanisms make genuine approval executable and auditable; they do not manufacture the review itself.
 
 ## Applicant tools (JF-04-06, JF-02-10, JF-06-09, JF-06-11)
 

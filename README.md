@@ -7,7 +7,7 @@
   <img alt="Node 22" src="https://img.shields.io/badge/Node-22.12%2B-102a6b?logo=nodedotjs&logoColor=white" />
   <img alt="React 19" src="https://img.shields.io/badge/React-19-102a6b?logo=react&logoColor=white" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-102a6b?logo=typescript&logoColor=white" />
-  <img alt="Tests" src="https://img.shields.io/badge/tests-462%20unit%20%C2%B7%2060%20browser-c9a13b" />
+  <img alt="Tests" src="https://img.shields.io/badge/tests-488%20unit%20%C2%B7%2061%20browser-c9a13b" />
   <img alt="Accessibility" src="https://img.shields.io/badge/WCAG-AA%20checked-c9a13b" />
 </p>
 
@@ -123,8 +123,8 @@ That runs the app with automatic HTTPS and virus scanning on any small server. O
 ## Quality
 
 ```sh
-npm run check        # TypeScript, 462 unit and API tests, production build
-npm run test:e2e     # 60 desktop and mobile browser journeys with accessibility scans
+npm run check        # TypeScript, 488 unit and API tests, production build
+npm run test:e2e     # 61 desktop and mobile browser journeys with accessibility scans
 ```
 
 Every push runs both in GitHub Actions. Browser tests cover real uploads and OCR, interrupted uploads, the photo fixer, guardian approval through the outbox, both themes, keyboard use, phone widths and automated WCAG 2.1 AA scans.
@@ -155,7 +155,7 @@ docs/       Engineering contracts, operations runbook, startup plan and brand
 
 The software is complete for a private pilot. These need people rather than code:
 
-- An independent reviewer signs off the UCEED checklist and the correctness test answers (offline review workbooks are ready).
+- An independent reviewer signs off the UCEED checklist and correctness labels. Full-source workbooks, registered reviewer signatures, actual benchmark execution and exact-pack branch coverage are ready; see [the review workflow](docs/engineering/INDEPENDENT_REVIEW.md).
 - A lawyer reviews privacy, the under-18 policy and the terms; an outside tester runs a security review.
 - Real SMTP credentials, a domain and hosting; then a pilot with real students.
 

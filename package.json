@@ -20,6 +20,7 @@
     "test:benchmark": "vitest run tests/benchmark.test.ts tests/benchmark-v2.test.ts",
     "benchmark:review": "tsx server/benchmark-review.ts",
     "benchmark:run": "tsx server/benchmark-runner.ts",
+    "review:approve": "tsx server/reviewer-cli.ts",
     "outbox": "tsx server/outbox.ts",
     "support": "tsx server/support-cli.ts"
   },

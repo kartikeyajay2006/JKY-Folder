@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, openSync, closeSync, unlinkSync } from 'node:fs';
 import { prepareOfficialPack } from './official-pack';
 import { createStore } from './store';
 import { saveDraft, transitionPack, digest } from './rule-packs';
@@ -13,21 +13,31 @@ const flag = (name: string) => {
 const store = createStore(process.env.DATA_DIR || '.data');
 try {
   if (command === 'prepare-uceed') {
+    if (!flag('file')) throw Error('A private dossier output path is required.');
     const result = await prepareOfficialPack(
       { registration: flag('registration'), faq: flag('faq'), brochure: flag('brochure') },
       flag('actor'),
+      flag('version') || '2027.reference.3',
     );
-    if (!flag('file')) throw Error('A private dossier output path is required.');
-    store.db.transaction(() => {
-      for (const s of result.snapshots)
-        store.db
-          .prepare(
-            'INSERT INTO source_snapshots VALUES(?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload',
-          )
-          .run(s.id, JSON.stringify(s));
-      saveDraft(store, result.pack, flag('actor'));
-    })();
-    writeFileSync(flag('file'), JSON.stringify(result, null, 2), { mode: 0o600, flag: 'wx' });
+    const file = flag('file');
+    const fd = openSync(file, 'wx', 0o600);
+    try {
+      writeFileSync(fd, JSON.stringify(result, null, 2));
+      store.db.transaction(() => {
+        for (const s of result.snapshots)
+          store.db
+            .prepare(
+              'INSERT INTO source_snapshots VALUES(?,?) ON CONFLICT(id) DO UPDATE SET payload=excluded.payload',
+            )
+            .run(s.id, JSON.stringify(s));
+        saveDraft(store, result.pack, flag('actor'));
+      })();
+    } catch (error) {
+      unlinkSync(file);
+      throw error;
+    } finally {
+      closeSync(fd);
+    }
     console.log(
       JSON.stringify({
         id: result.pack.id,

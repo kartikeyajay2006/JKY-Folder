@@ -25,6 +25,7 @@ export interface BenchmarkManifest {
   version: '3';
   author: string;
   purpose: string;
+  sourceScope?: { packId: string; version: string; scopeHash: string };
   cases: { id: string; scenario: BenchmarkScenario }[];
 }
 
@@ -131,6 +132,14 @@ export function validateBenchmarkManifest(input: unknown): BenchmarkManifest {
       version: z.literal('3'),
       author: z.string().trim().min(2).max(100),
       purpose: z.string().trim().min(20).max(2000),
+      sourceScope: z
+        .object({
+          packId: z.string().min(1),
+          version: z.string().min(1),
+          scopeHash: z.string().regex(/^[a-f0-9]{64}$/),
+        })
+        .strict()
+        .optional(),
       cases: z
         .array(
           z
@@ -260,7 +269,7 @@ export function evaluateReviewedBenchmark(
   const mismatches = results.filter((r) => !r.matched);
   const criticalFalsePasses = results.filter((r) => r.criticalFalsePass).length;
   const evaluatorSourcesHash = createHash('sha256');
-  for (const file of ['evaluate.ts', 'facts.ts', 'identity.ts', 'model.ts'])
+  for (const file of ['evaluate.ts', 'facts.ts', 'identity.ts', 'classify.ts', 'model.ts'])
     evaluatorSourcesHash
       .update(file)
       .update(readFileSync(new URL('../shared/' + file, import.meta.url)));

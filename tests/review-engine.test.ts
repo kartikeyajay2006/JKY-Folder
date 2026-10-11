@@ -16,6 +16,7 @@ import {
   packScopeHash,
 } from '../server/rule-packs';
 import { refreshReminders } from '../server/reminders';
+import { createReviewerKey, registerReviewer, signReview } from '../server/reviewer-identity';
 const dirs: string[] = [];
 afterEach(() => {
   for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true });
@@ -236,7 +237,21 @@ describe('curator lifecycle and source changes', () => {
         ],
       };
       expect(() => transitionPack(store, 'pack', '1', 'review', 'author')).toThrow();
-      transitionPack(store, 'pack', '1', 'review', 'reviewer', review);
+      const keys = createReviewerKey('reviewer');
+      registerReviewer(
+        store,
+        keys.publicIdentity,
+        'author',
+        'Synthetic test identity verified only inside this disposable test.',
+      );
+      transitionPack(
+        store,
+        'pack',
+        '1',
+        'review',
+        'reviewer',
+        signReview(review, keys.privateKey, 'pack'),
+      );
       transitionPack(store, 'pack', '1', 'publish', 'reviewer');
       const p = { ...packet(), packSnapshot: availablePacks(store).find((p) => p.id === 'pack')! };
       expect(sourceChanged(store, p)).toBe(false);

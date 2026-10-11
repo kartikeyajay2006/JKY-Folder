@@ -3,7 +3,7 @@ import { validatePackSources } from './pack-validation';
 
 /**
  * Offline review workbooks for people outside the product: one self-contained HTML file that
- * shows exactly what must be reviewed and produces the signed JSON the CLI verifies. The file
+ * shows exactly what must be reviewed and produces the completed JSON for reviewer signing. The file
  * makes no network requests; progress is kept only in the reviewer's own browser.
  */
 export interface PackDossier {
@@ -102,11 +102,12 @@ export function packWorkbook(dossier: PackDossier) {
   const sections = (pack.coverage || []).map((c) => {
     const [, start, length] = c.anchor.split(':').map(Number);
     const source = snapshot(c.sourceId);
+    const pinned = pack.sources?.find((s) => s.id === c.sourceId);
     return {
       id: c.id,
       title: c.title,
       disposition: c.disposition,
-      source: source ? `${source.title} (${source.url})` : c.sourceId,
+      source: pinned ? `${pinned.title} (${pinned.url})` : c.sourceId,
       anchor: c.anchor,
       excerpt: source?.content?.slice(start, start + length) ?? '',
       obligations: c.obligationIds.map((id) => {
@@ -144,7 +145,7 @@ export function packWorkbook(dossier: PackDossier) {
 <div class="row"><label>Reviewer name <input type="text" id="reviewer" autocomplete="name"></label>
 <label><input type="checkbox" id="attest"> I did not author this pack and reviewed it independently${pack.authoredBy ? ` of ${escapeHtml(pack.authoredBy)}` : ''}.</label></div>
 <div class="row"><span class="count" id="progress"></span><select id="filter" aria-label="Show"><option value="all">All sections</option><option value="open">Not decided yet</option><option value="rejected">Rejected</option></select>
-<button class="primary" id="download" disabled>Download signed review</button><span class="problem" id="problem" role="status"></span></div>
+<button class="primary" id="download" disabled>Download review JSON</button><span class="problem" id="problem" role="status"></span></div>
 </header>
 <main id="items"></main>
 <script>${WORKBOOK_SCRIPT}</script>`,
@@ -165,7 +166,11 @@ export function benchmarkWorkbook(blind: BlindExport) {
           ]
         : BASE_CASE,
     states: STATE_CONTRACT,
-    cases: blind.manifest.cases.map((c) => ({ id: c.id, changes: describeChanges(c) })),
+    cases: blind.manifest.cases.map((c) => ({
+      id: c.id,
+      changes: describeChanges(c),
+      ...(c.scenario ? { scenario: c.scenario } : {}),
+    })),
   };
   return shell(
     `Blind benchmark labels, version ${blind.manifest.version}`,
@@ -248,6 +253,20 @@ const WORKBOOK_SCRIPT = String.raw`
           obligations.append(item);
         }
         card.append(el('p', { className: 'meta', textContent: 'Mapped obligations' }), obligations);
+      } else if (entry.scenario) {
+        card.append(el('p', { className: 'meta', textContent: 'Complete frozen inputs; inspect the requirement, profile, evidence and original metadata before choosing a state.' }));
+        const sections = [
+          ['Requirement and supported constraints', entry.scenario.pack.requirements],
+          ['Profile answers', entry.scenario.packet.profile],
+          ['Evidence links and review records', entry.scenario.packet.links],
+          ['Original metadata, page text and facts', entry.scenario.documents],
+          ['Application and source scope', { packId: entry.scenario.pack.id, version: entry.scenario.pack.version, cycle: entry.scenario.pack.cycle, stage: entry.scenario.pack.stage, sources: entry.scenario.pack.sources, limitations: entry.scenario.pack.limitations }],
+        ];
+        for (const [title, value] of sections) {
+          const details = el('details', { open: true }, el('summary', { textContent: title }), el('pre', { textContent: JSON.stringify(value, null, 2) }));
+          details.style.whiteSpace = 'pre-wrap'; details.style.overflowWrap = 'anywhere';
+          card.append(details);
+        }
       } else {
         const changes = el('ul');
         for (const c of entry.changes) changes.append(el('li', { textContent: c }));
@@ -266,7 +285,7 @@ const WORKBOOK_SCRIPT = String.raw`
         };
         choices.append(el('label', {}, input, label));
       }
-      const note = el('textarea', { value: item.note || '' });
+      const note = el('textarea', { value: item.note || '', maxLength: 2000 });
       note.setAttribute('aria-label', (isPack ? 'Reviewer note for ' : 'Rationale for ') + (isPack ? entry.title : entry.id));
       note.oninput = () => { item.note = note.value; save(); refresh(); };
       card.append(choices, el('label', { textContent: isPack ? 'Reviewer note (at least 20 characters)' : 'Rationale (at least 20 characters)' }), note);
@@ -305,7 +324,7 @@ const WORKBOOK_SCRIPT = String.raw`
           ...(String(data.version) === '3' ? { signedAt: new Date().toISOString() } : {}),
           labels: list.map((c) => ({ id: c.id, expected: state.items[c.id].expected, rationale: state.items[c.id].note.trim() })) };
     const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
-    const link = el('a', { href: URL.createObjectURL(blob), download: isPack ? 'signed-review-' + data.packId + '-' + data.version + '.json' : 'reviewer-labels-v' + data.version + '.json' });
+    const link = el('a', { href: URL.createObjectURL(blob), download: isPack ? 'review-' + data.packId + '-' + data.version + '.json' : 'reviewer-labels-v' + data.version + '.json' });
     document.body.append(link); link.click(); link.remove();
   };
   render();

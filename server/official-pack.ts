@@ -91,8 +91,11 @@ export function normalizeOfficialHtml(raw: string) {
 export async function prepareOfficialPack(
   files: { registration: string; faq: string; brochure: string },
   actor: string,
+  version = '2027.reference.3',
 ) {
   if (!actor.trim()) throw Error('An accountable author is required.');
+  if (!/^[a-zA-Z0-9._-]{1,100}$/.test(version))
+    throw Error('A valid immutable revision version is required.');
   const snapshots: SourceSnapshot[] = [],
     coverage: SourceCoverage[] = [],
     obligations: SourceObligation[] = [];
@@ -138,6 +141,10 @@ export async function prepareOfficialPack(
   try {
     const pdf = await task.promise;
     if (pdf.numPages > 100) throw Error('Operator source PDF exceeds 100 pages.');
+    if (pdf.numPages !== 74)
+      throw Error(
+        'The UCEED brochure layout changed. Curate its source/page mappings before preparing a new revision.',
+      );
     for (let n = 1; n <= pdf.numPages; n++) {
       const page = await pdf.getPage(n),
         data = await page.getTextContent();
@@ -315,7 +322,7 @@ export async function prepareOfficialPack(
     .map((o) => o.id);
   const pack: RulePack = {
     ...structuredClone(uceedPack),
-    version: '2027.reference.3',
+    version,
     requirements,
     sources: snapshots.map(({ content, ...s }) => s),
     obligations,
