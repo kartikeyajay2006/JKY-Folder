@@ -4,14 +4,20 @@ import { createApp } from './app';
 import { outboxTransport, smtpTransport } from './mail';
 import { scannerFromEnv } from './scan';
 import { startScheduledBackups } from './scheduled-backup';
+import { inspectionMode, validateProductionConfig, verifySandbox } from './runtime-config';
+import { acquireInstanceLock } from './instance-lock';
 if (existsSync('.env')) loadEnvFile('.env');
-if (process.env.NODE_ENV === 'production' && !process.env.APP_ORIGIN?.startsWith('https://'))
-  throw new Error(
-    'Production requires an explicit HTTPS APP_ORIGIN and a configured TLS reverse proxy.',
-  );
+process.umask(0o077);
+validateProductionConfig(process.env);
+const mode = inspectionMode(process.env);
+if (mode === 'bubblewrap') await verifySandbox();
 const port = Number(process.env.PORT || 3001);
 const host = process.env.HOST || '127.0.0.1';
 const dataDir = process.env.DATA_DIR || '.data';
+const releaseLock = await acquireInstanceLock(dataDir, () => {
+  console.error('runtime.lock_lost');
+  process.exit(1);
+});
 // SMTP when configured. In development without SMTP, emails go to the local outbox
 // (npm run outbox) so password reset and guardian approval work out of the box.
 function mailTransport() {
@@ -29,6 +35,7 @@ const runtime = createApp({
   mail: mailTransport(),
   scan: scannerFromEnv(process.env),
   trustProxy: proxySetting(process.env.TRUST_PROXY),
+  inspectionMode: mode,
 });
 /** TRUST_PROXY: a hop count such as 1 (most hosts), or an Express value such as "loopback". */
 function proxySetting(value?: string) {
@@ -50,9 +57,10 @@ const server = runtime.app.listen(port, host, () =>
 );
 for (const signal of ['SIGINT', 'SIGTERM'] as const)
   process.on(signal, () =>
-    server.close(() => {
+    server.close(async () => {
       backups?.stop();
       runtime.close();
+      await releaseLock();
       process.exit(0);
     }),
   );

@@ -159,10 +159,13 @@ async function inspect(path) {
     extractionVersion: 'native-ocr-eng.1',
   };
 }
+const report = (value) => process.env.JKY_WORKER_STDIO === '1'
+  ? process.stdout.write(JSON.stringify(value))
+  : process.send?.(value);
 inspect(process.argv[2])
-  .then((result) => process.send?.({ ok: true, result }))
+  .then((result) => report({ ok: true, result }))
   .catch((error) =>
-    process.send?.({
+    report({
       ok: false,
       error:
         error?.name === 'PasswordException'

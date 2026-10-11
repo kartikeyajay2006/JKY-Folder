@@ -1,0 +1,7 @@
+# Load deploy/jky-parser-host.apparmor before using this override on AppArmor hosts.
+services:
+  app:
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./deploy/parser-host-seccomp.json
+      - apparmor=jky-parser-host

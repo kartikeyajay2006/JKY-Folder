@@ -4,7 +4,10 @@ import {
   chmodSync,
   readdirSync,
   unlinkSync,
-  appendFileSync,
+  openSync,
+  writeSync,
+  fsyncSync,
+  closeSync,
   existsSync,
   readFileSync,
 } from 'node:fs';
@@ -13,8 +16,10 @@ import { randomUUID } from 'node:crypto';
 import type { Packet, DocumentRecord, EvaluationRun } from '../shared/model';
 export function createStore(directory: string) {
   mkdirSync(directory, { recursive: true, mode: 0o700 });
+  chmodSync(directory, 0o700);
   const objects = join(directory, 'objects');
   mkdirSync(objects, { recursive: true, mode: 0o700 });
+  chmodSync(objects, 0o700);
   const db = new Database(join(directory, 'metadata.sqlite'));
   chmodSync(join(directory, 'metadata.sqlite'), 0o600);
   db.pragma('journal_mode = WAL');
@@ -78,11 +83,13 @@ export function createStore(directory: string) {
   }
   const deletionLedger = join(directory, 'deletions.jsonl');
   function recordDeletion(kind: 'packet' | 'account' | 'document', id: string) {
-    appendFileSync(
-      deletionLedger,
-      JSON.stringify({ kind, id, at: new Date().toISOString() }) + '\n',
-      { mode: 0o600 },
-    );
+    const descriptor = openSync(deletionLedger, 'a', 0o600);
+    try {
+      writeSync(descriptor, JSON.stringify({ kind, id, at: new Date().toISOString() }) + '\n');
+      fsyncSync(descriptor); // persist erasure before acknowledging or changing database rows
+    } finally {
+      closeSync(descriptor);
+    }
   }
   // The ledger lives outside the database so a restored old database cannot undo erasure.
   function replayDeletions() {

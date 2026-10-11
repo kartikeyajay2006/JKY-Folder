@@ -14,9 +14,12 @@ WORKDIR /app
 ENV NODE_ENV=production \
   HOST=0.0.0.0 \
   PORT=3001 \
-  DATA_DIR=/data
-RUN useradd --system --uid 10001 --home /app jky \
-  && mkdir -p /data && chown jky /data
+  DATA_DIR=/data \
+  INSPECTION_MODE=bubblewrap
+RUN apt-get update && apt-get install -y --no-install-recommends bubblewrap util-linux restic ca-certificates \
+  && rm -rf /var/lib/apt/lists/* \
+  && useradd --system --uid 10001 --home /app jky \
+  && mkdir -p /data /backups && chown jky /data /backups
 COPY --from=build --chown=jky /app /app
 USER jky
 VOLUME ["/data"]

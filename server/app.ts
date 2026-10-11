@@ -25,6 +25,7 @@ import type { MailTransport } from './mail';
 import { registerUploads } from './uploads';
 import { registerInstructionDrafts } from './instruction-drafts';
 import { startJobs } from './jobs';
+import type { InspectionMode } from './inspection';
 import { seedDemo } from './demo';
 import { packs, findPack } from '../shared/packs';
 import {
@@ -108,6 +109,7 @@ export function createApp(options: {
   push?: PushSender;
   /** Scans every upload before inspection (ClamAV in production). */
   scan?: Scanner;
+  inspectionMode?: InspectionMode;
   /** Express "trust proxy" setting when running behind a hosting proxy or load balancer. */
   trustProxy?: number | string;
 }) {
@@ -1475,7 +1477,7 @@ export function createApp(options: {
   const stopJobs =
     options.jobs === false
       ? Object.assign(() => {}, { isIdle: () => true })
-      : startJobs(store, options.scan);
+      : startJobs(store, options.scan, options.inspectionMode);
   function expireDemo() {
     sweepUploads();
     guardian.sweep();

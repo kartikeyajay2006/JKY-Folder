@@ -1,0 +1,22 @@
+# Ubuntu 24.04+ AppArmor 4 profile for nested, unprivileged bubblewrap namespaces.
+# The container still drops every host capability and uses the seccomp allowlist.
+# Namespace mount operations are required; no SYS_ADMIN capability or privileged mode.
+abi <abi/4.0>,
+#include <tunables/global>
+profile jky-parser-host flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+  userns,
+  network,
+  capability,
+  file,
+  mount,
+  umount,
+  pivot_root,
+  signal (send, receive) peer=jky-parser-host,
+  signal (receive) peer=unconfined,
+  ptrace (read, trace) peer=jky-parser-host,
+  deny /proc/sys/** wklx,
+  deny /proc/sysrq-trigger rwklx,
+  deny /proc/kcore rwklx,
+  deny /sys/** wklx,
+}

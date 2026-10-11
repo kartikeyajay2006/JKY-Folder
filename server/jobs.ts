@@ -1,18 +1,18 @@
-import { fork, type ChildProcess } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { type ChildProcess } from 'node:child_process';
+import { inspectFile, type InspectionMode, type InspectionOutcome } from './inspection';
 import { join } from 'node:path';
 import { existsSync, unlinkSync } from 'node:fs';
 import { extractFacts } from '../shared/facts';
 import type { Store } from './store';
 import type { Scanner } from './scan';
 import type { DocumentRecord, Packet } from '../shared/model';
-type Outcome = { ok: boolean; result?: Partial<DocumentRecord>; error?: string };
+type Outcome = InspectionOutcome;
 /**
  * Inspects queued originals one at a time. With a virus scanner configured, every file is
  * scanned first: infected files are deleted unopened, and while the scanner is unreachable
  * files wait in the queue rather than reaching a parser unscanned.
  */
-export function startJobs(store: Store, scan?: Scanner) {
+export function startJobs(store: Store, scan?: Scanner, mode: InspectionMode = 'process') {
   let running = false,
     stopped = false,
     pausedUntil = 0,
@@ -55,41 +55,11 @@ export function startJobs(store: Store, scan?: Scanner) {
       }
       const result =
         screened ||
-        (await new Promise<Outcome>((resolve) => {
-          const proc = fork(
-            fileURLToPath(new URL('./inspect-worker.mjs', import.meta.url)),
-            [file],
-            {
-              execArgv: ['--max-old-space-size=192'],
-              env: { PATH: process.env.PATH },
-              stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
-            },
-          );
-          child = proc;
-          let finished = false;
-          const finish = (value: Outcome) => {
-            if (finished) return;
-            finished = true;
-            clearTimeout(timeout);
-            resolve(value);
-          };
-          const timeout = setTimeout(() => {
-            proc.kill('SIGKILL');
-            finish({
-              ok: false,
-              error: 'Inspection reached its time limit. Try a smaller supported file.',
-            });
-          }, 45000);
-          proc.once('message', (value) => {
-            finish(value as Parameters<typeof finish>[0]);
-            proc.kill();
-          });
-          proc.once('error', () =>
-            finish({ ok: false, error: 'The inspection worker is unavailable.' }),
-          );
-          proc.once('exit', () =>
-            finish({ ok: false, error: 'The inspection worker stopped before completing.' }),
-          );
+        (await inspectFile(file, {
+          mode,
+          onChild: (proc) => {
+            child = proc;
+          },
         }));
       if (stopped) return;
       store.db.transaction(() => {
@@ -120,6 +90,12 @@ export function startJobs(store: Store, scan?: Scanner) {
         packet.updatedAt = new Date().toISOString();
         store.savePacket(packet);
       })();
+    } catch {
+      if (!stopped) {
+        console.error('inspection.failed');
+        store.db.prepare("UPDATE jobs SET status='queued' WHERE id=?").run(row.id);
+        pausedUntil = Date.now() + 30000;
+      }
     } finally {
       running = false;
       child = undefined;
