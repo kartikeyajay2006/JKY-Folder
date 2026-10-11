@@ -19,10 +19,10 @@ References indicate partial implementation of the corresponding workstream, not 
 
 1. Independently reviewed complete current rule pack, including source omissions and conditional exceptions. Full-source coverage, scope-bound workbooks and registered Ed25519 reviewer signatures are enforced; a real person who did not author the pack must perform and sign the review.
 2. Applicant research and paid-demand validation, with consented outcome records.
-3. Production database/object store, storage encryption and approved retention/backup lifecycle. Scheduled encrypted backups with retention exist for single-server deployments; off-site copies and a managed database remain open.
+3. Production storage encryption and approved retention/backup lifecycle. Streaming encrypted archives, configured restic uploads, deletion-ledger mirrors and atomic offline restoration exist. Actual independent off-site storage, retention/erasure boundaries and recovery targets must be verified. A managed database/object store remains a scaling project.
 4. HTTPS deployment, verified secure-cookie origin, real SMTP/inbox validation for the implemented account recovery/email verification, and Web Push delivery checked on real Chrome, Firefox and Safari devices.
-5. Parser isolation with operating-system/container restrictions, malware controls and measured resource limits. ClamAV scanning before inspection (fail closed) and a non-root container exist; an operating-system sandbox for the parser remains open.
-6. Multi-instance queue leases, atomic cross-instance mutation controls, backup restoration and deletion replay.
+5. Deployment-specific security review of parser isolation, malware controls and measured resource limits. Production now requires verified bubblewrap namespaces, no parser network/private-data access, read-only originals, output/schema/CPU/time limits and ClamAV. Docker supplies aggregate memory/process/CPU ceilings with swap disabled. The configured host policy and realistic capacity still require outside review.
+6. Multi-instance queue leases and cross-instance mutation controls if scaling beyond the supported single runtime. A kernel lock protects the current SQLite runtime; persisted attempts prevent crash/requeue loops. Restore stages data, checks integrity/replays deletions and clears session, notification, support, reviewer and guardian authority requiring renewed consent.
 7. Independent penetration and access-control review, operational incident staffing and monitored recovery targets.
 8. Qualified legal review, processing notices, processor contracts and an approved age/guardian policy.
 9. Held-out correctness benchmark, source completeness review and the plan’s critical false-pass threshold. Frozen private manifests, independent-label execution, signed third-reviewer adjudication, zero-mismatch/false-pass checks and exact official-pack branch coverage exist. Actual independent labels and identity verification are still required; passing author-labelled regression cannot close this gate.
@@ -32,11 +32,11 @@ References indicate partial implementation of the corresponding workstream, not 
 
 ## Intentionally deferred features
 
-Custom instruction drafts and editable college/scholarship/job starters now work locally. They are not reviewed official rule packs. Additional OCR languages, automatic semantic/AI interpretation, external authenticity verification, transformed upload preparation, institution permissions, partner integrations, automated official-portal submission, independently reviewed scholarship/job packs and international expansion remain deferred. They require their own acceptance evidence and phase gates.
+Custom instruction drafts and editable college/scholarship/job starters now work locally. They are not reviewed official rule packs. Additional OCR languages, automatic semantic/AI interpretation, external authenticity verification, automatic PDF transformation, institution permissions, partner integrations, automated official-portal submission, independently reviewed scholarship/job packs and international expansion remain deferred. They require their own acceptance evidence and phase gates.
 
 ## Architecture decisions made
 
-SQLite and local private objects replace the plan’s provisional PostgreSQL/managed-storage stack for a reproducible single-instance development release. A durable document-job table allows restart recovery. Processing uses a child process with time and heap budgets, but no claim of a complete security sandbox. These choices need a production adapter and review before externally processing sensitive documents.
+SQLite and local private objects replace the plan’s provisional PostgreSQL/managed-storage stack for a reproducible single-instance development release. A durable document-job table allows restart recovery. Production parsing now requires verified bubblewrap namespaces and container resource ceilings under the supplied host policy. Deployment-specific outside review and capacity evidence are still required before processing real sensitive documents.
 
 A content-review confirmation can produce a scoped pass, with verification provenance set to `user`. It never becomes an automated issuer or content-authenticity result. Reports carry the selected checklist’s limits. Expected-phrase checks operate only on extracted text in linked pages; missing text remains review-needed, including scanned pages. Checklist or original instruction changes invalidate prior content confirmations.
 
@@ -55,3 +55,9 @@ Under-18 applicants can register with email approval from a parent or guardian; 
 ## Support access (JF-05-04)
 
 Applicants can contact support from Help without attaching documents. Wrong-result and privacy reports are prioritised. Sharing an application with support is opt-in, limited to 24 or 72 hours, revocable, unavailable for demo workspaces and recorded as grant, use, revocation and closure events in the applicant's activity. Operators see a redacted summary only while access is active. Staffing, response targets, operator identity verification and an operator console with role-based access remain open, under gate 7.
+
+## Current runtime and recovery evidence (11 October 2026)
+
+This revision supersedes the earlier child-process-only architecture description: a compatible production host now requires verified bubblewrap namespaces, the supplied container host policy, scanning and bounded resources. Streaming encrypted archives, configured repository uploads, ledger mirrors, atomic offline recovery and scoped preflight/intake smoke checks are implemented and exercised locally in Docker. They establish software behavior for the supported single runtime; they do not approve an arbitrary hosting provider or supply independent security review, actual off-site durability, zero-loss erasure replication or live email/push evidence.
+
+The [external review and pilot packet](PILOT_AND_EXTERNAL_REVIEW.md) records the remaining human and infrastructure evidence. Existing genuine source-review and independently authored benchmark gates remain open. Legal/privacy approval, assistive-technology testing, operational staffing, student research and payment/brand decisions still need their own evidence. Multi-instance deployment requires a separate architecture change and capacity measurements.

@@ -7,7 +7,7 @@
   <img alt="Node 22" src="https://img.shields.io/badge/Node-22.12%2B-102a6b?logo=nodedotjs&logoColor=white" />
   <img alt="React 19" src="https://img.shields.io/badge/React-19-102a6b?logo=react&logoColor=white" />
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-102a6b?logo=typescript&logoColor=white" />
-  <img alt="Tests" src="https://img.shields.io/badge/tests-488%20unit%20%C2%B7%2061%20browser-c9a13b" />
+  <img alt="Tests" src="https://img.shields.io/badge/tests-504%20domain%20%C2%B7%2061%20browser-c9a13b" />
   <img alt="Accessibility" src="https://img.shields.io/badge/WCAG-AA%20checked-c9a13b" />
 </p>
 
@@ -97,8 +97,8 @@ sequenceDiagram
 | --- | --- |
 | Browser | React 19, TypeScript, Vite, PDF.js, canvas image processing, installable web app |
 | Server | Node.js 22, Express 5, zod validation, helmet, per-session rate limits, CSRF tokens |
-| Workers | Separate inspection process (PDF.js text, Tesseract English OCR), ClamAV scanning, mail and Web Push queues |
-| Data | SQLite metadata, private content-hashed originals, encrypted backups, deletion ledger |
+| Workers | Namespaced production inspection (PDF.js text, Tesseract English OCR), ClamAV scanning, mail and Web Push queues |
+| Data | SQLite metadata, private originals, streaming encrypted backups, repository recovery, deletion ledger |
 
 ## Get started
 
@@ -109,7 +109,7 @@ npm run dev
 
 Open **http://127.0.0.1:5173**, then choose **Explore the demo** (fictional documents) or create an account. Emails such as password resets and guardian approvals go to a local outbox in development; read the newest with `npm run outbox -- latest`.
 
-Requires **Node.js 22.12 or newer**. Use synthetic documents until the public launch checks below are complete.
+Requires **Linux, Node.js 22.12 or newer and util-linux** (kernel workspace locking). Use synthetic documents until the public launch checks below are complete.
 
 ## Put it online
 
@@ -118,16 +118,16 @@ cp .env.example .env            # set APP_ORIGIN, SMTP and BACKUP_PASSWORD
 DOMAIN=jkyfolder.example docker compose --profile https --profile scan up -d
 ```
 
-That runs the app with automatic HTTPS and virus scanning on any small server. On Render, create a **Blueprint** from this repository ([`render.yaml`](render.yaml)). Details: [deployment guide](docs/engineering/DEPLOY.md).
+Use a compatible Linux Docker host with the supplied seccomp and, where required, AppArmor policy. Startup verifies the actual parser sandbox and requires scanning, SMTP and encrypted scheduled backups. Managed hosts, including the Render blueprint, still need compatibility verification. Details: [deployment guide](docs/engineering/DEPLOY.md).
 
 ## Quality
 
 ```sh
-npm run check        # TypeScript, 488 unit and API tests, production build
+npm run check        # TypeScript, 499 passing tests + 5 host checks, production build
 npm run test:e2e     # 61 desktop and mobile browser journeys with accessibility scans
 ```
 
-Every push runs both in GitHub Actions. Browser tests cover real uploads and OCR, interrupted uploads, the photo fixer, guardian approval through the outbox, both themes, keyboard use, phone widths and automated WCAG 2.1 AA scans.
+Every push runs both and a separate restricted Docker job in GitHub Actions. The complete domain/API/worker suite contains 504 tests; five need the Docker integration environment. Browser tests cover real uploads and OCR, interrupted uploads, the photo fixer, guardian approval through the outbox, both themes, keyboard use, phone widths and automated WCAG 2.1 AA scans.
 
 ## Project map
 
@@ -147,17 +147,19 @@ docs/       Engineering contracts, operations runbook, startup plan and brand
 | [Applicant tools](docs/engineering/APPLICANT_TOOLS.md) | Photo fixer, under-18 approval, name/date check, My documents |
 | [Deployment](docs/engineering/DEPLOY.md) | Docker, Render, HTTPS, backups, virus scanning |
 | [Runbook](docs/engineering/RUNBOOK.md) | Running, checking and recovering the service |
+| [Parser host policy](deploy/SANDBOX.md) · [Outside review and pilot](docs/engineering/PILOT_AND_EXTERNAL_REVIEW.md) | Deployment controls and the evidence still needed |
 | [Intake and recovery](docs/engineering/INTAKE_AND_RECOVERY.md) · [Email](docs/engineering/ACCOUNT_EMAIL.md) · [Review engine](docs/engineering/REVIEW_ENGINE.md) | Contracts behind uploads, mail and evaluation |
 | [Release gates](docs/engineering/RELEASE_GATES.md) · [Status](docs/engineering/IMPLEMENTATION_STATUS.md) · [Security](SECURITY.md) | What is done and what must happen before public launch |
 | [Startup plan](IMPLEMENTATION_PLAN.md) | 96 workstreams across strategy, product, trust, operations and growth |
 
 ## Before public launch
 
-The software is complete for a private pilot. These need people rather than code:
+Local application and Docker checks establish the implemented software behavior. Public readiness still requires recorded evidence:
 
 - An independent reviewer signs off the UCEED checklist and correctness labels. Full-source workbooks, registered reviewer signatures, actual benchmark execution and exact-pack branch coverage are ready; see [the review workflow](docs/engineering/INDEPENDENT_REVIEW.md).
 - A lawyer reviews privacy, the under-18 policy and the terms; an outside tester runs a security review.
-- Real SMTP credentials, a domain and hosting; then a pilot with real students.
+- Verified storage encryption and a separate backup failure domain, approved retention, measured capacity, and actual hosting/HTTPS, inbox and closed-browser push checks.
+- Assistive-technology testing and a consented pilot with real students. The [review packet](docs/engineering/PILOT_AND_EXTERNAL_REVIEW.md) defines tasks and evidence; participation is pending.
 
 A reviewed item means the file checks passed and you confirmed the content yourself. It is never a guarantee of authenticity, eligibility or acceptance; your institution decides.
 

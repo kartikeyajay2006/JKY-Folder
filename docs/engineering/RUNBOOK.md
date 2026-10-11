@@ -1,6 +1,6 @@
 # Local development runbook
 
-Requires Node.js 22.12 or newer. Verified locally with Node 22.22.0. The lockfile records the dependency versions used for this milestone.
+The supported server runtime is Linux with Node.js 22.12 or newer and util-linux (`flock`). Verified locally with Node 22.22.0. The lockfile records the dependency versions used for this milestone. Production also requires the verified [parser host policy](../../deploy/SANDBOX.md).
 
 ## First run
 
@@ -52,7 +52,7 @@ In **Settings & privacy**, update your display name, change your password using 
 
 Local engineering limits are 10 MB per file, 10 files and 30 MB per packet, and 20 pages per PDF. These are service limits, not asserted official application limits. JPEG decoding is bounded to 20 million pixels. Files are inspected in a separate Node process with a 192 MB JavaScript heap budget and a 45-second wall-time deadline.
 
-These process limits are not a full operating-system sandbox and do not prevent arbitrary native-code resource use. Production isolation requires a separately reviewed sandbox and aggregate capacity policy.
+Development defaults to process isolation. Production additionally requires Linux namespace isolation with no host networking/private data, read-only input, 30-second CPU and bounded temporary/output limits. Docker sets aggregate memory, CPU and process ceilings and disables container swap. Host-policy and external security review remain separate requirements. Persisted attempt counts prevent an interrupted original repeatedly crashing a restarting API; an explicit applicant retry resets the count.
 
 Only PDF and JPEG originals are accepted. The actual file content is inspected. `.jpeg` is accepted into the document library, but the reference requirement checks `.jpg` when that extension is specified. Encrypted, damaged or unsupported files remain unavailable for download and evidence linking. Failed inspection can be retried or the file deleted.
 
@@ -94,6 +94,29 @@ The UCEED 2027 reference checklist is not a reviewed complete official pack. Edi
 ## Hosting
 
 See [deployment](DEPLOY.md) for Docker, Render, HTTPS, scheduled backups and virus scanning.
+
+## Off-site recovery rehearsal
+
+`backup:offsite` and `backup` load `.env` without overriding existing environment values. Initialise a configured restic repository once with `npm run backup:offsite -- init`. Scheduled backups stream encrypted bytes rather than holding the entire archive in memory; incomplete/invalid snapshots never become usable archives. Missing/deleted originals fail the operation and clean its reserved output. The original `JKYBACK1` format remains readable.
+
+To rehearse disaster recovery, stop the server and use a separate private staging directory. Choose an exact archive snapshot and the newest erasure-ledger snapshot, not an unqualified `latest` across different snapshot tags:
+
+```sh
+npm run backup:offsite -- snapshots
+restic snapshots --tag jky-erasure-ledger
+restic check --read-data
+restic restore ARCHIVE_SNAPSHOT_ID --target /private/download
+restic restore LEDGER_SNAPSHOT_ID --target /private/download
+# Restic preserves original absolute paths beneath the download directory.
+DELETION_LEDGER=/private/download/data/deletions.jsonl npm run backup -- restore \
+  /private/download/backups/CHOSEN_ARCHIVE.jkyback /private/recovered
+```
+
+Use the actual backed-up paths shown by the selected snapshots. Merge any newer surviving ledger before recovery, retaining every erasure entry. After host loss, mirrored erasures can lag by at least the polling/network interval; establish the accepted erasure boundary before reopening. Restore publishes its new directory only after database/foreign-key checks, deletion replay and object hashes pass; failures remove staging. Sessions, account links and reviewer registrations are cleared. All mail queues/subscriptions and email verification are cleared, email opt-in is reset, and support grants are revoked so a pre-revocation snapshot cannot reauthorize contact or access. Push key files are preserved and checked when present; older archives without them need new browser subscriptions. Review identities must be checked again.
+
+Approved under-18 accounts return to guardian approval while preserving recoverable originals; no approval is manufactured and no invitation is sent by restore. Applicants can resend/change the guardian from the waiting page. Reapproval must occur within the renewed 14-day pending-account period; otherwise normal account erasure applies. Plan and explain this recovery step before reopening to participants. Accounts already erased by withdrawal are removed by deletion replay, not reopened for reapproval.
+
+Record snapshot IDs/times, recoverable-erasure boundary, exact original-byte verification, expired session/link checks and measured recovery duration. Check repository integrity and retention separately. A local repository rehearsal does not prove a physically independent off-site copy. Restore currently decrypts/unzips offline in memory, so provide capacity for the selected archive; it is never run inside the serving API. Keep passwords outside the lost host and decrypted staging private, then remove staging after the rehearsal.
 
 ## Development email, notifications and support
 
