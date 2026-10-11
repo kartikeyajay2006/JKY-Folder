@@ -33,7 +33,7 @@ export const STATE_CONTRACT: Record<string, string> = {
 };
 
 const BASE_CASE = [
-  'One requirement, required, always applicable, accepting PDF or JPEG.',
+  'One requirement, required, always applicable, accepting PDF with .pdf extension.',
   'One inspected original, synthetic.pdf: PDF, 1,000 bytes, 2 pages, native text on page 1.',
   'The requirement is linked to page 1, with the content review confirmed and a substantive note.',
   'Every profile answer is unknown.',
@@ -42,6 +42,7 @@ const BASE_CASE = [
 /** Turns one case's differences from the base scenario into sentences a reviewer can check. */
 export function describeChanges(input: Record<string, unknown>) {
   const out: string[] = [];
+  if (input.scenario) return ['Complete frozen inputs: ' + JSON.stringify(input.scenario, null, 2)];
   const json = (v: unknown) => JSON.stringify(v);
   if (input.omitDocuments) out.push('No original is uploaded.');
   if (input.omitLinks) out.push('No evidence is linked to the requirement.');
@@ -157,7 +158,12 @@ export function benchmarkWorkbook(blind: BlindExport) {
     version: blind.manifest.version,
     manifestHash: blind.manifestHash,
     author: blind.manifest.author,
-    base: BASE_CASE,
+    base:
+      String(blind.manifest.version) === '3'
+        ? [
+            'Version 3 provides every input in each case; there are no implicit defaults. Case IDs do not disclose the author’s expected answer.',
+          ]
+        : BASE_CASE,
     states: STATE_CONTRACT,
     cases: blind.manifest.cases.map((c) => ({ id: c.id, changes: describeChanges(c) })),
   };
@@ -296,6 +302,7 @@ const WORKBOOK_SCRIPT = String.raw`
       ? { reviewer, scopeHash: data.scopeHash, signedAt: new Date().toISOString(), independenceAttested: true,
           decisions: list.map((s) => ({ sectionId: s.id, accepted: state.items[s.id].accepted, note: state.items[s.id].note.trim() })) }
       : { version: data.version, manifestHash: data.manifestHash, reviewer, independenceAttested: true,
+          ...(String(data.version) === '3' ? { signedAt: new Date().toISOString() } : {}),
           labels: list.map((c) => ({ id: c.id, expected: state.items[c.id].expected, rationale: state.items[c.id].note.trim() })) };
     const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
     const link = el('a', { href: URL.createObjectURL(blob), download: isPack ? 'signed-review-' + data.packId + '-' + data.version + '.json' : 'reviewer-labels-v' + data.version + '.json' });

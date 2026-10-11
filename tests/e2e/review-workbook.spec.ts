@@ -11,6 +11,12 @@ import { adjudicateBenchmark, blindBenchmark } from '../../server/benchmark-revi
 import { benchmarkWorkbook, packWorkbook } from '../../server/review-workbook';
 import { templateRequirement } from '../../shared/templates';
 import type { RulePack } from '../../shared/model';
+import { benchmarkScenario } from '../../server/benchmark-cases';
+import {
+  benchmarkHash,
+  evaluateReviewedBenchmark,
+  type BenchmarkManifest,
+} from '../../server/benchmark-runner';
 
 test.skip(({ isMobile }) => isMobile, 'The offline workbooks are desktop tools for reviewers.');
 
@@ -135,6 +141,51 @@ test('a reviewer labels the blind benchmark and the labels pass adjudication imp
     const report = adjudicateBenchmark(labels);
     expect(report.status).toBe('reviewer_labels_recorded');
     expect(report.disagreements).toEqual([]);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the version 3 workbook exports dated labels that execute against the frozen inputs', async ({
+  page,
+}) => {
+  const dir = mkdtempSync(join(tmpdir(), 'jky-v3-workbook-'));
+  try {
+    const manifest: BenchmarkManifest = {
+      version: '3',
+      author: 'Synthetic curator',
+      purpose:
+        'Two synthetic scenarios for testing the complete offline review and execution flow.',
+      cases: [
+        { id: 'case-a', scenario: benchmarkScenario({}) },
+        { id: 'case-b', scenario: benchmarkScenario({ omitDocuments: true }) },
+      ],
+    };
+    const file = join(dir, 'v3.html');
+    writeFileSync(file, benchmarkWorkbook({ manifest, manifestHash: benchmarkHash(manifest) }));
+    await page.goto(pathToFileURL(file).href);
+    await expect(page.getByText(/there are no implicit defaults/)).toBeVisible();
+    await page.getByLabel('Reviewer name').fill('Synthetic reviewer');
+    await page.getByLabel(/labelled these cases independently/).check();
+    for (const [id, expected] of [
+      ['case-a', 'pass'],
+      ['case-b', 'fail'],
+    ]) {
+      const card = page.locator(`article[data-id="${id}"]`);
+      await card.getByRole('radio', { name: expected, exact: true }).check();
+      await card
+        .getByRole('textbox')
+        .fill('Read the frozen packet, requirement and original metadata for this synthetic case.');
+    }
+    const saved = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Download labels' }).click();
+    const labels = JSON.parse(readFileSync((await (await saved).path())!, 'utf8'));
+    expect(labels.version).toBe('3');
+    expect(Number.isNaN(Date.parse(labels.signedAt))).toBe(false);
+    const report = evaluateReviewedBenchmark(manifest, labels);
+    expect(report.status).toBe('checks_passed');
+    expect(report.criticalFalsePasses).toBe(0);
+    expect(report.independentApproval).toBe('pending_identity_verification');
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
